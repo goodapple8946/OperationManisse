@@ -153,27 +153,30 @@ public class GameController : MonoBehaviour
     // Entity整体移动控制
     private void AltEntityMove()
     {
-        // 按下Alt，开启Entity整体移动
-        if (Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt))
+        if (gamePhase == GamePhase.Preparation)
         {
-            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Entity");
-            foreach (GameObject gameObject in gameObjects)
+            // 按下Alt，开启Entity整体移动
+            if (Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt))
             {
-                Rigidbody2D body = gameObject.AddComponent<Rigidbody2D>();
-                body.bodyType = RigidbodyType2D.Static;
-            }
-        }
-
-        // 抬起Alt，关闭Entity整体移动
-        if (Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt))
-        {
-            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Entity");
-            foreach (GameObject gameObject in gameObjects)
-            {
-                Rigidbody2D body = gameObject.GetComponent<Rigidbody2D>();
-                if (body != null)
+                GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Entity");
+                foreach (GameObject gameObject in gameObjects)
                 {
-                    Destroy(body);
+                    Rigidbody2D body = gameObject.AddComponent<Rigidbody2D>();
+                    body.bodyType = RigidbodyType2D.Static;
+                }
+            }
+
+            // 抬起Alt，关闭Entity整体移动
+            if (Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt))
+            {
+                GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Entity");
+                foreach (GameObject gameObject in gameObjects)
+                {
+                    Rigidbody2D body = gameObject.GetComponent<Rigidbody2D>();
+                    if (body != null)
+                    {
+                        Destroy(body);
+                    }
                 }
             }
         }
