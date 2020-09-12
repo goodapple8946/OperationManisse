@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7494719057459323790}
   - component: {fileID: 7921459234471564100}
   - component: {fileID: -6302405524492546453}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Wheel Brown
-  m_TagString: Goods
+  m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1324722634242064922}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.85, y: 3.88, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -92,28 +92,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 1324722634242064922}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8fa479cdc3d3ea40bf0755f49891a36, type: 3}
+  m_Script: {fileID: 11500000, guid: b8500350ac7b5af458fffa7a79a7e321, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
-  alive: 1
+  isAlive: 1
   price: 100
-  rebuyable: 0
+  rebuyable: 1
   prefab: {fileID: 1324722634242064922}
-  clickable: 0
-  isWheel: 0
+  clickable: 1
+  isWheel: 1
+  isSelling: 1
+  player: 0
+  priority: 0
   body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  entity: {fileID: 0}
+  joints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   absorptionProvision: 0
   coverPrefab: {fileID: 457421770463853181, guid: 422f6e88ae8139f4094919c810846bee,
     type: 3}
+  isFixed: 0
+  isCore: 0
   force: 2
-  speedMax: 5
+  speedMax: 2
 --- !u!58 &-6302405524492546453
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -123,10 +132,10 @@ CircleCollider2D:
   m_GameObject: {fileID: 1324722634242064922}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 37da85ef7e8c27f439b81871c95070df, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.32
+  m_Radius: 0.3

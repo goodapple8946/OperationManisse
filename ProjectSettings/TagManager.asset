@@ -5,12 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Block
-  - Entity
   - Unit
   - Goods
   - Ball
   - Shop
   - Missile
+  - Temp
   layers:
   - Default
   - TransparentFX

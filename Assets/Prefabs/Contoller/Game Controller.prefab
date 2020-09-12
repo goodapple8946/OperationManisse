@@ -43,13 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddeaa8f7267314e43a7a9fae483d5cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  battleObjectsPrefab: {fileID: 0}
-  entityPrefab: {fileID: 6655841509301635206, guid: 0097ebd47ebd4354c9c63aef7537e617,
-    type: 3}
-  blockGreyPrefab: {fileID: 1869127999241510994, guid: 7b7d573a333074847a6c6c9071818cc4,
-    type: 3}
-  ballBluePrefab: {fileID: 6029490424575378000, guid: 32eb8c0abb26645488beedb52713f76c,
-    type: 3}
   corePrefab: {fileID: 2882552430367811224, guid: 54df0f9bcfea1a242a56955e3dc2e63a,
     type: 3}
-  battleObjects: {fileID: 0}
+  playerObjectsPrefab: {fileID: 5975679244167195420, guid: 255f63e11c2951c40b1a3658c282472e,
+    type: 3}
+  playerObjects: {fileID: 0}
+  enemyObjects: {fileID: 0}

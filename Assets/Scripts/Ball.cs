@@ -5,14 +5,37 @@ using UnityEngine;
 public class Ball : Unit
 {
     // 武器发射偏移
-    protected float weaponOffset = 0.48f;
+    protected float weaponOffset = 0.32f;
 
-    // 武器冷却CD
+    // 武器冷却最大值
     public float weaponCDMax;
+
+    // 武器冷却
     protected float weaponCD = 0;
+
+    // 武器冷却起始随机
+    public bool weaponCDRandom;
+
+    // 射程
+    public float weaponRange;
+
+    // 武器不精准角度
+    public float weaponAngle;
 
     // 弹药预设
     public GameObject missilePrefab;
+
+    // 旋转速率
+    private float rotationSpeed = 1f;
+
+    // 是否近战
+    public bool isMelee;
+
+    // 近战武器被创建
+    private bool haveMeleeWeapon = false;
+
+    // 发射物
+    private Missile missile;
 
     // 将GameObject强制类型转换为Ball
     public static explicit operator Ball(GameObject gameObject)
@@ -23,111 +46,208 @@ public class Ball : Unit
     protected override void Start()
     {
         base.Start();
+
+        if (weaponCDRandom)
+        {
+            weaponCD = Random.Range(0, weaponCDMax);
+        }
     }
 
     protected override void Update()
     {
         base.Update();
 
+        WeaponCoolDown();
         FindEnemy();
-    }
 
-    /// <summary>
-    /// 购买并赋予tag，Ball在Unit的基础上增加Rigidbody
-    /// </summary>
-    public override void Buy(string tag)
-    {
-        // 可以购买
-        if (this.tag == "Goods")
+        if (isMelee)
         {
-            // 可以重复购买
-            if (rebuyable)
-            {
-                // 在同一位置创建相同的商品
-                Unit unit = (Unit)gameController.Create(transform.position, prefab);
-                unit.tag = "Goods";
-                unit.clickable = true;
-                unit.alive = true;
-                unit.transform.parent = transform.parent;
-                unit.gameObject.layer = (int)GameController.Layer.Goods;
-            }
-            this.tag = tag;
-            transform.parent = gameController.battleObjects.transform;
-            gameObject.layer = (int)GameController.Layer.PlayerUnit;
-
-            // 获得Rigidbody
-            body = gameObject.AddComponent<Rigidbody2D>();
-            body.useAutoMass = true;
+            MeleeWeapon();
         }
     }
 
     // 索敌
     protected virtual void FindEnemy()
     {
-        if (alive && tag != "Goods" && GameController.gamePhase == GameController.GamePhase.Playing)
+        if (isAlive && !isSelling && GameController.gamePhase == GameController.GamePhase.Playing)
+        {
+            ArrayList gameObjects = new ArrayList();
+            gameObjects.AddRange(GameObject.FindGameObjectsWithTag("Ball"));
+            gameObjects.AddRange(GameObject.FindGameObjectsWithTag("Block"));
+
+            Unit target = null;
+            float priorityTarget = 0;
+
+            foreach (GameObject gameObject in gameObjects)
+            {
+                Unit unit = (Unit)gameObject;
+
+                // 目标合法
+                if (unit.isAlive && !unit.isSelling)
+                {
+                    // 目标是敌对的
+                    if (player == 1 && unit.player == 2 || player == 2 && unit.player == 1)
+                    {
+                        float priority = enemyPriority(unit);
+
+                        // 优先级更高的目标
+                        if (priority > priorityTarget)
+                        {
+                            target = unit;
+                            priorityTarget = priority;
+                        }
+                    }
+                }
+            }
+
+            // 找到目标
+            if (target != null)
+            {
+                // 自己的朝向
+                Vector2 vector = transform.right;
+
+                // 两者间的向量
+                Vector2 vectorTarget = target.transform.position - transform.position;
+
+                // 需要旋转的角度
+                float angle = Vector2.SignedAngle(vector, vectorTarget);
+
+                // 朝向敌人
+                if (angle > rotationSpeed)
+                {
+                    transform.Rotate(0, 0, rotationSpeed);
+                }
+                else if (angle < -rotationSpeed)
+                {
+                    transform.Rotate(0, 0, -rotationSpeed);
+                }
+                else
+                {
+                    transform.Rotate(0, 0, angle);
+                }
+
+                // 尝试攻击
+                if (!isMelee)
+                {
+                    RangedAttack();
+                }
+            }
+        }
+    }
+
+    // 索敌优先级
+    protected virtual int enemyPriority(Unit unit)
+    {
+        float distance = (unit.transform.position - transform.position).magnitude;
+        int priority = 0;
+
+        // 目标在射程内
+        if (distance <= weaponRange)
+        {
+            priority += (int)((weaponRange - distance) * 10f);
+            priority += unit.priority;
+        }
+        return priority;
+    }
+
+    // 远程攻击
+    protected virtual void RangedAttack()
+    {
+        if (weaponCD <= 0)
+        {
+            // 武器冷却重置
+            weaponCD = weaponCDMax;
+
+            // 创建弹药
+            Missile missile = (Missile)Instantiate(missilePrefab);
+
+            // 弹药发射点
+            missile.transform.position = transform.position + transform.right * weaponOffset;
+
+            // 弹药朝向
+            missile.transform.right = transform.right;
+
+            // 弹药随机角度
+            missile.transform.Rotate(0, 0, Random.Range(-weaponAngle, weaponAngle));
+
+            // 弹药初速度
+            // missile.body.velocity = body.velocity;
+
+            // 添加入playerObjects
+            missile.transform.parent = gameController.playerObjects.transform;
+
+            // Layer
+            if (gameObject.layer == (int)GameController.Layer.PlayerUnit)
+            {
+                missile.gameObject.layer = (int)GameController.Layer.PlayerMissile;
+            }
+            else if (gameObject.layer == (int)GameController.Layer.EnemyUnit)
+            {
+                missile.gameObject.layer = (int)GameController.Layer.EnemyMissle;
+            }
+
+            // 发射
+            missile.Launch();
+        }
+    }
+
+    // 武器冷却
+    protected virtual void WeaponCoolDown()
+    {
+        if (isAlive && !isSelling && GameController.gamePhase == GameController.GamePhase.Playing)
         {
             weaponCD -= Time.deltaTime;
-
-            if (weaponCD <= 0)
-            {
-                Attack();
-                weaponCD = weaponCDMax;
-            }
         }
     }
 
-    // 攻击
-    protected virtual void Attack()
+    // 近战武器
+    void MeleeWeapon()
     {
-        // 创建弹药
-        Missile missile = (Missile)Instantiate(missilePrefab);
-
-        // 弹药发射点
-        missile.transform.position = transform.position + transform.right * weaponOffset;
-
-        // 弹药朝向
-        missile.transform.right = transform.right;
-
-        // 添加入BattleObjects
-        missile.transform.parent = gameController.battleObjects.transform;
-
-        // Layer
-        missile.gameObject.layer = (int)GameController.Layer.PlayerMissile;
-
-        // 发射
-        missile.Launch();
-    }
-
-    private void OnMouseDown()
-    {
-        if (GameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
+        // 添加近战武器
+        if (isAlive && !isSelling && !haveMeleeWeapon && GameController.gamePhase == GameController.GamePhase.Playing)
         {
-            Buy("Unit");
-            SetLayer(2);
-            if (body != null)
+            // 删除子对象（武器图像）
+            Destroy(transform.GetChild(0).gameObject);
+
+            // 创建武器
+            missile = (Missile)Instantiate(missilePrefab);
+
+            // 武器位置
+            missile.transform.position = transform.position;
+
+            // 武器朝向
+            missile.transform.right = transform.right;
+
+            // 添加入子物体
+            missile.transform.parent = transform.parent;
+
+            // 添加关节
+            FixedJoint2D joint = missile.gameObject.AddComponent<FixedJoint2D>();
+            joint.connectedBody = body;
+            joint.frequency = 100f;
+
+            // Layer
+            if (gameObject.layer == (int)GameController.Layer.PlayerUnit)
             {
-                body.bodyType = RigidbodyType2D.Static;
+                missile.gameObject.layer = (int)GameController.Layer.PlayerMissile;
             }
-        }
-    }
-
-    private void OnMouseDrag()
-    {
-        if (GameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
-        {
-            Drag();
-        }
-    }
-
-    private void OnMouseUp()
-    {
-        if (GameController.gamePhase == GameController.GamePhase.Preparation)
-        {
-            SetLayer(0);
-            if (body != null)
+            else if (gameObject.layer == (int)GameController.Layer.EnemyUnit)
             {
-                body.bodyType = RigidbodyType2D.Dynamic;
+                missile.gameObject.layer = (int)GameController.Layer.EnemyMissle;
             }
+
+            haveMeleeWeapon = true;
+        }
+        // 释放近战武器
+        if (missile != null && !isAlive && !isSelling && haveMeleeWeapon && GameController.gamePhase == GameController.GamePhase.Playing)
+        {
+            // 删除关节
+            Destroy(missile.GetComponent<FixedJoint2D>());
+
+            // 视为远程武器
+            missile.isMelee = false;
+
+            missile = null;
         }
     }
 }

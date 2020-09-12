@@ -23,12 +23,15 @@ public class Missile : MonoBehaviour
     public float durationHit;
 
     // 存活
-    public bool alive;
+    public bool isAlive;
 
     // 粒子预设
     public GameObject particlePrefab;
 
-    protected Rigidbody2D body;
+    // 近战
+    public bool isMelee;
+
+    public Rigidbody2D body;
 
     protected virtual void Start()
     {
@@ -70,7 +73,10 @@ public class Missile : MonoBehaviour
     // 更新飞行时间
     protected void UpdateDuration()
     {
-        duration -= Time.deltaTime;
+        if (!isMelee)
+        {
+            duration -= Time.deltaTime;
+        }
     }
 
     // 死亡检测
@@ -79,11 +85,11 @@ public class Missile : MonoBehaviour
         // 生命值不足0
         if (health <= 0)
         {
-            alive = false;
+            isAlive = false;
         }
 
         // 飞行时间不足0
-        if (duration <= 0)
+        if (!isMelee && duration <= 0)
         {
             Die();
         }
@@ -95,9 +101,10 @@ public class Missile : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // 撞击
     protected virtual void OnCollisionEnter2D(Collision2D other)
     {
-        if (alive)
+        if (isAlive)
         {
             // 击中Ball
             Ball ball = other.gameObject.GetComponent<Ball>();
@@ -112,10 +119,14 @@ public class Missile : MonoBehaviour
             if (block != null)
             {
                 block.health -= damage;
+                block.body.AddForce(transform.right * forceHit);
             }
 
-            duration = durationHit;
-            alive = false;
+            if (!isMelee)
+            {
+                duration = durationHit;
+                isAlive = false;
+            }
         }
     }
 }

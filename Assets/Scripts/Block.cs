@@ -11,7 +11,7 @@ public class Block : Unit
     // 吸附半径与严格吸附半径
     // 拖动Block时，如果与其他Block的吸附点距离较近时，则连接两者，并且调整拖动Block的位置
     public static float adsorptionDistance = 0.3f;
-    public static float adsorptionDistanceStrict = 0.001f;
+    public static float adsorptionDistanceStrict = 0.3f;
 
     // 连接其他Block的方向
     public enum LinkDirection { Right, Up, Left, Down }
@@ -19,10 +19,8 @@ public class Block : Unit
     // 四周连接的其他Block
     public Block[] blocksLinked = new Block[4];
 
-    // 该Block所处的Entity，即该Block的父物体
-    // 功能上，“entity”等效于“(Entity)transform.parent.gameObject”
-    // 修改时，使用SetEntity，将同步修改父物体
-    public Entity entity;
+    // 四周连接的Joint
+    public Joint2D[] joints = new Joint2D[4];
 
     // 提供吸附性，当吸附双方都为false时，不会发生吸附
     public bool absorptionProvision;
@@ -30,22 +28,19 @@ public class Block : Unit
     // 遮罩预设
     public GameObject coverPrefab;
 
+    // 用于检测的临时tag
+    protected int checkTag;
+
+    // 固定的
+    public bool isFixed;
+
+    // 是核心
+    public bool isCore;
+
     // 将GameObject强制类型转换为Block
     public static explicit operator Block(GameObject gameObject)
     {
         return gameObject.GetComponent<Block>();
-    }
-
-    protected override void Start()
-    {
-        base.Start();
-
-        absorptionProvision = true;
-    }
-
-    protected override void Update()
-    {
-        base.Update();
     }
 
     /// <summary>
@@ -53,28 +48,31 @@ public class Block : Unit
     /// </summary>
     /// <param name="block">目标Block</param>
     /// <param name="direction">相对于该Block，目标Block所处的方向</param>
-    public void LinkBlock(Block block, LinkDirection direction)
+    protected void LinkBlock(Block block, LinkDirection direction)
     {
         // 目标Block所处方向的反方向
         LinkDirection directionNegative = (LinkDirection)(((int)direction + 2) % 4);
 
         // 该Block连接目标Block
         blocksLinked[(int)direction] = block;
+        joints[(int)direction] = gameObject.AddComponent<FixedJoint2D>();
+        joints[(int)direction].connectedBody = block.body;
+        // joints[(int)direction].enableCollision = true;
 
         // 目标Block连接该Block
         block.blocksLinked[(int)directionNegative] = (Block)gameObject;
-
-        // 更新所有Block的Entity
-        gameController.UpdateBlockEntity();
+        block.joints[(int)directionNegative] = gameObject.AddComponent<FixedJoint2D>();
+        block.joints[(int)directionNegative].connectedBody = body;
+        // block.joints[(int)directionNegative].enableCollision = true;
     }
 
     /// <summary>
     /// 将该Block与所有连接的Block断开连接
     /// </summary>
-    public void Unlink()
+    protected void Unlink()
     {
         // 已经购买的Block
-        if (tag != "Goods")
+        if (!isSelling)
         {
             // 遍历所有与该Block连接的Block
             for (int directionIndex = 0; directionIndex < 4; directionIndex++)
@@ -85,62 +83,46 @@ public class Block : Unit
                     // 连接的反方向
                     int directionNegativeIndex = (directionIndex + 2) % 4;
 
-                    // 断开连接
+                    // 断开该Block
                     blocksLinked[directionIndex] = null;
+                    if (joints[directionIndex] != null)
+                    {
+                        Destroy(joints[directionIndex]);
+                    }
+
+                    // 断开连接的Block
                     block.blocksLinked[directionNegativeIndex] = null;
+                    if (block.joints[directionNegativeIndex] != null)
+                    {
+                        Destroy(block.joints[directionNegativeIndex]);
+                    }
+
+                    // 更新连接的遮罩
+                    block.UpdateWheelCover();
                 }
             }
-
-            if (isWheel)
-            {
-                UpdateWheelCover();
-            }
-            // 更新所有Block的Entity
-            gameController.UpdateBlockEntity();
+            UpdateWheelCover();
         }
     }
 
     // 死亡
     protected override IEnumerator Die()
     {
-        alive = false;
-
-        // 更新所有Block的Entity
-        gameController.UpdateBlockEntity();
+        // 断开所有连接
+        Unlink();
 
         return base.Die();
     }
 
-    /// <summary>
-    /// 将该Block的Entity修改为目标Entity，同步修改父物体
-    /// </summary>
-    /// <param name="entity">目标Entity</param>
-    public void SetEntity(Entity entity)
-    {
-        if (entity != null)
-        {
-            transform.parent = entity.transform;
-        }
-        else
-        {
-            transform.parent = gameController.battleObjects.transform;
-        }
-        this.entity = entity;
-    }
-
     /*
      * Block吸附的过程为：
-     * 1. 对四个方向进行AdsorptionCheck
-     * 2. 根据方向进行AdsorptionCheckDirection
+     * 1. 进行AdsorptionCheck
+     * 2. AdsorptionCheck中，根据四个方向进行AdsorptionCheckDirection
      * 3. 如果AdsorptionCheckDirection返回值不为null，进行Absorb
      */
 
-    /// <summary>
-    /// 根据吸附方向返回Block的吸附点
-    /// </summary>
-    /// <param name="linkDirection">吸附方向</param>
-    /// <returns>吸附点</returns>
-    public Vector2 AdsorptionPoint(LinkDirection direction)
+    // 根据吸附方向返回Block的吸附点
+    protected Vector2 AdsorptionPoint(LinkDirection direction)
     {
         Vector2 point = transform.position;
         switch (direction)
@@ -161,10 +143,8 @@ public class Block : Unit
         return point;
     }
 
-    /// <summary>
-    /// 吸附检测
-    /// </summary>
-    public void AdsorptionCheck()
+    // 吸附检测
+    protected void AdsorptionCheck()
     {
         // 临时吸附半径
         // 当有一个方向成功吸附后，吸附要求应该变得严格
@@ -183,6 +163,8 @@ public class Block : Unit
             if (block != null)
             {
                 Absorb(block, direction);
+
+                // 吸附要求应该变得严格
                 adsorptionDistanceTemp = adsorptionDistanceStrict;
 
                 // 轮子只能吸附一个方向
@@ -194,13 +176,8 @@ public class Block : Unit
         }
     }
 
-    /// <summary>
-    /// 根据方向检测该Block是否处于其他Block的吸附范围内
-    /// </summary>
-    /// <param name="direction">检测方向</param>
-    /// <param name="checkDistance">检测吸附半径</param>
-    /// <returns>满足吸附检测的Block，如果没有则为null</returns>
-    public Block AdsorptionCheckDirection(LinkDirection direction, float checkDistance)
+    // 根据方向检测该Block是否处于其他Block的吸附范围内
+    protected Block AdsorptionCheckDirection(LinkDirection direction, float checkDistance)
     {
         // 吸附方向，即检测方向的反方向
         LinkDirection directionNegative = (LinkDirection)(((int)direction + 2) % 4);
@@ -217,7 +194,7 @@ public class Block : Unit
             if (absorptionProvision || block.absorptionProvision)
             {
                 // 满足遍历到的Block吸附位置没有被占用
-                if (block.alive && block.tag != "Goods" && block.blocksLinked[(int)directionNegative] == null)
+                if (block.isAlive && !isSelling && block.blocksLinked[(int)directionNegative] == null)
                 {
                     // 如果遍历到的Block是轮子
                     if (block.isWheel)
@@ -295,15 +272,9 @@ public class Block : Unit
         // 连接Block
         LinkBlock(block, direction);
 
-        // 如果有轮子，更新轮子遮罩
-        if (isWheel)
-        {
-            UpdateWheelCover();
-        }
-        if (block.isWheel)
-        {
-            block.UpdateWheelCover();
-        }
+        // 更新轮子遮罩
+        UpdateWheelCover();
+        block.UpdateWheelCover();
 
         // 返回位移
         return endPosition - startPosition;
@@ -312,54 +283,50 @@ public class Block : Unit
     // 更新轮子的遮罩
     private void UpdateWheelCover()
     {
-        // 删除当前遮罩
-        if (transform.childCount > 0)
+        if (isWheel)
         {
-            GameObject cover = transform.GetChild(0).gameObject;
-            Destroy(cover);
-        }
-
-        // 遍历四个方向
-        for (int i = 0; i < 4; i++) 
-        {
-            // 如果有连接的Block，添加遮罩
-            if (blocksLinked[i] != null)
+            // 删除当前遮罩
+            if (transform.childCount > 0)
             {
-                // 创建，旋转遮罩
-                GameObject cover = Instantiate(coverPrefab);
-                cover.name = coverPrefab.name;
-                cover.transform.position = transform.position;
-                cover.transform.Rotate(0, 0, i * 90);
-                cover.transform.parent = transform;
-                break;
+                GameObject cover = transform.GetChild(0).gameObject;
+                Destroy(cover);
+            }
+
+            // 遍历四个方向
+            for (int i = 0; i < 4; i++)
+            {
+                // 如果有连接的Block，添加遮罩
+                if (blocksLinked[i] != null)
+                {
+                    // 创建，旋转遮罩
+                    GameObject cover = Instantiate(coverPrefab);
+                    cover.name = coverPrefab.name;
+                    cover.transform.position = transform.position;
+                    cover.transform.Rotate(0, 0, i * 90);
+                    cover.transform.parent = transform;
+                    break;
+                }
             }
         }
     }
 
-    private void OnMouseDown()
+    // 购买后锁定旋转
+    protected override void FreezeRotation()
     {
-        if (clickable && GameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
-        {
-            Buy("Block");
-            Unlink();
-            SetLayer(2);
-        }
+        body.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
-    private void OnMouseDrag()
+    protected override void OnMouseDown()
     {
-        if (clickable && GameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
-        {
-            Drag();
-        }
+        base.OnMouseDown();
+
+        Unlink();
     }
 
-    private void OnMouseUp()
+    protected override void OnMouseUp()
     {
-        if (clickable && GameController.gamePhase == GameController.GamePhase.Preparation)
-        {
-            AdsorptionCheck();
-            SetLayer(0);
-        }
+        base.OnMouseUp();
+
+        AdsorptionCheck();
     }
 }

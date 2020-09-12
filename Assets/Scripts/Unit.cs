@@ -8,10 +8,10 @@ public class Unit : MonoBehaviour
     public int health;
 
     // 是否存活
-    public bool alive;
+    public bool isAlive;
 
     // 死亡持续时间
-    protected float deathDuration;
+    protected float deathDuration = 3f;
 
     // 价格
     public int price;
@@ -28,6 +28,24 @@ public class Unit : MonoBehaviour
     // 是轮子
     public bool isWheel;
 
+    // 正在出售
+    public bool isSelling;
+
+    // 所属玩家
+    public int player;
+
+    // 作为目标时的优先级
+    public int priority;
+
+    // 半径
+    protected float radius = 0.3f;
+
+    // 地面检测射线起始点在底部的向下偏移
+    protected float groundCheckOffset = 0.01f;
+
+    // 地面检测射线长度
+    protected float groundCheckDistance = 0.01f;
+
     public Rigidbody2D body;
     protected GameController gameController;
 
@@ -41,9 +59,6 @@ public class Unit : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
-
-        deathDuration = 3f;
-        isWheel = false;
     }
 
     protected virtual void Update()
@@ -63,7 +78,7 @@ public class Unit : MonoBehaviour
     // 死亡检测
     protected void DeathCheck()
     {
-        if (alive)
+        if (isAlive)
         {
             // 生命值为0或以下
             if (health <= 0)
@@ -77,8 +92,13 @@ public class Unit : MonoBehaviour
     protected virtual IEnumerator Die()
     {
         // 开始死亡效果
-        alive = false;
+        isAlive = false;
         Destroy(gameObject.GetComponent<Collider2D>());
+
+        if (body != null)
+        {
+            body.constraints = RigidbodyConstraints2D.None;
+        }
 
         // 等待死亡持续时间
         yield return new WaitForSeconds(deathDuration);
@@ -88,33 +108,111 @@ public class Unit : MonoBehaviour
     }
 
     /// <summary>
-    /// 购买并赋予tag
+    /// 购买
     /// </summary>
-    public virtual void Buy(string tag)
+    public virtual void Buy()
     {
         // 可以购买
-        if (this.tag == "Goods")
+        if (isSelling)
         {
             // 可以重复购买
             if (rebuyable)
             {
                 // 在同一位置创建相同的商品
                 Unit unit = (Unit)gameController.Create(transform.position, prefab);
-                unit.tag = "Goods";
-                unit.clickable = true;
-                unit.alive = true;
                 unit.transform.parent = transform.parent;
                 unit.gameObject.layer = (int)GameController.Layer.Goods;
             }
-            this.tag = tag;
-            transform.parent = gameController.battleObjects.transform;
+            isSelling = false;
+            player = 1;
+            transform.parent = gameController.playerObjects.transform;
             gameObject.layer = (int)GameController.Layer.PlayerUnit;
+
+            // 添加Rigidbody
+            body = gameObject.AddComponent<Rigidbody2D>();
+            body.useAutoMass = true;
+            FreezeRotation();
         }
+    }
+
+    // 购买后锁定旋转
+    protected virtual void FreezeRotation()
+    {
+        body.constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
+
+    // 是否在地面上
+    public bool IsGrounded()
+    {
+        // 射线起始点
+        Vector2 origin = (Vector2)transform.position + Vector2.down * (radius + groundCheckOffset);
+
+        // 向下发射射线
+        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, groundCheckDistance);
+
+        // 如果射线触碰到物体
+        if (hit.transform != null)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    // 是否在地面上，out为下方的Block
+    public bool IsGrounded(out Block block)
+    {
+        // 射线起始点
+        Vector2 origin = (Vector2)transform.position + Vector2.down * (radius + groundCheckOffset);
+
+        // 向下发射射线
+        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, groundCheckDistance);
+
+        // 如果射线触碰到物体
+        if (hit.transform != null)
+        {
+            block = (Block)hit.transform.gameObject;
+            return true;
+        }
+        block = null;
+        return false;
     }
 
     // 拖动
     protected void Drag()
     {
         transform.position += (Vector3)MouseController.offset;
+    }
+
+    protected virtual void OnMouseDown()
+    {
+        if (clickable && GameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
+        {
+            Buy();
+            SetLayer(2);
+            if (body != null)
+            {
+                body.bodyType = RigidbodyType2D.Static;
+            }
+        }
+    }
+
+    protected virtual void OnMouseDrag()
+    {
+        if (clickable && GameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
+        {
+            Drag();
+        }
+    }
+
+    protected virtual void OnMouseUp()
+    {
+        if (clickable && GameController.gamePhase == GameController.GamePhase.Preparation)
+        {
+            SetLayer(0);
+            if (body != null)
+            {
+                body.bodyType = RigidbodyType2D.Dynamic;
+            }
+        }
     }
 }
