@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockGrey : Block
+public class WheelBrown : Wheel
 {
     protected override void Start()
     {

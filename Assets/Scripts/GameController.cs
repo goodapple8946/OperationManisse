@@ -4,15 +4,27 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    public GameObject battleObjectsPrefab;
     public GameObject entityPrefab;
     public GameObject blockGreyPrefab;
+    public GameObject ballBluePrefab;
+    public GameObject corePrefab;
 
+    public GameObject battleObjects;
+
+    private CameraController cameraController;
+
+    public enum Layer { Default, TransparentFX, IgnoreRaycast, Water = 4, UI, PlayerUnit = 8, PlayerMissile, EnemyUnit, EnemyMissle, Entity, Goods }
     public enum GamePhase { Menu, Preparation, Playing, Victory, Defeat, Pause }
 
     public static GamePhase gamePhase;
 
+    // 商店初始位置
+    private Vector2 shopOriginPosition = new Vector2(-5.02f, 20.8f);
+
     void Start()
     {
+        cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
         gamePhase = GamePhase.Preparation;
     }
 
@@ -23,27 +35,29 @@ public class GameController : MonoBehaviour
     }
 
     /// <summary>
-    /// 根据位置及预设类型创建Block
+    /// 根据位置及预设类型创建物体（Unit）
     /// </summary>
     /// <param name="position">位置</param>
-    /// <param name="blockPrefab">Block预设</param>
-    /// <returns>创建的Block</returns>
-    public Block CreateBlock(Vector2 position, GameObject blockPrefab)
+    /// <param name="blockPrefab">预设</param>
+    /// <returns>创建的物体</returns>
+    public GameObject Create(Vector2 position, GameObject prefab)
     {
-        // 创建Block实例
-        Block block = (Block)Instantiate(blockPrefab);
+        // 创建实例
+        GameObject gameObject = Instantiate(prefab);
 
-        // 设置Block名称
-        block.name = blockPrefab.name + Block.count;
-        Block.count++;
+        // 设置名称
+        gameObject.name = prefab.name;
 
-        // 移动Block位置
-        block.transform.position = position;
+        // 移动位置
+        gameObject.transform.position = position;
 
-        // 创建Block的Entity
-        block.SetEntity(CreateEntity());
+        // 添加入battleObjects
+        gameObject.transform.parent = battleObjects.transform;
 
-        return block;
+        // Layer
+        gameObject.layer = (int)Layer.PlayerUnit;
+
+        return gameObject;
     }
 
     /// <summary>
@@ -55,13 +69,12 @@ public class GameController : MonoBehaviour
         // 创建Entity实例
         Entity entity = (Entity)Instantiate(entityPrefab);
 
-        // 设置Entity名称
-        entity.name = entityPrefab.name + Entity.count;
-        Entity.count++;
+        entity.name = entityPrefab.name;
+        entity.transform.parent = battleObjects.transform;
 
         return entity;
     }
-    
+
     /// <summary>
     /// 更新所有Block的Entity
     /// </summary>
@@ -75,9 +88,10 @@ public class GameController : MonoBehaviour
         {
             Block block = (Block)gameObject;
 
-            if (block.alive && block.entity == null)
+            if (block.alive && block.tag != "Goods" && block.entity == null)
             {
                 Entity entity = CreateEntity();
+                entity.transform.position = block.transform.position;
 
                 // 设置所有与该Block连接的Block的Entity
                 SetBlockLinkedEntity(block, entity);
@@ -117,19 +131,7 @@ public class GameController : MonoBehaviour
         foreach (GameObject gameObject in gameObjects)
         {
             Block block = (Block)gameObject;
-            block.entity = null;
-        }
-    }
-    
-    /// <summary>
-    /// 清除所有Block及Entity
-    /// </summary>
-    public void Clear()
-    {
-        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Entity");
-        foreach (GameObject gameObject in gameObjects)
-        {
-            Destroy(gameObject);
+            block.SetEntity(null);
         }
     }
 
@@ -150,33 +152,81 @@ public class GameController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 清除并重建BattleObjects
+    /// </summary>
+    public void ClearBattleObjects()
+    {
+        Destroy(battleObjects);
+        battleObjects = Instantiate(battleObjectsPrefab);
+        battleObjects.name = battleObjectsPrefab.name;
+    }
+
+    // 获得或失去Rigidbody
+    private void SetRigidbody(GameObject gameObject, bool getRigidbody)
+    {
+        if (getRigidbody)
+        {
+            Rigidbody2D body = gameObject.GetComponent<Rigidbody2D>();
+            if (body == null)
+            {
+                body = gameObject.AddComponent<Rigidbody2D>();
+                body.useAutoMass = true;
+            }
+            body.bodyType = RigidbodyType2D.Dynamic;
+        }
+        else
+        {
+            Rigidbody2D body = gameObject.GetComponent<Rigidbody2D>();
+            if (body != null)
+            {
+                Destroy(body);
+            }
+        }
+    }
+
     // Entity整体移动控制
     private void AltEntityMove()
     {
         if (gamePhase == GamePhase.Preparation)
         {
-            // 按下Alt，开启Entity整体移动
-            if (Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt))
+            // 按下Alt，关闭Entity整体移动
+            if (Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt))
             {
-                GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Entity");
+                GameObject[] gameObjects;
+
+                // Entity失去Rigidbody
+                gameObjects = GameObject.FindGameObjectsWithTag("Entity");
                 foreach (GameObject gameObject in gameObjects)
                 {
-                    Rigidbody2D body = gameObject.AddComponent<Rigidbody2D>();
-                    body.bodyType = RigidbodyType2D.Static;
+                    SetRigidbody(gameObject, false);
+                }
+
+                // Block获得Rigidbody
+                gameObjects = GameObject.FindGameObjectsWithTag("Block");
+                foreach (GameObject gameObject in gameObjects)
+                {
+                    SetRigidbody(gameObject, true);
                 }
             }
 
-            // 抬起Alt，关闭Entity整体移动
-            if (Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt))
+            // 抬起Alt，开启Entity整体移动
+            if (Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt))
             {
-                GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Entity");
+                GameObject[] gameObjects;
+
+                // Entity获得Rigidbody
+                gameObjects = GameObject.FindGameObjectsWithTag("Entity");
                 foreach (GameObject gameObject in gameObjects)
                 {
-                    Rigidbody2D body = gameObject.GetComponent<Rigidbody2D>();
-                    if (body != null)
-                    {
-                        Destroy(body);
-                    }
+                    SetRigidbody(gameObject, false);
+                }
+
+                // Block失去Rigidbody
+                gameObjects = GameObject.FindGameObjectsWithTag("Block");
+                foreach (GameObject gameObject in gameObjects)
+                {
+                    SetRigidbody(gameObject, true);
                 }
             }
         }
@@ -185,29 +235,40 @@ public class GameController : MonoBehaviour
     // 开始或重新开始游戏
     private void SpaceStart()
     {
+        GameObject[] gameObjects;
+
         // 开始游戏
         if (gamePhase == GamePhase.Preparation && Input.GetKeyDown(KeyCode.Space))
         {
             gamePhase = GamePhase.Playing;
 
             // Entity获得Rigidbody，类型为Dynamic
-            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Entity");
+            gameObjects = GameObject.FindGameObjectsWithTag("Entity");
             foreach (GameObject gameObject in gameObjects)
             {
-                Rigidbody2D body = gameObject.GetComponent<Rigidbody2D>();
-                if (body == null)
+                Entity entity = (Entity)gameObject;
+                if (entity.body == null)
                 {
-                    body = gameObject.AddComponent<Rigidbody2D>();
+                    entity.body = entity.gameObject.AddComponent<Rigidbody2D>();
                 }
-                body.bodyType = RigidbodyType2D.Dynamic;
+                entity.body.bodyType = RigidbodyType2D.Dynamic;
+                entity.body.useAutoMass = true;
             }
         }
-        // 重新开始游戏
+        // 回到准备阶段
         else if (gamePhase == GamePhase.Playing && Input.GetKeyDown(KeyCode.Space))
         {
             gamePhase = GamePhase.Preparation;
 
-            Clear();
+            // 清除放置的物体
+            ClearBattleObjects();
+
+            // 创建Core
+            Core core = (Core)Create(Vector2.zero, corePrefab);
+            core.Init();
+
+            cameraController.Init();
+            cameraController.core = core;
         }
     }
 }

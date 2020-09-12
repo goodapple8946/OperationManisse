@@ -5,19 +5,13 @@ using UnityEngine;
 
 public class Block : Unit
 {
-    private GameController gameController;
-
-    public static int count = 0;
-
     // Block的尺寸
     private float size = 0.6f;
 
-    // 吸附半径
+    // 吸附半径与严格吸附半径
     // 拖动Block时，如果与其他Block的吸附点距离较近时，则连接两者，并且调整拖动Block的位置
-    private float adsorptionDistance = 0.3f;
-
-    // 可吸附的
-    protected bool absorbable = true;
+    public static float adsorptionDistance = 0.3f;
+    public static float adsorptionDistanceStrict = 0.001f;
 
     // 连接其他Block的方向
     public enum LinkDirection { Right, Up, Left, Down }
@@ -27,9 +21,14 @@ public class Block : Unit
 
     // 该Block所处的Entity，即该Block的父物体
     // 功能上，“entity”等效于“(Entity)transform.parent.gameObject”
-    // 不能为null
     // 修改时，使用SetEntity，将同步修改父物体
     public Entity entity;
+
+    // 提供吸附性，当吸附双方都为false时，不会发生吸附
+    public bool absorptionProvision;
+
+    // 遮罩预设
+    public GameObject coverPrefab;
 
     // 将GameObject强制类型转换为Block
     public static explicit operator Block(GameObject gameObject)
@@ -39,11 +38,9 @@ public class Block : Unit
 
     protected override void Start()
     {
-        gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
-
         base.Start();
 
-        health = 10;
+        absorptionProvision = true;
     }
 
     protected override void Update()
@@ -76,23 +73,31 @@ public class Block : Unit
     /// </summary>
     public void Unlink()
     {
-        // 遍历所有与该Block连接的Block
-        for (int directionIndex = 0; directionIndex < 4; directionIndex++)
+        // 已经购买的Block
+        if (tag != "Goods")
         {
-            Block block = blocksLinked[directionIndex];
-            if (block != null)
+            // 遍历所有与该Block连接的Block
+            for (int directionIndex = 0; directionIndex < 4; directionIndex++)
             {
-                // 连接的反方向
-                int directionNegativeIndex = (directionIndex + 2) % 4;
+                Block block = blocksLinked[directionIndex];
+                if (block != null)
+                {
+                    // 连接的反方向
+                    int directionNegativeIndex = (directionIndex + 2) % 4;
 
-                // 断开连接
-                blocksLinked[directionIndex] = null;
-                block.blocksLinked[directionNegativeIndex] = null;
+                    // 断开连接
+                    blocksLinked[directionIndex] = null;
+                    block.blocksLinked[directionNegativeIndex] = null;
+                }
             }
-        }
 
-        // 更新所有Block的Entity
-        gameController.UpdateBlockEntity();
+            if (isWheel)
+            {
+                UpdateWheelCover();
+            }
+            // 更新所有Block的Entity
+            gameController.UpdateBlockEntity();
+        }
     }
 
     // 死亡
@@ -116,13 +121,18 @@ public class Block : Unit
         {
             transform.parent = entity.transform;
         }
+        else
+        {
+            transform.parent = gameController.battleObjects.transform;
+        }
         this.entity = entity;
     }
 
     /*
      * Block吸附的过程为：
-     * 1. 拖动Block时，对四个方向进行AdsorptionCheck
-     * 2. 松开Block时，如果AdsorptionCheck返回值不为null，进行Absorb
+     * 1. 对四个方向进行AdsorptionCheck
+     * 2. 根据方向进行AdsorptionCheckDirection
+     * 3. 如果AdsorptionCheckDirection返回值不为null，进行Absorb
      */
 
     /// <summary>
@@ -151,15 +161,46 @@ public class Block : Unit
         return point;
     }
 
+    /// <summary>
+    /// 吸附检测
+    /// </summary>
+    public void AdsorptionCheck()
+    {
+        // 临时吸附半径
+        // 当有一个方向成功吸附后，吸附要求应该变得严格
+        float adsorptionDistanceTemp = adsorptionDistance;
 
+        // 遍历四个检测方向
+        for (int i = 0; i < 4; i++)
+        {
+            // 检测方向
+            LinkDirection direction = (LinkDirection)i;
+
+            // 吸附检测
+            Block block = AdsorptionCheckDirection(direction, adsorptionDistanceTemp);
+
+            // 吸附并连接
+            if (block != null)
+            {
+                Absorb(block, direction);
+                adsorptionDistanceTemp = adsorptionDistanceStrict;
+
+                // 轮子只能吸附一个方向
+                if (isWheel)
+                {
+                    break;
+                }
+            }
+        }
+    }
 
     /// <summary>
-    /// 检测所有Block的吸附点
+    /// 根据方向检测该Block是否处于其他Block的吸附范围内
     /// </summary>
     /// <param name="direction">检测方向</param>
     /// <param name="checkDistance">检测吸附半径</param>
     /// <returns>满足吸附检测的Block，如果没有则为null</returns>
-    public Block AdsorptionCheck(LinkDirection direction, float checkDistance)
+    public Block AdsorptionCheckDirection(LinkDirection direction, float checkDistance)
     {
         // 吸附方向，即检测方向的反方向
         LinkDirection directionNegative = (LinkDirection)(((int)direction + 2) % 4);
@@ -172,20 +213,43 @@ public class Block : Unit
         {
             Block block = (Block)gameObject;
 
-            // 满足遍历到的Block吸附位置没有被占用
-            if (block.blocksLinked[(int)directionNegative] == null)
+            // 满足至少有一方提供吸附性
+            if (absorptionProvision || block.absorptionProvision)
             {
-                // 遍历到的Block吸附点
-                Vector2 adsorptionPoint = block.AdsorptionPoint(directionNegative);
-
-                // 该Block与吸附点的距离
-                float distance = ((Vector2)transform.position - adsorptionPoint).magnitude;
-
-                // 满足吸附距离
-                if (distance <= checkDistance)
+                // 满足遍历到的Block吸附位置没有被占用
+                if (block.alive && block.tag != "Goods" && block.blocksLinked[(int)directionNegative] == null)
                 {
-                    // 返回满足的Block
-                    return block;
+                    // 如果遍历到的Block是轮子
+                    if (block.isWheel)
+                    {
+                        // 要保证这个轮子没有连接任何Block
+                        bool cleanWheel = true;
+                        foreach (Block checkBlock in block.blocksLinked)
+                        {
+                            if (checkBlock != null)
+                            {
+                                cleanWheel = false;
+                                break;
+                            }
+                        }
+                        // 这个轮子已经有连接的Block了，跳过
+                        if (!cleanWheel)
+                        {
+                            continue;
+                        }
+                    }
+                    // 遍历到的Block吸附点
+                    Vector2 adsorptionPoint = block.AdsorptionPoint(directionNegative);
+
+                    // 该Block与吸附点的距离
+                    float distance = ((Vector2)transform.position - adsorptionPoint).magnitude;
+
+                    // 满足吸附距离
+                    if (distance <= checkDistance)
+                    {
+                        // 返回满足的Block
+                        return block;
+                    }
                 }
             }
         }
@@ -197,52 +261,94 @@ public class Block : Unit
     /// </summary>
     /// <param name="block">目标Block</param>
     /// <param name="direction">检测方向</param>
-    public void Absorb(Block block, LinkDirection direction)
+    /// <returns>吸附时经过的位移</returns>
+    public Vector2 Absorb(Block block, LinkDirection direction)
     {
         // 吸附方向，即检测方向的反方向
         LinkDirection directionNegative = (LinkDirection)(((int)direction + 2) % 4);
 
-        Vector2 position = block.transform.position;
+        // 该Block的起始位置
+        Vector2 startPosition = transform.position;
+
+        // 该Block的目标位置
+        Vector2 endPosition = block.transform.position;
+
         switch (directionNegative)
         {
             case LinkDirection.Right:
-                position += Vector2.right * size;
+                endPosition += Vector2.right * size;
                 break;
             case LinkDirection.Up:
-                position += Vector2.up * size;
+                endPosition += Vector2.up * size;
                 break;
             case LinkDirection.Left:
-                position += Vector2.left * size;
+                endPosition += Vector2.left * size;
                 break;
             case LinkDirection.Down:
-                position += Vector2.down * size;
+                endPosition += Vector2.down * size;
                 break;
         }
 
         // 调整该Block位置
-        transform.position = position;
+        transform.position = endPosition;
 
         // 连接Block
         LinkBlock(block, direction);
+
+        // 如果有轮子，更新轮子遮罩
+        if (isWheel)
+        {
+            UpdateWheelCover();
+        }
+        if (block.isWheel)
+        {
+            block.UpdateWheelCover();
+        }
+
+        // 返回位移
+        return endPosition - startPosition;
     }
 
-    // 拖动
-    private void Drag()
+    // 更新轮子的遮罩
+    private void UpdateWheelCover()
     {
-        transform.position += (Vector3)MouseController.offset;
+        // 删除当前遮罩
+        if (transform.childCount > 0)
+        {
+            GameObject cover = transform.GetChild(0).gameObject;
+            Destroy(cover);
+        }
+
+        // 遍历四个方向
+        for (int i = 0; i < 4; i++) 
+        {
+            // 如果有连接的Block，添加遮罩
+            if (blocksLinked[i] != null)
+            {
+                // 创建，旋转遮罩
+                GameObject cover = Instantiate(coverPrefab);
+                cover.name = coverPrefab.name;
+                cover.transform.position = transform.position;
+                cover.transform.Rotate(0, 0, i * 90);
+                cover.transform.parent = transform;
+                break;
+            }
+        }
     }
 
     private void OnMouseDown()
     {
-        if (GameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
+        if (clickable && GameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
         {
+            Buy("Block");
             Unlink();
+            SetLayer(2);
         }
     }
 
     private void OnMouseDrag()
     {
-        if (GameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
+        if (clickable && GameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
         {
             Drag();
         }
@@ -250,28 +356,10 @@ public class Block : Unit
 
     private void OnMouseUp()
     {
-        if (GameController.gamePhase == GameController.GamePhase.Preparation)
+        if (clickable && GameController.gamePhase == GameController.GamePhase.Preparation)
         {
-            // 临时吸附半径
-            // 当有一个方向成功吸附后，吸附要求应该变得严格，即吸附半径变为0
-            float adsorptionDistanceTemp = adsorptionDistance;
-
-            // 遍历四个检测方向
-            for (int i = 0; i < 4; i++)
-            {
-                // 检测方向
-                LinkDirection direction = (LinkDirection)i;
-
-                // 吸附检测
-                Block block = AdsorptionCheck(direction, adsorptionDistanceTemp);
-
-                // 吸附并连接
-                if (block != null)
-                {
-                    Absorb(block, direction);
-                    adsorptionDistanceTemp = 0;
-                }
-            }
+            AdsorptionCheck();
+            SetLayer(0);
         }
     }
 }

@@ -6,6 +6,11 @@ TagManager:
   tags:
   - Block
   - Entity
+  - Unit
+  - Goods
+  - Ball
+  - Shop
+  - Missile
   layers:
   - Default
   - TransparentFX
@@ -15,12 +20,12 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - PlayerUnit
+  - PlayerMissile
+  - EnemyUnit
+  - EnemyMissile
+  - Entity
+  - Goods
   - 
   - 
   - 

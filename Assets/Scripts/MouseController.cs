@@ -39,12 +39,6 @@ public class MouseController : MonoBehaviour
         {
 
         }
-
-        // 鼠标右键按下
-        if (Input.GetMouseButtonDown(1))
-        {
-            gameController.CreateBlock(MouseWorldPosition(), gameController.blockGreyPrefab);
-        }
     }
 
     // 鼠标的世界位置

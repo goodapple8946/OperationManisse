@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockGrey : Block
+public class BallCrossbow : Ball
 {
     protected override void Start()
     {
