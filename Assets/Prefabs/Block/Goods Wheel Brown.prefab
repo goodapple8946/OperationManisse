@@ -122,7 +122,7 @@ MonoBehaviour:
     type: 3}
   isFixed: 0
   isCore: 0
-  force: 2
+  force: 3
   speedMax: 2
 --- !u!58 &-6302405524492546453
 CircleCollider2D:

@@ -324,13 +324,19 @@ public class Block : Unit
     {
         base.OnMouseDown();
 
-        Unlink();
+        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
+        {
+            Unlink();
+        }
     }
 
     protected override void OnMouseUp()
     {
         base.OnMouseUp();
 
-        AdsorptionCheck();
+        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation)
+        {
+            AdsorptionCheck();
+        }
     }
 }
