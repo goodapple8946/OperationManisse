@@ -144,7 +144,7 @@ public class Block : Unit
     }
 
     // 吸附检测
-    protected void AdsorptionCheck()
+    public void AdsorptionCheck()
     {
         // 临时吸附半径
         // 当有一个方向成功吸附后，吸附要求应该变得严格
@@ -190,43 +190,47 @@ public class Block : Unit
         {
             Block block = (Block)gameObject;
 
-            // 满足至少有一方提供吸附性
-            if (absorptionProvision || block.absorptionProvision)
-            {
+            if (
+                // 所属同一名玩家
+                player == block.player &&
+                // 满足至少有一方提供吸附性
+                (absorptionProvision || block.absorptionProvision) &&
+                // 存活且非卖品
+                block.isAlive && !isSelling &&
                 // 满足遍历到的Block吸附位置没有被占用
-                if (block.isAlive && !isSelling && block.blocksLinked[(int)directionNegative] == null)
+                block.blocksLinked[(int)directionNegative] == null
+                )
+            {
+                // 如果遍历到的Block是轮子
+                if (block.isWheel)
                 {
-                    // 如果遍历到的Block是轮子
-                    if (block.isWheel)
+                    // 要保证这个轮子没有连接任何Block
+                    bool cleanWheel = true;
+                    foreach (Block checkBlock in block.blocksLinked)
                     {
-                        // 要保证这个轮子没有连接任何Block
-                        bool cleanWheel = true;
-                        foreach (Block checkBlock in block.blocksLinked)
+                        if (checkBlock != null)
                         {
-                            if (checkBlock != null)
-                            {
-                                cleanWheel = false;
-                                break;
-                            }
-                        }
-                        // 这个轮子已经有连接的Block了，跳过
-                        if (!cleanWheel)
-                        {
-                            continue;
+                            cleanWheel = false;
+                            break;
                         }
                     }
-                    // 遍历到的Block吸附点
-                    Vector2 adsorptionPoint = block.AdsorptionPoint(directionNegative);
-
-                    // 该Block与吸附点的距离
-                    float distance = ((Vector2)transform.position - adsorptionPoint).magnitude;
-
-                    // 满足吸附距离
-                    if (distance <= checkDistance)
+                    // 这个轮子已经有连接的Block了，跳过
+                    if (!cleanWheel)
                     {
-                        // 返回满足的Block
-                        return block;
+                        continue;
                     }
+                }
+                // 遍历到的Block吸附点
+                Vector2 adsorptionPoint = block.AdsorptionPoint(directionNegative);
+
+                // 该Block与吸附点的距离
+                float distance = ((Vector2)transform.position - adsorptionPoint).magnitude;
+
+                // 满足吸附距离
+                if (distance <= checkDistance)
+                {
+                    // 返回满足的Block
+                    return block;
                 }
             }
         }

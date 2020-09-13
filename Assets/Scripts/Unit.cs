@@ -31,6 +31,9 @@ public class Unit : MonoBehaviour
     // 正在出售
     public bool isSelling;
 
+    // 可以出售
+    public bool isSellable;
+
     // 所属玩家
     public int player;
 
@@ -44,7 +47,10 @@ public class Unit : MonoBehaviour
     protected float groundCheckOffset = 0.01f;
 
     // 地面检测射线长度
-    protected float groundCheckDistance = 0.01f;
+    protected float groundCheckDistance = 0.05f;
+
+    // 死亡时的效果力矩
+    protected float torqueDeath = 1000f;
 
     public Rigidbody2D body;
     protected GameController gameController;
@@ -63,6 +69,7 @@ public class Unit : MonoBehaviour
 
     protected virtual void Update()
     {
+        BoundCheckPreparation();
         DeathCheck();
     }
 
@@ -98,6 +105,16 @@ public class Unit : MonoBehaviour
         if (body != null)
         {
             body.constraints = RigidbodyConstraints2D.None;
+
+            // 受力矩旋转
+            if (player == 1)
+            {
+                body.AddTorque(torqueDeath);
+            }
+            else
+            {
+                body.AddTorque(-torqueDeath);
+            }
         }
 
         // 等待死亡持续时间
@@ -107,31 +124,40 @@ public class Unit : MonoBehaviour
         Destroy(gameObject);
     }
 
-    /// <summary>
-    /// 购买
-    /// </summary>
+    // 购买
     public virtual void Buy()
     {
         // 可以购买
         if (isSelling)
         {
-            // 可以重复购买
-            if (rebuyable)
+            // 钱足够
+            if (gameController.playerMoney >= price)
             {
-                // 在同一位置创建相同的商品
-                Unit unit = (Unit)gameController.Create(transform.position, prefab);
-                unit.transform.parent = transform.parent;
-                unit.gameObject.layer = (int)GameController.Layer.Goods;
-            }
-            isSelling = false;
-            player = 1;
-            transform.parent = gameController.playerObjects.transform;
-            gameObject.layer = (int)GameController.Layer.PlayerUnit;
+                // 可以重复购买
+                if (rebuyable)
+                {
+                    // 在同一位置创建相同的商品
+                    Unit unit = (Unit)gameController.Create(transform.position, prefab);
+                    unit.transform.parent = transform.parent;
+                    unit.gameObject.layer = (int)GameController.Layer.Goods;
+                }
+                isSelling = false;
+                player = 1;
+                transform.parent = gameController.playerObjects.transform;
+                gameObject.layer = (int)GameController.Layer.PlayerUnit;
 
-            // 添加Rigidbody
-            body = gameObject.AddComponent<Rigidbody2D>();
-            body.useAutoMass = true;
-            FreezeRotation();
+                // 添加Rigidbody
+                body = gameObject.AddComponent<Rigidbody2D>();
+                body.useAutoMass = true;
+                FreezeRotation();
+
+                gameController.playerMoney -= price;
+            }
+            // 钱不够
+            else
+            {
+                StartCoroutine(gameController.MoneyNotEnough());
+            }
         }
     }
 
@@ -139,6 +165,17 @@ public class Unit : MonoBehaviour
     protected virtual void FreezeRotation()
     {
         body.constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
+
+    // 出售
+    public virtual void Sell()
+    {
+        // 可以出售
+        if (!isSelling && isSellable)
+        {
+            gameController.playerMoney += price;
+            Destroy(gameObject);
+        }
     }
 
     // 是否在地面上
@@ -180,12 +217,42 @@ public class Unit : MonoBehaviour
     // 拖动
     protected void Drag()
     {
-        transform.position += (Vector3)MouseController.offset;
+        if (isAlive && !isSelling)
+        {
+            transform.position += (Vector3)MouseController.offset;
+        }
+    }
+
+    // 准备阶段边界检测
+    protected void BoundCheckPreparation()
+    {
+        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation)
+        {
+            // 超过边界
+            if (transform.position.x >= gameController.boundRightPreparation)
+            {
+                SetLayer(0);
+                clickable = false;
+                if (body != null)
+                {
+                    body.bodyType = RigidbodyType2D.Dynamic;
+                    body.velocity = new Vector2(-4f, 3f);
+                }
+                StartCoroutine(ResetClickable());
+            }
+        }
+    }
+
+    // 恢复Clickable
+    protected IEnumerator ResetClickable()
+    {
+        yield return new WaitForSeconds(0.5f);
+        clickable = true;
     }
 
     protected virtual void OnMouseDown()
     {
-        if (clickable && GameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
+        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
         {
             Buy();
             SetLayer(2);
@@ -196,9 +263,18 @@ public class Unit : MonoBehaviour
         }
     }
 
+    protected virtual void OnMouseOver()
+    {
+        // 鼠标右键按下
+        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(1))
+        {
+            Sell();
+        }
+    }
+
     protected virtual void OnMouseDrag()
     {
-        if (clickable && GameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
+        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
         {
             Drag();
         }
@@ -206,7 +282,7 @@ public class Unit : MonoBehaviour
 
     protected virtual void OnMouseUp()
     {
-        if (clickable && GameController.gamePhase == GameController.GamePhase.Preparation)
+        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation)
         {
             SetLayer(0);
             if (body != null)

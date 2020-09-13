@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1869127999241510995}
   - component: {fileID: -8011132415020571961}
   m_Layer: 13
-  m_Name: Block Grey
+  m_Name: Goods Block Grey
   m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,6 +129,7 @@ MonoBehaviour:
   clickable: 1
   isWheel: 0
   isSelling: 1
+  isSellable: 1
   player: 0
   priority: 0
   body: {fileID: 0}

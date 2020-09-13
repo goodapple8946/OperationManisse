@@ -20,15 +20,19 @@ public class Wheel : Block
     protected void Run()
     {
         Block block;
-        if (isAlive && !isSelling && GameController.gamePhase == GameController.GamePhase.Playing && IsGrounded(out block))
+        if (isAlive && !isSelling && gameController.gamePhase == GameController.GamePhase.Playing)
         {
-            // 轮子受力
-            body.AddForce(new Vector2(force, 0));
-
-            // 轮子下方Block受力
-            if (block != null)
+            // 轮子下方有物体，未超过最大速度
+            if (IsGrounded(out block) && body.velocity.x <= speedMax)
             {
-                block.body.AddForce(new Vector2(-force, 0));
+                // 轮子受力
+                body.AddForce(new Vector2(force, 0));
+
+                // 轮子下方Block受力
+                if (block != null)
+                {
+                    block.body.AddForce(new Vector2(-force, 0));
+                }
             }
         }
     }

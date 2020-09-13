@@ -37,6 +37,9 @@ public class Ball : Unit
     // 发射物
     private Missile missile;
 
+    // 当前目标
+    protected Unit target;
+
     // 将GameObject强制类型转换为Ball
     public static explicit operator Ball(GameObject gameObject)
     {
@@ -69,37 +72,42 @@ public class Ball : Unit
     // 索敌
     protected virtual void FindEnemy()
     {
-        if (isAlive && !isSelling && GameController.gamePhase == GameController.GamePhase.Playing)
+        if (isAlive && !isSelling && gameController.gamePhase == GameController.GamePhase.Playing)
         {
-            ArrayList gameObjects = new ArrayList();
-            gameObjects.AddRange(GameObject.FindGameObjectsWithTag("Ball"));
-            gameObjects.AddRange(GameObject.FindGameObjectsWithTag("Block"));
-
-            Unit target = null;
-            float priorityTarget = 0;
-
-            foreach (GameObject gameObject in gameObjects)
+            // 如果当前没有目标，或者当前目标太远，寻找敌人
+            if (target == null || !target.isAlive || (target.transform.position - transform.position).magnitude > weaponRange)
             {
-                Unit unit = (Unit)gameObject;
+                target = null;
 
-                // 目标合法
-                if (unit.isAlive && !unit.isSelling)
+                ArrayList gameObjects = new ArrayList();
+                gameObjects.AddRange(GameObject.FindGameObjectsWithTag("Ball"));
+                gameObjects.AddRange(GameObject.FindGameObjectsWithTag("Block"));
+
+                float priorityTarget = 0;
+
+                foreach (GameObject gameObject in gameObjects)
                 {
-                    // 目标是敌对的
-                    if (player == 1 && unit.player == 2 || player == 2 && unit.player == 1)
-                    {
-                        float priority = enemyPriority(unit);
+                    Unit unit = (Unit)gameObject;
 
-                        // 优先级更高的目标
-                        if (priority > priorityTarget)
+                    // 目标存活且非卖品
+                    if (unit.isAlive && !unit.isSelling)
+                    {
+                        // 目标是敌对的
+                        if (player == 1 && unit.player == 2 || player == 2 && unit.player == 1)
                         {
-                            target = unit;
-                            priorityTarget = priority;
+                            float priority = enemyPriority(unit);
+
+                            // 优先级更高的目标
+                            if (priority > priorityTarget)
+                            {
+                                target = unit;
+                                priorityTarget = priority;
+                            }
                         }
                     }
                 }
             }
-
+            
             // 找到目标
             if (target != null)
             {
@@ -126,8 +134,8 @@ public class Ball : Unit
                     transform.Rotate(0, 0, angle);
                 }
 
-                // 尝试攻击
-                if (!isMelee)
+                // 在武器不精准角度范围内，尝试攻击
+                if (angle <= weaponAngle && !isMelee)
                 {
                     RangedAttack();
                 }
@@ -194,7 +202,7 @@ public class Ball : Unit
     // 武器冷却
     protected virtual void WeaponCoolDown()
     {
-        if (isAlive && !isSelling && GameController.gamePhase == GameController.GamePhase.Playing)
+        if (isAlive && !isSelling && gameController.gamePhase == GameController.GamePhase.Playing)
         {
             weaponCD -= Time.deltaTime;
         }
@@ -204,7 +212,7 @@ public class Ball : Unit
     void MeleeWeapon()
     {
         // 添加近战武器
-        if (isAlive && !isSelling && !haveMeleeWeapon && GameController.gamePhase == GameController.GamePhase.Playing)
+        if (isAlive && !isSelling && !haveMeleeWeapon && gameController.gamePhase == GameController.GamePhase.Playing)
         {
             // 删除子对象（武器图像）
             Destroy(transform.GetChild(0).gameObject);
@@ -224,7 +232,7 @@ public class Ball : Unit
             // 添加关节
             FixedJoint2D joint = missile.gameObject.AddComponent<FixedJoint2D>();
             joint.connectedBody = body;
-            joint.frequency = 100f;
+            joint.enableCollision = false;
 
             // Layer
             if (gameObject.layer == (int)GameController.Layer.PlayerUnit)
@@ -239,7 +247,7 @@ public class Ball : Unit
             haveMeleeWeapon = true;
         }
         // 释放近战武器
-        if (missile != null && !isAlive && !isSelling && haveMeleeWeapon && GameController.gamePhase == GameController.GamePhase.Playing)
+        if (missile != null && !isAlive && !isSelling && haveMeleeWeapon && gameController.gamePhase == GameController.GamePhase.Playing)
         {
             // 删除关节
             Destroy(missile.GetComponent<FixedJoint2D>());

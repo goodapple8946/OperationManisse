@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
     public GameObject corePrefab;
-    public GameObject playerObjectsPrefab;
 
     public GameObject playerObjects;
     private GameObject playerObjectsSaved;
+    private GameObject playerObjectsInit;
     public GameObject enemyObjects;
     private GameObject enemyObjectsSaved;
 
@@ -17,24 +18,55 @@ public class GameController : MonoBehaviour
     public enum Layer { Default, TransparentFX, IgnoreRaycast, Water = 4, UI, PlayerUnit = 8, PlayerMissile, EnemyUnit, EnemyMissle, Entity, Goods }
     public enum GamePhase { Menu, Preparation, Playing, Victory, Defeat, Pause }
 
-    public static GamePhase gamePhase;
+    public GamePhase gamePhase;
 
     private Vector2 coreOriginPosition = new Vector2(0f, 0.64f);
+
+    // 准备阶段放置区右边界
+    public float boundRightPreparation;
+
+    // 玩家原始钱数
+    private int playerMoneyOrigin;
+
+    // 玩家钱数
+    public int playerMoney;
+
+    // 玩家显示钱数Text
+    private Text playerMoneyText;
 
     void Start()
     {
         cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
-        enemyObjectsSaved = GameObject.Find("Enemy Objects");
-        enemyObjectsSaved.SetActive(false);
-        gamePhase = GamePhase.Preparation;
+        playerMoneyText = GameObject.Find("UI Canvas/UI Money Text").GetComponent<Text>();
 
+        gamePhase = GamePhase.Preparation;
+        playerMoneyOrigin = playerMoney;
+
+        SaveBeforeStart();
         NewGame();
     }
 
     void Update()
     {
         SpaceStart();
-        Jump();
+        DebugGame();
+    }
+
+    void FixedUpdate()
+    {
+        UpdatePlayerMoney();
+    }
+
+    // 开始前保存场景
+    void SaveBeforeStart()
+    {
+        playerObjectsSaved = GameObject.Find("Player Objects");
+        playerObjectsSaved.SetActive(false);
+        playerObjectsInit = Instantiate(playerObjectsSaved);
+        playerObjectsInit.SetActive(false);
+
+        enemyObjectsSaved = GameObject.Find("Enemy Objects");
+        enemyObjectsSaved.SetActive(false);
     }
 
     /// <summary>
@@ -63,40 +95,51 @@ public class GameController : MonoBehaviour
         return gameObject;
     }
 
-    // 开始或重新开始游戏
+    // 空格键开始或停止游戏
     void SpaceStart()
     {
         // 开始游戏
         if (gamePhase == GamePhase.Preparation && Input.GetKeyDown(KeyCode.Space))
         {
-            gamePhase = GamePhase.Playing;
-
-            // 保存玩家的物体
-            if (playerObjectsSaved != null)
-            {
-                Destroy(playerObjectsSaved);
-            }
-            playerObjectsSaved = Instantiate(playerObjects);
-            playerObjectsSaved.SetActive(false);
-
-            // 不再固定Block的Z轴
-            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Block");
-            foreach (GameObject gameObject in gameObjects)
-            {
-                Block block = (Block)gameObject;
-                if(!block.isFixed && block.body != null)
-                {
-                    block.body.constraints = RigidbodyConstraints2D.None;
-                }
-            }
+            StartGame();
         }
-        // 回到准备阶段
+        // 停止游戏
         else if (gamePhase == GamePhase.Playing && Input.GetKeyDown(KeyCode.Space))
         {
-            gamePhase = GamePhase.Preparation;
-
-            NewGame();
+            StopGame();
         }
+    }
+
+    // 开始游戏
+    public void StartGame()
+    {
+        gamePhase = GamePhase.Playing;
+
+        // 保存玩家的物体
+        Destroy(playerObjectsSaved);
+        playerObjectsSaved = Instantiate(playerObjects);
+        playerObjectsSaved.SetActive(false);
+
+        // 遍历Block
+        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Block");
+        foreach (GameObject gameObject in gameObjects)
+        {
+            Block block = (Block)gameObject;
+
+            // 不再固定Block的Z轴
+            if (!block.isFixed && block.body != null)
+            {
+                block.body.constraints = RigidbodyConstraints2D.None;
+            }
+        }
+    }
+
+    // 停止游戏
+    public void StopGame()
+    {
+        gamePhase = GamePhase.Preparation;
+
+        NewGame();
     }
 
     // 新游戏
@@ -116,25 +159,72 @@ public class GameController : MonoBehaviour
         }
 
         // 放置玩家保存的物体
-        if (playerObjectsSaved != null)
-        {
-            playerObjects = playerObjectsSaved;
-            playerObjects.SetActive(true);
-            playerObjectsSaved = null;
-        }
-        else
-        {
-            playerObjects = Instantiate(playerObjectsPrefab);
-            
-            // 创建Core
-            Create(coreOriginPosition, corePrefab);
-        }
+        playerObjects = Instantiate(playerObjectsSaved);
+        playerObjects.SetActive(true);
         playerObjects.name = "Player Objects";
 
         // 放置敌人保存的物体
         enemyObjects = Instantiate(enemyObjectsSaved);
         enemyObjects.SetActive(true);
         enemyObjects.name = "Enemy Objects";
+    }
+
+    // 玩家物体初始化
+    public void Reset()
+    {
+        Destroy(playerObjectsSaved);
+        playerObjectsSaved = Instantiate(playerObjectsInit);
+        playerObjectsSaved.SetActive(false);
+
+        playerMoney = playerMoneyOrigin;
+
+        NewGame();
+    }
+
+    // 更新玩家钱数
+    void UpdatePlayerMoney()
+    {
+        int textMoney = int.Parse(playerMoneyText.text);
+        int difference = Mathf.Abs(playerMoney - textMoney);
+
+        // 每次变化值
+        int deltaMoney = 1;
+
+        if (difference > 10000)
+        {
+            deltaMoney = 10000;
+        }
+        else if (difference > 1000)
+        {
+            deltaMoney = 1000;
+        }
+        else if (difference > 100)
+        {
+            deltaMoney = 100;
+        }
+        else if (difference > 10)
+        {
+            deltaMoney = 10;
+        }
+
+        if (textMoney < playerMoney)
+        {
+            playerMoneyText.text = (textMoney + deltaMoney).ToString();
+        }
+        else if (textMoney > playerMoney)
+        {
+            playerMoneyText.text = (textMoney - deltaMoney).ToString();
+        }
+    }
+
+    // 钱不够提示
+    public IEnumerator MoneyNotEnough()
+    {
+        playerMoneyText.color = Color.red;
+
+        yield return new WaitForSeconds(0.5f);
+
+        playerMoneyText.color = Color.white;
     }
 
     // 跳跃
@@ -153,5 +243,18 @@ public class GameController : MonoBehaviour
                 }
             }
         }
+    }
+
+    // Debug
+    void DebugGame()
+    {
+        // 点击获取鼠标位置
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    Debug.Log(MouseController.MouseWorldPosition());
+        //}
+
+        // 点击跳跃
+        //Jump();
     }
 }
