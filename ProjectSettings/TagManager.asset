@@ -24,7 +24,7 @@ TagManager:
   - PlayerMissile
   - EnemyUnit
   - EnemyMissile
-  - Entity
+  - Ground
   - Goods
   - 
   - 
@@ -59,6 +59,9 @@ TagManager:
     locked: 0
   - name: Missile
     uniqueID: 2190632955
+    locked: 0
+  - name: Dead
+    uniqueID: 2124216055
     locked: 0
   - name: Pick
     uniqueID: 3889456301

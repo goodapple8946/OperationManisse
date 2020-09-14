@@ -38,7 +38,7 @@ public class Unit : MonoBehaviour
     public int priority;
 
     // 半径
-    protected float radius = 0.3f;
+    public float radius;
 
     // 地面检测射线起始点在底部的向下偏移
     protected float groundCheckOffset = 0.01f;
@@ -55,6 +55,21 @@ public class Unit : MonoBehaviour
     // 是力的提供者
     public bool isForceProvider;
 
+    // 力
+    public float force;
+
+    // 力的角度
+    public float forceAngle;
+
+    // 最大速度（未达最大速度时可以提供力）
+    public float speedMax;
+
+    // 粒子预设
+    public GameObject particlePrefab;
+
+    // 粒子
+    public GameObject particle;
+
     public Rigidbody2D body;
     protected GameController gameController;
 
@@ -68,6 +83,7 @@ public class Unit : MonoBehaviour
     {
         BoundCheckPreparation();
         DeathCheck();
+        Run();
     }
 
     // 死亡检测
@@ -89,6 +105,15 @@ public class Unit : MonoBehaviour
         // 开始死亡效果
         isAlive = false;
         Destroy(gameObject.GetComponent<Collider2D>());
+
+        // 删除粒子
+        if (particle != null)
+        {
+            Destroy(particle);
+        }
+
+        // 最优先显示
+        gameObject.GetComponent<SpriteRenderer>().sortingLayerName = "Dead";
 
         if (body != null)
         {
@@ -253,6 +278,16 @@ public class Unit : MonoBehaviour
             {
                 body.bodyType = RigidbodyType2D.Static;
             }
+        }
+    }
+
+    // 提供力
+    protected void Run()
+    {
+        if (isAlive && !isSelling && isForceProvider && gameController.gamePhase == GameController.GamePhase.Playing)
+        {
+            Vector2 forceAdded = Quaternion.AngleAxis(forceAngle, Vector3.forward) * transform.right * force;
+            body.AddForce(forceAdded);
         }
     }
 

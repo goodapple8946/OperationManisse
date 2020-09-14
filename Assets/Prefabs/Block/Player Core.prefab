@@ -102,12 +102,18 @@ MonoBehaviour:
   rebuyable: 0
   prefab: {fileID: 2882552430367811224}
   clickable: 1
-  isWheel: 0
   isSelling: 0
   isSellable: 0
   player: 1
   priority: 100
+  radius: 0.3
   mass: 1
+  isForceProvider: 0
+  force: 0
+  forceAngle: 0
+  speedMax: 0
+  particlePrefab: {fileID: 0}
+  particle: {fileID: 0}
   body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}
@@ -123,6 +129,7 @@ MonoBehaviour:
   coverPrefab: {fileID: 0}
   isFixed: 0
   isCore: 1
+  isOneLink: 0
 --- !u!61 &2882552430367811228
 BoxCollider2D:
   m_ObjectHideFlags: 0

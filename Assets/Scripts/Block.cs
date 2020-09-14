@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class Block : Unit
 {
-    // Block的尺寸
-    private float size = 0.6f;
-
     // 吸附半径与严格吸附半径
     // 拖动Block时，如果与其他Block的吸附点距离较近时，则连接两者，并且调整拖动Block的位置
     public static float adsorptionDistance = 0.3f;
@@ -40,11 +37,7 @@ public class Block : Unit
     // 是单向连接的（四周只能有一个方向连接Block）
     public bool isOneLink;
 
-    /// <summary>
-    /// 将目标Block按照方向连接到该Block
-    /// </summary>
-    /// <param name="block">目标Block</param>
-    /// <param name="direction">相对于该Block，目标Block所处的方向</param>
+    // 将目标Block按照方向连接到该Block
     protected void LinkBlock(Block block, LinkDirection direction)
     {
         // 目标Block所处方向的反方向
@@ -54,19 +47,15 @@ public class Block : Unit
         blocksLinked[(int)direction] = block;
         joints[(int)direction] = gameObject.AddComponent<FixedJoint2D>();
         joints[(int)direction].connectedBody = block.body;
-        // joints[(int)direction].enableCollision = true;
 
         // 目标Block连接该Block
-        block.blocksLinked[(int)directionNegative] = gameObject.GetComponent<Block>();
-        block.joints[(int)directionNegative] = gameObject.AddComponent<FixedJoint2D>();
-        block.joints[(int)directionNegative].connectedBody = body;
-        // block.joints[(int)directionNegative].enableCollision = true;
+         block.blocksLinked[(int)directionNegative] = gameObject.GetComponent<Block>();
+        // block.joints[(int)directionNegative] = block.gameObject.AddComponent<FixedJoint2D>();
+        // block.joints[(int)directionNegative].connectedBody = body;
     }
 
-    /// <summary>
-    /// 将该Block与所有连接的Block断开连接
-    /// </summary>
-    protected void Unlink()
+    // 将该Block与所有连接的Block断开连接
+    protected virtual void Unlink()
     {
         // 已经购买的Block
         if (!isSelling)
@@ -120,29 +109,29 @@ public class Block : Unit
      */
 
     // 根据吸附方向返回Block的吸附点
-    protected Vector2 AdsorptionPoint(LinkDirection direction)
+    public Vector2 AdsorptionPoint(LinkDirection direction)
     {
         Vector2 point = transform.position;
         switch (direction)
         {
             case LinkDirection.Right:
-                point += Vector2.right * size;
+                point += Vector2.right * 2 * radius;
                 break;
             case LinkDirection.Up:
-                point += Vector2.up * size;
+                point += Vector2.up * 2 * radius;
                 break;
             case LinkDirection.Left:
-                point += Vector2.left * size;
+                point += Vector2.left * 2 * radius;
                 break;
             case LinkDirection.Down:
-                point += Vector2.down * size;
+                point += Vector2.down * 2 * radius;
                 break;
         }
         return point;
     }
 
     // 吸附检测
-    public void AdsorptionCheck()
+    public virtual void AdsorptionCheck()
     {
         // 临时吸附半径
         // 当有一个方向成功吸附后，吸附要求应该变得严格
@@ -175,7 +164,7 @@ public class Block : Unit
     }
 
     // 根据方向检测该Block是否处于其他Block的吸附范围内
-    protected Block AdsorptionCheckDirection(LinkDirection direction, float checkDistance)
+    protected virtual Block AdsorptionCheckDirection(LinkDirection direction, float checkDistance)
     {
         // 吸附方向，即检测方向的反方向
         LinkDirection directionNegative = (LinkDirection)(((int)direction + 2) % 4);
@@ -235,12 +224,7 @@ public class Block : Unit
         return null;
     }
 
-    /// <summary>
-    /// 将该Block与目标Block根据方向吸附并连接
-    /// </summary>
-    /// <param name="block">目标Block</param>
-    /// <param name="direction">检测方向</param>
-    /// <returns>吸附时经过的位移</returns>
+    // 将该Block与目标Block根据方向吸附并连接
     public Vector2 Absorb(Block block, LinkDirection direction)
     {
         // 吸附方向，即检测方向的反方向
@@ -255,16 +239,16 @@ public class Block : Unit
         switch (directionNegative)
         {
             case LinkDirection.Right:
-                endPosition += Vector2.right * size;
+                endPosition += Vector2.right * 2 * radius;
                 break;
             case LinkDirection.Up:
-                endPosition += Vector2.up * size;
+                endPosition += Vector2.up * 2 * radius;
                 break;
             case LinkDirection.Left:
-                endPosition += Vector2.left * size;
+                endPosition += Vector2.left * 2 * radius;
                 break;
             case LinkDirection.Down:
-                endPosition += Vector2.down * size;
+                endPosition += Vector2.down * 2 * radius;
                 break;
         }
 
@@ -283,9 +267,34 @@ public class Block : Unit
     }
 
     // 更新遮罩
-    protected virtual void UpdateCover()
+    public virtual void UpdateCover()
     {
+        // 如果有遮罩预设
+        if (coverPrefab != null)
+        {
+            // 删除当前遮罩
+            if (transform.childCount > 0)
+            {
+                GameObject cover = transform.GetChild(0).gameObject;
+                Destroy(cover);
+            }
 
+            // 遍历四个方向
+            for (int i = 0; i < 4; i++)
+            {
+                // 如果有连接的Block，添加遮罩
+                if (blocksLinked[i] != null)
+                {
+                    // 创建，旋转遮罩
+                    GameObject cover = Instantiate(coverPrefab);
+                    cover.name = coverPrefab.name;
+                    cover.transform.position = transform.position;
+                    cover.transform.Rotate(0, 0, i * 90);
+                    cover.transform.parent = transform;
+                    break;
+                }
+            }
+        }
     }
 
     // 购买后锁定旋转

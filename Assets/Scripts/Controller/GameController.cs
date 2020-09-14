@@ -126,10 +126,21 @@ public class GameController : MonoBehaviour
         {
             Block block = gameObject.GetComponent<Block>();
 
-            // 不再固定Block的Z轴
-            if (!block.isFixed && block.body != null)
+            if (block.isAlive && !block.isSelling)
             {
-                block.body.constraints = RigidbodyConstraints2D.None;
+                // 不再固定Block的Z轴
+                if (!block.isFixed && block.body != null)
+                {
+                    block.body.constraints = RigidbodyConstraints2D.None;
+                }
+
+                // 添加粒子预设
+                if (block.particle == null && block.particlePrefab != null)
+                {
+                    block.particle = Instantiate(block.particlePrefab);
+                    block.particle.transform.position = block.transform.position;
+                    block.particle.transform.parent = block.transform;
+                }
             }
         }
     }
