@@ -131,7 +131,7 @@ MonoBehaviour:
   weaponAngle: 0
   missilePrefab: {fileID: 1776344995458206714, guid: cdb9ded5a389e734fae1e10052fd0e6c,
     type: 3}
-  isMelee: 1
+  isMelee: 0
   maxForwardAngle: 160
   attackSpead: 200
 --- !u!1 &7329919935599182169
