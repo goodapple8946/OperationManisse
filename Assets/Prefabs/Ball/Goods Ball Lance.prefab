@@ -123,6 +123,7 @@ MonoBehaviour:
   isSellable: 1
   player: 0
   priority: 1000
+  mass: 0.5
   body: {fileID: 0}
   weaponCDMax: 0
   weaponCDRandom: 0

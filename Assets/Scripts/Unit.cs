@@ -25,9 +25,6 @@ public class Unit : MonoBehaviour
     // 可点击
     public bool clickable;
 
-    // 是轮子
-    public bool isWheel;
-
     // 正在出售
     public bool isSelling;
 
@@ -52,14 +49,14 @@ public class Unit : MonoBehaviour
     // 死亡时的效果力矩
     protected float torqueDeath = 1000f;
 
+    // 质量
+    public float mass;
+
+    // 是力的提供者
+    public bool isForceProvider;
+
     public Rigidbody2D body;
     protected GameController gameController;
-
-    // 将GameObject强制类型转换为Unit
-    public static explicit operator Unit(GameObject gameObject)
-    {
-        return gameObject.GetComponent<Unit>();
-    }
 
     protected virtual void Start()
     {
@@ -137,7 +134,7 @@ public class Unit : MonoBehaviour
                 if (rebuyable)
                 {
                     // 在同一位置创建相同的商品
-                    Unit unit = (Unit)gameController.Create(transform.position, prefab);
+                    Unit unit = gameController.Create(transform.position, prefab).GetComponent<Unit>();
                     unit.transform.parent = transform.parent;
                     unit.gameObject.layer = (int)GameController.Layer.Goods;
                 }
@@ -148,7 +145,7 @@ public class Unit : MonoBehaviour
 
                 // 添加Rigidbody
                 body = gameObject.AddComponent<Rigidbody2D>();
-                body.useAutoMass = true;
+                body.mass = mass;
                 FreezeRotation();
 
                 gameController.playerMoney -= price;
@@ -207,7 +204,7 @@ public class Unit : MonoBehaviour
         // 如果射线触碰到物体
         if (hit.transform != null)
         {
-            block = (Block)hit.transform.gameObject;
+            block = hit.transform.gameObject.GetComponent<Block>();
             return true;
         }
         block = null;

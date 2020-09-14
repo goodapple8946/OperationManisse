@@ -44,12 +44,6 @@ public class Missile : MonoBehaviour
         DeathCheck();
         ParticleTail();
     }
-
-    // 将GameObject强制类型转换为Missile
-    public static explicit operator Missile(GameObject gameObject)
-    {
-        return gameObject.GetComponent<Missile>();
-    }
     
     // 尾部粒子
     protected virtual void ParticleTail()

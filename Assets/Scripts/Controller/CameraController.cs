@@ -55,7 +55,7 @@ public class CameraController : MonoBehaviour
         {
             GameObject core = GameObject.Find("Player Objects/Player Core");
 
-            if (core != null && ((Block)core).isAlive)
+            if (core != null && core.GetComponent<Block>().isAlive)
             {
                 // 跟随
                 transform.position = core.transform.position + new Vector3(0, 0, cameraZ);

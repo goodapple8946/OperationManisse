@@ -132,6 +132,7 @@ MonoBehaviour:
   isSellable: 1
   player: 0
   priority: 0
+  mass: 1
   body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}

@@ -200,14 +200,16 @@ MonoBehaviour:
   rebuyable: 0
   prefab: {fileID: 6330292888019772347}
   clickable: 0
-  isWheel: 0
   isSelling: 0
+  isSellable: 0
   player: 2
   priority: 1000
+  mass: 0.5
+  isForceProvider: 0
   body: {fileID: 0}
   weaponCDMax: 1
   weaponCDRandom: 1
-  weaponRange: 10
+  weaponRange: 7
   weaponAngle: 5
   missilePrefab: {fileID: 6238459050790239717, guid: 108cc2fd75835db46ae27004fa936850,
     type: 3}
@@ -224,7 +226,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.5
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1

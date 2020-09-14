@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7333330045788515299}
   - component: {fileID: 7087826650176867544}
   m_Layer: 10
-  m_Name: Block Fixed Enemy Grey
+  m_Name: Enemy Block Fixed Grey
   m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130,8 +130,10 @@ MonoBehaviour:
   clickable: 0
   isWheel: 0
   isSelling: 0
+  isSellable: 0
   player: 2
   priority: 100
+  mass: 1
   body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}

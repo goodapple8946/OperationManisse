@@ -148,7 +148,7 @@ MonoBehaviour:
   health: 1
   damage: 25
   duration: 3
-  durationHit: 0.5
+  durationHit: 0
   isAlive: 1
   particlePrefab: {fileID: 0}
   isMelee: 0

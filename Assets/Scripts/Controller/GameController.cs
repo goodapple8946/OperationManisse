@@ -124,7 +124,7 @@ public class GameController : MonoBehaviour
         GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Block");
         foreach (GameObject gameObject in gameObjects)
         {
-            Block block = (Block)gameObject;
+            Block block = gameObject.GetComponent<Block>();
 
             // 不再固定Block的Z轴
             if (!block.isFixed && block.body != null)
@@ -236,7 +236,7 @@ public class GameController : MonoBehaviour
             GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Ball");
             foreach(GameObject gameObject in gameObjects)
             {
-                Ball ball = (Ball)gameObject;
+                Ball ball = gameObject.GetComponent<Ball>();
                 if (ball.body != null && ball.player == 1 && ball.IsGrounded())
                 {
                     ball.body.AddForce(new Vector2(50f, 50f));

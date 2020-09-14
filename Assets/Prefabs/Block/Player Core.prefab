@@ -104,8 +104,10 @@ MonoBehaviour:
   clickable: 1
   isWheel: 0
   isSelling: 0
+  isSellable: 0
   player: 1
   priority: 100
+  mass: 1
   body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}

@@ -11334,6 +11334,11 @@ PrefabInstance:
       propertyPath: orthographic
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5239557504601161305, guid: 9a516cac98f95034bb8693eecd441592,
+        type: 3}
+      propertyPath: m_ClearFlags
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5239557504601161306, guid: 9a516cac98f95034bb8693eecd441592,
         type: 3}
       propertyPath: m_Name

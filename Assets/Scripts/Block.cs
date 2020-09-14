@@ -37,11 +37,8 @@ public class Block : Unit
     // 是核心
     public bool isCore;
 
-    // 将GameObject强制类型转换为Block
-    public static explicit operator Block(GameObject gameObject)
-    {
-        return gameObject.GetComponent<Block>();
-    }
+    // 是单向连接的（四周只能有一个方向连接Block）
+    public bool isOneLink;
 
     /// <summary>
     /// 将目标Block按照方向连接到该Block
@@ -60,7 +57,7 @@ public class Block : Unit
         // joints[(int)direction].enableCollision = true;
 
         // 目标Block连接该Block
-        block.blocksLinked[(int)directionNegative] = (Block)gameObject;
+        block.blocksLinked[(int)directionNegative] = gameObject.GetComponent<Block>();
         block.joints[(int)directionNegative] = gameObject.AddComponent<FixedJoint2D>();
         block.joints[(int)directionNegative].connectedBody = body;
         // block.joints[(int)directionNegative].enableCollision = true;
@@ -98,10 +95,11 @@ public class Block : Unit
                     }
 
                     // 更新连接的遮罩
-                    block.UpdateWheelCover();
+                    block.UpdateCover();
                 }
             }
-            UpdateWheelCover();
+            // 更新遮罩
+            UpdateCover();
         }
     }
 
@@ -167,8 +165,8 @@ public class Block : Unit
                 // 吸附要求应该变得严格
                 adsorptionDistanceTemp = adsorptionDistanceStrict;
 
-                // 轮子只能吸附一个方向
-                if (isWheel)
+                // 单向连接的Block只能吸附一个方向
+                if (isOneLink)
                 {
                     break;
                 }
@@ -188,7 +186,7 @@ public class Block : Unit
         // 遍历所有Block
         foreach (GameObject gameObject in gameObjects)
         {
-            Block block = (Block)gameObject;
+            Block block = gameObject.GetComponent<Block>();
 
             if (
                 // 所属同一名玩家
@@ -201,10 +199,10 @@ public class Block : Unit
                 block.blocksLinked[(int)directionNegative] == null
                 )
             {
-                // 如果遍历到的Block是轮子
-                if (block.isWheel)
+                // 如果遍历到的Block是单向连接的
+                if (block.isOneLink)
                 {
-                    // 要保证这个轮子没有连接任何Block
+                    // 要保证遍历到的Block没有连接任何其他Block
                     bool cleanWheel = true;
                     foreach (Block checkBlock in block.blocksLinked)
                     {
@@ -214,7 +212,7 @@ public class Block : Unit
                             break;
                         }
                     }
-                    // 这个轮子已经有连接的Block了，跳过
+                    // 遍历到的Block已经有连接的Block了，跳过
                     if (!cleanWheel)
                     {
                         continue;
@@ -276,42 +274,18 @@ public class Block : Unit
         // 连接Block
         LinkBlock(block, direction);
 
-        // 更新轮子遮罩
-        UpdateWheelCover();
-        block.UpdateWheelCover();
+        // 更新遮罩
+        UpdateCover();
+        block.UpdateCover();
 
         // 返回位移
         return endPosition - startPosition;
     }
 
-    // 更新轮子的遮罩
-    private void UpdateWheelCover()
+    // 更新遮罩
+    protected virtual void UpdateCover()
     {
-        if (isWheel)
-        {
-            // 删除当前遮罩
-            if (transform.childCount > 0)
-            {
-                GameObject cover = transform.GetChild(0).gameObject;
-                Destroy(cover);
-            }
 
-            // 遍历四个方向
-            for (int i = 0; i < 4; i++)
-            {
-                // 如果有连接的Block，添加遮罩
-                if (blocksLinked[i] != null)
-                {
-                    // 创建，旋转遮罩
-                    GameObject cover = Instantiate(coverPrefab);
-                    cover.name = coverPrefab.name;
-                    cover.transform.position = transform.position;
-                    cover.transform.Rotate(0, 0, i * 90);
-                    cover.transform.parent = transform;
-                    break;
-                }
-            }
-        }
     }
 
     // 购买后锁定旋转

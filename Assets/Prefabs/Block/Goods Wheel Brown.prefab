@@ -101,11 +101,12 @@ MonoBehaviour:
   rebuyable: 1
   prefab: {fileID: 1324722634242064922}
   clickable: 1
-  isWheel: 1
   isSelling: 1
   isSellable: 1
   player: 0
   priority: 0
+  mass: 1
+  isForceProvider: 1
   body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}
@@ -122,8 +123,9 @@ MonoBehaviour:
     type: 3}
   isFixed: 0
   isCore: 0
-  force: 3
-  speedMax: 2
+  isOneLink: 1
+  force: 5
+  speedMax: 3
 --- !u!58 &-6302405524492546453
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -40,12 +40,6 @@ public class Ball : Unit
     // 当前目标
     protected Unit target;
 
-    // 将GameObject强制类型转换为Ball
-    public static explicit operator Ball(GameObject gameObject)
-    {
-        return gameObject.GetComponent<Ball>();
-    }
-
     protected override void Start()
     {
         base.Start();
@@ -87,7 +81,7 @@ public class Ball : Unit
 
                 foreach (GameObject gameObject in gameObjects)
                 {
-                    Unit unit = (Unit)gameObject;
+                    Unit unit = gameObject.GetComponent<Unit>();
 
                     // 目标存活且非卖品
                     if (unit.isAlive && !unit.isSelling)
@@ -167,7 +161,7 @@ public class Ball : Unit
             weaponCD = weaponCDMax;
 
             // 创建弹药
-            Missile missile = (Missile)Instantiate(missilePrefab);
+            Missile missile = Instantiate(missilePrefab).GetComponent<Missile>();
 
             // 弹药发射点
             missile.transform.position = transform.position + transform.right * weaponOffset;
@@ -218,7 +212,7 @@ public class Ball : Unit
             Destroy(transform.GetChild(0).gameObject);
 
             // 创建武器
-            missile = (Missile)Instantiate(missilePrefab);
+            missile = Instantiate(missilePrefab).GetComponent<Missile>();
 
             // 武器位置
             missile.transform.position = transform.position;
