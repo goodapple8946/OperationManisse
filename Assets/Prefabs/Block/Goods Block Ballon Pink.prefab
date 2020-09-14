@@ -145,3 +145,5 @@ MonoBehaviour:
   isFixed: 0
   isCore: 0
   isOneLink: 1
+  materialLine: {fileID: 2100000, guid: e8ff8c6dc48ebcf438e24339a7065f09, type: 2}
+  line: {fileID: 0}

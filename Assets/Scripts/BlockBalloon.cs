@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class BlockBalloon : Block
 {
+    public Material materialLine;
+
     public LineRenderer line;
+
+    public float lineDistance;
 
     protected override void Start()
     {
@@ -21,12 +25,29 @@ public class BlockBalloon : Block
     {
         base.Update();
 
-        // 画线
         Block block = blocksLinked[(int)LinkDirection.Down];
-        if (line != null && block != null)
+        if (line != null)
         {
-            line.SetPosition(0, (Vector2)transform.position + new Vector2(0, -radius));
-            line.SetPosition(1, (Vector2)block.transform.position + new Vector2(0, block.radius));
+            if (block != null)
+            {
+                // 画线
+                line.SetPosition(0, (Vector2)transform.position + new Vector2(0, -radius));
+                line.SetPosition(1, (Vector2)block.transform.position + new Vector2(0, block.radius));
+
+                // 调整距离
+                ((DistanceJoint2D)joints[(int)LinkDirection.Down]).distance = lineDistance;
+
+                // 受到负重力
+                body.gravityScale = -0.5f;
+            }
+            else
+            {
+                // 删除线
+                Destroy(line);
+                
+                // 重新受到重力
+                body.gravityScale = 1;
+            }
         }
     }
 
@@ -65,9 +86,6 @@ public class BlockBalloon : Block
             // 更新遮罩
             UpdateCover();
 
-            // 重新受到重力
-            body.gravityScale = 1;
-
             // 删除线
             if (line != null)
             {
@@ -97,22 +115,24 @@ public class BlockBalloon : Block
                 blocksLinked[(int)LinkDirection.Down] = block;
                 joints[(int)LinkDirection.Down] = gameObject.AddComponent<DistanceJoint2D>();
                 joints[(int)LinkDirection.Down].connectedBody = block.body;
+                ((DistanceJoint2D)joints[(int)LinkDirection.Down]).maxDistanceOnly = true;
+                lineDistance = ((DistanceJoint2D)joints[(int)LinkDirection.Down]).distance;
 
                 // 目标Block连接该Block
                 block.blocksLinked[(int)LinkDirection.Up] = gameObject.GetComponent<Block>();
-                block.joints[(int)LinkDirection.Up] = block.gameObject.AddComponent<DistanceJoint2D>();
-                block.joints[(int)LinkDirection.Up].connectedBody = body;
-
-                // 不再受到重力
-                body.gravityScale = 0;
-
+                // block.joints[(int)LinkDirection.Up] = block.gameObject.AddComponent<DistanceJoint2D>();
+                // block.joints[(int)LinkDirection.Up].connectedBody = body;
+                // ((DistanceJoint2D)block.joints[(int)LinkDirection.Down]).maxDistanceOnly = true;
+                
                 // 添加线
                 line = gameObject.AddComponent<LineRenderer>();
                 line.positionCount = 2;
+                line.material = materialLine;
+                line.startWidth = line.endWidth = 0.04f;
             }
         }
     }
-
+    
     // 购买后锁定旋转
     protected override void FreezeRotation()
     {

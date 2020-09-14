@@ -24,7 +24,7 @@ TagManager:
   - PlayerMissile
   - EnemyUnit
   - EnemyMissile
-  - Entity
+  - Ground
   - Goods
   - 
   - 

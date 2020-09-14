@@ -132,8 +132,14 @@ MonoBehaviour:
   isSellable: 0
   player: 2
   priority: 100
+  radius: 0.3
   mass: 1
   isForceProvider: 0
+  force: 0
+  forceAngle: 0
+  speedMax: 0
+  particlePrefab: {fileID: 0}
+  particle: {fileID: 0}
   body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}

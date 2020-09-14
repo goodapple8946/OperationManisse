@@ -49,9 +49,9 @@ public class Block : Unit
         joints[(int)direction].connectedBody = block.body;
 
         // 目标Block连接该Block
-        block.blocksLinked[(int)directionNegative] = gameObject.GetComponent<Block>();
-        block.joints[(int)directionNegative] = block.gameObject.AddComponent<FixedJoint2D>();
-        block.joints[(int)directionNegative].connectedBody = body;
+         block.blocksLinked[(int)directionNegative] = gameObject.GetComponent<Block>();
+        // block.joints[(int)directionNegative] = block.gameObject.AddComponent<FixedJoint2D>();
+        // block.joints[(int)directionNegative].connectedBody = body;
     }
 
     // 将该Block与所有连接的Block断开连接
