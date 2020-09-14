@@ -60,6 +60,9 @@ TagManager:
   - name: Missile
     uniqueID: 2190632955
     locked: 0
+  - name: Dead
+    uniqueID: 2124216055
+    locked: 0
   - name: Pick
     uniqueID: 3889456301
     locked: 0

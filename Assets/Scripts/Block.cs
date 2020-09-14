@@ -285,7 +285,32 @@ public class Block : Unit
     // 更新遮罩
     protected virtual void UpdateCover()
     {
+        // 如果有遮罩预设
+        if (coverPrefab != null)
+        {
+            // 删除当前遮罩
+            if (transform.childCount > 0)
+            {
+                GameObject cover = transform.GetChild(0).gameObject;
+                Destroy(cover);
+            }
 
+            // 遍历四个方向
+            for (int i = 0; i < 4; i++)
+            {
+                // 如果有连接的Block，添加遮罩
+                if (blocksLinked[i] != null)
+                {
+                    // 创建，旋转遮罩
+                    GameObject cover = Instantiate(coverPrefab);
+                    cover.name = coverPrefab.name;
+                    cover.transform.position = transform.position;
+                    cover.transform.Rotate(0, 0, i * 90);
+                    cover.transform.parent = transform;
+                    break;
+                }
+            }
+        }
     }
 
     // 购买后锁定旋转
