@@ -69,8 +69,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 158068497
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 94fe67e150093e546a101909648cd686, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -127,12 +127,12 @@ MonoBehaviour:
   rebuyable: 1
   prefab: {fileID: 1869127999241510994}
   clickable: 1
-  isWheel: 0
   isSelling: 1
   isSellable: 1
   player: 0
   priority: 0
   mass: 1
+  isForceProvider: 0
   body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}
@@ -148,3 +148,4 @@ MonoBehaviour:
   coverPrefab: {fileID: 0}
   isFixed: 0
   isCore: 0
+  isOneLink: 0

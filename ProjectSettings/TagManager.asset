@@ -48,3 +48,21 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Ground
+    uniqueID: 4090356259
+    locked: 0
+  - name: Shop
+    uniqueID: 3397823729
+    locked: 0
+  - name: Unit
+    uniqueID: 158068497
+    locked: 0
+  - name: Missile
+    uniqueID: 2190632955
+    locked: 0
+  - name: Pick
+    uniqueID: 3889456301
+    locked: 0
+  - name: Cover
+    uniqueID: 4066856521
+    locked: 0

@@ -70,15 +70,6 @@ public class Unit : MonoBehaviour
         DeathCheck();
     }
 
-    /// <summary>
-    /// 修改显示层级
-    /// </summary>
-    /// <param name="layer">显示层级</param>
-    public void SetLayer(int layer)
-    {
-        GetComponent<SpriteRenderer>().sortingOrder = layer;
-    }
-
     // 死亡检测
     protected void DeathCheck()
     {
@@ -228,13 +219,16 @@ public class Unit : MonoBehaviour
             // 超过边界
             if (transform.position.x >= gameController.boundRightPreparation)
             {
-                SetLayer(0);
+                GetComponent<SpriteRenderer>().sortingLayerName = "Unit";
+
                 clickable = false;
                 if (body != null)
                 {
                     body.bodyType = RigidbodyType2D.Dynamic;
                     body.velocity = new Vector2(-4f, 3f);
                 }
+
+                // 关闭Clickable
                 StartCoroutine(ResetClickable());
             }
         }
@@ -252,7 +246,9 @@ public class Unit : MonoBehaviour
         if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
         {
             Buy();
-            SetLayer(2);
+
+            GetComponent<SpriteRenderer>().sortingLayerName = "Pick";
+
             if (body != null)
             {
                 body.bodyType = RigidbodyType2D.Static;
@@ -281,7 +277,8 @@ public class Unit : MonoBehaviour
     {
         if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation)
         {
-            SetLayer(0);
+            GetComponent<SpriteRenderer>().sortingLayerName = "Unit";
+
             if (body != null)
             {
                 body.bodyType = RigidbodyType2D.Dynamic;
