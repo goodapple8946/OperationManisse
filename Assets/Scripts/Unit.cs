@@ -38,7 +38,7 @@ public class Unit : MonoBehaviour
     public int priority;
 
     // 半径
-    protected float radius = 0.3f;
+    public float radius;
 
     // 地面检测射线起始点在底部的向下偏移
     protected float groundCheckOffset = 0.01f;
