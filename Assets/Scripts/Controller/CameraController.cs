@@ -54,13 +54,22 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        Zoom();
-        Scroll();
+		Zoom();
+		Scroll();
 		if (follow)
 		{
 			Follow();
 		}
-    }
+		//if (follow)
+		//{
+		//	Follow();
+		//}
+		//else
+		//{
+		//	Zoom();
+		//	Scroll();
+		//}
+	}
 
     // 跟随玩家核心
     void Follow()
@@ -95,13 +104,14 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    // 滚动
+    // 当超出
     void Scroll()
     {
         // 向右
         if (Input.mousePosition.x > Screen.width - scrollDistance && transform.position.x <= xMax)
         {
             transform.Translate(scrollSpeed * Time.deltaTime, 0, 0);
+			// TODO: scroll超出屏幕时更改了follow
             follow = false;
         }
         // 向左
