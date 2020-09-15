@@ -15,7 +15,7 @@ public class GameController : MonoBehaviour
 
     private CameraController cameraController;
 
-    public enum Layer { Default, TransparentFX, IgnoreRaycast, Water = 4, UI, PlayerUnit = 8, PlayerMissile, EnemyUnit, EnemyMissle, Entity, Goods }
+    public enum Layer { Default, TransparentFX, IgnoreRaycast, Water = 4, UI, PlayerBall = 8, PlayerBlock, PlayerMissile, EnemyBall, EnemyBlock, EnemyMissile, Goods, Ground }
     public enum GamePhase { Menu, Preparation, Playing, Victory, Defeat, Pause }
 
     public GamePhase gamePhase;
@@ -88,9 +88,6 @@ public class GameController : MonoBehaviour
 
         // 添加入playerObjects
         gameObject.transform.parent = playerObjects.transform;
-
-        // Layer
-        gameObject.layer = (int)Layer.PlayerUnit;
 
         return gameObject;
     }

@@ -152,12 +152,10 @@ public class Unit : MonoBehaviour
                     // 在同一位置创建相同的商品
                     Unit unit = gameController.Create(transform.position, prefab).GetComponent<Unit>();
                     unit.transform.parent = transform.parent;
-                    unit.gameObject.layer = (int)GameController.Layer.Goods;
                 }
                 isSelling = false;
                 player = 1;
                 transform.parent = gameController.playerObjects.transform;
-                gameObject.layer = (int)GameController.Layer.PlayerUnit;
 
                 // 添加Rigidbody
                 body = gameObject.AddComponent<Rigidbody2D>();
@@ -187,6 +185,16 @@ public class Unit : MonoBehaviour
         if (!isSelling && isSellable)
         {
             gameController.playerMoney += price;
+            Destroy(gameObject);
+        }
+    }
+
+    // 删除
+    public virtual void Delete()
+    {
+        // 可以删除
+        if (!isSelling && isSellable)
+        {
             Destroy(gameObject);
         }
     }
@@ -286,17 +294,30 @@ public class Unit : MonoBehaviour
     {
         if (isAlive && !isSelling && isForceProvider && gameController.gamePhase == GameController.GamePhase.Playing)
         {
-            Vector2 forceAdded = Quaternion.AngleAxis(forceAngle, Vector3.forward) * transform.right * force;
-            body.AddForce(forceAdded);
+            // 未达最大速度
+            if (body != null && body.velocity.magnitude <= speedMax)
+            {
+                Vector2 forceAdded = Quaternion.AngleAxis(forceAngle, Vector3.forward) * transform.right * force;
+                body.AddForce(forceAdded);
+            }
         }
     }
 
     protected virtual void OnMouseOver()
     {
         // 鼠标右键按下
-        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(1))
+        if (clickable && Input.GetMouseButton(1))
         {
-            Sell();
+            // 出售
+            if (gameController.gamePhase == GameController.GamePhase.Preparation)
+            {
+                Sell();
+            }
+            // 删除
+            else if (gameController.gamePhase == GameController.GamePhase.Playing)
+            {
+                Delete();
+            }
         }
     }
 

@@ -46,13 +46,13 @@ public class BallAutomaticRifle : Ball
             missile.transform.parent = gameController.playerObjects.transform;
 
             // Layer
-            if (gameObject.layer == (int)GameController.Layer.PlayerUnit)
+            if (gameObject.layer == (int)GameController.Layer.PlayerBall)
             {
                 missile.gameObject.layer = (int)GameController.Layer.PlayerMissile;
             }
-            else if (gameObject.layer == (int)GameController.Layer.EnemyUnit)
+            else if (gameObject.layer == (int)GameController.Layer.EnemyBall)
             {
-                missile.gameObject.layer = (int)GameController.Layer.EnemyMissle;
+                missile.gameObject.layer = (int)GameController.Layer.EnemyMissile;
             }
 
             // 发射
