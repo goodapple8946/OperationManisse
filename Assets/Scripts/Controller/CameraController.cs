@@ -54,21 +54,21 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-		Zoom();
-		Scroll();
+		if (isMovingCamera())
+		{
+			follow = false;
+		}
+
+		// follow状态
 		if (follow)
 		{
 			Follow();
 		}
-		//if (follow)
-		//{
-		//	Follow();
-		//}
-		//else
-		//{
-		//	Zoom();
-		//	Scroll();
-		//}
+		else //自由状态
+		{
+			Zoom();
+			Scroll();
+		}
 	}
 
     // 跟随玩家核心
@@ -111,26 +111,21 @@ public class CameraController : MonoBehaviour
         if (Input.mousePosition.x > Screen.width - scrollDistance && transform.position.x <= xMax)
         {
             transform.Translate(scrollSpeed * Time.deltaTime, 0, 0);
-			// TODO: scroll超出屏幕时更改了follow
-            follow = false;
         }
         // 向左
         else if (Input.mousePosition.x < scrollDistance && transform.position.x >= xMin)
         {
             transform.Translate(-scrollSpeed * Time.deltaTime, 0, 0);
-            follow = false;
         }
         // 向上
         if (Input.mousePosition.y > Screen.height - scrollDistance && transform.position.y <= yMax)
         {
             transform.Translate(0, scrollSpeed * Time.deltaTime, 0);
-            follow = false;
         }
         // 向下
         else if (Input.mousePosition.y < scrollDistance && transform.position.y >= yMin)
         {
             transform.Translate(0, -scrollSpeed * Time.deltaTime, 0);
-            follow = false;
         }
     }
 
@@ -195,5 +190,13 @@ public class CameraController : MonoBehaviour
 			vect.y = vect.y >= 0 ? height : -height;
 		}
 		return vect;
+	}
+
+	private bool isMovingCamera()
+	{
+		return Input.mousePosition.x > Screen.width - scrollDistance && transform.position.x <= xMax
+			&& Input.mousePosition.x < scrollDistance && transform.position.x >= xMin
+			&& Input.mousePosition.y > Screen.height - scrollDistance && transform.position.y <= yMax
+			&& Input.mousePosition.y < scrollDistance && transform.position.y >= yMin;
 	}
 }
