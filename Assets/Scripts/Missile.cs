@@ -10,9 +10,6 @@ public class Missile : MonoBehaviour
     // 冲击力
     public float forceHit;
 
-    // 生命值（生命值为0时，仅不能造成伤害）
-    public float health;
-
     // 伤害
     public int damage;
 
@@ -22,7 +19,7 @@ public class Missile : MonoBehaviour
     // 撞击后剩余飞行时间
     public float durationHit;
 
-    // 存活
+    // 存活 （不存活时仍然存在，但是不造成伤害）
     public bool isAlive;
 
     // 发射粒子预设
@@ -49,69 +46,17 @@ public class Missile : MonoBehaviour
         if (isAlive)
         {
             ParticleTail();
-            DeathCheck();
-
-            if (!isMelee)
-            {
-                UpdateDuration();
-            }
         }
-    }
-    
-    // 尾部粒子
-    protected virtual void ParticleTail()
-    {
-        if (particleFlyingPrefab != null)
+
+        if (!isMelee)
         {
-            GameObject particle = Instantiate(particleFlyingPrefab);
-            particle.transform.position = transform.position;
-        }
-    }
-
-    // 发射
-    public virtual void Launch()
-    {
-        // 发射粒子
-        if (particleLaunchPerfab != null)
-        {
-            GameObject particle = Instantiate(particleLaunchPerfab);
-            particle.transform.position = transform.position;
-            particle.transform.right = transform.right;
+            UpdateDuration();
         }
 
-        if (body == null)
-        {
-            body = GetComponent<Rigidbody2D>();
-        }
-        body.AddForce(transform.right * forceLaunch);
-    }
-
-    // 更新飞行时间
-    protected void UpdateDuration()
-    {
-        duration -= Time.deltaTime;
-    }
-
-    // 死亡检测
-    protected void DeathCheck()
-    {
-        // 生命值不足0
-        if (health <= 0)
-        {
-            isAlive = false;
-        }
-
-        // 飞行时间不足0
-        if (!isMelee && duration <= 0)
+        if (duration <= 0)
         {
             Die();
         }
-    }
-
-    // 死亡
-    protected virtual void Die()
-    {
-        Destroy(gameObject);
     }
 
     // 撞击
@@ -140,16 +85,7 @@ public class Missile : MonoBehaviour
             {
                 GameObject particle = Instantiate(particleHitPrefab);
                 particle.transform.position = transform.position;
-                particle.transform.right = transform.right;
-
-                //// 计算精确撞击位置
-                //RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right);
-                //if (hit.transform != null)
-                //{
-                //    GameObject particle = Instantiate(particlePrefabHit);
-                //    particle.transform.position = hit.transform.position;
-                //    particle.transform.right = transform.right;
-                //}
+                particle.transform.rotation = transform.rotation;
             }
 
             // 剩余飞行时间
@@ -159,5 +95,45 @@ public class Missile : MonoBehaviour
                 isAlive = false;
             }
         }
+    }
+
+    // 尾部粒子
+    protected virtual void ParticleTail()
+    {
+        if (particleFlyingPrefab != null)
+        {
+            GameObject particle = Instantiate(particleFlyingPrefab);
+            particle.transform.position = transform.position;
+        }
+    }
+
+    // 发射
+    public virtual void Launch()
+    {
+        // 发射粒子
+        if (particleLaunchPerfab != null)
+        {
+            ParticleSystem particle = Instantiate(particleLaunchPerfab).GetComponent<ParticleSystem>();
+            particle.transform.position = transform.position;
+            particle.transform.rotation = transform.rotation;
+        }
+
+        if (body == null)
+        {
+            body = GetComponent<Rigidbody2D>();
+        }
+        body.AddForce(transform.right * forceLaunch);
+    }
+
+    // 更新飞行时间
+    protected void UpdateDuration()
+    {
+        duration -= Time.deltaTime;
+    }
+
+    // 死亡
+    protected virtual void Die()
+    {
+        Destroy(gameObject);
     }
 }

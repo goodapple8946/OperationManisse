@@ -69,12 +69,7 @@ public class GameController : MonoBehaviour
         enemyObjectsSaved.SetActive(false);
     }
 
-    /// <summary>
-    /// 根据位置及预设类型创建物体（Unit）
-    /// </summary>
-    /// <param name="position">位置</param>
-    /// <param name="blockPrefab">预设</param>
-    /// <returns>创建的物体</returns>
+    // 根据位置及预设类型创建物体（Unit）
     public GameObject Create(Vector2 position, GameObject prefab)
     {
         // 创建实例

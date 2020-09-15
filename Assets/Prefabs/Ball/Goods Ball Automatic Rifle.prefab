@@ -131,7 +131,7 @@ MonoBehaviour:
   particlePrefab: {fileID: 0}
   particle: {fileID: 0}
   body: {fileID: 0}
-  weaponOffset: 0.6
+  weaponOffset: 0.72
   weaponCDMax: 0.75
   weaponCDRandom: 1
   weaponRange: 10
