@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 184814382030521740}
   - component: {fileID: 8983545076222256162}
   - component: {fileID: 7333209171245850546}
-  m_Layer: 13
+  m_Layer: 8
   m_Name: Goods Ball Crossbow
   m_TagString: Ball
   m_Icon: {fileID: 0}
@@ -131,6 +131,7 @@ MonoBehaviour:
   particlePrefab: {fileID: 0}
   particle: {fileID: 0}
   body: {fileID: 0}
+  weaponOffset: 0.32
   weaponCDMax: 1
   weaponCDRandom: 1
   weaponRange: 7
@@ -148,7 +149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2270223061042560213}
   - component: {fileID: 5967709418419007745}
-  m_Layer: 13
+  m_Layer: 8
   m_Name: Weapon Crossbow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

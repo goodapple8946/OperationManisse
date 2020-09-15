@@ -10,6 +10,8 @@ public class BlockBalloon : Block
 
     public float lineDistance;
 
+    public float lineDistanceMax;
+
     protected override void Start()
     {
         base.Start();
@@ -101,7 +103,7 @@ public class BlockBalloon : Block
         Vector2 origin = (Vector2)transform.position + new Vector2(0, -(radius + groundCheckDistance));
         
         // 向下方发射检测射线
-        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down);
+        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, lineDistanceMax, 1 << LayerMask.NameToLayer("PlayerBlock"));
 
         // 检测到物体
         if (hit.transform != null)

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 252953478725105450}
   - component: {fileID: 252953478725105449}
-  m_Layer: 13
+  m_Layer: 8
   m_Name: Weapon Pistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 252953478984088120}
   - component: {fileID: 252953478984088121}
   - component: {fileID: 2948920281202388459}
-  m_Layer: 13
+  m_Layer: 8
   m_Name: Goods Ball Pistol
   m_TagString: Ball
   m_Icon: {fileID: 0}
@@ -212,6 +212,7 @@ MonoBehaviour:
   particlePrefab: {fileID: 0}
   particle: {fileID: 0}
   body: {fileID: 0}
+  weaponOffset: 0.36
   weaponCDMax: 0.75
   weaponCDRandom: 1
   weaponRange: 10

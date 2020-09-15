@@ -5,7 +5,7 @@ using UnityEngine;
 public class Ball : Unit
 {
     // 武器发射偏移
-    protected float weaponOffset = 0.32f;
+    public float weaponOffset;
 
     // 武器冷却最大值
     public float weaponCDMax;
@@ -26,7 +26,7 @@ public class Ball : Unit
     public GameObject missilePrefab;
 
     // 旋转速率
-    private float rotationSpeed = 1f;
+    private float rotationSpeed = 2f;
 
     // 是否近战
     public bool isMelee;
@@ -179,13 +179,13 @@ public class Ball : Unit
             missile.transform.parent = gameController.playerObjects.transform;
 
             // Layer
-            if (gameObject.layer == (int)GameController.Layer.PlayerUnit)
+            if (gameObject.layer == (int)GameController.Layer.PlayerBall)
             {
                 missile.gameObject.layer = (int)GameController.Layer.PlayerMissile;
             }
-            else if (gameObject.layer == (int)GameController.Layer.EnemyUnit)
+            else if (gameObject.layer == (int)GameController.Layer.EnemyBall)
             {
-                missile.gameObject.layer = (int)GameController.Layer.EnemyMissle;
+                missile.gameObject.layer = (int)GameController.Layer.EnemyMissile;
             }
 
             // 发射
@@ -229,13 +229,13 @@ public class Ball : Unit
             joint.enableCollision = false;
 
             // Layer
-            if (gameObject.layer == (int)GameController.Layer.PlayerUnit)
+            if (gameObject.layer == (int)GameController.Layer.PlayerBall)
             {
                 missile.gameObject.layer = (int)GameController.Layer.PlayerMissile;
             }
-            else if (gameObject.layer == (int)GameController.Layer.EnemyUnit)
+            else if (gameObject.layer == (int)GameController.Layer.EnemyBall)
             {
-                missile.gameObject.layer = (int)GameController.Layer.EnemyMissle;
+                missile.gameObject.layer = (int)GameController.Layer.EnemyMissile;
             }
 
             haveMeleeWeapon = true;

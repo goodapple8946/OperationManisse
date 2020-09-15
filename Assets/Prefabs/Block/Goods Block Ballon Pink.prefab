@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4261955057781621038}
   - component: {fileID: 4261955057781621037}
   - component: {fileID: 4261955057781621036}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Goods Block Ballon Pink
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,3 +147,5 @@ MonoBehaviour:
   isOneLink: 1
   materialLine: {fileID: 2100000, guid: e8ff8c6dc48ebcf438e24339a7065f09, type: 2}
   line: {fileID: 0}
+  lineDistance: 0
+  lineDistanceMax: 5

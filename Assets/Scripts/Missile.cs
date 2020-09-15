@@ -25,8 +25,14 @@ public class Missile : MonoBehaviour
     // 存活
     public bool isAlive;
 
-    // 粒子预设
-    public GameObject particlePrefab;
+    // 发射粒子预设
+    public GameObject particleLaunchPerfab;
+
+    // 飞行粒子预设
+    public GameObject particleFlyingPrefab;
+
+    // 撞击粒子预设
+    public GameObject particleHitPrefab;
 
     // 近战
     public bool isMelee;
@@ -48,15 +54,24 @@ public class Missile : MonoBehaviour
     // 尾部粒子
     protected virtual void ParticleTail()
     {
-        if (particlePrefab != null)
+        if (particleFlyingPrefab != null)
         {
-            GameObject particle = Instantiate(particlePrefab);
+            GameObject particle = Instantiate(particleFlyingPrefab);
             particle.transform.position = transform.position;
         }
     }
 
+    // 发射
     public virtual void Launch()
     {
+        // 发射粒子
+        if (particleLaunchPerfab != null)
+        {
+            GameObject particle = Instantiate(particleLaunchPerfab);
+            particle.transform.position = transform.position;
+            particle.transform.right = transform.right;
+        }
+
         if (body == null)
         {
             body = GetComponent<Rigidbody2D>();
@@ -116,6 +131,24 @@ public class Missile : MonoBehaviour
                 block.body.AddForce(transform.right * forceHit);
             }
 
+            // 撞击粒子
+            if (particleHitPrefab != null)
+            {
+                GameObject particle = Instantiate(particleHitPrefab);
+                particle.transform.position = transform.position;
+                particle.transform.right = transform.right;
+
+                //// 计算精确撞击位置
+                //RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right);
+                //if (hit.transform != null)
+                //{
+                //    GameObject particle = Instantiate(particlePrefabHit);
+                //    particle.transform.position = hit.transform.position;
+                //    particle.transform.right = transform.right;
+                //}
+            }
+
+            // 剩余飞行时间
             if (!isMelee)
             {
                 duration = durationHit;
