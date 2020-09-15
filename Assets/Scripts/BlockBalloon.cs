@@ -53,6 +53,51 @@ public class BlockBalloon : Block
         }
     }
 
+    protected override void OnMouseOver()
+    {
+        // 准备阶段
+        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation)
+        {
+            // 鼠标左键按下
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (isSelling)
+                {
+                    Buy();
+                }
+
+                Unlink();
+
+                body.bodyType = RigidbodyType2D.Static;
+                GetComponent<SpriteRenderer>().sortingLayerName = "Pick";
+            }
+
+            // 鼠标左键抬起
+            if (Input.GetMouseButtonUp(0))
+            {
+                body.bodyType = RigidbodyType2D.Dynamic;
+                GetComponent<SpriteRenderer>().sortingLayerName = "Unit";
+
+                AdsorptionCheck();
+            }
+        }
+
+        // 鼠标右键按下
+        if (Input.GetMouseButtonDown(1))
+        {
+            // 准备阶段，出售
+            if (gameController.gamePhase == GameController.GamePhase.Preparation)
+            {
+                Sell();
+            }
+            // 游戏阶段，删除
+            else if (gameController.gamePhase == GameController.GamePhase.Playing)
+            {
+                Delete();
+            }
+        }
+    }
+
     // 将该Block与下面连接的Block断开连接
     protected override void Unlink()
     {
@@ -97,7 +142,7 @@ public class BlockBalloon : Block
     }
 
     // 吸附检测，仅检测下方
-    public override void AdsorptionCheck()
+    public void AdsorptionCheck()
     {
         // 检测线起始点
         Vector2 origin = (Vector2)transform.position + new Vector2(0, -(radius + groundCheckDistance));
