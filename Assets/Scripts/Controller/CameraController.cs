@@ -34,9 +34,20 @@ public class CameraController : MonoBehaviour
     public float yMax;
 
     private GameController gameController;
+	// 记录上一次镜头跟player core需要的偏移
+	private Vector3 followOffset;
 
-    void Start()
+	// 初始化Camera
+	public void Init()
+	{
+		transform.position = originPosition;
+		follow = true;
+		followOffset = new Vector3(0, 0, 0);
+	}
+
+	void Start()
     {
+		Init();
         mainCamera = GetComponent<Camera>();
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
     }
@@ -45,28 +56,30 @@ public class CameraController : MonoBehaviour
     {
         Zoom();
         Scroll();
-        Follow();
+		if (follow)
+		{
+			Follow();
+		}
     }
 
-    // 跟随
+    // 跟随玩家核心
     void Follow()
     {
-        if (follow)
-        {
-            GameObject core = GameObject.Find("Player Objects/Player Core");
+		GameObject core = GameObject.Find("Player Objects/Player Core");
+		if (core == null || !core.GetComponent<Block>().isAlive)
+		{
+			return;
+		}
 
-            if (core != null && core.GetComponent<Block>().isAlive)
-            {
-                // 跟随
-                transform.position = core.transform.position + new Vector3(0, 0, cameraZ);
+		Vector3 corePosition = core.transform.position;
+		Vector3 cameraDepth = new Vector3(0, 0, cameraZ);
+		Vector3 newOffset = CalcuteFollowOffset(core.GetComponent<Rigidbody2D>().velocity);
+		// 维护更新followOffset
+		followOffset = newOffset;
+		// 设置摄像机位置
+		transform.position = corePosition + cameraDepth + newOffset;
 
-                FixBound();
-            }
-            else
-            {
-                follow = false;
-            }
-        }
+		FixBound();
     }
 
     // 缩放
@@ -132,10 +145,45 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    // 初始化Camera
-    public void Init()
-    {
-        transform.position = originPosition;
-        follow = false;
-    }
+	private Vector2 CalcuteFollowOffset(Vector2 velocity)
+	{
+		// 获取当前镜头屏幕的一半长，一半宽
+		float cameraHeight = mainCamera.orthographicSize;
+		float cameraWeight = mainCamera.orthographicSize * mainCamera.aspect;
+
+		// 获取玩家核心的运动方向向量
+		Vector2 moveDirection = velocity.normalized;
+		// 采取两者中小的,以获得平滑的效果
+		float weightX = Mathf.Abs(velocity.x) < Mathf.Abs(moveDirection.x) ? 
+			velocity.x : moveDirection.x;
+		float weightY = Mathf.Abs(velocity.y) < Mathf.Abs(moveDirection.y) ?
+			velocity.y : moveDirection.y;
+		// 以屏幕一百之一作为factor,向运动方向偏移,以获得平滑的效果
+		float offsetFactor =
+			Mathf.Sqrt(cameraHeight * cameraHeight + cameraWeight * cameraWeight) / 100;
+		Vector2 newFollowOffset = new Vector2(
+			followOffset.x + offsetFactor * weightX,
+			followOffset.y + offsetFactor * weightY);
+
+		// 如果玩家核心快要超出镜头，就限制offset到(factor*cameraWeight, factor*cameraHeight)的镜头内
+		float coreZoneFactor = 0.6f;
+		newFollowOffset = clipIntoSquare(
+			newFollowOffset, cameraWeight * coreZoneFactor, cameraHeight * coreZoneFactor);
+		return newFollowOffset;
+	}
+
+	// 若镜头相对核心偏移超过cameraHeight,cameraWeight,也即看不到玩家核心
+	// 将偏移收缩至([-weight, height], [-weight, height])
+	private Vector2 clipIntoSquare(Vector2 vect, float weight, float height)
+	{
+		if (Mathf.Abs(vect.x) >= weight)
+		{
+			vect.x = vect.x >= 0 ? weight : -weight;
+		}
+		if (Mathf.Abs(vect.y) >= height)
+		{
+			vect.y = vect.y >= 0 ? height : -height;
+		}
+		return vect;
+	}
 }
