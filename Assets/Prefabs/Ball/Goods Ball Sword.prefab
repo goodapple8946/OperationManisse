@@ -138,8 +138,9 @@ MonoBehaviour:
   missilePrefab: {fileID: 1776344995458206714, guid: cdb9ded5a389e734fae1e10052fd0e6c,
     type: 3}
   isMelee: 0
-  maxForwardAngle: 160
-  attackSpead: 200
+  maxForwardAngle: 130
+  attackSpead: 300
+  liftSwordSpeed: 100
 --- !u!1 &7329919935599182169
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,13 +167,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7329919935599182169}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.86602545, w: 0.49999994}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3799366587308295927}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 120}
 --- !u!212 &7329919935599182171
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -235,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4936c3793bd6c7748b78c945284d50bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 100
+  damage: 10
 --- !u!61 &7392224632550795345
 BoxCollider2D:
   m_ObjectHideFlags: 0
