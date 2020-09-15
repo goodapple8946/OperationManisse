@@ -142,9 +142,16 @@ public class Ball : Unit
             }
 
             // 在武器不精准角度范围内，尝试攻击
-            if (angle <= weaponAngle && !isMelee)
+            if (angle <= weaponAngle)
             {
-                RangedAttack();
+                if (isMelee)
+                {
+                    MeleeAttack();
+                }
+                else
+                {
+                    RangedAttack();
+                }
             }
         }
     }
@@ -162,6 +169,12 @@ public class Ball : Unit
             priority += unit.priority;
         }
         return priority;
+    }
+
+    // 近战攻击
+    protected virtual void MeleeAttack()
+    {
+
     }
 
     // 远程攻击
