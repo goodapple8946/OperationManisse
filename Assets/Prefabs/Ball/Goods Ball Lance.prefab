@@ -93,7 +93,6 @@ GameObject:
   - component: {fileID: 7339322637244833373}
   - component: {fileID: 7339322637244833374}
   - component: {fileID: 7339322637244833375}
-  - component: {fileID: 7339322637244833379}
   m_Layer: 0
   m_Name: Goods Ball Lance
   m_TagString: Untagged
@@ -216,21 +215,8 @@ MonoBehaviour:
   weaponOffset: 0
   weaponCDMax: 0
   weaponCDRandom: 0
-  weaponRange: 0
+  weaponRange: 5
   weaponAngle: 0
   missilePrefab: {fileID: 1776344995458206714, guid: cdb9ded5a389e734fae1e10052fd0e6c,
     type: 3}
   isMelee: 1
---- !u!114 &7339322637244833379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7339322637244833368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7028074a3d70cc4582e32bb51ad5e3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  distance: 10
