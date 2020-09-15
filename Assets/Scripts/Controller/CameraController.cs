@@ -132,9 +132,7 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 初始化Camera
-    /// </summary>
+    // 初始化Camera
     public void Init()
     {
         transform.position = originPosition;

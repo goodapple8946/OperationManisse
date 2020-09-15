@@ -57,46 +57,45 @@ public class Block : Unit
     // 将该Block与所有连接的Block断开连接
     protected virtual void Unlink()
     {
-        // 已经购买的Block
-        if (!isSelling)
+        // 遍历所有与该Block连接的Block
+        for (int directionIndex = 0; directionIndex < 4; directionIndex++)
         {
-            // 遍历所有与该Block连接的Block
-            for (int directionIndex = 0; directionIndex < 4; directionIndex++)
+            Block block = blocksLinked[directionIndex];
+            if (block != null)
             {
-                Block block = blocksLinked[directionIndex];
-                if (block != null)
+                // 连接的反方向
+                int directionNegativeIndex = (directionIndex + 2) % 4;
+
+                // 断开该Block
+                blocksLinked[directionIndex] = null;
+                if (joints[directionIndex] != null)
                 {
-                    // 连接的反方向
-                    int directionNegativeIndex = (directionIndex + 2) % 4;
-
-                    // 断开该Block
-                    blocksLinked[directionIndex] = null;
-                    if (joints[directionIndex] != null)
-                    {
-                        Destroy(joints[directionIndex]);
-                    }
-
-                    // 断开连接的Block
-                    block.blocksLinked[directionNegativeIndex] = null;
-                    if (block.joints[directionNegativeIndex] != null)
-                    {
-                        Destroy(block.joints[directionNegativeIndex]);
-                    }
-
-                    // 更新连接的遮罩
-                    block.UpdateCover();
+                    Destroy(joints[directionIndex]);
                 }
+
+                // 断开连接的Block
+                block.blocksLinked[directionNegativeIndex] = null;
+                if (block.joints[directionNegativeIndex] != null)
+                {
+                    Destroy(block.joints[directionNegativeIndex]);
+                }
+
+                // 更新连接的遮罩
+                block.UpdateCover();
             }
-            // 更新遮罩
-            UpdateCover();
         }
+        // 更新遮罩
+        UpdateCover();
     }
 
     // 死亡
     protected override IEnumerator Die()
     {
-        // 断开所有连接
-        Unlink();
+        if (!isSelling)
+        {
+            // 断开所有连接
+            Unlink();
+        }
 
         return base.Die();
     }
