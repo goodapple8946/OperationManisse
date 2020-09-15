@@ -87,7 +87,7 @@ public class Unit : MonoBehaviour
         }
         if (isAlive && !isSelling && isForceProvider && gameController.gamePhase == GameController.GamePhase.Playing)
         {
-            Run();
+            ProvideForce();
         }
         DeathCheck();
     }
@@ -271,7 +271,7 @@ public class Unit : MonoBehaviour
     }
 
     // 提供力
-    protected void Run()
+    protected void ProvideForce()
     {
         // 未达最大速度
         if (body != null && body.velocity.magnitude <= speedMax)

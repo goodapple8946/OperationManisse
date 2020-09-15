@@ -37,6 +37,26 @@ public class Block : Unit
     // 是单向连接的（四周只能有一个方向连接Block）
     public bool isOneLink;
 
+    protected override void OnMouseDown()
+    {
+        base.OnMouseDown();
+
+        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
+        {
+            Unlink();
+        }
+    }
+
+    protected override void OnMouseUp()
+    {
+        base.OnMouseUp();
+
+        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation)
+        {
+            AdsorptionCheck();
+        }
+    }
+
     // 将目标Block按照方向连接到该Block
     protected void LinkBlock(Block block, LinkDirection direction)
     {
@@ -293,32 +313,6 @@ public class Block : Unit
                     break;
                 }
             }
-        }
-    }
-
-    // 购买后锁定旋转
-    protected override void FreezeRotation()
-    {
-        body.constraints = RigidbodyConstraints2D.FreezeRotation;
-    }
-
-    protected override void OnMouseDown()
-    {
-        base.OnMouseDown();
-
-        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
-        {
-            Unlink();
-        }
-    }
-
-    protected override void OnMouseUp()
-    {
-        base.OnMouseUp();
-
-        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation)
-        {
-            AdsorptionCheck();
         }
     }
 }
