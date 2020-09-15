@@ -134,10 +134,4 @@ public class BlockBalloon : Block
             }
         }
     }
-    
-    // 购买后锁定旋转
-    protected override void FreezeRotation()
-    {
-        body.constraints = RigidbodyConstraints2D.FreezeRotation;
-    }
 }
