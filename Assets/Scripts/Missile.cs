@@ -46,9 +46,16 @@ public class Missile : MonoBehaviour
 
     protected virtual void Update()
     {
-        UpdateDuration();
-        DeathCheck();
-        ParticleTail();
+        if (isAlive)
+        {
+            ParticleTail();
+            DeathCheck();
+
+            if (!isMelee)
+            {
+                UpdateDuration();
+            }
+        }
     }
     
     // 尾部粒子
@@ -82,10 +89,7 @@ public class Missile : MonoBehaviour
     // 更新飞行时间
     protected void UpdateDuration()
     {
-        if (!isMelee)
-        {
-            duration -= Time.deltaTime;
-        }
+        duration -= Time.deltaTime;
     }
 
     // 死亡检测

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7339322637090158290}
   - component: {fileID: 7339322637090158289}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Weapon Lance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 7339322637244833373}
   - component: {fileID: 7339322637244833374}
   - component: {fileID: 7339322637244833375}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Goods Ball Lance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
