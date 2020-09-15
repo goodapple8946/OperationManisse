@@ -34,6 +34,9 @@ public class GameController : MonoBehaviour
     // 玩家显示钱数Text
     private Text playerMoneyText;
 
+    // Ctrl键是否被按下
+    public bool keyCtrl;
+
     void Start()
     {
         cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
@@ -50,6 +53,7 @@ public class GameController : MonoBehaviour
     {
         SpaceStart();
         DebugGame();
+        KeyCtrlCheck();
     }
 
     void FixedUpdate()
@@ -245,6 +249,20 @@ public class GameController : MonoBehaviour
                     ball.body.AddForce(new Vector2(50f, 50f));
                 }
             }
+        }
+    }
+
+    // 检测Ctrl键是否被按下
+    void KeyCtrlCheck()
+    {
+        
+        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+        {
+            keyCtrl = true;
+        }
+        else
+        {
+            keyCtrl = false;
         }
     }
 

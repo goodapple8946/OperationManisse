@@ -92,6 +92,64 @@ public class Unit : MonoBehaviour
         DeathCheck();
     }
 
+    protected virtual void OnMouseOver()
+    {
+        // 准备阶段
+        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation)
+        {
+            // 鼠标左键按下
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (isSelling)
+                {
+                    Buy();
+                }
+
+                if (body != null)
+                {
+                    body.bodyType = RigidbodyType2D.Static;
+                }
+
+                GetComponent<SpriteRenderer>().sortingLayerName = "Pick";
+            }
+
+            // 鼠标左键抬起
+            if (Input.GetMouseButtonUp(0))
+            {
+                GetComponent<SpriteRenderer>().sortingLayerName = "Unit";
+
+                if (body != null)
+                {
+                    body.bodyType = RigidbodyType2D.Dynamic;
+                }
+            }
+        }
+
+        // 鼠标右键按下
+        if (Input.GetMouseButtonDown(1))
+        {
+            // 准备阶段，出售
+            if (gameController.gamePhase == GameController.GamePhase.Preparation)
+            {
+                Sell();
+            }
+            // 游戏阶段，删除
+            else if (gameController.gamePhase == GameController.GamePhase.Playing)
+            {
+                Delete();
+            }
+        }
+    }
+
+    protected virtual void OnMouseDrag()
+    {
+        if (clickable && isAlive && !isSelling && gameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
+        {
+            // 拖动
+            transform.Translate(MouseController.offset);
+        }
+    }
+
     // 死亡检测
     protected void DeathCheck()
     {
@@ -237,12 +295,6 @@ public class Unit : MonoBehaviour
         return false;
     }
 
-    // 拖动
-    protected void Drag()
-    {
-        transform.position += (Vector3)MouseController.offset;
-    }
-
     // 准备阶段边界检测
     protected void BoundCheckPreparation()
     {
@@ -278,63 +330,6 @@ public class Unit : MonoBehaviour
         {
             Vector2 forceAdded = Quaternion.AngleAxis(forceAngle, Vector3.forward) * transform.right * force;
             body.AddForce(forceAdded);
-        }
-    }
-
-    protected virtual void OnMouseDown()
-    {
-        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
-        {
-            if (isSelling)
-            {
-                Buy();
-            }
-
-            if (body != null)
-            {
-                body.bodyType = RigidbodyType2D.Static;
-            }
-
-            GetComponent<SpriteRenderer>().sortingLayerName = "Pick";
-        }
-    }
-
-    protected virtual void OnMouseOver()
-    {
-        // 鼠标右键按下
-        if (clickable && Input.GetMouseButton(1))
-        {
-            // 出售
-            if (gameController.gamePhase == GameController.GamePhase.Preparation)
-            {
-                Sell();
-            }
-            // 删除
-            else if (gameController.gamePhase == GameController.GamePhase.Playing)
-            {
-                Delete();
-            }
-        }
-    }
-
-    protected virtual void OnMouseDrag()
-    {
-        if (clickable && isAlive && !isSelling && gameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
-        {
-            Drag();
-        }
-    }
-
-    protected virtual void OnMouseUp()
-    {
-        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation)
-        {
-            GetComponent<SpriteRenderer>().sortingLayerName = "Unit";
-
-            if (body != null)
-            {
-                body.bodyType = RigidbodyType2D.Dynamic;
-            }
         }
     }
 }
