@@ -10,9 +10,6 @@ public class Ball : Unit
     // 武器冷却最大值
     public float weaponCDMax;
 
-    // 武器冷却
-    protected float weaponCD = 0;
-
     // 武器冷却起始随机
     public bool weaponCDRandom;
 
@@ -25,14 +22,17 @@ public class Ball : Unit
     // 弹药预设
     public GameObject missilePrefab;
 
-    // 旋转速率
-    private float rotationSpeed = 2f;
+	// 是否近战
+	public bool isMelee;
 
-    // 是否近战
-    public bool isMelee;
+	// 旋转速率
+	private float rotationSpeed = 2f;
 
-    // 近战武器被创建
-    protected bool haveMeleeWeapon = false;
+	// 武器冷却
+	protected float weaponCD = 0;
+
+	// 近战武器被创建
+	protected bool haveMeleeWeapon = false;
 
     // 发射物
     protected Missile missile;
