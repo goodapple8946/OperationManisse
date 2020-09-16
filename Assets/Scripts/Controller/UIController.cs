@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static GameController;
 
 public class UIController : MonoBehaviour
 {
@@ -9,11 +11,14 @@ public class UIController : MonoBehaviour
     public GameController.GamePhase[] interactablePhases;
 
     private GameController gameController;
+	// 点击option时保存gameController的gamePhase
+	private GamePhase gamePhaseBackup;
 
     void Start()
     {
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
-    }
+		gamePhaseBackup = GamePhase.Preparation;
+	}
 
     void Update()
     {
@@ -34,10 +39,26 @@ public class UIController : MonoBehaviour
         GetComponent<Button>().interactable = false;
     }
 
+	// 展开或叠起菜单
     public void UIOption()
     {
-        Application.Quit();
-    }
+		GameObject menuObject = transform.GetChild(0).gameObject;
+		menuObject.SetActive(!menuObject.activeSelf);
+		// 第一次点击
+		bool openMenu = (gameController.gamePhase != GamePhase.Menu);
+		if (openMenu)
+		{
+			gamePhaseBackup = gameController.gamePhase;
+			gameController.gamePhase = GamePhase.Menu;
+		}
+		// 第二次点击
+		else
+		{
+			gameController.gamePhase = gamePhaseBackup;
+		}
+		// Application.Quit();
+	}
+
     public void UIReset()
     {
         gameController.Reset();
@@ -58,4 +79,14 @@ public class UIController : MonoBehaviour
     {
         gameController.StartGame();
     }
+
+	public void UIVoice()
+	{
+		// TODO:
+	}
+
+	public void UIToLevel()
+	{
+		SceneManager.LoadScene("LevelPanel");
+	}
 }
