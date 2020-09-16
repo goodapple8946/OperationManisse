@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 184814382030521740}
   - component: {fileID: 8983545076222256162}
   - component: {fileID: 7333209171245850546}
-  m_Layer: 13
+  m_Layer: 8
   m_Name: Goods Ball Crossbow
   m_TagString: Ball
   m_Icon: {fileID: 0}
@@ -131,10 +131,11 @@ MonoBehaviour:
   particlePrefab: {fileID: 0}
   particle: {fileID: 0}
   body: {fileID: 0}
+  weaponOffset: 0.32
   weaponCDMax: 1
   weaponCDRandom: 1
   weaponRange: 7
-  weaponAngle: 5
+  weaponRandomAngle: 5
   missilePrefab: {fileID: 6238459050790239717, guid: 108cc2fd75835db46ae27004fa936850,
     type: 3}
   isMelee: 0
@@ -148,7 +149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2270223061042560213}
   - component: {fileID: 5967709418419007745}
-  m_Layer: 13
+  m_Layer: 8
   m_Name: Weapon Crossbow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,7 +207,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -228110775
-  m_SortingLayer: 7
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a0bdb4738c210884e9e62868311122d6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -145,11 +145,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceLaunch: 20
   forceHit: 10
-  health: 1
   damage: 25
   duration: 3
   durationHit: 0
   isAlive: 1
-  particlePrefab: {fileID: 0}
+  particleLaunchPerfab: {fileID: 2351009409937276409, guid: 6168c74241e049a4aa2b9735a3168583,
+    type: 3}
+  particleFlyingPrefab: {fileID: 0}
+  particleHitPrefab: {fileID: 8293551352877460187, guid: 5fce293de388b844f8c9712eaf109f0a,
+    type: 3}
   isMelee: 0
   body: {fileID: 0}

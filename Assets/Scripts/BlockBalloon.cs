@@ -10,6 +10,8 @@ public class BlockBalloon : Block
 
     public float lineDistance;
 
+    public float lineDistanceMax;
+
     protected override void Start()
     {
         base.Start();
@@ -31,7 +33,7 @@ public class BlockBalloon : Block
             if (block != null)
             {
                 // 画线
-                line.SetPosition(0, (Vector2)transform.position + new Vector2(0, -radius));
+                line.SetPosition(0, (Vector2)transform.position);
                 line.SetPosition(1, (Vector2)block.transform.position + new Vector2(0, block.radius));
 
                 // 调整距离
@@ -39,6 +41,12 @@ public class BlockBalloon : Block
 
                 // 受到负重力
                 body.gravityScale = -0.5f;
+
+                if (gameController.gamePhase == GameController.GamePhase.Playing)
+                {
+                    // 气球底部朝向被连接Block
+                    transform.up = transform.position - block.transform.position;
+                }
             }
             else
             {
@@ -47,6 +55,51 @@ public class BlockBalloon : Block
                 
                 // 重新受到重力
                 body.gravityScale = 1;
+            }
+        }
+    }
+
+    protected override void OnMouseOver()
+    {
+        // 准备阶段
+        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation)
+        {
+            // 鼠标左键按下
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (isSelling)
+                {
+                    Buy();
+                }
+
+                Unlink();
+
+                body.bodyType = RigidbodyType2D.Static;
+                SetSpriteSortingLayer("Pick");
+            }
+
+            // 鼠标左键抬起
+            if (Input.GetMouseButtonUp(0))
+            {
+                body.bodyType = RigidbodyType2D.Dynamic;
+                SetSpriteSortingLayer("Unit");
+
+                AdsorptionCheck();
+            }
+        }
+
+        // 鼠标右键按下
+        if (Input.GetMouseButtonDown(1))
+        {
+            // 准备阶段，出售
+            if (gameController.gamePhase == GameController.GamePhase.Preparation)
+            {
+                Sell();
+            }
+            // 游戏阶段，删除
+            else if (gameController.gamePhase == GameController.GamePhase.Playing)
+            {
+                Delete();
             }
         }
     }
@@ -74,11 +127,11 @@ public class BlockBalloon : Block
                 }
 
                 // 断开连接的Block
-                block.blocksLinked[directionNegativeIndex] = null;
-                if (block.joints[directionNegativeIndex] != null)
-                {
-                    Destroy(block.joints[directionNegativeIndex]);
-                }
+                // block.blocksLinked[directionNegativeIndex] = null;
+                // if (block.joints[directionNegativeIndex] != null)
+                // {
+                //     Destroy(block.joints[directionNegativeIndex]);
+                // }
 
                 // 更新连接的遮罩
                 block.UpdateCover();
@@ -95,13 +148,13 @@ public class BlockBalloon : Block
     }
 
     // 吸附检测，仅检测下方
-    public override void AdsorptionCheck()
+    public void AdsorptionCheck()
     {
         // 检测线起始点
         Vector2 origin = (Vector2)transform.position + new Vector2(0, -(radius + groundCheckDistance));
         
         // 向下方发射检测射线
-        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down);
+        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, lineDistanceMax, 1 << LayerMask.NameToLayer("PlayerBlock"));
 
         // 检测到物体
         if (hit.transform != null)
@@ -113,17 +166,15 @@ public class BlockBalloon : Block
             {
                 // 该Block连接目标Block
                 blocksLinked[(int)LinkDirection.Down] = block;
-                joints[(int)LinkDirection.Down] = gameObject.AddComponent<DistanceJoint2D>();
-                joints[(int)LinkDirection.Down].connectedBody = block.body;
-                ((DistanceJoint2D)joints[(int)LinkDirection.Down]).maxDistanceOnly = true;
-                lineDistance = ((DistanceJoint2D)joints[(int)LinkDirection.Down]).distance;
 
-                // 目标Block连接该Block
-                block.blocksLinked[(int)LinkDirection.Up] = gameObject.GetComponent<Block>();
-                // block.joints[(int)LinkDirection.Up] = block.gameObject.AddComponent<DistanceJoint2D>();
-                // block.joints[(int)LinkDirection.Up].connectedBody = body;
-                // ((DistanceJoint2D)block.joints[(int)LinkDirection.Down]).maxDistanceOnly = true;
-                
+                DistanceJoint2D joint = gameObject.AddComponent<DistanceJoint2D>();
+                joint.connectedBody = block.body;
+                joint.maxDistanceOnly = true;
+                lineDistance = joint.distance;
+
+                joints[(int)LinkDirection.Down] = joint;
+
+
                 // 添加线
                 line = gameObject.AddComponent<LineRenderer>();
                 line.positionCount = 2;
@@ -131,11 +182,5 @@ public class BlockBalloon : Block
                 line.startWidth = line.endWidth = 0.04f;
             }
         }
-    }
-    
-    // 购买后锁定旋转
-    protected override void FreezeRotation()
-    {
-        body.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 }

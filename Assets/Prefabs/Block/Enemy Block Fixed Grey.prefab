@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7847521607252601207}
   - component: {fileID: 7333330045788515299}
   - component: {fileID: 7087826650176867544}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: Enemy Block Fixed Grey
   m_TagString: Block
   m_Icon: {fileID: 0}

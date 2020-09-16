@@ -81,9 +81,83 @@ public class Unit : MonoBehaviour
 
     protected virtual void Update()
     {
-        BoundCheckPreparation();
+        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation)
+        {
+            BoundCheckPreparation();
+        }
+        if (isAlive && !isSelling && isForceProvider && gameController.gamePhase == GameController.GamePhase.Playing)
+        {
+            ProvideForce();
+        }
         DeathCheck();
-        Run();
+    }
+
+    protected virtual void OnMouseOver()
+    {
+        // 准备阶段
+        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation)
+        {
+            // 鼠标左键按下
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (isSelling)
+                {
+                    Buy();
+                }
+
+                if (body != null)
+                {
+                    body.bodyType = RigidbodyType2D.Static;
+                }
+
+                SetSpriteSortingLayer("Pick");
+            }
+
+            // 鼠标左键抬起
+            if (Input.GetMouseButtonUp(0))
+            {
+                SetSpriteSortingLayer("Unit");
+
+                if (body != null)
+                {
+                    body.bodyType = RigidbodyType2D.Dynamic;
+                }
+            }
+        }
+
+        // 鼠标右键按下
+        if (Input.GetMouseButtonDown(1))
+        {
+            // 准备阶段，出售
+            if (gameController.gamePhase == GameController.GamePhase.Preparation)
+            {
+                Sell();
+            }
+            // 游戏阶段，删除
+            else if (gameController.gamePhase == GameController.GamePhase.Playing)
+            {
+                Delete();
+            }
+        }
+    }
+
+    protected virtual void OnMouseOut()
+    {
+        GetComponent<SpriteRenderer>().sortingLayerName = "Unit";
+
+        if (body != null)
+        {
+            body.bodyType = RigidbodyType2D.Dynamic;
+        }
+    }
+
+    protected virtual void OnMouseDrag()
+    {
+        if (clickable && isAlive && !isSelling && gameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
+        {
+            // 拖动
+            transform.Translate(MouseController.offset);
+        }
     }
 
     // 死亡检测
@@ -140,37 +214,31 @@ public class Unit : MonoBehaviour
     // 购买
     public virtual void Buy()
     {
-        // 可以购买
-        if (isSelling)
+        // 钱足够
+        if (gameController.playerMoney >= price)
         {
-            // 钱足够
-            if (gameController.playerMoney >= price)
+            // 可以重复购买
+            if (rebuyable)
             {
-                // 可以重复购买
-                if (rebuyable)
-                {
-                    // 在同一位置创建相同的商品
-                    Unit unit = gameController.Create(transform.position, prefab).GetComponent<Unit>();
-                    unit.transform.parent = transform.parent;
-                    unit.gameObject.layer = (int)GameController.Layer.Goods;
-                }
-                isSelling = false;
-                player = 1;
-                transform.parent = gameController.playerObjects.transform;
-                gameObject.layer = (int)GameController.Layer.PlayerUnit;
-
-                // 添加Rigidbody
-                body = gameObject.AddComponent<Rigidbody2D>();
-                body.mass = mass;
-                FreezeRotation();
-
-                gameController.playerMoney -= price;
+                // 在同一位置创建相同的商品
+                Unit unit = gameController.Create(transform.position, prefab).GetComponent<Unit>();
+                unit.transform.parent = transform.parent;
             }
-            // 钱不够
-            else
-            {
-                StartCoroutine(gameController.MoneyNotEnough());
-            }
+            isSelling = false;
+            player = 1;
+            transform.parent = gameController.playerObjects.transform;
+
+            // 添加Rigidbody
+            body = gameObject.AddComponent<Rigidbody2D>();
+            body.mass = mass;
+            FreezeRotation();
+
+            gameController.playerMoney -= price;
+        }
+        // 钱不够
+        else
+        {
+            StartCoroutine(gameController.MoneyNotEnough());
         }
     }
 
@@ -187,6 +255,16 @@ public class Unit : MonoBehaviour
         if (!isSelling && isSellable)
         {
             gameController.playerMoney += price;
+            Destroy(gameObject);
+        }
+    }
+
+    // 删除
+    public virtual void Delete()
+    {
+        // 可以删除
+        if (!isSelling && isSellable)
+        {
             Destroy(gameObject);
         }
     }
@@ -227,35 +305,23 @@ public class Unit : MonoBehaviour
         return false;
     }
 
-    // 拖动
-    protected void Drag()
-    {
-        if (isAlive && !isSelling)
-        {
-            transform.position += (Vector3)MouseController.offset;
-        }
-    }
-
     // 准备阶段边界检测
     protected void BoundCheckPreparation()
     {
-        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation)
+        // 超过边界
+        if (transform.position.x >= gameController.boundRightPreparation)
         {
-            // 超过边界
-            if (transform.position.x >= gameController.boundRightPreparation)
+            if (body != null)
             {
-                GetComponent<SpriteRenderer>().sortingLayerName = "Unit";
-
-                clickable = false;
-                if (body != null)
-                {
-                    body.bodyType = RigidbodyType2D.Dynamic;
-                    body.velocity = new Vector2(-4f, 3f);
-                }
-
-                // 关闭Clickable
-                StartCoroutine(ResetClickable());
+                body.bodyType = RigidbodyType2D.Dynamic;
+                body.velocity = new Vector2(-4f, 3f);
             }
+
+            // 关闭Clickable
+            clickable = false;
+
+            // 恢复Clickable
+            StartCoroutine(ResetClickable());
         }
     }
 
@@ -266,57 +332,41 @@ public class Unit : MonoBehaviour
         clickable = true;
     }
 
-    protected virtual void OnMouseDown()
-    {
-        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
-        {
-            Buy();
-
-            GetComponent<SpriteRenderer>().sortingLayerName = "Pick";
-
-            if (body != null)
-            {
-                body.bodyType = RigidbodyType2D.Static;
-            }
-        }
-    }
-
     // 提供力
-    protected void Run()
+    protected void ProvideForce()
     {
-        if (isAlive && !isSelling && isForceProvider && gameController.gamePhase == GameController.GamePhase.Playing)
+        // 未达最大速度
+        if (body != null && body.velocity.magnitude <= speedMax)
         {
             Vector2 forceAdded = Quaternion.AngleAxis(forceAngle, Vector3.forward) * transform.right * force;
             body.AddForce(forceAdded);
         }
     }
 
-    protected virtual void OnMouseOver()
+    // 设置图像层级（不包括子物体）
+    protected void SetSpriteSortingLayer(string layer)
     {
-        // 鼠标右键按下
-        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(1))
+        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+        if (sprite != null)
         {
-            Sell();
+            sprite.sortingLayerName = layer;
         }
     }
 
-    protected virtual void OnMouseDrag()
+    // 设置图像层级（包括子物体）
+    protected void SetSpriteAndChildSortingLayer(string layer)
     {
-        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
+        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+        if (sprite != null)
         {
-            Drag();
+            sprite.sortingLayerName = layer;
         }
-    }
-
-    protected virtual void OnMouseUp()
-    {
-        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation)
+        SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer spriteChild in sprites)
         {
-            GetComponent<SpriteRenderer>().sortingLayerName = "Unit";
-
-            if (body != null)
+            if (spriteChild.sortingLayerName != "Cover" && spriteChild.sortingLayerName != "Covered" && spriteChild.sortingLayerName != "Outline")
             {
-                body.bodyType = RigidbodyType2D.Dynamic;
+                spriteChild.sortingLayerName = layer;
             }
         }
     }

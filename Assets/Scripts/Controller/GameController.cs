@@ -15,7 +15,7 @@ public class GameController : MonoBehaviour
 
     private CameraController cameraController;
 
-    public enum Layer { Default, TransparentFX, IgnoreRaycast, Water = 4, UI, PlayerUnit = 8, PlayerMissile, EnemyUnit, EnemyMissle, Entity, Goods }
+    public enum Layer { Default, TransparentFX, IgnoreRaycast, Water = 4, UI, PlayerBall = 8, PlayerBlock, PlayerMissile, EnemyBall, EnemyBlock, EnemyMissile, Goods, Ground }
     public enum GamePhase { Menu, Preparation, Playing, Victory, Defeat, Pause }
 
     public GamePhase gamePhase;
@@ -34,6 +34,9 @@ public class GameController : MonoBehaviour
     // 玩家显示钱数Text
     private Text playerMoneyText;
 
+    // Ctrl键是否被按下
+    public bool keyCtrl;
+
     void Start()
     {
         cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
@@ -50,6 +53,7 @@ public class GameController : MonoBehaviour
     {
         SpaceStart();
         DebugGame();
+        KeyCtrlCheck();
     }
 
     void FixedUpdate()
@@ -69,12 +73,7 @@ public class GameController : MonoBehaviour
         enemyObjectsSaved.SetActive(false);
     }
 
-    /// <summary>
-    /// 根据位置及预设类型创建物体（Unit）
-    /// </summary>
-    /// <param name="position">位置</param>
-    /// <param name="blockPrefab">预设</param>
-    /// <returns>创建的物体</returns>
+    // 根据位置及预设类型创建物体（Unit）
     public GameObject Create(Vector2 position, GameObject prefab)
     {
         // 创建实例
@@ -88,9 +87,6 @@ public class GameController : MonoBehaviour
 
         // 添加入playerObjects
         gameObject.transform.parent = playerObjects.transform;
-
-        // Layer
-        gameObject.layer = (int)Layer.PlayerUnit;
 
         return gameObject;
     }
@@ -253,6 +249,20 @@ public class GameController : MonoBehaviour
                     ball.body.AddForce(new Vector2(50f, 50f));
                 }
             }
+        }
+    }
+
+    // 检测Ctrl键是否被按下
+    void KeyCtrlCheck()
+    {
+        
+        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+        {
+            keyCtrl = true;
+        }
+        else
+        {
+            keyCtrl = false;
         }
     }
 
