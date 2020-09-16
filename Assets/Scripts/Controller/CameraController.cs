@@ -41,7 +41,6 @@ public class CameraController : MonoBehaviour
 	public void Init()
 	{
 		transform.position = originPosition;
-		follow = true;
 		followOffset = new Vector3(0, 0, 0);
 	}
 
@@ -54,8 +53,8 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-		bool existScroll = (GetScrollDirection() != Vector2.zero);
-		if (existScroll)
+		bool mouseOutOfScreen = (GetMouseDirection() != Vector2.zero);
+		if (mouseOutOfScreen)
 		{
 			follow = false;
 		}
@@ -64,11 +63,13 @@ public class CameraController : MonoBehaviour
 		if (follow)
 		{
 			Follow();
+			FixBound();
 		}
 		else //自由状态
 		{
 			Zoom();
 			Scroll();
+			FixBound();
 		}
 	}
 
@@ -88,8 +89,6 @@ public class CameraController : MonoBehaviour
 		followOffset = newOffset;
 		// 设置摄像机位置
 		transform.position = corePosition + cameraDepth + newOffset;
-
-		FixBound();
     }
 
     // 缩放
@@ -108,12 +107,14 @@ public class CameraController : MonoBehaviour
     // 滚转
     void Scroll()
     {
-		Vector2 dir = GetScrollDirection();
+		Vector2 dir = GetMouseDirection();
 		transform.Translate(scrollSpeed * Time.deltaTime * dir);
     }
 
-    // 边界修正
-    void FixBound()
+	/// <summary>
+	/// 将摄像头限制在游戏地图内
+	/// </summary>
+	private void FixBound()
     {
         if (transform.position.x > xMax)
         {
@@ -177,10 +178,10 @@ public class CameraController : MonoBehaviour
 
 	/// <summary>
 	/// 鼠标接近屏幕边缘触发的滚珠方向向量,
-	/// 右左(1,0),(-1,0)上下(0,1)(0,-1)
+	/// 右(1,0)左(-1,0)上(0,1)下(0,-1)
 	/// 不存在滚转为(0,0)
 	/// </summary>
-	private Vector2 GetScrollDirection()
+	private Vector2 GetMouseDirection()
 	{
 		Vector2 dir = new Vector2(0, 0);
 		// 向右
