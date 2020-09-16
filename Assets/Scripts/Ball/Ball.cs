@@ -17,7 +17,7 @@ public class Ball : Unit
     public float weaponRange;
 
     // 武器不精准角度
-    public float weaponAngle;
+    public float weaponRandomAngle;
 
     // 弹药预设
     public GameObject missilePrefab;
@@ -26,7 +26,7 @@ public class Ball : Unit
 	public bool isMelee;
 
 	// 旋转速率
-	private float rotationSpeed = 2f;
+	protected float rotationSpeed = 2f;
 
 	// 武器冷却
 	protected float weaponCD = 0;
@@ -62,7 +62,18 @@ public class Ball : Unit
             if (isAlive)
             {
                 WeaponCoolDown();
-                FindEnemy();
+
+                // 如果当前没有目标，或者当前目标太远，寻找敌人
+                if (target == null || !target.isAlive || (target.transform.position - transform.position).magnitude > weaponRange)
+                {
+                    FindEnemy();
+                }
+
+                // 已经有目标或索敌找到目标
+                if (target != null)
+                {
+                    AimAndAttack();
+                }
 
                 // 如果是近战
                 if (isMelee)
@@ -90,103 +101,32 @@ public class Ball : Unit
     // 索敌
     protected virtual void FindEnemy()
     {
-        // 如果当前没有目标，或者当前目标太远，寻找敌人
-        if (target == null || !target.isAlive || (target.transform.position - transform.position).magnitude > weaponRange)
+        target = null;
+
+        ArrayList gameObjects = new ArrayList();
+        gameObjects.AddRange(GameObject.FindGameObjectsWithTag("Ball"));
+        gameObjects.AddRange(GameObject.FindGameObjectsWithTag("Block"));
+
+        float priorityTarget = 0;
+
+        foreach (GameObject gameObject in gameObjects)
         {
-            target = null;
+            Unit unit = gameObject.GetComponent<Unit>();
 
-            ArrayList gameObjects = new ArrayList();
-            gameObjects.AddRange(GameObject.FindGameObjectsWithTag("Ball"));
-            gameObjects.AddRange(GameObject.FindGameObjectsWithTag("Block"));
-
-            float priorityTarget = 0;
-
-            foreach (GameObject gameObject in gameObjects)
+            // 目标存活且非卖品
+            if (unit.isAlive && !unit.isSelling)
             {
-                Unit unit = gameObject.GetComponent<Unit>();
-
-                // 目标存活且非卖品
-                if (unit.isAlive && !unit.isSelling)
+                // 目标是敌对的
+                if (player == 1 && unit.player == 2 || player == 2 && unit.player == 1)
                 {
-                    // 目标是敌对的
-                    if (player == 1 && unit.player == 2 || player == 2 && unit.player == 1)
+                    float priority = enemyPriority(unit);
+
+                    // 优先级更高的目标
+                    if (priority > priorityTarget)
                     {
-                        float priority = enemyPriority(unit);
-
-                        // 优先级更高的目标
-                        if (priority > priorityTarget)
-                        {
-                            target = unit;
-                            priorityTarget = priority;
-                        }
+                        target = unit;
+                        priorityTarget = priority;
                     }
-                }
-            }
-        }
-
-        // 找到目标
-        if (target != null)
-        {
-            if (isMelee)
-            {
-                // 自己的朝向
-                Vector2 vector = transform.right;
-
-                // 两者间的向量
-                Vector2 vectorTarget = target.transform.position - transform.position;
-
-                // 需要旋转的角度
-                float angle = Vector2.SignedAngle(vector, vectorTarget);
-
-                // 朝向敌人
-                if (angle > rotationSpeed)
-                {
-                    transform.Rotate(0, 0, rotationSpeed);
-                }
-                else if (angle < -rotationSpeed)
-                {
-                    transform.Rotate(0, 0, -rotationSpeed);
-                }
-                else
-                {
-                    transform.Rotate(0, 0, angle);
-                }
-
-                // 在武器不精准角度范围内，尝试攻击
-                if (angle <= weaponAngle)
-                {
-                    MeleeAttack();
-                }
-            }
-            else
-            {
-                // 自己的朝向
-                Vector2 vector = transform.right;
-
-                // 两者间的向量
-                Vector2 vectorTarget = target.transform.position - transform.position;
-
-                // 需要旋转的角度
-                float angle = Vector2.SignedAngle(vector, vectorTarget);
-
-                // 朝向敌人
-                if (angle > rotationSpeed)
-                {
-                    transform.Rotate(0, 0, rotationSpeed);
-                }
-                else if (angle < -rotationSpeed)
-                {
-                    transform.Rotate(0, 0, -rotationSpeed);
-                }
-                else
-                {
-                    transform.Rotate(0, 0, angle);
-                }
-
-                // 在武器不精准角度范围内，尝试攻击
-                if (angle <= weaponAngle)
-                {
-                    RangedAttack();
                 }
             }
         }
@@ -207,6 +147,73 @@ public class Ball : Unit
         return priority;
     }
 
+    // 瞄准并攻击
+    protected virtual void AimAndAttack()
+    {
+        if (isMelee)
+        {
+            // 自己的朝向
+            Vector2 vector = transform.right;
+
+            // 两者间的向量
+            Vector2 vectorTarget = target.transform.position - transform.position;
+
+            // 需要旋转的角度
+            float angle = Vector2.SignedAngle(vector, vectorTarget);
+
+            // 朝向敌人
+            if (angle > rotationSpeed)
+            {
+                transform.Rotate(0, 0, rotationSpeed);
+            }
+            else if (angle < -rotationSpeed)
+            {
+                transform.Rotate(0, 0, -rotationSpeed);
+            }
+            else
+            {
+                transform.Rotate(0, 0, angle);
+            }
+
+            // 在武器不精准角度范围内，尝试攻击
+            if (angle <= weaponRandomAngle)
+            {
+                MeleeAttack();
+            }
+        }
+        else
+        {
+            // 自己的朝向
+            Vector2 vector = transform.right;
+
+            // 两者间的向量
+            Vector2 vectorTarget = target.transform.position - transform.position;
+
+            // 需要旋转的角度
+            float angle = Vector2.SignedAngle(vector, vectorTarget);
+
+            // 朝向敌人
+            if (angle > rotationSpeed)
+            {
+                transform.Rotate(0, 0, rotationSpeed);
+            }
+            else if (angle < -rotationSpeed)
+            {
+                transform.Rotate(0, 0, -rotationSpeed);
+            }
+            else
+            {
+                transform.Rotate(0, 0, angle);
+            }
+
+            // 在武器不精准角度范围内，尝试攻击
+            if (angle <= weaponRandomAngle)
+            {
+                RangedAttack();
+            }
+        }
+    }
+
     // 近战攻击
     protected virtual void MeleeAttack()
     {
@@ -224,6 +231,9 @@ public class Ball : Unit
             // 创建弹药
             Missile missile = Instantiate(missilePrefab).GetComponent<Missile>();
 
+            // 弹药玩家
+            missile.player = player;
+
             // 弹药发射点
             missile.transform.position = transform.position + transform.right * weaponOffset;
 
@@ -231,7 +241,7 @@ public class Ball : Unit
             missile.transform.right = transform.right;
 
             // 弹药随机角度
-            missile.transform.Rotate(0, 0, Random.Range(-weaponAngle, weaponAngle));
+            missile.transform.Rotate(0, 0, Random.Range(-weaponRandomAngle, weaponRandomAngle));
 
             // 弹药初速度
             // missile.body.velocity = body.velocity;
@@ -268,6 +278,9 @@ public class Ball : Unit
 
         // 创建武器
         missile = Instantiate(missilePrefab).GetComponent<Missile>();
+
+        // 武器玩家
+        missile.player = player;
 
         // 武器位置
         missile.transform.position = transform.position;

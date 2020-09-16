@@ -57,6 +57,9 @@ TagManager:
   - name: Unit
     uniqueID: 158068497
     locked: 0
+  - name: OutLine
+    uniqueID: 1115787969
+    locked: 0
   - name: Missile
     uniqueID: 2190632955
     locked: 0
@@ -68,4 +71,7 @@ TagManager:
     locked: 0
   - name: Cover
     uniqueID: 4066856521
+    locked: 0
+  - name: Particle
+    uniqueID: 1045231527
     locked: 0

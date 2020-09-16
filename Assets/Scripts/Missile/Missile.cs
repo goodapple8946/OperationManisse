@@ -34,6 +34,9 @@ public class Missile : MonoBehaviour
     // 近战
     public bool isMelee;
 
+    // 所属玩家
+    public int player;
+
     public Rigidbody2D body;
 
     protected virtual void Start()
@@ -46,6 +49,7 @@ public class Missile : MonoBehaviour
         if (isAlive)
         {
             ParticleTail();
+            RotateToVelocity();
         }
 
         if (!isMelee)
@@ -135,5 +139,11 @@ public class Missile : MonoBehaviour
     protected virtual void Die()
     {
         Destroy(gameObject);
+    }
+
+    // 朝向速度方向
+    protected void RotateToVelocity()
+    {
+        transform.right = body.velocity;
     }
 }

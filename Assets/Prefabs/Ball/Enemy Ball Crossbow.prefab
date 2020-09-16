@@ -68,7 +68,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -228110775
-  m_SortingLayer: 7
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a0bdb4738c210884e9e62868311122d6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -217,7 +217,7 @@ MonoBehaviour:
   weaponCDMax: 1
   weaponCDRandom: 1
   weaponRange: 7
-  weaponAngle: 5
+  weaponRandomAngle: 5
   missilePrefab: {fileID: 6238459050790239717, guid: 108cc2fd75835db46ae27004fa936850,
     type: 3}
   isMelee: 0

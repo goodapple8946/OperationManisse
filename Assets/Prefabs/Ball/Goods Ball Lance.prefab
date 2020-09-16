@@ -68,7 +68,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -228110775
-  m_SortingLayer: 7
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 74432367c3e6c26418bbe67da231047a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 8907995468029210499}
   m_Layer: 8
   m_Name: Goods Ball Lance
-  m_TagString: Untagged
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -216,7 +216,7 @@ MonoBehaviour:
   weaponCDMax: 10
   weaponCDRandom: 0
   weaponRange: 5
-  weaponAngle: 0
+  weaponRandomAngle: 0
   missilePrefab: {fileID: 1776344995458206714, guid: cdb9ded5a389e734fae1e10052fd0e6c,
     type: 3}
   isMelee: 1

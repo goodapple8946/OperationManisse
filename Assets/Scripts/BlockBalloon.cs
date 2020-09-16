@@ -33,7 +33,7 @@ public class BlockBalloon : Block
             if (block != null)
             {
                 // 画线
-                line.SetPosition(0, (Vector2)transform.position + new Vector2(0, -radius));
+                line.SetPosition(0, (Vector2)transform.position);
                 line.SetPosition(1, (Vector2)block.transform.position + new Vector2(0, block.radius));
 
                 // 调整距离
@@ -41,6 +41,12 @@ public class BlockBalloon : Block
 
                 // 受到负重力
                 body.gravityScale = -0.5f;
+
+                if (gameController.gamePhase == GameController.GamePhase.Playing)
+                {
+                    // 气球底部朝向被连接Block
+                    transform.up = transform.position - block.transform.position;
+                }
             }
             else
             {
@@ -121,11 +127,11 @@ public class BlockBalloon : Block
                 }
 
                 // 断开连接的Block
-                block.blocksLinked[directionNegativeIndex] = null;
-                if (block.joints[directionNegativeIndex] != null)
-                {
-                    Destroy(block.joints[directionNegativeIndex]);
-                }
+                // block.blocksLinked[directionNegativeIndex] = null;
+                // if (block.joints[directionNegativeIndex] != null)
+                // {
+                //     Destroy(block.joints[directionNegativeIndex]);
+                // }
 
                 // 更新连接的遮罩
                 block.UpdateCover();
@@ -160,17 +166,15 @@ public class BlockBalloon : Block
             {
                 // 该Block连接目标Block
                 blocksLinked[(int)LinkDirection.Down] = block;
-                joints[(int)LinkDirection.Down] = gameObject.AddComponent<DistanceJoint2D>();
-                joints[(int)LinkDirection.Down].connectedBody = block.body;
-                ((DistanceJoint2D)joints[(int)LinkDirection.Down]).maxDistanceOnly = true;
-                lineDistance = ((DistanceJoint2D)joints[(int)LinkDirection.Down]).distance;
 
-                // 目标Block连接该Block
-                block.blocksLinked[(int)LinkDirection.Up] = gameObject.GetComponent<Block>();
-                // block.joints[(int)LinkDirection.Up] = block.gameObject.AddComponent<DistanceJoint2D>();
-                // block.joints[(int)LinkDirection.Up].connectedBody = body;
-                // ((DistanceJoint2D)block.joints[(int)LinkDirection.Down]).maxDistanceOnly = true;
-                
+                DistanceJoint2D joint = gameObject.AddComponent<DistanceJoint2D>();
+                joint.connectedBody = block.body;
+                joint.maxDistanceOnly = true;
+                lineDistance = joint.distance;
+
+                joints[(int)LinkDirection.Down] = joint;
+
+
                 // 添加线
                 line = gameObject.AddComponent<LineRenderer>();
                 line.positionCount = 2;

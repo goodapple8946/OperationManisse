@@ -7,8 +7,8 @@ public class Block : Unit
 {
     // 吸附半径与严格吸附半径
     // 拖动Block时，如果与其他Block的吸附点距离较近时，则连接两者，并且调整拖动Block的位置
-    public static float adsorptionDistance = 0.3f;
-    public static float adsorptionDistanceStrict = 0.01f;
+    public static float absorptionDistance = 0.3f;
+    public static float absorptionDistanceStrict = 0.01f;
 
     // 连接其他Block的方向
     public enum LinkDirection { Right, Up, Left, Down }
@@ -36,6 +36,17 @@ public class Block : Unit
 
     // 是单向连接的（四周只能有一个方向连接Block）
     public bool isOneLink;
+
+    /*
+     * 松开鼠标左键时，Block连接的逻辑：
+     * 1. 使用Find First Block递归遍历与鼠标松开Block连接的所有Block
+     * 2. 对每一个遍历到的Block进行Absorption Check，尝试连接四周的Block
+     * 3. Absorption Check Unlinked时对其四个方向进行Absorption Check Direction，参数为absorptionDistance，以检测遍历到的Block是否能够进行吸附
+     * 4. 当这次递归遍历中出现第一个能够完成吸附的Block时，记这个Block为First Block，中断循环
+     * 5. 使用Absorb Position Recursively，递归遍历与First Block连接的所有Block
+     * 6. 对每一个遍历到的Block对四周进行连接检测，如果有连接的Block，将连接的Block位移到与遍历到的Block贴合的位置
+     * 7. 在这个遍历到的Block进行完四周检测后，再进行一次Absorption Check，连接四周的Block
+     */
 
     protected override void OnMouseOver()
     {
@@ -68,11 +79,16 @@ public class Block : Unit
                 rand = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
                 SetBlockLinkedSelected(false, rand);
 
-                AdsorptionCheck(adsorptionDistance);
-
-                // 完成后，递归地对所有连接的Block进行吸附（位置调整优化）
+                // 以下是注释中的Block连接逻辑：
                 rand = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
-                AbsorbPositionRecursively(rand);
+                Block firstBlock = FindFirstBlock(rand);
+
+                if (firstBlock != null)
+                {
+                    // 完成后，递归地对所有连接的Block进行吸附位移
+                    rand = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
+                    firstBlock.AbsorbPositionRecursively(rand);
+                }
             }
         }
 
@@ -92,6 +108,25 @@ public class Block : Unit
         }
     }
 
+    protected override void OnMouseOut()
+    {
+        int rand;
+
+        rand = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
+        SetBlockLinkedSelected(false, rand);
+
+        // 以下是注释中的Block连接逻辑：
+        rand = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
+        Block firstBlock = FindFirstBlock(rand);
+
+        if (firstBlock != null)
+        {
+            // 完成后，递归地对所有连接的Block进行吸附位移
+            rand = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
+            firstBlock.AbsorbPositionRecursively(rand);
+        }
+    }
+
     protected override void OnMouseDrag()
     {
         if (clickable && isAlive && !isSelling && gameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
@@ -99,6 +134,30 @@ public class Block : Unit
             int rand = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
             TranslateBlockLinked(MouseController.offset, rand);
         }
+    }
+
+    // 寻找First Block（同时对First Block进行吸附与连接）
+    protected Block FindFirstBlock(int checkTag)
+    {
+        this.checkTag = checkTag;
+
+        if (AbsorptionCheck(absorptionDistance))
+        {
+            // 找到了First Block
+            return this;
+        }
+        foreach (Block block in blocksLinked)
+        {
+            if (block != null && block.checkTag != checkTag)
+            {
+                Block result = block.FindFirstBlock(checkTag);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+        }
+        return null;
     }
 
     // 所有连接的Block同时移动
@@ -152,9 +211,9 @@ public class Block : Unit
         joints[(int)direction].connectedBody = block.body;
 
         // 目标Block连接该Block
-         block.blocksLinked[(int)directionNegative] = gameObject.GetComponent<Block>();
-        // block.joints[(int)directionNegative] = block.gameObject.AddComponent<FixedJoint2D>();
-        // block.joints[(int)directionNegative].connectedBody = body;
+        block.blocksLinked[(int)directionNegative] = gameObject.GetComponent<Block>();
+        block.joints[(int)directionNegative] = block.gameObject.AddComponent<FixedJoint2D>();
+        block.joints[(int)directionNegative].connectedBody = body;
     }
 
     // 将该Block与所有连接的Block断开连接
@@ -203,15 +262,8 @@ public class Block : Unit
         return base.Die();
     }
 
-    /*
-     * Block吸附的过程为：
-     * 1. 进行AdsorptionCheck
-     * 2. AdsorptionCheck中，根据四个方向进行AdsorptionCheckDirection
-     * 3. 如果AdsorptionCheckDirection返回值不为null，进行Absorb
-     */
-
     // 根据吸附方向返回Block的吸附点
-    public Vector2 AdsorptionPoint(LinkDirection direction)
+    public Vector2 AbsorptionPoint(LinkDirection direction)
     {
         Vector2 point = transform.position;
         switch (direction)
@@ -232,34 +284,45 @@ public class Block : Unit
         return point;
     }
 
-    // 吸附检测
-    public virtual void AdsorptionCheck(float adsorptionDistance)
+    // 吸附检测，返回是否成功吸附
+    public virtual bool AbsorptionCheck(float absorptionDistance)
     {
-        // 遍历四个检测方向
-        for (int i = 0; i < 4; i++)
+        // 如果是单向连接的，需要保证blockLinked均为null
+        if (isOneLink)
         {
-            // 检测方向
-            LinkDirection direction = (LinkDirection)i;
-
-            // 吸附检测
-            Block block = AdsorptionCheckDirection(direction, adsorptionDistance);
-
-            // 吸附并连接
-            if (block != null)
+            for (int i = 0; i < 4; i++)
             {
-                Absorb(block, direction);
-
-                // 单向连接的Block只能吸附一个方向
-                if (isOneLink)
+                if (blocksLinked[i] != null)
                 {
-                    break;
+                    return false;
                 }
             }
         }
+
+        // 遍历四个检测方向
+        for (int i = 0; i < 4; i++)
+        {
+            if (blocksLinked[i] == null)
+            {
+                // 检测方向
+                LinkDirection direction = (LinkDirection)i;
+
+                // 吸附检测
+                Block block = AbsorptionCheckDirection(direction, absorptionDistance);
+
+                // 吸附并连接
+                if (block != null)
+                {
+                    Absorb(block, direction);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     // 根据方向检测该Block是否处于其他Block的吸附范围内
-    protected virtual Block AdsorptionCheckDirection(LinkDirection direction, float checkDistance)
+    protected virtual Block AbsorptionCheckDirection(LinkDirection direction, float checkDistance)
     {
         // 吸附方向，即检测方向的反方向
         LinkDirection directionNegative = (LinkDirection)(((int)direction + 2) % 4);
@@ -303,10 +366,10 @@ public class Block : Unit
                     }
                 }
                 // 遍历到的Block吸附点
-                Vector2 adsorptionPoint = block.AdsorptionPoint(directionNegative);
+                Vector2 absorptionPoint = block.AbsorptionPoint(directionNegative);
 
                 // 该Block与吸附点的距离
-                float distance = ((Vector2)transform.position - adsorptionPoint).magnitude;
+                float distance = ((Vector2)transform.position - absorptionPoint).magnitude;
 
                 // 满足吸附距离
                 if (distance <= checkDistance)
@@ -319,12 +382,9 @@ public class Block : Unit
         return null;
     }
 
-    // 将该Block与目标Block根据方向吸附并连接
+    // 将该Block与目标Block根据方向连接（未吸附位移）
     public void Absorb(Block block, LinkDirection direction)
     {
-        // 吸附方向，即检测方向的反方向
-        LinkDirection directionNegative = (LinkDirection)(((int)direction + 2) % 4);
-
         // 连接Block
         LinkBlock(block, direction);
 
@@ -332,7 +392,7 @@ public class Block : Unit
         UpdateCover();
         block.UpdateCover();
     }
-    
+
     // 对所有连接的Block，递归地根据方向吸附并连接
     public void AbsorbPositionRecursively(int checkTag)
     {
@@ -380,7 +440,20 @@ public class Block : Unit
                 block.AbsorbPositionRecursively(checkTag);
             }
         }
-        AdsorptionCheck(adsorptionDistanceStrict);
+        // 最后将紧挨着的，未连接的Block相连
+        AbsorptionCheck(absorptionDistanceStrict);
+    }
+
+    // 出售
+    public override void Sell()
+    {
+        // 可以出售
+        if (!isSelling && isSellable)
+        {
+            Unlink();
+            gameController.playerMoney += price;
+            Destroy(gameObject);
+        }
     }
 
     // 更新遮罩

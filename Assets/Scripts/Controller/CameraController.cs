@@ -41,7 +41,6 @@ public class CameraController : MonoBehaviour
 	public void Init()
 	{
 		transform.position = originPosition;
-		follow = true;
 		followOffset = new Vector3(0, 0, 0);
 	}
 
@@ -135,18 +134,22 @@ public class CameraController : MonoBehaviour
         if (transform.position.x > xMax)
         {
             transform.position = new Vector3(xMax, transform.position.y, cameraZ);
+            follow = false;
         }
         else if (transform.position.x < xMin)
         {
             transform.position = new Vector3(xMin, transform.position.y, cameraZ);
+            follow = false;
         }
         if (transform.position.y > yMax)
         {
             transform.position = new Vector3(transform.position.x, yMax, cameraZ);
+            follow = false;
         }
         else if (transform.position.y < yMin)
         {
             transform.position = new Vector3(transform.position.x, yMin, cameraZ);
+            follow = false;
         }
     }
 
@@ -165,7 +168,7 @@ public class CameraController : MonoBehaviour
 			velocity.y : moveDirection.y;
 		// 以屏幕一百之一作为factor,向运动方向偏移,以获得平滑的效果
 		float offsetFactor =
-			Mathf.Sqrt(cameraHeight * cameraHeight + cameraWeight * cameraWeight) / 100;
+			Mathf.Sqrt(cameraHeight * cameraHeight + cameraWeight * cameraWeight) / 500;
 		Vector2 newFollowOffset = new Vector2(
 			followOffset.x + offsetFactor * weightX,
 			followOffset.y + offsetFactor * weightY);

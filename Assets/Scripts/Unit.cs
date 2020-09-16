@@ -141,6 +141,16 @@ public class Unit : MonoBehaviour
         }
     }
 
+    protected virtual void OnMouseOut()
+    {
+        GetComponent<SpriteRenderer>().sortingLayerName = "Unit";
+
+        if (body != null)
+        {
+            body.bodyType = RigidbodyType2D.Dynamic;
+        }
+    }
+
     protected virtual void OnMouseDrag()
     {
         if (clickable && isAlive && !isSelling && gameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))

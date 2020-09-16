@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6893533042832746187}
   - component: {fileID: 2715570599972991359}
   - component: {fileID: 245480774657648786}
+  - component: {fileID: 1380760478025966649}
   m_Layer: 9
   m_Name: Particle Propeller Flame
   m_TagString: Untagged
@@ -4729,7 +4730,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -228110775
-  m_SortingLayer: 7
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_RenderMode: 0
   m_SortMode: 0
@@ -4754,3 +4755,15 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &1380760478025966649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3907941134862332719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee328930b00be6840975d9d6ff644404, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
