@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceLaunch: 15
-  forceHit: 45
+  forceHit: 90
   damage: 75
   duration: 3
   durationHit: 0

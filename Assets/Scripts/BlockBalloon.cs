@@ -75,14 +75,14 @@ public class BlockBalloon : Block
                 Unlink();
 
                 body.bodyType = RigidbodyType2D.Static;
-                GetComponent<SpriteRenderer>().sortingLayerName = "Pick";
+                SetSpriteSortingLayer("Pick");
             }
 
             // 鼠标左键抬起
             if (Input.GetMouseButtonUp(0))
             {
                 body.bodyType = RigidbodyType2D.Dynamic;
-                GetComponent<SpriteRenderer>().sortingLayerName = "Unit";
+                SetSpriteSortingLayer("Unit");
 
                 AdsorptionCheck();
             }

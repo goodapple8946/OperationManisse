@@ -8,7 +8,7 @@ public class Block : Unit
     // 吸附半径与严格吸附半径
     // 拖动Block时，如果与其他Block的吸附点距离较近时，则连接两者，并且调整拖动Block的位置
     public static float absorptionDistance = 0.3f;
-    public static float absorptionDistanceStrict = 0.01f;
+    public static float absorptionDistanceStrict = 0.1f;
 
     // 连接其他Block的方向
     public enum LinkDirection { Right, Up, Left, Down }
@@ -37,6 +37,18 @@ public class Block : Unit
     // 是单向连接的（四周只能有一个方向连接Block）
     public bool isOneLink;
 
+    // 是轮子
+    public bool isWheel;
+
+    // 转速
+    protected float speedRotation;
+
+    // 转速比率
+    protected float speedRatioRotation = 0.5f;
+
+    // 转速阻尼
+    protected float speedDragRotation = 0.5f;
+
     /*
      * 松开鼠标左键时，Block连接的逻辑：
      * 1. 使用Find First Block递归遍历与鼠标松开Block连接的所有Block
@@ -47,6 +59,54 @@ public class Block : Unit
      * 6. 对每一个遍历到的Block对四周进行连接检测，如果有连接的Block，将连接的Block位移到与遍历到的Block贴合的位置
      * 7. 在这个遍历到的Block进行完四周检测后，再进行一次Absorption Check，连接四周的Block
      */
+
+    protected override void Update()
+    {
+        base.Update();
+
+        // 轮子在移动时，需要旋转子物体中的Sprite
+        if (isAlive && !isSelling && isWheel)
+        {
+            GetSpeedRotationByVelocity();
+            RotateSprite();
+        }
+    }
+
+    // 根据当前速度获得转速
+    protected virtual void GetSpeedRotationByVelocity()
+    {
+        if (IsGrounded())
+        {
+            // 角速度 = 线速度 / 半径
+            if (body.velocity.x > 0)
+            {
+                speedRotation = body.velocity.magnitude / radius;
+            }
+            else if (body.velocity.x < 0)
+            {
+                speedRotation = -body.velocity.magnitude / radius;
+            }
+            else
+            {
+                speedRotation = 0;
+            }
+        }
+    }
+
+    // 根据转速旋转Sprite
+    protected virtual void RotateSprite()
+    {
+        SpriteRenderer[] sprites = gameObject.GetComponentsInChildren<SpriteRenderer>();
+
+        foreach (SpriteRenderer sprite in sprites)
+        {
+            if (sprite.gameObject.name == "Sprite")
+            {
+                sprite.gameObject.transform.Rotate(0, 0, -speedRotation * speedRatioRotation);
+                break;
+            }
+        }
+    }
 
     protected override void OnMouseOver()
     {
@@ -183,12 +243,12 @@ public class Block : Unit
         if (selected)
         {
             body.bodyType = RigidbodyType2D.Static;
-            GetComponent<SpriteRenderer>().sortingLayerName = "Pick";
+            SetSpriteAndChildSortingLayer("Pick");
         }
         else
         {
             body.bodyType = RigidbodyType2D.Dynamic;
-            GetComponent<SpriteRenderer>().sortingLayerName = "Unit";
+            SetSpriteAndChildSortingLayer("Unit");
         }
         foreach (Block block in blocksLinked)
         {
@@ -462,11 +522,15 @@ public class Block : Unit
         // 如果有遮罩预设
         if (coverPrefab != null)
         {
-            // 删除当前遮罩
-            if (transform.childCount > 0)
+            // 遍历子物体
+            for (int i = 0; i < transform.childCount; i++)
             {
-                GameObject cover = transform.GetChild(0).gameObject;
-                Destroy(cover);
+                // 删除当前遮罩
+                GameObject cover = transform.GetChild(i).gameObject;
+                if (cover.GetComponent<SpriteRenderer>().sortingLayerName == "Cover" || cover.GetComponent<SpriteRenderer>().sortingLayerName == "Covered")
+                {
+                    Destroy(cover);
+                }
             }
 
             // 遍历四个方向

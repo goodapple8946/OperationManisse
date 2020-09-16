@@ -34,61 +34,61 @@ public class CameraController : MonoBehaviour
     public float yMax;
 
     private GameController gameController;
-	// 记录上一次镜头跟player core需要的偏移
-	private Vector3 followOffset;
+    // 记录上一次镜头跟player core需要的偏移
+    private Vector3 followOffset;
 
-	// 初始化Camera
-	public void Init()
-	{
-		transform.position = originPosition;
-		followOffset = new Vector3(0, 0, 0);
-	}
-
-	void Start()
+    // 初始化Camera
+    public void Init()
     {
-		Init();
+        transform.position = originPosition;
+        followOffset = new Vector3(0, 0, 0);
+    }
+
+    void Start()
+    {
+        Init();
         mainCamera = GetComponent<Camera>();
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
     }
 
     void Update()
     {
-		bool existScroll = (GetScrollDirection() != Vector2.zero);
-		if (existScroll)
-		{
-			follow = false;
-		}
+        bool existScroll = (GetScrollDirection() != Vector2.zero);
+        if (existScroll)
+        {
+            follow = false;
+        }
 
-		// follow状态
-		if (follow)
-		{
-			Follow();
-		}
-		else //自由状态
-		{
-			Zoom();
-			Scroll();
-		}
-	}
+        // follow状态
+        if (follow)
+        {
+            Follow();
+        }
+        else //自由状态
+        {
+            Zoom();
+            Scroll();
+        }
+    }
 
     // 跟随玩家核心
     void Follow()
     {
-		GameObject core = GameObject.Find("Player Objects/Player Core");
-		if (core == null || !core.GetComponent<Block>().isAlive)
-		{
-			return;
-		}
+        GameObject core = GameObject.Find("Player Objects/Player Core");
+        if (core == null || !core.GetComponent<Block>().isAlive)
+        {
+            return;
+        }
 
-		Vector3 corePosition = core.transform.position;
-		Vector3 cameraDepth = new Vector3(0, 0, cameraZ);
-		Vector3 newOffset = CalcuteFollowOffset(core.GetComponent<Rigidbody2D>().velocity);
-		// 维护更新followOffset
-		followOffset = newOffset;
-		// 设置摄像机位置
-		transform.position = corePosition + cameraDepth + newOffset;
+        Vector3 corePosition = core.transform.position;
+        Vector3 cameraDepth = new Vector3(0, 0, cameraZ);
+        Vector3 newOffset = CalcuteFollowOffset(core.GetComponent<Rigidbody2D>().velocity);
+        // 维护更新followOffset
+        followOffset = newOffset;
+        // 设置摄像机位置
+        transform.position = corePosition + cameraDepth + newOffset;
 
-		FixBound();
+        FixBound();
     }
 
     // 缩放
@@ -107,8 +107,8 @@ public class CameraController : MonoBehaviour
     // 滚转
     void Scroll()
     {
-		Vector2 dir = GetScrollDirection();
-		transform.Translate(scrollSpeed * Time.deltaTime * dir);
+        Vector2 dir = GetScrollDirection();
+        transform.Translate(scrollSpeed * Time.deltaTime * dir);
     }
 
     // 边界修正
@@ -117,96 +117,92 @@ public class CameraController : MonoBehaviour
         if (transform.position.x > xMax)
         {
             transform.position = new Vector3(xMax, transform.position.y, cameraZ);
-            follow = false;
         }
         else if (transform.position.x < xMin)
         {
             transform.position = new Vector3(xMin, transform.position.y, cameraZ);
-            follow = false;
         }
         if (transform.position.y > yMax)
         {
             transform.position = new Vector3(transform.position.x, yMax, cameraZ);
-            follow = false;
         }
         else if (transform.position.y < yMin)
         {
             transform.position = new Vector3(transform.position.x, yMin, cameraZ);
-            follow = false;
         }
     }
 
-	private Vector2 CalcuteFollowOffset(Vector2 velocity)
-	{
-		// 获取当前镜头屏幕的一半长，一半宽
-		float cameraHeight = mainCamera.orthographicSize;
-		float cameraWeight = mainCamera.orthographicSize * mainCamera.aspect;
+    private Vector2 CalcuteFollowOffset(Vector2 velocity)
+    {
+        // 获取当前镜头屏幕的一半长，一半宽
+        float cameraHeight = mainCamera.orthographicSize;
+        float cameraWeight = mainCamera.orthographicSize * mainCamera.aspect;
 
-		// 获取玩家核心的运动方向向量
-		Vector2 moveDirection = velocity.normalized;
-		// 采取两者中小的,以获得平滑的效果
-		float weightX = Mathf.Abs(velocity.x) < Mathf.Abs(moveDirection.x) ? 
-			velocity.x : moveDirection.x;
-		float weightY = Mathf.Abs(velocity.y) < Mathf.Abs(moveDirection.y) ?
-			velocity.y : moveDirection.y;
-		// 采用与屏幕size相关的较小量,以获得平滑的效果
-		float offsetFactor = 0.001f;
-		offsetFactor *= Mathf.Sqrt(cameraHeight * cameraHeight + cameraWeight * cameraWeight);
-		Vector2 newFollowOffset = new Vector2(
-			followOffset.x + offsetFactor * weightX,
-			followOffset.y + offsetFactor * weightY);
+        // 获取玩家核心的运动方向向量
+        Vector2 moveDirection = velocity.normalized;
+        // 采取两者中小的,以获得平滑的效果
+        float weightX = Mathf.Abs(velocity.x) < Mathf.Abs(moveDirection.x) ?
+            velocity.x : moveDirection.x;
+        float weightY = Mathf.Abs(velocity.y) < Mathf.Abs(moveDirection.y) ?
+            velocity.y : moveDirection.y;
+        // 采用与屏幕size相关的较小量,以获得平滑的效果
+        float offsetFactor = 0.001f;
+        offsetFactor *= Mathf.Sqrt(cameraHeight * cameraHeight + cameraWeight * cameraWeight);
+        Vector2 newFollowOffset = new Vector2(
+            followOffset.x + offsetFactor * weightX,
+            followOffset.y + offsetFactor * weightY);
 
-		// 如果玩家核心快要超出镜头，就限制offset到(factor*cameraWeight, factor*cameraHeight)的镜头内
-		float coreZoneFactor = 0.6f;
-		newFollowOffset = ClipIntoSquare(
-			newFollowOffset, cameraWeight * coreZoneFactor, cameraHeight * coreZoneFactor);
-		return newFollowOffset;
-	}
+        // 如果玩家核心快要超出镜头，就限制offset到(factor*cameraWeight, factor*cameraHeight)的镜头内
+        float coreZoneFactor = 0.6f;
+        newFollowOffset = ClipIntoSquare(
+            newFollowOffset, cameraWeight * coreZoneFactor, cameraHeight * coreZoneFactor);
+        return newFollowOffset;
+    }
 
-	// 若镜头相对核心偏移超过cameraHeight,cameraWeight,也即看不到玩家核心
-	// 将偏移收缩至([-weight, height], [-weight, height])
-	private Vector2 ClipIntoSquare(Vector2 vect, float weight, float height)
-	{
-		if (Mathf.Abs(vect.x) >= weight)
-		{
-			vect.x = vect.x >= 0 ? weight : -weight;
-		}
-		if (Mathf.Abs(vect.y) >= height)
-		{
-			vect.y = vect.y >= 0 ? height : -height;
-		}
-		return vect;
-	}
+    // 若镜头相对核心偏移超过cameraHeight,cameraWeight,也即看不到玩家核心
+    // 将偏移收缩至([-weight, height], [-weight, height])
+    private Vector2 ClipIntoSquare(Vector2 vect, float weight, float height)
+    {
+        if (Mathf.Abs(vect.x) >= weight)
+        {
+            vect.x = vect.x >= 0 ? weight : -weight;
+        }
+        if (Mathf.Abs(vect.y) >= height)
+        {
+            vect.y = vect.y >= 0 ? height : -height;
+        }
+        return vect;
+    }
 
-	/// <summary>
-	/// 鼠标接近屏幕边缘触发的滚珠方向向量,
-	/// 右左(1,0),(-1,0)上下(0,1)(0,-1)
-	/// 不存在滚转为(0,0)
-	/// </summary>
-	private Vector2 GetScrollDirection()
-	{
-		Vector2 dir = new Vector2(0, 0);
-		// 向右
-		if (Input.mousePosition.x > Screen.width - scrollDistance && transform.position.x <= xMax)
-		{
-			dir += new Vector2(1, 0);
-		}
-		// 向左
-		else if (Input.mousePosition.x < scrollDistance && transform.position.x >= xMin)
-		{
-			dir += new Vector2(-1, 0);
-		}
+    /// <summary>
+    /// 鼠标接近屏幕边缘触发的滚珠方向向量,
+    /// 右左(1,0),(-1,0)上下(0,1)(0,-1)
+    /// 不存在滚转为(0,0)
+    /// </summary>
+    private Vector2 GetScrollDirection()
+    {
+        Vector2 dir = new Vector2(0, 0);
+        // 向右
+        if (Input.mousePosition.x > Screen.width - scrollDistance && transform.position.x <= xMax)
+        {
+            dir += new Vector2(1, 0);
+        }
+        // 向左
+        else if (Input.mousePosition.x < scrollDistance && transform.position.x >= xMin)
+        {
+            dir += new Vector2(-1, 0);
+        }
 
-		// 向上
-		if (Input.mousePosition.y > Screen.height - scrollDistance && transform.position.y <= yMax)
-		{
-			dir += new Vector2(0, 1);
-		}
-		// 向下
-		else if (Input.mousePosition.y < scrollDistance && transform.position.y >= yMin)
-		{
-			dir += new Vector2(0, -1);
-		}
-		return dir;
-	}
+        // 向上
+        if (Input.mousePosition.y > Screen.height - scrollDistance && transform.position.y <= yMax)
+        {
+            dir += new Vector2(0, 1);
+        }
+        // 向下
+        else if (Input.mousePosition.y < scrollDistance && transform.position.y >= yMin)
+        {
+            dir += new Vector2(0, -1);
+        }
+        return dir;
+    }
 }

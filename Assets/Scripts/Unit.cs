@@ -110,13 +110,13 @@ public class Unit : MonoBehaviour
                     body.bodyType = RigidbodyType2D.Static;
                 }
 
-                GetComponent<SpriteRenderer>().sortingLayerName = "Pick";
+                SetSpriteSortingLayer("Pick");
             }
 
             // 鼠标左键抬起
             if (Input.GetMouseButtonUp(0))
             {
-                GetComponent<SpriteRenderer>().sortingLayerName = "Unit";
+                SetSpriteSortingLayer("Unit");
 
                 if (body != null)
                 {
@@ -311,9 +311,6 @@ public class Unit : MonoBehaviour
         // 超过边界
         if (transform.position.x >= gameController.boundRightPreparation)
         {
-            GetComponent<SpriteRenderer>().sortingLayerName = "Unit";
-
-            clickable = false;
             if (body != null)
             {
                 body.bodyType = RigidbodyType2D.Dynamic;
@@ -321,6 +318,9 @@ public class Unit : MonoBehaviour
             }
 
             // 关闭Clickable
+            clickable = false;
+
+            // 恢复Clickable
             StartCoroutine(ResetClickable());
         }
     }
@@ -340,6 +340,34 @@ public class Unit : MonoBehaviour
         {
             Vector2 forceAdded = Quaternion.AngleAxis(forceAngle, Vector3.forward) * transform.right * force;
             body.AddForce(forceAdded);
+        }
+    }
+
+    // 设置图像层级（不包括子物体）
+    protected void SetSpriteSortingLayer(string layer)
+    {
+        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+        if (sprite != null)
+        {
+            sprite.sortingLayerName = layer;
+        }
+    }
+
+    // 设置图像层级（包括子物体）
+    protected void SetSpriteAndChildSortingLayer(string layer)
+    {
+        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+        if (sprite != null)
+        {
+            sprite.sortingLayerName = layer;
+        }
+        SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer spriteChild in sprites)
+        {
+            if (spriteChild.sortingLayerName != "Cover" && spriteChild.sortingLayerName != "Covered" && spriteChild.sortingLayerName != "Outline")
+            {
+                spriteChild.sortingLayerName = layer;
+            }
         }
     }
 }
