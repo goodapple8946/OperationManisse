@@ -53,7 +53,8 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-		if (isMovingCamera())
+		bool existScroll = (GetScrollDirection() != Vector2.zero);
+		if (existScroll)
 		{
 			follow = false;
 		}
@@ -103,29 +104,11 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    // 当超出
+    // 滚转
     void Scroll()
     {
-        // 向右
-        if (Input.mousePosition.x > Screen.width - scrollDistance && transform.position.x <= xMax)
-        {
-            transform.Translate(scrollSpeed * Time.deltaTime, 0, 0);
-        }
-        // 向左
-        else if (Input.mousePosition.x < scrollDistance && transform.position.x >= xMin)
-        {
-            transform.Translate(-scrollSpeed * Time.deltaTime, 0, 0);
-        }
-        // 向上
-        if (Input.mousePosition.y > Screen.height - scrollDistance && transform.position.y <= yMax)
-        {
-            transform.Translate(0, scrollSpeed * Time.deltaTime, 0);
-        }
-        // 向下
-        else if (Input.mousePosition.y < scrollDistance && transform.position.y >= yMin)
-        {
-            transform.Translate(0, -scrollSpeed * Time.deltaTime, 0);
-        }
+		Vector2 dir = GetScrollDirection();
+		transform.Translate(scrollSpeed * Time.deltaTime * dir);
     }
 
     // 边界修正
@@ -166,23 +149,23 @@ public class CameraController : MonoBehaviour
 			velocity.x : moveDirection.x;
 		float weightY = Mathf.Abs(velocity.y) < Mathf.Abs(moveDirection.y) ?
 			velocity.y : moveDirection.y;
-		// 以屏幕一百之一作为factor,向运动方向偏移,以获得平滑的效果
-		float offsetFactor =
-			Mathf.Sqrt(cameraHeight * cameraHeight + cameraWeight * cameraWeight) / 500;
+		// 采用与屏幕size相关的较小量,以获得平滑的效果
+		float offsetFactor = 0.001f;
+		offsetFactor *= Mathf.Sqrt(cameraHeight * cameraHeight + cameraWeight * cameraWeight);
 		Vector2 newFollowOffset = new Vector2(
 			followOffset.x + offsetFactor * weightX,
 			followOffset.y + offsetFactor * weightY);
 
 		// 如果玩家核心快要超出镜头，就限制offset到(factor*cameraWeight, factor*cameraHeight)的镜头内
 		float coreZoneFactor = 0.6f;
-		newFollowOffset = clipIntoSquare(
+		newFollowOffset = ClipIntoSquare(
 			newFollowOffset, cameraWeight * coreZoneFactor, cameraHeight * coreZoneFactor);
 		return newFollowOffset;
 	}
 
 	// 若镜头相对核心偏移超过cameraHeight,cameraWeight,也即看不到玩家核心
 	// 将偏移收缩至([-weight, height], [-weight, height])
-	private Vector2 clipIntoSquare(Vector2 vect, float weight, float height)
+	private Vector2 ClipIntoSquare(Vector2 vect, float weight, float height)
 	{
 		if (Mathf.Abs(vect.x) >= weight)
 		{
@@ -195,11 +178,35 @@ public class CameraController : MonoBehaviour
 		return vect;
 	}
 
-	private bool isMovingCamera()
+	/// <summary>
+	/// 鼠标接近屏幕边缘触发的滚珠方向向量,
+	/// 右左(1,0),(-1,0)上下(0,1)(0,-1)
+	/// 不存在滚转为(0,0)
+	/// </summary>
+	private Vector2 GetScrollDirection()
 	{
-		return Input.mousePosition.x > Screen.width - scrollDistance && transform.position.x <= xMax
-			&& Input.mousePosition.x < scrollDistance && transform.position.x >= xMin
-			&& Input.mousePosition.y > Screen.height - scrollDistance && transform.position.y <= yMax
-			&& Input.mousePosition.y < scrollDistance && transform.position.y >= yMin;
+		Vector2 dir = new Vector2(0, 0);
+		// 向右
+		if (Input.mousePosition.x > Screen.width - scrollDistance && transform.position.x <= xMax)
+		{
+			dir += new Vector2(1, 0);
+		}
+		// 向左
+		else if (Input.mousePosition.x < scrollDistance && transform.position.x >= xMin)
+		{
+			dir += new Vector2(-1, 0);
+		}
+
+		// 向上
+		if (Input.mousePosition.y > Screen.height - scrollDistance && transform.position.y <= yMax)
+		{
+			dir += new Vector2(0, 1);
+		}
+		// 向下
+		else if (Input.mousePosition.y < scrollDistance && transform.position.y >= yMin)
+		{
+			dir += new Vector2(0, -1);
+		}
+		return dir;
 	}
 }
