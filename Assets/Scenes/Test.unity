@@ -7900,18 +7900,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1559085833}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1586350326 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8600615601204206168, guid: f57181b2f918b834baba233020195ff3,
-    type: 3}
-  m_PrefabInstance: {fileID: 8600615601783198382}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18e23c2870d87f42a90d56931d6daa6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1590061502
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12092,27 +12080,27 @@ PrefabInstance:
     - target: {fileID: 5528604959813038840, guid: f57181b2f918b834baba233020195ff3,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.84709
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5528604959813038840, guid: f57181b2f918b834baba233020195ff3,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.84709
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5528604959813038840, guid: f57181b2f918b834baba233020195ff3,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.84709
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5528604959813038840, guid: f57181b2f918b834baba233020195ff3,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -765
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 5528604959813038840, guid: f57181b2f918b834baba233020195ff3,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 582
+      value: -40
       objectReference: {fileID: 0}
     - target: {fileID: 8600615601123513473, guid: f57181b2f918b834baba233020195ff3,
         type: 3}
@@ -12273,7 +12261,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1586350326}
+      objectReference: {fileID: 0}
     - target: {fileID: 8600615601204206173, guid: f57181b2f918b834baba233020195ff3,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
