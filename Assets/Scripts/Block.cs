@@ -69,42 +69,6 @@ public class Block : Unit
         }
     }
 
-    // 根据当前速度获得转速
-    protected virtual void GetSpeedRotationByVelocity()
-    {
-        if (IsGrounded())
-        {
-            // 角速度 = 线速度 / 半径
-            if (body.velocity.x > 0)
-            {
-                speedRotation = body.velocity.magnitude / radius;
-            }
-            else if (body.velocity.x < 0)
-            {
-                speedRotation = -body.velocity.magnitude / radius;
-            }
-            else
-            {
-                speedRotation = 0;
-            }
-        }
-    }
-
-    // 根据转速旋转Sprite
-    protected virtual void RotateSprite()
-    {
-        SpriteRenderer[] sprites = gameObject.GetComponentsInChildren<SpriteRenderer>();
-
-        foreach (SpriteRenderer sprite in sprites)
-        {
-            if (sprite.gameObject.name == "Sprite")
-            {
-                sprite.gameObject.transform.Rotate(0, 0, -speedRotation * speedRatioRotation);
-                break;
-            }
-        }
-    }
-
     protected override void OnMouseOver()
     {
         // 准备阶段
@@ -162,32 +126,10 @@ public class Block : Unit
                 // 游戏阶段，删除
                 else if (gameController.gamePhase == GameController.GamePhase.Playing)
                 {
-                    Delete();
+                    // Delete();
                 }
-                // 播放音效
-                int rand = UnityEngine.Random.Range(0, resourceController.audiosDelete.Length);
-                AudioSource.PlayClipAtPoint(resourceController.audiosDelete[rand], transform.position);
             }
 
-        }
-    }
-
-    protected override void OnMouseOut()
-    {
-        int rand;
-
-        rand = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
-        SetBlockLinkedSelected(false, rand);
-
-        // 以下是注释中的Block连接逻辑：
-        rand = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
-        Block firstBlock = FindFirstBlock(rand);
-
-        if (firstBlock != null)
-        {
-            // 完成后，递归地对所有连接的Block进行吸附位移
-            rand = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
-            firstBlock.AbsorbPositionRecursively(rand);
         }
     }
 
@@ -249,6 +191,7 @@ public class Block : Unit
             if (body != null)
             {
                 body.bodyType = RigidbodyType2D.Static;
+                gameController.unitsDraging.Add(this);
             }
             SetSpriteAndChildSortingLayer("Pick");
         }
@@ -536,6 +479,10 @@ public class Block : Unit
         Unlink();
         gameController.playerMoney += price;
         Destroy(gameObject);
+
+        // 播放音效
+        int rand = UnityEngine.Random.Range(0, resourceController.audiosDelete.Length);
+        AudioSource.PlayClipAtPoint(resourceController.audiosDelete[rand], transform.position);
     }
 
     // 更新遮罩
@@ -569,6 +516,42 @@ public class Block : Unit
                     cover.transform.parent = transform;
                     break;
                 }
+            }
+        }
+    }
+
+    // 根据当前速度获得转速
+    protected virtual void GetSpeedRotationByVelocity()
+    {
+        if (IsGrounded())
+        {
+            // 角速度 = 线速度 / 半径
+            if (body.velocity.x > 0)
+            {
+                speedRotation = body.velocity.magnitude / radius;
+            }
+            else if (body.velocity.x < 0)
+            {
+                speedRotation = -body.velocity.magnitude / radius;
+            }
+            else
+            {
+                speedRotation = 0;
+            }
+        }
+    }
+
+    // 根据转速旋转Sprite
+    protected virtual void RotateSprite()
+    {
+        SpriteRenderer[] sprites = gameObject.GetComponentsInChildren<SpriteRenderer>();
+
+        foreach (SpriteRenderer sprite in sprites)
+        {
+            if (sprite.gameObject.name == "Sprite")
+            {
+                sprite.gameObject.transform.Rotate(0, 0, -speedRotation * speedRatioRotation);
+                break;
             }
         }
     }

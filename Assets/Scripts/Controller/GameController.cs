@@ -37,6 +37,9 @@ public class GameController : MonoBehaviour
     // Ctrl键是否被按下
     public bool keyCtrl;
 
+    // 当前鼠标拖动的Unit
+    public ArrayList unitsDraging = new ArrayList();
+
     void Awake()
     {
         cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
@@ -57,6 +60,11 @@ public class GameController : MonoBehaviour
         SpaceStart();
         DebugGame();
         KeyCtrlCheck();
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            FixBlockBodyType();
+        }
     }
 
     void FixedUpdate()
@@ -293,6 +301,19 @@ public class GameController : MonoBehaviour
                 block.body.bodyType = RigidbodyType2D.Dynamic;
             }
         }
+    }
+
+    // 这是一个无可奈何的丑陋的补丁：鼠标抬起时，修正正在拖动Block的BodyType
+    void FixBlockBodyType()
+    {
+        foreach (Unit unit in unitsDraging)
+        {
+            if (unit.body != null)
+            {
+                unit.body.bodyType = RigidbodyType2D.Dynamic;
+            }
+        }
+        unitsDraging.Clear();
     }
 
     // Debug

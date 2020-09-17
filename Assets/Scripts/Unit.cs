@@ -116,6 +116,7 @@ public class Unit : MonoBehaviour
                 if (body != null)
                 {
                     body.bodyType = RigidbodyType2D.Static;
+                    gameController.unitsDraging.Add(this);
                 }
 
                 SetSpriteSortingLayer("Pick");
@@ -146,20 +147,10 @@ public class Unit : MonoBehaviour
                 // 游戏阶段，删除
                 else if (gameController.gamePhase == GameController.GamePhase.Playing)
                 {
-                    Delete();
+                    // Delete();
                 }
             }
             
-        }
-    }
-
-    protected virtual void OnMouseOut()
-    {
-        GetComponent<SpriteRenderer>().sortingLayerName = "Unit";
-
-        if (body != null)
-        {
-            body.bodyType = RigidbodyType2D.Dynamic;
         }
     }
 

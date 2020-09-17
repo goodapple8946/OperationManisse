@@ -44,7 +44,7 @@ public class Ball : Unit
     protected Unit target;
 
     // 朝向，"left"或"right"
-    protected string toward = "right";
+    public string toward = "right";
 
     protected override void Start()
     {
@@ -319,17 +319,7 @@ public class Ball : Unit
     // 朝向检测
     protected virtual void CheckToward()
     {
-        // 保证欧拉角度在[-180, 180]范围内
-        if (transform.localEulerAngles.z > 180f)
-        {
-            transform.Rotate(0, 0, -360f);
-        }
-        else if (transform.localEulerAngles.z < -180f)
-        {
-            transform.Rotate(0, 0, -360f);
-        }
-
-        if (transform.localEulerAngles.z > -90f && transform.localEulerAngles.z < 90f)
+        if (transform.localEulerAngles.z < 90f || transform.localEulerAngles.z > 270f)
         {
             SetToward("right");
         }

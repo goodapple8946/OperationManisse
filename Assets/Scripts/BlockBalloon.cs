@@ -40,7 +40,7 @@ public class BlockBalloon : Block
                 ((DistanceJoint2D)joints[(int)LinkDirection.Down]).distance = lineDistance;
 
                 // 受到负重力
-                body.gravityScale = -0.5f;
+                body.gravityScale = -0.1f;
 
                 // 气球底部朝向被连接Block
                 transform.GetChild(0).up = transform.position - block.transform.position;
@@ -96,7 +96,7 @@ public class BlockBalloon : Block
             // 游戏阶段，删除
             else if (gameController.gamePhase == GameController.GamePhase.Playing)
             {
-                Delete();
+                // Delete();
             }
         }
     }

@@ -2409,12 +2409,17 @@ PrefabInstance:
     - target: {fileID: 775198180736573023, guid: 49f97fab1ca7f254d9250fa45cefc386,
         type: 3}
       propertyPath: boundRightPreparation
-      value: 22.2
+      value: 2.2
       objectReference: {fileID: 0}
     - target: {fileID: 775198180736573023, guid: 49f97fab1ca7f254d9250fa45cefc386,
         type: 3}
       propertyPath: playerMoney
-      value: 1500
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 775198180736573023, guid: 49f97fab1ca7f254d9250fa45cefc386,
+        type: 3}
+      propertyPath: keyCtrl
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49f97fab1ca7f254d9250fa45cefc386, type: 3}
