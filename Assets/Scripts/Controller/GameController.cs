@@ -7,10 +7,13 @@ public class GameController : MonoBehaviour
 {
     public GameObject corePrefab;
 
+	// 玩家所有物体的根节点
     public GameObject playerObjects;
     private GameObject playerObjectsSaved;
     private GameObject playerObjectsInit;
-    public GameObject enemyObjects;
+
+	// 敌人物体的根节点
+	public GameObject enemyObjects;
     private GameObject enemyObjectsSaved;
 
     private CameraController cameraController;
@@ -328,4 +331,20 @@ public class GameController : MonoBehaviour
         // 点击跳跃
         //Jump();
     }
+
+	// 胜利条件:消灭所有球
+	private bool ClearAllEnemy()
+	{
+		Ball[] balls = enemyObjects.GetComponentsInChildren<Ball>();
+		return balls.Length == 0;
+	}
+
+	// 胜利条件:消灭所有Boss
+	//private bool ClearAllBoss()
+	//{
+	//	Boss[] Bosses = enemyObjects.GetComponentsInChildren<Boss>();
+	//	return Bosses.Length == 0;
+	//}
+
+
 }
