@@ -131,7 +131,7 @@ MonoBehaviour:
   isSelling: 0
   isSellable: 0
   player: 2
-  priority: 100
+  priority: 0
   radius: 0.3
   mass: 1
   isForceProvider: 0
@@ -156,6 +156,7 @@ MonoBehaviour:
   isFixed: 1
   isCore: 0
   isOneLink: 0
+  isWheel: 0
 --- !u!50 &7087826650176867544
 Rigidbody2D:
   serializedVersion: 4

@@ -45,7 +45,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   corePrefab: {fileID: 2882552430367811224, guid: 54df0f9bcfea1a242a56955e3dc2e63a,
     type: 3}
-  playerObjectsPrefab: {fileID: 5975679244167195420, guid: 255f63e11c2951c40b1a3658c282472e,
-    type: 3}
   playerObjects: {fileID: 0}
   enemyObjects: {fileID: 0}
+  gamePhase: 0
+  boundRightPreparation: 5.6
+  playerMoney: 2000
+  keyCtrl: 0

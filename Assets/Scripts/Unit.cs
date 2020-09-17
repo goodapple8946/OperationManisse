@@ -72,11 +72,19 @@ public class Unit : MonoBehaviour
 
     public Rigidbody2D body;
     protected GameController gameController;
+    protected ResourceController resourceController;
+
+    protected virtual void Awake()
+    {
+        body = GetComponent<Rigidbody2D>();
+
+        gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
+        resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
+    }
 
     protected virtual void Start()
     {
-        body = GetComponent<Rigidbody2D>();
-        gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
+
     }
 
     protected virtual void Update()
@@ -128,16 +136,20 @@ public class Unit : MonoBehaviour
         // 鼠标右键按下
         if (Input.GetMouseButtonDown(1))
         {
-            // 准备阶段，出售
-            if (gameController.gamePhase == GameController.GamePhase.Preparation)
+            if (clickable && !isSelling && isSellable)
             {
-                Sell();
+                // 准备阶段，出售
+                if (gameController.gamePhase == GameController.GamePhase.Preparation)
+                {
+                    Sell();
+                }
+                // 游戏阶段，删除
+                else if (gameController.gamePhase == GameController.GamePhase.Playing)
+                {
+                    Delete();
+                }
             }
-            // 游戏阶段，删除
-            else if (gameController.gamePhase == GameController.GamePhase.Playing)
-            {
-                Delete();
-            }
+            
         }
     }
 
@@ -186,8 +198,8 @@ public class Unit : MonoBehaviour
             Destroy(particle);
         }
 
-        // 最优先显示
-        gameObject.GetComponent<SpriteRenderer>().sortingLayerName = "Dead";
+        // 死亡优先显示
+        SetSpriteSortingLayer("Dead");
 
         if (body != null)
         {
@@ -251,22 +263,14 @@ public class Unit : MonoBehaviour
     // 出售
     public virtual void Sell()
     {
-        // 可以出售
-        if (!isSelling && isSellable)
-        {
-            gameController.playerMoney += price;
-            Destroy(gameObject);
-        }
+        gameController.playerMoney += price;
+        Destroy(gameObject);
     }
 
     // 删除
     public virtual void Delete()
     {
-        // 可以删除
-        if (!isSelling && isSellable)
-        {
-            Destroy(gameObject);
-        }
+        Destroy(gameObject);
     }
 
     // 是否在地面上

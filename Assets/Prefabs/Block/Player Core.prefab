@@ -130,6 +130,9 @@ MonoBehaviour:
   isFixed: 0
   isCore: 1
   isOneLink: 0
+  isWheel: 0
+  particleLinkPrefab: {fileID: 8728105212017883391, guid: 5ca256b7950e1c743a648418ac98b45c,
+    type: 3}
 --- !u!61 &2882552430367811228
 BoxCollider2D:
   m_ObjectHideFlags: 0

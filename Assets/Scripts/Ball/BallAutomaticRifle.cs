@@ -23,7 +23,7 @@ public class BallAutomaticRifle : Ball
             else
             {
                 // 武器冷却重置
-                weaponCD = weaponCDMax;
+                weaponCD = weaponCDMax * Random.Range(1f, 1.1f);
                 shootCount = 0;
             }
 
