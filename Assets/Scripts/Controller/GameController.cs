@@ -37,11 +37,14 @@ public class GameController : MonoBehaviour
     // Ctrl键是否被按下
     public bool keyCtrl;
 
-    void Start()
+    void Awake()
     {
         cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
         playerMoneyText = GameObject.Find("UI Canvas/UI Money Text").GetComponent<Text>();
+    }
 
+    void Start()
+    {
         gamePhase = GamePhase.Preparation;
         playerMoneyOrigin = playerMoney;
 
@@ -174,6 +177,7 @@ public class GameController : MonoBehaviour
         enemyObjects = Instantiate(enemyObjectsSaved);
         enemyObjects.SetActive(true);
         enemyObjects.name = "Enemy Objects";
+        EnemyBlockLink();
     }
 
     // 玩家物体初始化
@@ -266,14 +270,39 @@ public class GameController : MonoBehaviour
         }
     }
 
+    // 敌人Block连接，并且不再固定
+    void EnemyBlockLink()
+    {
+        // 遍历Block
+        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Block");
+        foreach (GameObject gameObject in gameObjects)
+        {
+            Block block = gameObject.GetComponent<Block>();
+
+            if (block.isAlive && !block.isSelling && block.player == 2)
+            {
+                block.AbsorptionCheck(0.3f);
+            }
+        }
+        foreach (GameObject gameObject in gameObjects)
+        {
+            Block block = gameObject.GetComponent<Block>();
+
+            if (block.isAlive && !block.isSelling && block.player == 2)
+            {
+                block.body.bodyType = RigidbodyType2D.Dynamic;
+            }
+        }
+    }
+
     // Debug
     void DebugGame()
     {
         // 点击获取鼠标位置
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    Debug.Log(MouseController.MouseWorldPosition());
-        //}
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log(MouseController.MouseWorldPosition());
+        }
 
         // 点击跳跃
         //Jump();

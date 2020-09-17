@@ -68,7 +68,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1115787969
-  m_SortingLayer: 5
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: c47f88828cf20314281a19fe075c6b9a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -167,7 +167,7 @@ MonoBehaviour:
   radius: 0.3
   mass: 1
   isForceProvider: 1
-  force: 5
+  force: 10
   forceAngle: 0
   speedMax: 3
   particlePrefab: {fileID: 3907941134862332719, guid: f1c3826a8225d224c9aed073a2737291,
@@ -189,6 +189,7 @@ MonoBehaviour:
   isFixed: 0
   isCore: 0
   isOneLink: 0
+  isWheel: 0
 --- !u!1 &5062797990722392560
 GameObject:
   m_ObjectHideFlags: 0
@@ -338,9 +339,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -228110775
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 550377b87dac92644b2ab8b0526a2151, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d0046c580eda56b4e8205a8b1d8eb2f2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -81,6 +81,8 @@ MonoBehaviour:
   isCore: 0
   isOneLink: 1
   isWheel: 1
+  particleLinkPrefab: {fileID: 8728105212017883391, guid: 5ca256b7950e1c743a648418ac98b45c,
+    type: 3}
 --- !u!58 &-6302405524492546453
 CircleCollider2D:
   m_ObjectHideFlags: 0

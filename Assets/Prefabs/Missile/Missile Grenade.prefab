@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2104334341
-  m_SortingLayer: 5
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 563f4ca59643d3c4a85c8b06da686742, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -152,7 +152,7 @@ MonoBehaviour:
   particleLaunchPerfab: {fileID: 2351009409937276409, guid: 6168c74241e049a4aa2b9735a3168583,
     type: 3}
   particleFlyingPrefab: {fileID: 0}
-  particleHitPrefab: {fileID: 6315230418507173349, guid: d915eac9dfc19034b8978921c4e0a198,
+  particleHitPrefab: {fileID: 2174169386443458371, guid: 11300aa73aa8d9a4caad299455e49c2b,
     type: 3}
   isMelee: 0
   player: 0

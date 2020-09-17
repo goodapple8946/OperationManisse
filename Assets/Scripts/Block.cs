@@ -46,9 +46,6 @@ public class Block : Unit
     // 转速比率
     protected float speedRatioRotation = 0.5f;
 
-    // 转速阻尼
-    protected float speedDragRotation = 0.5f;
-
     /*
      * 松开鼠标左键时，Block连接的逻辑：
      * 1. 使用Find First Block递归遍历与鼠标松开Block连接的所有Block
@@ -155,16 +152,23 @@ public class Block : Unit
         // 鼠标右键按下
         if (Input.GetMouseButtonDown(1))
         {
-            // 准备阶段，出售
-            if (gameController.gamePhase == GameController.GamePhase.Preparation)
+            if (clickable && !isSelling && isSellable)
             {
-                Sell();
+                // 准备阶段，出售
+                if (gameController.gamePhase == GameController.GamePhase.Preparation)
+                {
+                    Sell();
+                }
+                // 游戏阶段，删除
+                else if (gameController.gamePhase == GameController.GamePhase.Playing)
+                {
+                    Delete();
+                }
+                // 播放音效
+                int rand = UnityEngine.Random.Range(0, resourceController.audiosDelete.Length);
+                AudioSource.PlayClipAtPoint(resourceController.audiosDelete[rand], transform.position);
             }
-            // 游戏阶段，删除
-            else if (gameController.gamePhase == GameController.GamePhase.Playing)
-            {
-                Delete();
-            }
+
         }
     }
 
@@ -242,12 +246,18 @@ public class Block : Unit
 
         if (selected)
         {
-            body.bodyType = RigidbodyType2D.Static;
+            if (body != null)
+            {
+                body.bodyType = RigidbodyType2D.Static;
+            }
             SetSpriteAndChildSortingLayer("Pick");
         }
         else
         {
-            body.bodyType = RigidbodyType2D.Dynamic;
+            if (body != null)
+            {
+                body.bodyType = RigidbodyType2D.Dynamic;
+            }
             SetSpriteAndChildSortingLayer("Unit");
         }
         foreach (Block block in blocksLinked)
@@ -274,6 +284,21 @@ public class Block : Unit
         block.blocksLinked[(int)directionNegative] = gameObject.GetComponent<Block>();
         block.joints[(int)directionNegative] = block.gameObject.AddComponent<FixedJoint2D>();
         block.joints[(int)directionNegative].connectedBody = body;
+
+        // 连接的位置
+        Vector2 position = (transform.position + block.transform.position) / 2;
+
+        if (player == 1)
+        {
+            // 连接时的粒子
+            GameObject particle = Instantiate(resourceController.particleLinkPrefab);
+            particle.transform.position = position;
+
+            // 播放音效
+            int rand = UnityEngine.Random.Range(0, resourceController.audiosLink.Length);
+            AudioSource.PlayClipAtPoint(resourceController.audiosLink[rand], position);
+        }
+
     }
 
     // 将该Block与所有连接的Block断开连接
@@ -359,6 +384,7 @@ public class Block : Unit
             }
         }
 
+        bool linkSuccess = false;
         // 遍历四个检测方向
         for (int i = 0; i < 4; i++)
         {
@@ -374,11 +400,11 @@ public class Block : Unit
                 if (block != null)
                 {
                     Absorb(block, direction);
-                    return true;
+                    linkSuccess = true;
                 }
             }
         }
-        return false;
+        return linkSuccess;
     }
 
     // 根据方向检测该Block是否处于其他Block的吸附范围内
@@ -507,13 +533,9 @@ public class Block : Unit
     // 出售
     public override void Sell()
     {
-        // 可以出售
-        if (!isSelling && isSellable)
-        {
-            Unlink();
-            gameController.playerMoney += price;
-            Destroy(gameObject);
-        }
+        Unlink();
+        gameController.playerMoney += price;
+        Destroy(gameObject);
     }
 
     // 更新遮罩

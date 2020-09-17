@@ -37,6 +37,9 @@ public class Missile : MonoBehaviour
     // 所属玩家
     public int player;
 
+    // 发射音效
+    public AudioClip audioLaunch;
+
     public Rigidbody2D body;
 
     protected virtual void Start()
@@ -73,7 +76,10 @@ public class Missile : MonoBehaviour
             if (ball != null)
             {
                 ball.health -= damage;
-                ball.body.AddForce(transform.right * forceHit);
+                if (ball.body != null)
+                {
+                    ball.body.AddForce(transform.right * forceHit);
+                }
             }
 
             // 击中Block
@@ -81,7 +87,10 @@ public class Missile : MonoBehaviour
             if (block != null)
             {
                 block.health -= damage;
-                block.body.AddForce(transform.right * forceHit);
+                if (block.body != null)
+                {
+                    block.body.AddForce(transform.right * forceHit);
+                }
             }
 
             // 撞击粒子
@@ -127,6 +136,11 @@ public class Missile : MonoBehaviour
             body = GetComponent<Rigidbody2D>();
         }
         body.AddForce(transform.right * forceLaunch);
+
+        if (audioLaunch != null)
+        {
+            AudioSource.PlayClipAtPoint(audioLaunch, transform.position);
+        }
     }
 
     // 更新飞行时间

@@ -188,6 +188,7 @@ MonoBehaviour:
   isFixed: 0
   isCore: 0
   isOneLink: 0
+  isWheel: 0
 --- !u!50 &4524377062725791983
 Rigidbody2D:
   serializedVersion: 4
@@ -196,7 +197,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3491181880401368385}
-  m_BodyType: 0
+  m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 1

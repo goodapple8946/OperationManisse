@@ -42,11 +42,8 @@ public class BlockBalloon : Block
                 // 受到负重力
                 body.gravityScale = -0.5f;
 
-                if (gameController.gamePhase == GameController.GamePhase.Playing)
-                {
-                    // 气球底部朝向被连接Block
-                    transform.up = transform.position - block.transform.position;
-                }
+                // 气球底部朝向被连接Block
+                transform.GetChild(0).up = transform.position - block.transform.position;
             }
             else
             {

@@ -43,6 +43,9 @@ public class Ball : Unit
     // 当前目标
     protected Unit target;
 
+    // 朝向，"left"或"right"
+    protected string toward = "right";
+
     protected override void Start()
     {
         base.Start();
@@ -96,6 +99,8 @@ public class Ball : Unit
                 }
             }
         }
+        // 检查方向，保证武器图像顶部朝上
+        CheckToward();
     }
 
     // 索敌
@@ -119,7 +124,7 @@ public class Ball : Unit
                 // 目标是敌对的
                 if (player == 1 && unit.player == 2 || player == 2 && unit.player == 1)
                 {
-                    float priority = enemyPriority(unit);
+                    float priority = EnemyPriority(unit);
 
                     // 优先级更高的目标
                     if (priority > priorityTarget)
@@ -133,7 +138,7 @@ public class Ball : Unit
     }
 
     // 索敌优先级
-    protected virtual int enemyPriority(Unit unit)
+    protected virtual int EnemyPriority(Unit unit)
     {
         float distance = (unit.transform.position - transform.position).magnitude;
         int priority = 0;
@@ -152,34 +157,7 @@ public class Ball : Unit
     {
         if (isMelee)
         {
-            // 自己的朝向
-            Vector2 vector = transform.right;
-
-            // 两者间的向量
-            Vector2 vectorTarget = target.transform.position - transform.position;
-
-            // 需要旋转的角度
-            float angle = Vector2.SignedAngle(vector, vectorTarget);
-
-            // 朝向敌人
-            if (angle > rotationSpeed)
-            {
-                transform.Rotate(0, 0, rotationSpeed);
-            }
-            else if (angle < -rotationSpeed)
-            {
-                transform.Rotate(0, 0, -rotationSpeed);
-            }
-            else
-            {
-                transform.Rotate(0, 0, angle);
-            }
-
-            // 在武器不精准角度范围内，尝试攻击
-            if (angle <= weaponRandomAngle)
-            {
-                MeleeAttack();
-            }
+            MeleeAttack();
         }
         else
         {
@@ -226,7 +204,7 @@ public class Ball : Unit
         if (weaponCD <= 0)
         {
             // 武器冷却重置
-            weaponCD = weaponCDMax;
+            weaponCD = weaponCDMax * Random.Range(1f, 1.1f);
 
             // 创建弹药
             Missile missile = Instantiate(missilePrefab).GetComponent<Missile>();
@@ -321,5 +299,60 @@ public class Ball : Unit
 
         missile = null;
         haveMeleeWeapon = false;
+    }
+
+    // 获取俯仰角，返回值范围[-90, 90]
+    // 朝向为"right"时：X轴正方向为0度，逆时针为正，顺时针为负
+    // 朝向为"left"时：X轴负方向为0度，顺时针为正，逆时针为负
+    public float GetPitchAngle()
+    {
+        float angle = Vector2.SignedAngle(Vector2.right, transform.right);
+
+        if (toward == "left")
+        {
+            angle = 180f - angle;
+        }
+
+        return angle;
+    }
+
+    // 朝向检测
+    protected virtual void CheckToward()
+    {
+        // 保证欧拉角度在[-180, 180]范围内
+        if (transform.localEulerAngles.z > 180f)
+        {
+            transform.Rotate(0, 0, -360f);
+        }
+        else if (transform.localEulerAngles.z < -180f)
+        {
+            transform.Rotate(0, 0, -360f);
+        }
+
+        if (transform.localEulerAngles.z > -90f && transform.localEulerAngles.z < 90f)
+        {
+            SetToward("right");
+        }
+        else
+        {
+            SetToward("left");
+        }
+    }
+
+    // 设置朝向
+    protected virtual void SetToward(string to)
+    {
+        if (toward != to)
+        {
+            if (toward == "left" && to == "right")
+            {
+                transform.GetChild(0).localScale = new Vector3(1, 1, 1);
+            }
+            else if (toward == "right" && to == "left")
+            {
+                transform.GetChild(0).localScale = new Vector3(1, -1, 1);
+            }
+            toward = to;
+        }
     }
 }

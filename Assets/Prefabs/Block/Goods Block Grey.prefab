@@ -106,6 +106,9 @@ MonoBehaviour:
   isFixed: 0
   isCore: 0
   isOneLink: 0
+  isWheel: 0
+  particleLinkPrefab: {fileID: 8728105212017883391, guid: 5ca256b7950e1c743a648418ac98b45c,
+    type: 3}
 --- !u!1 &5480223403047184476
 GameObject:
   m_ObjectHideFlags: 0
