@@ -51,3 +51,5 @@ MonoBehaviour:
   boundRightPreparation: 5.6
   playerMoney: 2000
   keyCtrl: 0
+  boss:
+  - {fileID: 0}
