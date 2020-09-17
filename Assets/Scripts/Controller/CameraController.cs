@@ -74,7 +74,7 @@ public class CameraController : MonoBehaviour
 	}
 
     // 跟随玩家核心
-    void Follow()
+    private void Follow()
     {
 		GameObject core = GameObject.Find("Player Objects/Player Core");
 		if (core == null || !core.GetComponent<Block>().isAlive)
@@ -91,8 +91,8 @@ public class CameraController : MonoBehaviour
 		transform.position = corePosition + cameraDepth + newOffset;
     }
 
-    // 缩放
-    void Zoom()
+	// 缩放
+	private void Zoom()
     {
         float zoomSize = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
         if (zoomSize != 0)
@@ -104,8 +104,8 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    // 滚转
-    void Scroll()
+	// 滚转
+	private void Scroll()
     {
 		Vector2 dir = GetMouseDirection();
 		transform.Translate(scrollSpeed * Time.deltaTime * dir);
