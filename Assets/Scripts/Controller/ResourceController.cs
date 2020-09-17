@@ -12,4 +12,10 @@ public class ResourceController : MonoBehaviour
 
     // 删除时的音效
     public AudioClip[] audiosDelete;
+
+	// 静音图片
+	public Sprite mute;
+
+	// 解除静音图片
+	public Sprite unmute;
 }

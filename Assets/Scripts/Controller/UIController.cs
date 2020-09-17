@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static GameController;
@@ -14,10 +15,16 @@ public class UIController : MonoBehaviour
 	// 点击option时保存gameController的gamePhase
 	private GamePhase gamePhaseBackup;
 
-    void Start()
+	private GameObject mainCamera;
+
+	private ResourceController resourceController;
+
+	void Start()
     {
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
 		gamePhaseBackup = GamePhase.Preparation;
+		mainCamera = GameObject.Find("Main Camera");
+		resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
 	}
 
     void Update()
@@ -80,13 +87,25 @@ public class UIController : MonoBehaviour
         gameController.StartGame();
     }
 
-	public void UIVoice()
+	// 将CameraController是否播放声音反转
+	public void UIAudio()
 	{
-		// TODO:
+		AudioListener audioListener = mainCamera.GetComponent<AudioListener>();
+		Image buttonImage 
+			= EventSystem.current.currentSelectedGameObject.GetComponent<Image>();
+		if (audioListener.enabled)
+		{
+			buttonImage.sprite = resourceController.mute;
+		}
+		else
+		{
+			buttonImage.sprite = resourceController.unmute;
+		}
+		audioListener.enabled = !audioListener.enabled;
 	}
 
 	public void UIToLevel()
 	{
-		SceneManager.LoadScene("LevelPanel");
+		SceneManager.LoadScene("Level Panel");
 	}
 }
