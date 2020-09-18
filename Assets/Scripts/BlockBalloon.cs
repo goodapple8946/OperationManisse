@@ -180,4 +180,17 @@ public class BlockBalloon : Block
             }
         }
     }
+
+    // 死亡
+    protected override IEnumerator Die()
+    {
+        if (!isSelling)
+        {
+            // 断开所有连接
+            Unlink();
+        }
+
+        Destroy(gameObject);
+        yield return new WaitForSeconds(0);
+    }
 }
