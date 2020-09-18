@@ -47,7 +47,11 @@ MonoBehaviour:
   playerObjects: {fileID: 0}
   enemyObjects: {fileID: 0}
   gamePhase: 1
-  boundRightPreparation: 5.6
-  playerMoney: 2000
+  boundRightPreparation: 2.2
+  playerMoney: 1000
   keyCtrl: 0
   unitBought: {fileID: 0}
+  xMinBuild: -8
+  xMaxBuild: 2.4
+  yMinBuild: -100
+  yMaxBuild: 100

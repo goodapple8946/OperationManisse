@@ -193,6 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59a9b4b7f9443c64e812c13e11d04d2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthMax: 100
   health: 100
   isAlive: 1
   price: 500
@@ -212,7 +213,6 @@ MonoBehaviour:
   particlePrefab: {fileID: 0}
   particle: {fileID: 0}
   body: {fileID: 0}
-  HPStrip: {fileID: 951686486553588177, guid: c4ce5ab7bebb2454aa61a912d69a495e, type: 3}
   weaponOffset: 0.86
   weaponCDMax: 0.1
   weaponCDRandom: 0

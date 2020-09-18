@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class Unit : MonoBehaviour
 {
+    // 生命最大值
+    public int healthMax;
+
     // 生命值
     public int health;
 
@@ -75,26 +78,19 @@ public class Unit : MonoBehaviour
     protected GameController gameController;
     protected ResourceController resourceController;
 
-	// 血条HPCanvas
-	public Slider HPStrip;
-
 	protected virtual void Awake()
     {
         body = GetComponent<Rigidbody2D>();
 
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
         resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
-		
-		
     }
 
     protected virtual void Start()
     {
-		//初始化血条
-		HPStrip.value = HPStrip.maxValue = health;
-		// 初始不显血
-		HPStrip.gameObject.SetActive(false);
-	}
+        HPBar hPBar = Instantiate(resourceController.hpBarPrefab).GetComponent<HPBar>();
+        hPBar.unit = this;
+    }
 
     protected virtual void Update()
     {
@@ -114,7 +110,6 @@ public class Unit : MonoBehaviour
         {
             BuildLocationCheck();
         }
-		UpdateHPStripPosition();
     }
 
     protected virtual void OnMouseOver()
@@ -189,23 +184,11 @@ public class Unit : MonoBehaviour
         }
     }
 
-	// 受伤掉血
+	// 受伤
 	public void TakeDamage(int damage)
 	{
-		//开启显血
-		HPStrip.gameObject.SetActive(true);
-		// 扣血
-		health -= damage;
-		// 更新血条
-		HPStrip.value = health;
-	}
-
-	// 每一帧更新血条的位置
-	private void UpdateHPStripPosition()
-	{
-		//float biasfactor = 0.5f;
-		//HPStrip.transform.position = this.transform.position + Vector3.up * biasfactor;
-		//HPStrip.transform.rotation = Quaternion.identity;
+        // 生命值减少
+        health -= damage;
 	}
 
 	protected virtual void OnMouseDrag()

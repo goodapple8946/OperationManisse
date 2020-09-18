@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ResourceController : MonoBehaviour
 {
@@ -19,4 +20,6 @@ public class ResourceController : MonoBehaviour
 	// 解除静音图片
 	public Sprite unmute;
 
+    // 生命值Prefab
+    public GameObject hpBarPrefab;
 }
