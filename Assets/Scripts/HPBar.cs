@@ -10,8 +10,8 @@ public class HPBar : MonoBehaviour
     public float valueMax;
 
     public float valueBack = 0;
-    private float valueSpeed = 0.5f;
-    private Vector2 offset = new Vector2(0, 0.48f);
+    private float valueSpeed = 1f;
+    private Vector2 offset = new Vector2(0, 0.32f);
 
     void Update()
     {

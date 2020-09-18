@@ -154,8 +154,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 618c5a4eab080f2499baad844377673a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthMax: 400
-  health: 400
+  healthMax: 300
+  health: 300
   isAlive: 1
   price: 200
   rebuyable: 1
@@ -168,9 +168,9 @@ MonoBehaviour:
   radius: 0.3
   mass: 1
   isForceProvider: 1
-  force: 10
+  force: 5
   forceAngle: 0
-  speedMax: 3
+  speedMax: 2
   particlePrefab: {fileID: 3907941134862332719, guid: f1c3826a8225d224c9aed073a2737291,
     type: 3}
   particle: {fileID: 0}

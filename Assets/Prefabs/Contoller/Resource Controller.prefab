@@ -60,5 +60,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b084521af24466e4b8bbf8743d5c2493, type: 3}
   mute: {fileID: 21300000, guid: 6b5f010a4365aae4ca0a570b1fdd0da2, type: 3}
   unmute: {fileID: 21300000, guid: 901fee87f1056ce4ba79f176e1e427ea, type: 3}
-  hpSliderPrefab: {fileID: 3266848389156627057, guid: 25ebc3eb6d91b3c43ba4e71297fc6beb,
+  hpBarPrefab: {fileID: 5438377093910908434, guid: 9a25f6745485b9448aa585e5e7ab546f,
     type: 3}

@@ -221,9 +221,6 @@ public class Ball : Unit
             // 弹药随机角度
             missile.transform.Rotate(0, 0, Random.Range(-weaponRandomAngle, weaponRandomAngle));
 
-            // 弹药初速度
-            // missile.body.velocity = body.velocity;
-
             // 添加入playerObjects
             missile.transform.parent = gameController.playerObjects.transform;
 

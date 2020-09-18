@@ -122,8 +122,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 618c5a4eab080f2499baad844377673a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthMax: 400
-  health: 400
+  healthMax: 300
+  health: 300
   isAlive: 1
   price: 50
   rebuyable: 0

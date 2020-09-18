@@ -214,7 +214,7 @@ MonoBehaviour:
   particle: {fileID: 0}
   body: {fileID: 0}
   weaponOffset: 0.86
-  weaponCDMax: 0.1
+  weaponCDMax: 0.05
   weaponCDRandom: 0
   weaponRange: 7
   weaponRandomAngle: 6.5

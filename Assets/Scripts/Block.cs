@@ -44,7 +44,7 @@ public class Block : Unit
     protected float speedRotation;
 
     // 转速比率
-    protected float speedRatioRotation = 0.5f;
+    protected float speedRatioRotation = 0.4f;
 
     // 连接断开扭矩（玩家）
     protected float breakTorquePlayer = 75f;

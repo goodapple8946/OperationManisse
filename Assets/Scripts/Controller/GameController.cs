@@ -365,7 +365,7 @@ public class GameController : MonoBehaviour
     {
         if (victoryController.IsVictory())
         {
-            gamePhase = GamePhase.Victory;
+            // gamePhase = GamePhase.Victory;
             Debug.Log("Victory");
         }
     }
