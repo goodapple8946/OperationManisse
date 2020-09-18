@@ -74,6 +74,9 @@ public class Unit : MonoBehaviour
     // 粒子
     public GameObject particle;
 
+    // 可能的Sprite
+    public Sprite[] sprites;
+
     public Rigidbody2D body;
     protected GameController gameController;
     protected ResourceController resourceController;
@@ -90,6 +93,12 @@ public class Unit : MonoBehaviour
     {
         HPBar hPBar = Instantiate(resourceController.hpBarPrefab).GetComponent<HPBar>();
         hPBar.unit = this;
+
+        if (sprites.Length > 0)
+        {
+            int rand = Random.Range(0, sprites.Length);
+            transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = sprites[rand];
+        }
     }
 
     protected virtual void Update()
@@ -180,7 +189,7 @@ public class Unit : MonoBehaviour
         // 游戏阶段，删除
         else if (gameController.gamePhase == GameController.GamePhase.Playing)
         {
-            // Delete();
+            Delete();
         }
     }
 

@@ -37,18 +37,15 @@ public class CameraController : MonoBehaviour
 	// 记录上一次镜头跟player core需要的偏移
 	private Vector3 followOffset;
 
-	// 初始化Camera
-	public void Init()
-	{
-		transform.position = originPosition;
-		followOffset = new Vector3(0, 0, 0);
-	}
+    void Awake()
+    {
+        mainCamera = GetComponent<Camera>();
+        gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
+    }
 
 	void Start()
     {
 		Init();
-        mainCamera = GetComponent<Camera>();
-        gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
     }
 
     void Update()
@@ -71,7 +68,14 @@ public class CameraController : MonoBehaviour
 			Scroll();
 			FixBound();
 		}
-	}
+    }
+
+    // 初始化Camera
+    public void Init()
+    {
+        transform.position = originPosition;
+        followOffset = new Vector3(0, 0, 0);
+    }
 
     // 跟随玩家核心
     private void Follow()

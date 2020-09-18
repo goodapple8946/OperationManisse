@@ -487,6 +487,16 @@ public class Block : Unit
         AudioSource.PlayClipAtPoint(resourceController.audiosDelete[rand], transform.position);
     }
 
+    // 删除
+    public override void Delete()
+    {
+        Destroy(gameObject);
+
+        // 播放音效
+        int rand = UnityEngine.Random.Range(0, resourceController.audiosDelete.Length);
+        AudioSource.PlayClipAtPoint(resourceController.audiosDelete[rand], transform.position);
+    }
+
     // 更新遮罩
     public virtual void UpdateCover()
     {

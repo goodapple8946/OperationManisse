@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VictoryController : MonoBehaviour
 {
-    public enum VictoryCondition { KillAllBalls, KillTargets };
+    public enum VictoryCondition { KillAllBalls, KillTargets }
 
     public VictoryCondition victoryCondition;
 

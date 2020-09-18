@@ -54,6 +54,9 @@ public class GameController : MonoBehaviour
     public float yMinBuild;
     public float yMaxBuild;
 
+    // 商店
+    public GameObject shop;
+
     void Awake()
     {
         mainCamera = GameObject.Find("Main Camera").GetComponent<CameraController>();
@@ -206,6 +209,12 @@ public class GameController : MonoBehaviour
                 }
             }
         }
+
+        // 隐藏商店
+        if (shop != null)
+        {
+            shop.SetActive(false);
+        }
     }
 
     // 停止游戏
@@ -242,6 +251,12 @@ public class GameController : MonoBehaviour
         enemyObjects.SetActive(true);
         enemyObjects.name = "Enemy Objects";
         EnemyBlockLink();
+
+        // 显示商店
+        if (shop != null)
+        {
+            shop.SetActive(true);
+        }
 
         victoryController.Init();
     }

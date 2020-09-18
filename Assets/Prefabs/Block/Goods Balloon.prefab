@@ -107,7 +107,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4261955057781622481}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.86, y: 1.03, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1923574575030404395}
@@ -161,6 +161,7 @@ MonoBehaviour:
   speedMax: 0.5
   particlePrefab: {fileID: 0}
   particle: {fileID: 0}
+  sprites: []
   body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}
