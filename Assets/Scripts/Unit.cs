@@ -89,15 +89,22 @@ public class Unit : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation)
+        if (isAlive)
         {
-            BoundCheckPreparation();
+            if (!isSelling && isForceProvider && gameController.gamePhase == GameController.GamePhase.Playing)
+            {
+                ProvideForce();
+            }
+            
+            if (health <= 0)
+            {
+                StartCoroutine(Die());
+            }
         }
-        if (isAlive && !isSelling && isForceProvider && gameController.gamePhase == GameController.GamePhase.Playing)
+        if (clickable && isAlive && !isSelling && gameController.gamePhase == GameController.GamePhase.Preparation)
         {
-            ProvideForce();
+            BuildLocationCheck();
         }
-        DeathCheck();
     }
 
     protected virtual void OnMouseOver()
@@ -181,19 +188,6 @@ public class Unit : MonoBehaviour
         }
     }
 
-    // 死亡检测
-    protected void DeathCheck()
-    {
-        if (isAlive)
-        {
-            // 生命值为0或以下
-            if (health <= 0)
-            {
-                StartCoroutine(Die());
-            }
-        }
-    }
-
     // 死亡
     protected virtual IEnumerator Die()
     {
@@ -232,8 +226,8 @@ public class Unit : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // 购买
-    public virtual void Buy()
+    // 购买，生成复制商品，返回购买得到的物品
+    public virtual Unit Buy()
     {
         // 钱足够
         if (gameController.playerMoney >= price)
@@ -244,6 +238,7 @@ public class Unit : MonoBehaviour
                 // 在同一位置创建相同的商品
                 Unit unit = gameController.Create(transform.position, prefab).GetComponent<Unit>();
                 unit.transform.parent = transform.parent;
+                gameController.unitBought = unit;
             }
             isSelling = false;
             player = 1;
@@ -255,11 +250,13 @@ public class Unit : MonoBehaviour
             FreezeRotation();
 
             gameController.playerMoney -= price;
+            return this;
         }
         // 钱不够
         else
         {
             StartCoroutine(gameController.MoneyNotEnough());
+            return null;
         }
     }
 
@@ -318,26 +315,6 @@ public class Unit : MonoBehaviour
         return false;
     }
 
-    // 准备阶段边界检测
-    protected void BoundCheckPreparation()
-    {
-        // 超过边界
-        if (transform.position.x >= gameController.boundRightPreparation)
-        {
-            if (body != null)
-            {
-                body.bodyType = RigidbodyType2D.Dynamic;
-                body.velocity = new Vector2(-4f, 3f);
-            }
-
-            // 关闭Clickable
-            clickable = false;
-
-            // 恢复Clickable
-            StartCoroutine(ResetClickable());
-        }
-    }
-
     // 恢复Clickable
     protected IEnumerator ResetClickable()
     {
@@ -381,6 +358,35 @@ public class Unit : MonoBehaviour
             {
                 spriteChild.sortingLayerName = layer;
             }
+        }
+    }
+
+    //准备阶段的建造范围
+    protected virtual void BuildLocationCheck()
+    {
+        if (transform.position.x + radius > gameController.xMaxBuild)
+        {
+            MouseLeftDown();
+            transform.Translate(gameController.xMaxBuild - transform.position.x - radius - 0.01f, 0, 0);
+            MouseLeftUp();
+        }
+        else if (transform.position.x - radius < gameController.xMinBuild)
+        {
+            MouseLeftDown();
+            transform.Translate(gameController.xMinBuild - transform.position.x + radius + 0.01f, 0, 0);
+            MouseLeftUp();
+        }
+        if (transform.position.y + radius > gameController.yMaxBuild)
+        {
+            MouseLeftDown();
+            transform.Translate(gameController.yMaxBuild - transform.position.y - radius - 0.01f, 0, 0);
+            MouseLeftUp();
+        }
+        else if (transform.position.y - radius < gameController.yMinBuild)
+        {
+            MouseLeftDown();
+            transform.Translate(gameController.yMinBuild - transform.position.y + radius + 0.01f, 0, 0);
+            MouseLeftUp();
         }
     }
 }

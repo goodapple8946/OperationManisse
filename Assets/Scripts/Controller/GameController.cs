@@ -16,7 +16,9 @@ public class GameController : MonoBehaviour
 	public GameObject enemyObjects;
     private GameObject enemyObjectsSaved;
 
-    private CameraController cameraController;
+    // Controller
+    private CameraController mainCamera;
+    private VictoryController victoryController;
 
     public enum Layer { Default, TransparentFX, IgnoreRaycast, Water = 4, UI, PlayerBall = 8, PlayerBlock, PlayerMissile, EnemyBall, EnemyBlock, EnemyMissile, Goods, Ground }
     public enum GamePhase { Menu, Preparation, Playing, Victory, Defeat, Pause }
@@ -46,9 +48,16 @@ public class GameController : MonoBehaviour
     // 上一次购买的物品时，新生成的商品
     public Unit unitBought;
 
+    // 准备阶段的建造范围
+    public float xMinBuild;
+    public float xMaxBuild;
+    public float yMinBuild;
+    public float yMaxBuild;
+
     void Awake()
     {
-        cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
+        mainCamera = GameObject.Find("Main Camera").GetComponent<CameraController>();
+        victoryController = GameObject.Find("Victory Controller").GetComponent<VictoryController>();
         playerMoneyText = GameObject.Find("UI Canvas/UI Money Text").GetComponent<Text>();
     }
 
@@ -76,7 +85,7 @@ public class GameController : MonoBehaviour
         }
 
         // Q键快速重复上一次购买的物体
-        if (gamePhase == GamePhase.Preparation)
+        if (Input.GetKeyDown(KeyCode.Q) && gamePhase == GamePhase.Preparation)
         {
             RepeatBuy();
         }
@@ -93,6 +102,10 @@ public class GameController : MonoBehaviour
             keyCtrl = false;
         }
 
+        if (gamePhase == GamePhase.Playing)
+        {
+            VictoryCheck();
+        }
         DebugGame();
     }
 
@@ -151,7 +164,12 @@ public class GameController : MonoBehaviour
     {
         if (unitBought != null)
         {
-            unitBought.Buy();
+            Unit unit = unitBought.Buy();
+            if (unit != null)
+            {
+                unit.transform.position = MouseController.MouseWorldPosition();
+                unit.MouseLeftUp();
+            }
         }
     }
 
@@ -202,7 +220,7 @@ public class GameController : MonoBehaviour
     void NewGame()
     {
         // 重置摄像机
-        cameraController.Init();
+        mainCamera.Init();
 
         // 清除放置的物体
         if (playerObjects != null)
@@ -224,6 +242,8 @@ public class GameController : MonoBehaviour
         enemyObjects.SetActive(true);
         enemyObjects.name = "Enemy Objects";
         EnemyBlockLink();
+
+        victoryController.Init();
     }
 
     // 玩家物体初始化
@@ -340,11 +360,21 @@ public class GameController : MonoBehaviour
         unitsDraging.Clear();
     }
 
+    // 胜利检测
+    void VictoryCheck()
+    {
+        if (victoryController.IsVictory())
+        {
+            gamePhase = GamePhase.Victory;
+            Debug.Log("Victory");
+        }
+    }
+
     // Debug
     void DebugGame()
     {
-        // 点击获取鼠标位置
-        if (Input.GetMouseButtonDown(0))
+        // 左Alt + 鼠标左键取鼠标位置
+        if (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftAlt))
         {
             Debug.Log(MouseController.MouseWorldPosition());
         }
@@ -352,20 +382,4 @@ public class GameController : MonoBehaviour
         // 点击跳跃
         //Jump();
     }
-
-	// 胜利条件:消灭所有球
-	private bool ClearAllEnemy()
-	{
-		Ball[] balls = enemyObjects.GetComponentsInChildren<Ball>();
-		return balls.Length == 0;
-	}
-
-	// 胜利条件:消灭所有Boss
-	//private bool ClearAllBoss()
-	//{
-	//	Boss[] Bosses = enemyObjects.GetComponentsInChildren<Boss>();
-	//	return Bosses.Length == 0;
-	//}
-
-
 }

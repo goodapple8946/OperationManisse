@@ -58,14 +58,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f72a112b8aedd154887e21eb1e70c0f8, type: 3}
   - {fileID: 8300000, guid: 918f83b22a83106499b56f98ef8934cc, type: 3}
   - {fileID: 8300000, guid: b084521af24466e4b8bbf8743d5c2493, type: 3}
-  - {fileID: 8300000, guid: 8e728a1e9d3dc5f41a2d59668c45e98e, type: 3}
-  - {fileID: 8300000, guid: 80bd9d4bd8318a14485df52d305370ad, type: 3}
-  - {fileID: 8300000, guid: 43ee5d708d955024a8d299dd01f323d7, type: 3}
-  - {fileID: 8300000, guid: 4827fbf98a5198d45a996fbc8ff7bbbc, type: 3}
-  - {fileID: 8300000, guid: 1674e1d30004b9b46b597f21c3ffdfa0, type: 3}
-  - {fileID: 8300000, guid: 662368c20c74f1347bfe72d20c30a417, type: 3}
-  - {fileID: 8300000, guid: 96228358d940aef4c8f99ed7bb4f3488, type: 3}
-  - {fileID: 8300000, guid: 580a4c0578dc75541932f82d6784965c, type: 3}
-  - {fileID: 8300000, guid: c20a131ee400df544a6cafa00e56cca6, type: 3}
-  mute: {fileID: 21300000, guid: f76a055eafe0561408f4e21ed81aebb6, type: 3}
+  mute: {fileID: 21300000, guid: 6b5f010a4365aae4ca0a570b1fdd0da2, type: 3}
   unmute: {fileID: 21300000, guid: 901fee87f1056ce4ba79f176e1e427ea, type: 3}

@@ -47,10 +47,10 @@ public class Block : Unit
     protected float speedRatioRotation = 0.5f;
 
     // 连接断开扭矩（玩家）
-    protected float breakTorquePlayer = 100f;
+    protected float breakTorquePlayer = 75f;
 
     // 连接断开扭矩（中立及敌人）
-    protected float breakTorque = 10f;
+    protected float breakTorque = 5f;
 
     /*
      * 松开鼠标左键时，Block连接的逻辑：
@@ -555,6 +555,39 @@ public class Block : Unit
                 sprite.gameObject.transform.Rotate(0, 0, -speedRotation * speedRatioRotation);
                 break;
             }
+        }
+    }
+    
+    //准备阶段的建造范围
+    protected override void BuildLocationCheck()
+    {
+        if (transform.position.x + radius > gameController.xMaxBuild)
+        {
+            Unlink();
+            MouseLeftDown();
+            transform.Translate(gameController.xMaxBuild - transform.position.x - radius - 0.01f, 0, 0);
+            MouseLeftUp();
+        }
+        else if (transform.position.x - radius < gameController.xMinBuild)
+        {
+            Unlink();
+            MouseLeftDown();
+            transform.Translate(gameController.xMinBuild - transform.position.x + radius + 0.01f, 0, 0);
+            MouseLeftUp();
+        }
+        if (transform.position.y + radius > gameController.yMaxBuild)
+        {
+            Unlink();
+            MouseLeftDown();
+            transform.Translate(gameController.yMaxBuild - transform.position.y - radius - 0.01f, 0, 0);
+            MouseLeftUp();
+        }
+        else if (transform.position.y - radius < gameController.yMinBuild)
+        {
+            Unlink();
+            MouseLeftDown();
+            transform.Translate(gameController.yMinBuild - transform.position.y + radius + 0.01f, 0, 0);
+            MouseLeftUp();
         }
     }
 }
