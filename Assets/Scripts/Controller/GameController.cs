@@ -43,6 +43,9 @@ public class GameController : MonoBehaviour
     // 当前鼠标拖动的Unit
     public ArrayList unitsDraging = new ArrayList();
 
+    // 上一次购买的物品时，新生成的商品
+    public Unit unitBought;
+
     void Awake()
     {
         cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
@@ -60,14 +63,37 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-        SpaceStart();
-        DebugGame();
-        KeyCtrlCheck();
-
+        // 鼠标键抬起
         if (Input.GetMouseButtonUp(0))
         {
             FixBlockBodyType();
         }
+
+        // 空格键开始或停止
+        if (Input.GetKeyDown(KeyCode.Space)) 
+        {
+            StartOrStop();
+        }
+
+        // Q键快速重复上一次购买的物体
+        if (gamePhase == GamePhase.Preparation)
+        {
+            RepeatBuy();
+        }
+
+        // Ctrl键按下
+        if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl))
+        {
+            keyCtrl = true;
+        }
+
+        // Ctrl键抬起
+        if (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl))
+        {
+            keyCtrl = false;
+        }
+
+        DebugGame();
     }
 
     void FixedUpdate()
@@ -106,17 +132,26 @@ public class GameController : MonoBehaviour
     }
 
     // 空格键开始或停止游戏
-    void SpaceStart()
+    void StartOrStop()
     {
         // 开始游戏
-        if (gamePhase == GamePhase.Preparation && Input.GetKeyDown(KeyCode.Space))
+        if (gamePhase == GamePhase.Preparation)
         {
             StartGame();
         }
         // 停止游戏
-        else if (gamePhase == GamePhase.Playing && Input.GetKeyDown(KeyCode.Space))
+        else if (gamePhase == GamePhase.Playing)
         {
             StopGame();
+        }
+    }
+
+    // Q键快速重复上一次购买的物体
+    void RepeatBuy()
+    {
+        if (unitBought != null)
+        {
+            unitBought.Buy();
         }
     }
 
@@ -264,20 +299,6 @@ public class GameController : MonoBehaviour
                     ball.body.AddForce(new Vector2(50f, 50f));
                 }
             }
-        }
-    }
-
-    // 检测Ctrl键是否被按下
-    void KeyCtrlCheck()
-    {
-        
-        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
-        {
-            keyCtrl = true;
-        }
-        else
-        {
-            keyCtrl = false;
         }
     }
 

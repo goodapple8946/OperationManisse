@@ -56,49 +56,27 @@ public class BlockBalloon : Block
         }
     }
 
-    protected override void OnMouseOver()
+    // 鼠标左键按下
+    public override void MouseLeftDown()
     {
-        // 准备阶段
-        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation)
+        if (isSelling)
         {
-            // 鼠标左键按下
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (isSelling)
-                {
-                    Buy();
-                }
-
-                Unlink();
-
-                body.bodyType = RigidbodyType2D.Static;
-                SetSpriteSortingLayer("Pick");
-            }
-
-            // 鼠标左键抬起
-            if (Input.GetMouseButtonUp(0))
-            {
-                body.bodyType = RigidbodyType2D.Dynamic;
-                SetSpriteSortingLayer("Unit");
-
-                AdsorptionCheck();
-            }
+            Buy();
         }
 
-        // 鼠标右键按下
-        if (Input.GetMouseButtonDown(1))
-        {
-            // 准备阶段，出售
-            if (gameController.gamePhase == GameController.GamePhase.Preparation)
-            {
-                Sell();
-            }
-            // 游戏阶段，删除
-            else if (gameController.gamePhase == GameController.GamePhase.Playing)
-            {
-                // Delete();
-            }
-        }
+        Unlink();
+
+        body.bodyType = RigidbodyType2D.Static;
+        SetSpriteSortingLayer("Pick");
+    }
+
+    // 鼠标左键抬起
+    public override void MouseLeftUp()
+    {
+        body.bodyType = RigidbodyType2D.Dynamic;
+        SetSpriteSortingLayer("Unit");
+
+        AdsorptionCheck();
     }
 
     // 将该Block与下面连接的Block断开连接

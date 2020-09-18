@@ -30364,6 +30364,12 @@ PrefabInstance:
       propertyPath: audiosDelete.Array.size
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 5194580538895148382, guid: 8b6b2f0f4e0bcd142ad089045b7a8007,
+        type: 3}
+      propertyPath: mute
+      value: 
+      objectReference: {fileID: 21300000, guid: 6b5f010a4365aae4ca0a570b1fdd0da2,
+        type: 3}
     - target: {fileID: 5194580538895148383, guid: 8b6b2f0f4e0bcd142ad089045b7a8007,
         type: 3}
       propertyPath: m_Name
@@ -30516,6 +30522,61 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8600615600402819999, guid: f57181b2f918b834baba233020195ff3,
+        type: 3}
+      propertyPath: interactablePhases.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8600615600402819999, guid: f57181b2f918b834baba233020195ff3,
+        type: 3}
+      propertyPath: interactablePhases.Array.data[1]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8600615600402819999, guid: f57181b2f918b834baba233020195ff3,
+        type: 3}
+      propertyPath: interactablePhases.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8600615600608276486, guid: f57181b2f918b834baba233020195ff3,
+        type: 3}
+      propertyPath: interactablePhases.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8600615600608276486, guid: f57181b2f918b834baba233020195ff3,
+        type: 3}
+      propertyPath: interactablePhases.Array.data[1]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8600615600608276486, guid: f57181b2f918b834baba233020195ff3,
+        type: 3}
+      propertyPath: interactablePhases.Array.data[2]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8600615600608276486, guid: f57181b2f918b834baba233020195ff3,
+        type: 3}
+      propertyPath: interactablePhases.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8600615601123513473, guid: f57181b2f918b834baba233020195ff3,
+        type: 3}
+      propertyPath: interactablePhases.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8600615601123513473, guid: f57181b2f918b834baba233020195ff3,
+        type: 3}
+      propertyPath: interactablePhases.Array.data[2]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8600615601123513473, guid: f57181b2f918b834baba233020195ff3,
+        type: 3}
+      propertyPath: interactablePhases.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8600615601123513473, guid: f57181b2f918b834baba233020195ff3,
+        type: 3}
+      propertyPath: interactablePhases.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8600615601125023239, guid: f57181b2f918b834baba233020195ff3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -30629,7 +30690,22 @@ PrefabInstance:
     - target: {fileID: 8600615601125023243, guid: f57181b2f918b834baba233020195ff3,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8600615601725218774, guid: f57181b2f918b834baba233020195ff3,
+        type: 3}
+      propertyPath: interactablePhases.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8600615601725218774, guid: f57181b2f918b834baba233020195ff3,
+        type: 3}
+      propertyPath: interactablePhases.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8600615601725218774, guid: f57181b2f918b834baba233020195ff3,
+        type: 3}
+      propertyPath: interactablePhases.Array.data[0]
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f57181b2f918b834baba233020195ff3, type: 3}

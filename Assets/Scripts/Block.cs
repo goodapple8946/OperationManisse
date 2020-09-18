@@ -46,6 +46,12 @@ public class Block : Unit
     // 转速比率
     protected float speedRatioRotation = 0.5f;
 
+    // 连接断开扭矩（玩家）
+    protected float breakTorquePlayer = 100f;
+
+    // 连接断开扭矩（中立及敌人）
+    protected float breakTorque = 10f;
+
     /*
      * 松开鼠标左键时，Block连接的逻辑：
      * 1. 使用Find First Block递归遍历与鼠标松开Block连接的所有Block
@@ -69,76 +75,50 @@ public class Block : Unit
         }
     }
 
-    protected override void OnMouseOver()
-    {
-        // 准备阶段
-        if (clickable && gameController.gamePhase == GameController.GamePhase.Preparation)
-        {
-            // 鼠标左键按下
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (isSelling)
-                {
-                    Buy();
-                }
-
-                // 未按下Ctrl，断开连接
-                if (!gameController.keyCtrl)
-                {
-                    Unlink();
-                }
-
-                int rand = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
-                SetBlockLinkedSelected(true, rand);
-            }
-
-            // 鼠标左键抬起
-            if (Input.GetMouseButtonUp(0))
-            {
-                int rand;
-
-                rand = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
-                SetBlockLinkedSelected(false, rand);
-
-                // 以下是注释中的Block连接逻辑：
-                rand = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
-                Block firstBlock = FindFirstBlock(rand);
-
-                if (firstBlock != null)
-                {
-                    // 完成后，递归地对所有连接的Block进行吸附位移
-                    rand = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
-                    firstBlock.AbsorbPositionRecursively(rand);
-                }
-            }
-        }
-
-        // 鼠标右键按下
-        if (Input.GetMouseButtonDown(1))
-        {
-            if (clickable && !isSelling && isSellable)
-            {
-                // 准备阶段，出售
-                if (gameController.gamePhase == GameController.GamePhase.Preparation)
-                {
-                    Sell();
-                }
-                // 游戏阶段，删除
-                else if (gameController.gamePhase == GameController.GamePhase.Playing)
-                {
-                    // Delete();
-                }
-            }
-
-        }
-    }
-
     protected override void OnMouseDrag()
     {
         if (clickable && isAlive && !isSelling && gameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
         {
             int rand = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
             TranslateBlockLinked(MouseController.offset, rand);
+        }
+    }
+
+    // 鼠标左键按下
+    public override void MouseLeftDown()
+    {
+        if (isSelling)
+        {
+            Buy();
+        }
+
+        // 未按下Ctrl，断开连接
+        if (!gameController.keyCtrl)
+        {
+            Unlink();
+        }
+
+        int rand = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
+        SetBlockLinkedSelected(true, rand);
+    }
+
+    // 鼠标左键抬起
+    public override void MouseLeftUp()
+    {
+        int rand;
+
+        rand = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
+        SetBlockLinkedSelected(false, rand);
+
+        // 以下是注释中的Block连接逻辑：
+        rand = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
+        Block firstBlock = FindFirstBlock(rand);
+
+        if (firstBlock != null)
+        {
+            // 完成后，递归地对所有连接的Block进行吸附位移
+            rand = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
+            firstBlock.AbsorbPositionRecursively(rand);
         }
     }
 
@@ -218,15 +198,37 @@ public class Block : Unit
         // 目标Block所处方向的反方向
         LinkDirection directionNegative = (LinkDirection)(((int)direction + 2) % 4);
 
+        FixedJoint2D joint;
+
         // 该Block连接目标Block
         blocksLinked[(int)direction] = block;
-        joints[(int)direction] = gameObject.AddComponent<FixedJoint2D>();
-        joints[(int)direction].connectedBody = block.body;
+
+        joint = gameObject.AddComponent<FixedJoint2D>();
+        joint.connectedBody = block.body;
+        if (player == 1)
+        {
+            joint.breakTorque = breakTorquePlayer;
+        }
+        else
+        {
+            joint.breakTorque = breakTorque;
+        }
+        joints[(int)direction] = joint;
 
         // 目标Block连接该Block
-        block.blocksLinked[(int)directionNegative] = gameObject.GetComponent<Block>();
-        block.joints[(int)directionNegative] = block.gameObject.AddComponent<FixedJoint2D>();
-        block.joints[(int)directionNegative].connectedBody = body;
+        block.blocksLinked[(int)directionNegative] = this;
+
+        joint = block.gameObject.AddComponent<FixedJoint2D>();
+        joint.connectedBody = body;
+        if (player == 1)
+        {
+            joint.breakTorque = breakTorquePlayer;
+        }
+        else
+        {
+            joint.breakTorque = breakTorque;
+        }
+        block.joints[(int)directionNegative] = joint;
 
         // 连接的位置
         Vector2 position = (transform.position + block.transform.position) / 2;

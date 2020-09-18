@@ -108,29 +108,13 @@ public class Unit : MonoBehaviour
             // 鼠标左键按下
             if (Input.GetMouseButtonDown(0))
             {
-                if (isSelling)
-                {
-                    Buy();
-                }
-
-                if (body != null)
-                {
-                    body.bodyType = RigidbodyType2D.Static;
-                    gameController.unitsDraging.Add(this);
-                }
-
-                SetSpriteSortingLayer("Pick");
+                MouseLeftDown();
             }
 
             // 鼠标左键抬起
             if (Input.GetMouseButtonUp(0))
             {
-                SetSpriteSortingLayer("Unit");
-
-                if (body != null)
-                {
-                    body.bodyType = RigidbodyType2D.Dynamic;
-                }
+                MouseLeftUp();
             }
         }
 
@@ -139,18 +123,52 @@ public class Unit : MonoBehaviour
         {
             if (clickable && !isSelling && isSellable)
             {
-                // 准备阶段，出售
-                if (gameController.gamePhase == GameController.GamePhase.Preparation)
-                {
-                    Sell();
-                }
-                // 游戏阶段，删除
-                else if (gameController.gamePhase == GameController.GamePhase.Playing)
-                {
-                    // Delete();
-                }
+                MouseRightDown();
             }
             
+        }
+    }
+
+    // 鼠标左键按下
+    public virtual void MouseLeftDown()
+    {
+        if (isSelling)
+        {
+            Buy();
+        }
+
+        if (body != null)
+        {
+            body.bodyType = RigidbodyType2D.Static;
+            gameController.unitsDraging.Add(this);
+        }
+
+        SetSpriteSortingLayer("Pick");
+    }
+
+    // 鼠标左键抬起
+    public virtual void MouseLeftUp()
+    {
+        SetSpriteSortingLayer("Unit");
+
+        if (body != null)
+        {
+            body.bodyType = RigidbodyType2D.Dynamic;
+        }
+    }
+
+    // 鼠标右键按下
+    public virtual void MouseRightDown()
+    {
+        // 准备阶段，出售
+        if (gameController.gamePhase == GameController.GamePhase.Preparation)
+        {
+            Sell();
+        }
+        // 游戏阶段，删除
+        else if (gameController.gamePhase == GameController.GamePhase.Playing)
+        {
+            // Delete();
         }
     }
 

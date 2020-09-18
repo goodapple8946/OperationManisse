@@ -57,13 +57,14 @@ public class UIController : MonoBehaviour
 		{
 			gamePhaseBackup = gameController.gamePhase;
 			gameController.gamePhase = GamePhase.Menu;
+            Time.timeScale = 0;
 		}
 		// 第二次点击
 		else
 		{
 			gameController.gamePhase = gamePhaseBackup;
-		}
-		// Application.Quit();
+            Time.timeScale = 1;
+        }
 	}
 
     public void UIReset()
