@@ -18,4 +18,5 @@ public class ResourceController : MonoBehaviour
 
 	// 解除静音图片
 	public Sprite unmute;
+
 }

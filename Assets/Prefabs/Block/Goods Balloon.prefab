@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 4261955057781621037}
   - component: {fileID: 4261955057781621036}
   m_Layer: 9
-  m_Name: Goods Block Balloon
+  m_Name: Goods Balloon
   m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -161,6 +161,7 @@ MonoBehaviour:
   particlePrefab: {fileID: 0}
   particle: {fileID: 0}
   body: {fileID: 0}
+  HPStrip: {fileID: 951686486553588177, guid: c4ce5ab7bebb2454aa61a912d69a495e, type: 3}
   blocksLinked:
   - {fileID: 0}
   - {fileID: 0}

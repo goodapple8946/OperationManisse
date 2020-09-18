@@ -203,6 +203,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 386716627}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -258,10 +288,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -508,6 +573,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2145460227}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -563,10 +658,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -658,6 +788,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 386716627}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -713,10 +873,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -1090,6 +1285,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 386716627}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1145,10 +1370,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -3696,6 +3956,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1272262926}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3751,10 +4041,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -3851,6 +4176,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 684987814}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3906,10 +4261,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -4277,6 +4667,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 684987814}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4332,10 +4752,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -4593,6 +5048,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1786348187}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4648,10 +5133,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -4829,6 +5349,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 684987814}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4884,10 +5434,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -5664,6 +6249,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2145460227}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5719,10 +6334,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -6342,6 +6992,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2145460227}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6397,10 +7077,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -6601,6 +7316,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 386716627}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6656,10 +7401,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -6676,6 +7456,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1190498760}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6731,10 +7541,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -6751,6 +7596,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1119971084}
     m_Modifications:
+    - target: {fileID: 224666809229697061, guid: 9768bb3adfb59fa4b93f3b382b9501e1,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224666809229697061, guid: 9768bb3adfb59fa4b93f3b382b9501e1,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 252953478984088103, guid: 9768bb3adfb59fa4b93f3b382b9501e1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6820,6 +7675,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2145460227}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6875,10 +7760,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -7205,6 +8125,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1272262926}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7260,10 +8210,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -7837,6 +8822,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1272262926}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7892,10 +8907,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -9454,6 +10504,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Goods Ball Crossbow
       objectReference: {fileID: 0}
+    - target: {fileID: 2220343084694704583, guid: 7083fda1e26696248b98db1cf3661fc9,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2220343084694704583, guid: 7083fda1e26696248b98db1cf3661fc9,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8471818465817787991, guid: 7083fda1e26696248b98db1cf3661fc9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9834,6 +10894,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1190498760}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9889,10 +10979,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -9990,6 +11115,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1786348187}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10045,10 +11200,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -10195,10 +11385,40 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 628507357035931376, guid: 59f92773785bc734cae050131b7172e7,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 628507357035931376, guid: 59f92773785bc734cae050131b7172e7,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 628507357035931376, guid: 59f92773785bc734cae050131b7172e7,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 628507357035931376, guid: 59f92773785bc734cae050131b7172e7,
+        type: 3}
+      propertyPath: m_FlipY
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 628507357035931378, guid: 59f92773785bc734cae050131b7172e7,
         type: 3}
       propertyPath: m_Name
       value: Goods Ball Gatling
+      objectReference: {fileID: 0}
+    - target: {fileID: 2304917198518518303, guid: 59f92773785bc734cae050131b7172e7,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2304917198518518303, guid: 59f92773785bc734cae050131b7172e7,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59f92773785bc734cae050131b7172e7, type: 3}
@@ -10289,6 +11509,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 235990148}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10344,10 +11594,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -10519,6 +11804,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 684987814}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10574,10 +11889,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -10909,6 +12259,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 235990148}
     m_Modifications:
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368392239654493678, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417659611729310341, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488750733097366821, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520965362718986198, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3647921936040018887, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10964,10 +12344,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4156484336995973490, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688160129654882923, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528038138014123401, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6330292888019772347, guid: 2eb5e0fc305abf24b835f883849e2f14,
         type: 3}
       propertyPath: m_Name
       value: Enemy Ball Crossbow (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211666697690351325, guid: 2eb5e0fc305abf24b835f883849e2f14,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2eb5e0fc305abf24b835f883849e2f14, type: 3}
@@ -29914,6 +31329,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Goods Ball Automatic Rifle
+      objectReference: {fileID: 0}
+    - target: {fileID: 6700966226780164279, guid: 8d379b7c20862d142bf0696accaa0a12,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6700966226780164279, guid: 8d379b7c20862d142bf0696accaa0a12,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6700966226780164279, guid: 8d379b7c20862d142bf0696accaa0a12,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d379b7c20862d142bf0696accaa0a12, type: 3}
