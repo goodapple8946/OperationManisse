@@ -75,7 +75,7 @@ public class Missile : MonoBehaviour
             Ball ball = other.gameObject.GetComponent<Ball>();
             if (ball != null)
             {
-                ball.health -= damage;
+				ball.TakeDamage(damage);
                 if (ball.body != null)
                 {
                     ball.body.AddForce(transform.right * forceHit);
@@ -86,7 +86,7 @@ public class Missile : MonoBehaviour
             Block block = other.gameObject.GetComponent<Block>();
             if (block != null)
             {
-                block.health -= damage;
+				block.TakeDamage(damage);
                 if (block.body != null)
                 {
                     block.body.AddForce(transform.right * forceHit);

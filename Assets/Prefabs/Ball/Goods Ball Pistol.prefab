@@ -212,6 +212,7 @@ MonoBehaviour:
   particlePrefab: {fileID: 0}
   particle: {fileID: 0}
   body: {fileID: 0}
+  HPStrip: {fileID: 951686486553588177, guid: c4ce5ab7bebb2454aa61a912d69a495e, type: 3}
   weaponOffset: 0.44
   weaponCDMax: 0.75
   weaponCDRandom: 1
@@ -220,4 +221,4 @@ MonoBehaviour:
   missilePrefab: {fileID: 8991482200070230743, guid: 64f72a8e7a85d8f4a9c1ffc30243c07f,
     type: 3}
   isMelee: 0
-  audioAttack: {fileID: 8300000, guid: 899c940bbcad78d4589572f866f0d8c3, type: 3}
+  toward: right

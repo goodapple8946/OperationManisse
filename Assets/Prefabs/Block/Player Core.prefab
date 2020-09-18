@@ -115,6 +115,7 @@ MonoBehaviour:
   particlePrefab: {fileID: 0}
   particle: {fileID: 0}
   body: {fileID: 0}
+  HPStrip: {fileID: 951686486553588177, guid: c4ce5ab7bebb2454aa61a912d69a495e, type: 3}
   blocksLinked:
   - {fileID: 0}
   - {fileID: 0}
@@ -131,8 +132,6 @@ MonoBehaviour:
   isCore: 1
   isOneLink: 0
   isWheel: 0
-  particleLinkPrefab: {fileID: 8728105212017883391, guid: 5ca256b7950e1c743a648418ac98b45c,
-    type: 3}
 --- !u!61 &2882552430367811228
 BoxCollider2D:
   m_ObjectHideFlags: 0

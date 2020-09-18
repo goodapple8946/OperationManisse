@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Unit : MonoBehaviour
 {
@@ -74,18 +75,26 @@ public class Unit : MonoBehaviour
     protected GameController gameController;
     protected ResourceController resourceController;
 
-    protected virtual void Awake()
+	// 血条HPCanvas
+	public Slider HPStrip;
+
+	protected virtual void Awake()
     {
         body = GetComponent<Rigidbody2D>();
 
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
         resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
+		
+		
     }
 
     protected virtual void Start()
     {
-
-    }
+		//初始化血条
+		HPStrip.value = HPStrip.maxValue = health;
+		// 初始不显血
+		HPStrip.gameObject.SetActive(false);
+	}
 
     protected virtual void Update()
     {
@@ -105,6 +114,7 @@ public class Unit : MonoBehaviour
         {
             BuildLocationCheck();
         }
+		UpdateHPStripPosition();
     }
 
     protected virtual void OnMouseOver()
@@ -179,7 +189,26 @@ public class Unit : MonoBehaviour
         }
     }
 
-    protected virtual void OnMouseDrag()
+	// 受伤掉血
+	public void TakeDamage(int damage)
+	{
+		//开启显血
+		HPStrip.gameObject.SetActive(true);
+		// 扣血
+		health -= damage;
+		// 更新血条
+		HPStrip.value = health;
+	}
+
+	// 每一帧更新血条的位置
+	private void UpdateHPStripPosition()
+	{
+		//float biasfactor = 0.5f;
+		//HPStrip.transform.position = this.transform.position + Vector3.up * biasfactor;
+		//HPStrip.transform.rotation = Quaternion.identity;
+	}
+
+	protected virtual void OnMouseDrag()
     {
         if (clickable && isAlive && !isSelling && gameController.gamePhase == GameController.GamePhase.Preparation && Input.GetMouseButton(0))
         {

@@ -1271,10 +1271,60 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2051498517}
     m_Modifications:
+    - target: {fileID: 253846307562866826, guid: 7083fda1e26696248b98db1cf3661fc9,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 253846307562866826, guid: 7083fda1e26696248b98db1cf3661fc9,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1218294590528101931, guid: 7083fda1e26696248b98db1cf3661fc9,
         type: 3}
       propertyPath: m_Name
       value: Goods Ball Crossbow
+      objectReference: {fileID: 0}
+    - target: {fileID: 1719377478735814517, guid: 7083fda1e26696248b98db1cf3661fc9,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1719377478735814517, guid: 7083fda1e26696248b98db1cf3661fc9,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2500045162599852100, guid: 7083fda1e26696248b98db1cf3661fc9,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2500045162599852100, guid: 7083fda1e26696248b98db1cf3661fc9,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3790619716261349967, guid: 7083fda1e26696248b98db1cf3661fc9,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3790619716261349967, guid: 7083fda1e26696248b98db1cf3661fc9,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6827732951509931757, guid: 7083fda1e26696248b98db1cf3661fc9,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6827732951509931757, guid: 7083fda1e26696248b98db1cf3661fc9,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8471818465817787991, guid: 7083fda1e26696248b98db1cf3661fc9,
         type: 3}

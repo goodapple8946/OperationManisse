@@ -72,7 +72,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 618c5a4eab080f2499baad844377673a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  health: 400
   isAlive: 1
   price: 50
   rebuyable: 1
@@ -91,6 +91,7 @@ MonoBehaviour:
   particlePrefab: {fileID: 0}
   particle: {fileID: 0}
   body: {fileID: 0}
+  HPStrip: {fileID: 951686486553588177, guid: c4ce5ab7bebb2454aa61a912d69a495e, type: 3}
   blocksLinked:
   - {fileID: 0}
   - {fileID: 0}
@@ -107,8 +108,6 @@ MonoBehaviour:
   isCore: 0
   isOneLink: 0
   isWheel: 0
-  particleLinkPrefab: {fileID: 8728105212017883391, guid: 5ca256b7950e1c743a648418ac98b45c,
-    type: 3}
 --- !u!1 &5480223403047184476
 GameObject:
   m_ObjectHideFlags: 0
