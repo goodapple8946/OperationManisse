@@ -81,6 +81,15 @@ public class Unit : MonoBehaviour
     protected GameController gameController;
     protected ResourceController resourceController;
 
+	// 一次伤害闪烁次数
+	private static int flashTime = 2;
+	// 剩余闪烁次数
+	private int currFlashTime = 0;
+	// 每次闪烁间隔
+	private float flashGapTime = 0.20f;
+	// 当前剩余闪烁间隔
+	private float currFlashGapTime = 0.0f;
+
 	protected virtual void Awake()
     {
         body = GetComponent<Rigidbody2D>();
@@ -119,7 +128,11 @@ public class Unit : MonoBehaviour
         {
             BuildLocationCheck();
         }
-    }
+		if (currFlashTime > 0)
+		{
+			WaitAndFlash();
+		}
+	}
 
     protected virtual void OnMouseOver()
     {
@@ -198,6 +211,30 @@ public class Unit : MonoBehaviour
 	{
         // 生命值减少
         health -= damage;
+		FlashOnce();
+	}
+
+	private void FlashOnce()
+	{
+		currFlashTime = (currFlashTime % flashTime) + flashTime;
+	}
+
+	private void WaitAndFlash()
+	{
+		if (currFlashGapTime > 0)
+		{
+			// wait for gaptime
+			currFlashGapTime -= Time.deltaTime;
+		}
+		else
+		{
+			// flash
+			SpriteRenderer renderer = transform.GetComponent<SpriteRenderer>();
+			Debug.Log(renderer != null);
+			renderer.enabled = !renderer.enabled;
+			currFlashGapTime = flashGapTime;
+			currFlashTime--;
+		}
 	}
 
 	protected virtual void OnMouseDrag()
