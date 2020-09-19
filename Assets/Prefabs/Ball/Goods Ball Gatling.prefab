@@ -212,11 +212,12 @@ MonoBehaviour:
   speedMax: 0
   particlePrefab: {fileID: 0}
   particle: {fileID: 0}
+  sprites: []
   body: {fileID: 0}
   weaponOffset: 0.86
-  weaponCDMax: 0.05
+  weaponCDMax: 0.1
   weaponCDRandom: 0
-  weaponRange: 7
+  weaponRange: 10
   weaponRandomAngle: 6.5
   missilePrefab: {fileID: 8991482200070230743, guid: 64f72a8e7a85d8f4a9c1ffc30243c07f,
     type: 3}
