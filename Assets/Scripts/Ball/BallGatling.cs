@@ -10,10 +10,15 @@ public class BallGatling : Ball
 	// 当前已经预热的时间,介于[0, preheatTime]
 	private float currPreheatTime;
 
+	private Color coldColor = Color.black;
+	// 橙色
+	private Color hotColor = Color.red;
+
 	protected override void Update()
 	{
 		base.Update();
 		Preheat();
+		HeatGatling();
 	}
 
 	// 加特林预热完毕才能远程攻击
@@ -38,5 +43,13 @@ public class BallGatling : Ball
 		{
 			currPreheatTime -= Time.deltaTime;
 		}
+	}
+
+	// 设置加特林颜色
+	private void HeatGatling()
+	{
+		Color color = Color.Lerp(coldColor, hotColor, currPreheatTime / preheatTime);
+		Transform gatlingTrans = transform.GetChild(0).transform;
+		gatlingTrans.GetComponent<SpriteRenderer>().color = color;
 	}
 }

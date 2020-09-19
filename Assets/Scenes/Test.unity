@@ -31499,6 +31499,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Goods Ball Grenade Launcher
       objectReference: {fileID: 0}
+    - target: {fileID: 2019012135359395238, guid: 5ee0b73e13c849549bd62bba078b181d,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2019012135359395238, guid: 5ee0b73e13c849549bd62bba078b181d,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2019012135359395238, guid: 5ee0b73e13c849549bd62bba078b181d,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2019012135359395257, guid: 5ee0b73e13c849549bd62bba078b181d,
         type: 3}
       propertyPath: m_LocalPosition.x

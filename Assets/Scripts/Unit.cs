@@ -231,7 +231,7 @@ public class Unit : MonoBehaviour
 			// flash
 			SpriteRenderer renderer = transform.GetComponent<SpriteRenderer>();
 			Debug.Log(renderer != null);
-			renderer.enabled = !renderer.enabled;
+			//renderer.enabled = !renderer.enabled;
 			currFlashGapTime = flashGapTime;
 			currFlashTime--;
 		}
