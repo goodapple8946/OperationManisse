@@ -230,10 +230,14 @@ public class Unit : MonoBehaviour
 		{
 			// flash
 			SpriteRenderer renderer = transform.GetComponent<SpriteRenderer>();
-			Debug.Log(renderer != null);
-			//renderer.enabled = !renderer.enabled;
-			currFlashGapTime = flashGapTime;
-			currFlashTime--;
+			if(renderer != null)
+			{
+				float alpha = (renderer.color.a == 1.0f) ? 0.5f : 1.0f;
+				renderer.color = new Color(
+					renderer.color.r, renderer.color.g, renderer.color.b, alpha);
+				currFlashGapTime = flashGapTime;
+				currFlashTime--;
+			}
 		}
 	}
 
