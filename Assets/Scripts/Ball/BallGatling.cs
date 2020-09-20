@@ -10,10 +10,16 @@ public class BallGatling : Ball
 	// 当前已经预热的时间,介于[0, preheatTime]
 	private float currPreheatTime;
 
+	private Color initColor = Color.black;
+	// 机枪发红色
+	//private Color hotColor = new Color(0.91f, 0.10f, 0.05f, 1.0f);
+	private Color maxColor = Color.white;
+
 	protected override void Update()
 	{
 		base.Update();
 		Preheat();
+		HeatGatling();
 	}
 
 	// 加特林预热完毕才能远程攻击
@@ -38,5 +44,13 @@ public class BallGatling : Ball
 		{
 			currPreheatTime -= Time.deltaTime;
 		}
+	}
+
+	// 设置加特林颜色
+	private void HeatGatling()
+	{
+		Color color = Color.Lerp(initColor, maxColor, currPreheatTime / preheatTime);
+		Transform gatlingTrans = transform.GetChild(0).transform;
+		gatlingTrans.GetComponent<SpriteRenderer>().color = color;
 	}
 }
