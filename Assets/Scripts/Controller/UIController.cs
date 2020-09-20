@@ -12,8 +12,6 @@ public class UIController : MonoBehaviour
     public GameController.GamePhase[] interactablePhases;
 
     private GameController gameController;
-	// 点击option时保存gameController的gamePhase
-	private GamePhase gamePhaseBackup;
 
 	private GameObject mainCamera;
 
@@ -22,7 +20,6 @@ public class UIController : MonoBehaviour
 	void Start()
     {
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
-		gamePhaseBackup = GamePhase.Preparation;
 		mainCamera = GameObject.Find("Main Camera");
 		resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
 	}

@@ -142,7 +142,7 @@ public class Unit : MonoBehaviour
         }
 		if (currFlashTime > 0)
 		{
-			WaitAndFlash();
+			//WaitAndFlash();
 		}
 	}
 
@@ -244,7 +244,7 @@ public class Unit : MonoBehaviour
 	{
         // 生命值减少
         health -= damage;
-		FlashOnce();
+		//FlashOnce();
 	}
 
 	private void FlashOnce()

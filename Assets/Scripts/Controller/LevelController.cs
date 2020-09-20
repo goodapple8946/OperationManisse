@@ -6,7 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class LevelController : MonoBehaviour
 {
-    private GameObject loading;
+    public GameObject loading;
+
+    private AsyncOperation async;
 
     struct LevelInfo
     {
@@ -24,14 +26,9 @@ public class LevelController : MonoBehaviour
     private LevelInfo[] levelInfos =
     {
         new LevelInfo("0", "TEST", "This is a test level."),
-        new LevelInfo("1", "SHELTER", "Build some obstacles to block missiles."),
+        new LevelInfo("1", "BUILD A SHELTER", "Build some obstacles to block missiles."),
+        new LevelInfo("2", "THE HIGHER THE STRONGER", "Try to find where the enemy's defenses are weak."),
     };
-
-    void Start()
-    {
-        loading = GameObject.Find("Canvas/Loading");
-        loading.SetActive(false);
-    }
 
 	public void LoadLevel(int level)
     {
@@ -46,9 +43,12 @@ public class LevelController : MonoBehaviour
 
     IEnumerator Loading(int level)
     {
-        yield return new WaitForSeconds(1f);
+        async = SceneManager.LoadSceneAsync("Level " + level);
+        async.allowSceneActivation = false;
 
-        SceneManager.LoadScene("Level " + level);
+        yield return new WaitForSeconds(3f);
+
+        async.allowSceneActivation = true;
     }
 
     public void Quit()
