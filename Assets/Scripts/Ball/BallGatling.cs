@@ -11,6 +11,7 @@ public class BallGatling : Ball
 	private float currPreheatTime;
 
 	private Color initColor = Color.black;
+
 	// 机枪发红色
 	//private Color hotColor = new Color(0.91f, 0.10f, 0.05f, 1.0f);
 	private Color maxColor = Color.white;

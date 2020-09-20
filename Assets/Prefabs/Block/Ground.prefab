@@ -154,7 +154,7 @@ SpriteRenderer:
   m_SortingLayerID: -204611037
   m_SortingLayer: 9
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 81c223dc0d499ce4fb0302dff08a6613, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e2937eba0caa2854c9eb6185e79a96bf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -180,9 +180,9 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
+    border: {x: 1.28, y: 1.28, z: 1.28, w: 1.28}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.048, y: 2.048}
+    oldSize: {x: 20.48, y: 20.48}
     newSize: {x: 82, y: 6.4}
     adaptiveTilingThreshold: 0.5
     drawMode: 2
@@ -224,8 +224,7 @@ MonoBehaviour:
   particlePrefab: {fileID: 0}
   particle: {fileID: 0}
   sprites: []
-  damageCollisionBall: 10
-  damageCollisionBlock: 0
+  damageCollision: 10
   body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}
