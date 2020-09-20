@@ -91,13 +91,14 @@ public class Unit : MonoBehaviour
     protected ResourceController resourceController;
 
 	// 一次伤害闪烁次数
-	private static int flashTime = 2;
+	private static int flashTimes = 2;
 	// 剩余闪烁次数
-	private int currFlashTime = 0;
+	private int currFlashTimes = 0;
 	// 每次闪烁间隔
-	private float flashGapTime = 0.20f;
+	private static float flashGapTime = 0.08f;
 	// 当前剩余闪烁间隔
 	private float currFlashGapTime = 0.0f;
+	private static float flashAlpha = 0.75f;
 
 	protected virtual void Awake()
     {
@@ -137,7 +138,7 @@ public class Unit : MonoBehaviour
         {
             BuildLocationCheck();
         }
-		if (currFlashTime > 0)
+		if (currFlashTimes > 0)
 		{
 			WaitAndFlash();
 		}
@@ -246,7 +247,7 @@ public class Unit : MonoBehaviour
 
 	private void FlashOnce()
 	{
-		currFlashTime = (currFlashTime % flashTime) + flashTime;
+		currFlashTimes = (currFlashTimes % flashTimes) + flashTimes;
 	}
 
 	private void WaitAndFlash()
@@ -262,11 +263,11 @@ public class Unit : MonoBehaviour
 			SpriteRenderer renderer = transform.GetComponent<SpriteRenderer>();
 			if(renderer != null)
 			{
-				float alpha = (renderer.color.a == 1.0f) ? 0.5f : 1.0f;
+				float alpha = (renderer.color.a == 1.0f) ? flashAlpha : 1.0f;
 				renderer.color = new Color(
 					renderer.color.r, renderer.color.g, renderer.color.b, alpha);
 				currFlashGapTime = flashGapTime;
-				currFlashTime--;
+				currFlashTimes--;
 			}
 		}
 	}
