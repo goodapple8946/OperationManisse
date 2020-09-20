@@ -91,11 +91,14 @@ public class Unit : MonoBehaviour
     protected ResourceController resourceController;
 
 	// 一次伤害闪烁次数
-	private static int flashTime = 2;
+	private int flashTime = 2;
+
 	// 剩余闪烁次数
 	private int currFlashTime = 0;
+
 	// 每次闪烁间隔
-	private float flashGapTime = 0.20f;
+	private float flashGapTime = 0.02f;
+
 	// 当前剩余闪烁间隔
 	private float currFlashGapTime = 0.0f;
 
