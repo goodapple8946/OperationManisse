@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1923574575030404395}
   - component: {fileID: 5442384192549345523}
   m_Layer: 0
-  m_Name: Balloon
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,8 +25,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3216016491646510265}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.02, z: 0}
-  m_LocalScale: {x: 0.1875, y: 0.1875, z: 1}
+  m_LocalPosition: {x: 0, y: -0.01, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4261955057781621039}
   m_RootOrder: 0
@@ -70,7 +70,7 @@ SpriteRenderer:
   m_SortingLayerID: 158068497
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 75b4138f6abd15446977573b1e820d05, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0fda79a7b3f895f499a5bfb156adac3e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -129,7 +129,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.45
+  m_Radius: 0.4
 --- !u!114 &4261955057781621036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,6 +144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthMax: 100
   health: 100
+  isInvincible: 0
   isAlive: 1
   price: 100
   rebuyable: 1
@@ -152,9 +153,9 @@ MonoBehaviour:
   isSelling: 1
   isSellable: 1
   player: 0
-  priority: 0
+  priority: -100
   radius: 0.45
-  mass: 1
+  mass: 0.25
   isForceProvider: 1
   force: 5
   forceAngle: 90
@@ -162,6 +163,7 @@ MonoBehaviour:
   particlePrefab: {fileID: 0}
   particle: {fileID: 0}
   sprites: []
+  damageCollision: 10
   body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}

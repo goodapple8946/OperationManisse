@@ -108,6 +108,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: e59c366b815377c4ca4883a6aa8b10c7, type: 3}
   - {fileID: 21300000, guid: 51b94961ff1365b4b8348a006db2deb8, type: 3}
   - {fileID: 21300000, guid: b9ae9d28f260e71499a52c8dcd2f6a64, type: 3}
+  damageCollisionBall: 10
+  damageCollisionBlock: 0
   body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}
@@ -273,9 +275,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 158068497
-  m_SortingLayer: 3
-  m_SortingOrder: 1
+  m_SortingLayerID: 1115787969
+  m_SortingLayer: 7
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6b8e504d8ae13244bb6482c454e22216, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

@@ -2454,7 +2454,12 @@ PrefabInstance:
     - target: {fileID: 5239557504601161304, guid: 9a516cac98f95034bb8693eecd441592,
         type: 3}
       propertyPath: xMax
-      value: 64
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5239557504601161304, guid: 9a516cac98f95034bb8693eecd441592,
+        type: 3}
+      propertyPath: yMax
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5239557504601161305, guid: 9a516cac98f95034bb8693eecd441592,
         type: 3}
