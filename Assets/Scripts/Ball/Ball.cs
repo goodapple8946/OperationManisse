@@ -66,8 +66,8 @@ public class Ball : Unit
             {
                 WeaponCoolDown();
 
-                // 如果当前没有目标，或者当前目标太远，寻找敌人
-                if (target == null || !target.isAlive || (target.transform.position - transform.position).magnitude > weaponRange)
+                // 寻找敌人
+                if (!TargetCheck(target) || !(target is Ball))
                 {
                     FindEnemy();
                 }
@@ -103,6 +103,15 @@ public class Ball : Unit
         CheckToward();
     }
 
+    // 检查目标是否合法
+    protected virtual bool TargetCheck(Unit unit)
+    {
+        return
+            unit != null && unit.isAlive && !unit.isSelling &&
+            (unit.transform.position - transform.position).magnitude <= weaponRange &&
+            (player == 1 && unit.player == 2 || player == 2 && unit.player == 1);
+    }
+
     // 索敌
     protected virtual void FindEnemy()
     {
@@ -118,20 +127,16 @@ public class Ball : Unit
         {
             Unit unit = gameObject.GetComponent<Unit>();
 
-            // 目标存活且非卖品
-            if (unit.isAlive && !unit.isSelling)
+            // 目标合法
+            if (TargetCheck(unit))
             {
-                // 目标是敌对的
-                if (player == 1 && unit.player == 2 || player == 2 && unit.player == 1)
-                {
-                    float priority = EnemyPriority(unit);
+                float priority = EnemyPriority(unit);
 
-                    // 优先级更高的目标
-                    if (priority > priorityTarget)
-                    {
-                        target = unit;
-                        priorityTarget = priority;
-                    }
+                // 优先级更高的目标
+                if (priority > priorityTarget)
+                {
+                    target = unit;
+                    priorityTarget = priority;
                 }
             }
         }

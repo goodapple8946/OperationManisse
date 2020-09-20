@@ -75,7 +75,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 20, y: 6.4}
+  m_Size: {x: 82, y: 6.4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -92,6 +92,7 @@ GameObject:
   - component: {fileID: 3243820019913981387}
   - component: {fileID: 3243820019913981386}
   - component: {fileID: 3243820019913981385}
+  - component: {fileID: 382181915694619566}
   m_Layer: 15
   m_Name: Ground
   m_TagString: Untagged
@@ -158,7 +159,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 20, y: 6.4}
+  m_Size: {x: 82, y: 6.4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -182,11 +183,63 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 2.048, y: 2.048}
-    newSize: {x: 20, y: 6.4}
+    newSize: {x: 82, y: 6.4}
     adaptiveTilingThreshold: 0.5
     drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 19.6, y: 6.36}
+  m_Size: {x: 81.96, y: 6.36}
   m_EdgeRadius: 0
+--- !u!114 &382181915694619566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3243820019913981384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 618c5a4eab080f2499baad844377673a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthMax: 1
+  health: 1
+  isInvincible: 1
+  isAlive: 1
+  price: 0
+  rebuyable: 0
+  prefab: {fileID: 3243820019913981384}
+  clickable: 0
+  isSelling: 0
+  isSellable: 0
+  player: 0
+  priority: 0
+  radius: 0
+  mass: 0
+  isForceProvider: 0
+  force: 0
+  forceAngle: 0
+  speedMax: 0
+  particlePrefab: {fileID: 0}
+  particle: {fileID: 0}
+  sprites: []
+  damageCollisionBall: 10
+  damageCollisionBlock: 0
+  body: {fileID: 0}
+  blocksLinked:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  joints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  absorptionProvision: 0
+  coverPrefab: {fileID: 0}
+  isFixed: 1
+  isCore: 0
+  isOneLink: 0
+  isWheel: 0

@@ -9967,30 +9967,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1064450351}
     m_Modifications:
-    - target: {fileID: 2780299420365413992, guid: 6394ac5b44f3e0244baa8197debf789d,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 82
-      objectReference: {fileID: 0}
     - target: {fileID: 3243820019913981384, guid: 6394ac5b44f3e0244baa8197debf789d,
         type: 3}
       propertyPath: m_Name
       value: Ground
-      objectReference: {fileID: 0}
-    - target: {fileID: 3243820019913981385, guid: 6394ac5b44f3e0244baa8197debf789d,
-        type: 3}
-      propertyPath: m_SpriteTilingProperty.newSize.x
-      value: 82
-      objectReference: {fileID: 0}
-    - target: {fileID: 3243820019913981385, guid: 6394ac5b44f3e0244baa8197debf789d,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 81.96
-      objectReference: {fileID: 0}
-    - target: {fileID: 3243820019913981386, guid: 6394ac5b44f3e0244baa8197debf789d,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 82
       objectReference: {fileID: 0}
     - target: {fileID: 3243820019913981387, guid: 6394ac5b44f3e0244baa8197debf789d,
         type: 3}
@@ -30414,7 +30394,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6005349238654ba4f9796af84bf69646, type: 3}
---- !u!1001 &3929050711331069513
+--- !u!1001 &2411495931601101508
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2

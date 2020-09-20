@@ -45,8 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 618c5a4eab080f2499baad844377673a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthMax: 300
-  health: 300
+  healthMax: 250
+  health: 250
+  isInvincible: 0
   isAlive: 1
   price: 50
   rebuyable: 1
@@ -57,13 +58,15 @@ MonoBehaviour:
   player: 0
   priority: 0
   radius: 0.3
-  mass: 1
+  mass: 0.5
   isForceProvider: 0
   force: 0
   forceAngle: 0
   speedMax: 0
   particlePrefab: {fileID: 0}
   particle: {fileID: 0}
+  sprites: []
+  damageCollision: 10
   body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}
@@ -124,7 +127,7 @@ Transform:
   m_GameObject: {fileID: 8328451584900404133}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.125, y: 0.125, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6219353443694411157}
   m_RootOrder: 0
@@ -168,7 +171,7 @@ SpriteRenderer:
   m_SortingLayerID: 158068497
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c77ac0e9f3bffbe49871841cf761764f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 982ed96a89963d74cbb66f87cbc7cd74, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

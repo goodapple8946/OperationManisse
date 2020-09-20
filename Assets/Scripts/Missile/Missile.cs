@@ -73,7 +73,7 @@ public class Missile : MonoBehaviour
         {
             // 击中Ball
             Ball ball = other.gameObject.GetComponent<Ball>();
-            if (ball != null)
+            if (ball != null && !ball.isInvincible)
             {
 				ball.TakeDamage(damage);
                 if (ball.body != null)
@@ -84,7 +84,7 @@ public class Missile : MonoBehaviour
 
             // 击中Block
             Block block = other.gameObject.GetComponent<Block>();
-            if (block != null)
+            if (block != null && !block.isInvincible)
             {
 				block.TakeDamage(damage);
                 if (block.body != null)

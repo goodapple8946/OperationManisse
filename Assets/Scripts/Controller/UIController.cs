@@ -51,21 +51,7 @@ public class UIController : MonoBehaviour
     {
 		GameObject menuObject = transform.GetChild(0).gameObject;
 		menuObject.SetActive(!menuObject.activeSelf);
-		// 第一次点击
-		bool openMenu = (gameController.gamePhase != GamePhase.Menu);
-		if (openMenu)
-		{
-			gamePhaseBackup = gameController.gamePhase;
-			gameController.gamePhase = GamePhase.Menu;
-            Time.timeScale = 0;
-		}
-		// 第二次点击
-		else
-		{
-			gameController.gamePhase = gamePhaseBackup;
-            Time.timeScale = 1;
-        }
-	}
+    }
 
     public void UIReset()
     {
@@ -106,7 +92,7 @@ public class UIController : MonoBehaviour
 	}
 
 	public void UIToLevel()
-	{
-		SceneManager.LoadScene("Level Panel");
+    {
+        SceneManager.LoadScene("Level Panel");
 	}
 }

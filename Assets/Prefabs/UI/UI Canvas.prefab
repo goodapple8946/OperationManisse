@@ -307,7 +307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c18e23c2870d87f42a90d56931d6daa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactablePhases: 00000000
+  interactablePhases: 000000000100000002000000030000000400000005000000
 --- !u!1 &3616397871015318614
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,7 +495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c18e23c2870d87f42a90d56931d6daa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactablePhases: 00000000
+  interactablePhases: 000000000100000002000000030000000400000005000000
 --- !u!1 &8060883660016511665
 GameObject:
   m_ObjectHideFlags: 0

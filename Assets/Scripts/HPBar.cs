@@ -12,6 +12,12 @@ public class HPBar : MonoBehaviour
     public float valueBack = 0;
     private float valueSpeed = 1f;
     private Vector2 offset = new Vector2(0, 0.32f);
+    private bool init = false;
+
+    public Sprite frontNeutral;
+    public Sprite frontPlayer;
+    public Sprite frontEnemy;
+    public Sprite back;
 
     void Update()
     {
@@ -21,16 +27,30 @@ public class HPBar : MonoBehaviour
         }
         else
         {
-            if (unit.health == unit.healthMax)
+            if (unit.health != unit.healthMax)
             {
-                transform.localScale = Vector2.zero;
-            }
-            else
-            {
-                transform.localScale = Vector2.one;
+                if (!init)
+                {
+                    transform.localScale = Vector2.one;
+                    valueMax = unit.healthMax;
+                    if (unit.player == 0)
+                    {
+                        transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = frontNeutral;
+                    }
+                    else if (unit.player == 1)
+                    {
+                        transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = frontPlayer;
+                    }
+                    else if (unit.player == 2)
+                    {
+                        transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = frontEnemy;
+                    }
+                    transform.GetChild(2).GetComponent<SpriteRenderer>().sprite = back;
+
+                    init = true;
+                }
 
                 value = unit.health;
-                valueMax = unit.healthMax;
                 if (valueBack < value)
                 {
                     valueBack = value;

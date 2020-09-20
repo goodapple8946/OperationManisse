@@ -26,10 +26,10 @@ Transform:
   m_GameObject: {fileID: 2879575057370452929}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.125, y: 0.125, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4016460913362679638}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7770978625830789954
 SpriteRenderer:
@@ -70,7 +70,7 @@ SpriteRenderer:
   m_SortingLayerID: 1115787969
   m_SortingLayer: 7
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c47f88828cf20314281a19fe075c6b9a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6b8e504d8ae13244bb6482c454e22216, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -111,8 +111,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1858360664166258430}
-  - {fileID: 3919655174632781442}
   - {fileID: 3498504246306396726}
+  - {fileID: 3919655174632781442}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -156,6 +156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthMax: 300
   health: 300
+  isInvincible: 0
   isAlive: 1
   price: 200
   rebuyable: 1
@@ -170,10 +171,12 @@ MonoBehaviour:
   isForceProvider: 1
   force: 5
   forceAngle: 0
-  speedMax: 2
+  speedMax: 3
   particlePrefab: {fileID: 3907941134862332719, guid: f1c3826a8225d224c9aed073a2737291,
     type: 3}
   particle: {fileID: 0}
+  sprites: []
+  damageCollision: 10
   body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}
@@ -217,7 +220,7 @@ Transform:
   m_GameObject: {fileID: 5062797990722392560}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.125, y: 0.125, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4016460913362679638}
   m_RootOrder: 0
@@ -261,7 +264,7 @@ SpriteRenderer:
   m_SortingLayerID: 158068497
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ac1118c8ba6f37d458338147862a6582, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fd6da27d8a22b7c4c8802f7a9a8103b2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -283,7 +286,7 @@ GameObject:
   - component: {fileID: 3919655174632781442}
   - component: {fileID: 5514845724737975592}
   m_Layer: 9
-  m_Name: Block Propeller Cover
+  m_Name: Propeller Cover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -298,10 +301,10 @@ Transform:
   m_GameObject: {fileID: 7701738515154455204}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.125, y: 0.125, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4016460913362679638}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5514845724737975592
 SpriteRenderer:
@@ -342,7 +345,7 @@ SpriteRenderer:
   m_SortingLayerID: -228110775
   m_SortingLayer: 6
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d0046c580eda56b4e8205a8b1d8eb2f2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ab7629c6fad35f5489b9088b865a2050, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

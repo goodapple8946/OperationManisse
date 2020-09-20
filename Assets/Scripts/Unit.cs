@@ -11,6 +11,9 @@ public class Unit : MonoBehaviour
     // 生命值
     public int health;
 
+    // 无敌的
+    public bool isInvincible;
+
     // 是否存活
     public bool isAlive;
 
@@ -77,6 +80,12 @@ public class Unit : MonoBehaviour
     // 可能的Sprite
     public Sprite[] sprites;
 
+    // 碰撞时对对方造成的伤害（每1有效相对速度造成damageCollision点伤害）
+    public float damageCollision = 10f;
+
+    // 碰撞造成伤害的最小相对速度
+    protected float velocityCollision = 3f;
+
     public Rigidbody2D body;
     protected GameController gameController;
     protected ResourceController resourceController;
@@ -134,6 +143,28 @@ public class Unit : MonoBehaviour
 		}
 	}
 
+    // 碰撞
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
+    {
+        // 可以造成碰撞伤害
+        if (isAlive && !isSelling && gameController.gamePhase == GameController.GamePhase.Playing)
+        {
+            // 与之碰撞的另一个Unit
+            Unit unit = collision.gameObject.GetComponent<Unit>();
+
+            // 造成伤害的有效相对速度
+            float velocity = collision.relativeVelocity.magnitude - velocityCollision;
+
+            // 满足触发伤害的条件
+            if (unit != null && unit.isAlive && !unit.isSelling && !unit.isInvincible && velocity >= 0)
+            {
+                float damage = velocity * damageCollision;
+
+                unit.TakeDamage((int)damage);
+            }
+        }
+    }
+
     protected virtual void OnMouseOver()
     {
         // 准备阶段
@@ -159,7 +190,6 @@ public class Unit : MonoBehaviour
             {
                 MouseRightDown();
             }
-            
         }
     }
 
