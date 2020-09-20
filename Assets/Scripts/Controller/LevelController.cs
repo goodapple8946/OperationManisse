@@ -1,36 +1,54 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class LevelController : MonoBehaviour
 {
-    private GameObject loading;
+    public GameObject loading;
 
-    void Awake()
-    {
-        loading = GameObject.Find("Canvas/Loading");
-    }
+    private AsyncOperation async;
 
-    void Start()
+    struct LevelInfo
     {
-        if (loading.activeSelf)
+        public string code;
+        public string title;
+        public string tip;
+        public LevelInfo(string code, string title, string tip)
         {
-            loading.SetActive(false);
+            this.code = code;
+            this.title = title;
+            this.tip = tip;
         }
     }
 
+    private LevelInfo[] levelInfos =
+    {
+        new LevelInfo("0", "TEST", "This is a test level."),
+        new LevelInfo("1", "BUILD A SHELTER", "Build some obstacles to block missiles."),
+        new LevelInfo("2", "THE HIGHER THE STRONGER", "Try to find where the enemy's defenses are weak."),
+    };
+
 	public void LoadLevel(int level)
     {
+        LevelInfo info = levelInfos[level];
+        loading.transform.GetChild(0).GetComponent<Text>().text = "LEVEL " + info.code;
+        loading.transform.GetChild(1).GetComponent<Text>().text = info.title;
+        loading.transform.GetChild(2).GetComponent<Text>().text = info.tip;
+
         loading.SetActive(true);
         StartCoroutine(Loading(level));
-	}
+    }
 
     IEnumerator Loading(int level)
     {
-        yield return new WaitForSeconds(1f);
+        async = SceneManager.LoadSceneAsync("Level " + level);
+        async.allowSceneActivation = false;
 
-        SceneManager.LoadScene("Level " + level);
+        yield return new WaitForSeconds(3f);
+
+        async.allowSceneActivation = true;
     }
 
     public void Quit()
