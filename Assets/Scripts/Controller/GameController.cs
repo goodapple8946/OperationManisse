@@ -120,6 +120,7 @@ public class GameController : MonoBehaviour
         playerObjectsInit = Instantiate(playerObjectsSaved);
         playerObjectsInit.SetActive(false);
 
+        EnemyBlockLink();
         enemyObjectsSaved = Instantiate(enemyObjects);
         enemyObjectsSaved.SetActive(false);
     }

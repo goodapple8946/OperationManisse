@@ -98,9 +98,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
   zoomSpeed: 2
-  zoomSizeMax: 4.8
+  zoomSizeMax: 5.2
   zoomSizeMin: 3.2
   scrollSpeed: 12
+  movable: 1
   follow: 0
   xMin: 0
   xMax: 64

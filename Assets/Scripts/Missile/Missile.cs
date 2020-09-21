@@ -38,7 +38,7 @@ public class Missile : MonoBehaviour
     public int player;
 
     // 发射音效
-    public AudioClip audioLaunch;
+    public AudioClip[] audiosLaunch;
 
     public Rigidbody2D body;
 
@@ -137,9 +137,10 @@ public class Missile : MonoBehaviour
         }
         body.AddForce(transform.right * forceLaunch);
 
-        if (audioLaunch != null)
+        if (audiosLaunch.Length > 0)
         {
-            AudioSource.PlayClipAtPoint(audioLaunch, transform.position);
+            int rand = Random.Range(0, audiosLaunch.Length);
+            AudioSource.PlayClipAtPoint(audiosLaunch[rand], transform.position);
         }
     }
 

@@ -96,8 +96,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 618c5a4eab080f2499baad844377673a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthMax: 450
-  health: 450
+  healthMax: 200
+  health: 200
+  isInvincible: 0
   isAlive: 1
   price: 0
   rebuyable: 0
@@ -115,6 +116,8 @@ MonoBehaviour:
   speedMax: 0
   particlePrefab: {fileID: 0}
   particle: {fileID: 0}
+  sprites: []
+  damageCollision: 10
   body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}

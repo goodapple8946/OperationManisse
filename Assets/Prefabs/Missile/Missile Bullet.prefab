@@ -156,5 +156,13 @@ MonoBehaviour:
     type: 3}
   isMelee: 0
   player: 0
-  audioLaunch: {fileID: 8300000, guid: 899c940bbcad78d4589572f866f0d8c3, type: 3}
+  audiosLaunch:
+  - {fileID: 8300000, guid: 5e76d2b6da3d5f945a67c83ab2fde3ca, type: 3}
+  - {fileID: 8300000, guid: b653042752803ea40a032251fb942873, type: 3}
+  - {fileID: 8300000, guid: a9ec4e19069af1449912bea9d9bcbf67, type: 3}
+  - {fileID: 8300000, guid: d3b87262f8cc40e4ba1582e29c4974db, type: 3}
+  - {fileID: 8300000, guid: 619cb36e93fa4714581cb63f147449a8, type: 3}
+  - {fileID: 8300000, guid: 0c25453730416b844a7f0eaf61db34a7, type: 3}
+  - {fileID: 8300000, guid: 613236cb0e6ef0b45a6985ffddddc637, type: 3}
+  - {fileID: 8300000, guid: 6270fb2f447ed724bac64035bb7382b5, type: 3}
   body: {fileID: 0}
