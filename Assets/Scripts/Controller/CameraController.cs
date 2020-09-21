@@ -24,6 +24,9 @@ public class CameraController : MonoBehaviour
     // 屏幕滚动触发边缘距离
     private int scrollDistance = 10;
 
+    // 可移动的
+    public bool movable = true;
+
     // 屏幕跟随
     public bool follow;
 
@@ -34,6 +37,7 @@ public class CameraController : MonoBehaviour
     public float yMax;
 
     private GameController gameController;
+
 	// 记录上一次镜头跟player core需要的偏移
 	private Vector3 followOffset;
 
@@ -56,18 +60,21 @@ public class CameraController : MonoBehaviour
 			follow = false;
 		}
 
-		// follow状态
-		if (follow)
-		{
-			Follow();
-			FixBound();
-		}
-		else //自由状态
-		{
-			Zoom();
-			Scroll();
-			FixBound();
-		}
+        if (movable)
+        {
+            if (follow)
+            {
+                Zoom();
+                Follow();
+                FixBound();
+            }
+            else
+            {
+                Zoom();
+                Scroll();
+                FixBound();
+            }
+        }
     }
 
     // 初始化Camera
@@ -77,18 +84,12 @@ public class CameraController : MonoBehaviour
         followOffset = new Vector3(0, 0, 0);
     }
 
-    // 跟随玩家核心
+    // 跟随玩家
     private void Follow()
     {
-		GameObject core = GameObject.Find("Player Objects/Player Core");
-		if (core == null || !core.GetComponent<Block>().isAlive)
-		{
-			return;
-		}
-
-		Vector3 corePosition = core.transform.position;
+		Vector3 corePosition = gameController.GetCenterPlayerObjects();
 		Vector3 cameraDepth = new Vector3(0, 0, cameraZ);
-		Vector3 newOffset = CalcuteFollowOffset(core.GetComponent<Rigidbody2D>().velocity);
+		Vector3 newOffset = CalcuteFollowOffset(gameController.GetVelocityPlayerObjects());
 		// 维护更新followOffset
 		followOffset = newOffset;
 		// 设置摄像机位置
@@ -115,9 +116,7 @@ public class CameraController : MonoBehaviour
 		transform.Translate(scrollSpeed * Time.deltaTime * dir);
     }
 
-	/// <summary>
-	/// 将摄像头限制在游戏地图内
-	/// </summary>
+	// 将摄像头限制在游戏地图内
 	private void FixBound()
     {
         if (transform.position.x > xMax)
@@ -146,11 +145,13 @@ public class CameraController : MonoBehaviour
 
 		// 获取玩家核心的运动方向向量
 		Vector2 moveDirection = velocity.normalized;
+
 		// 采取两者中小的,以获得平滑的效果
 		float weightX = Mathf.Abs(velocity.x) < Mathf.Abs(moveDirection.x) ? 
 			velocity.x : moveDirection.x;
 		float weightY = Mathf.Abs(velocity.y) < Mathf.Abs(moveDirection.y) ?
 			velocity.y : moveDirection.y;
+
 		// 采用与屏幕size相关的较小量,以获得平滑的效果
 		float offsetFactor = 0.001f;
 		offsetFactor *= Mathf.Sqrt(cameraHeight * cameraHeight + cameraWeight * cameraWeight);
@@ -180,11 +181,9 @@ public class CameraController : MonoBehaviour
 		return vect;
 	}
 
-	/// <summary>
-	/// 鼠标接近屏幕边缘触发的滚珠方向向量,
-	/// 右(1,0)左(-1,0)上(0,1)下(0,-1)
-	/// 不存在滚转为(0,0)
-	/// </summary>
+	// 鼠标接近屏幕边缘触发的滚珠方向向量,
+	// 右(1,0)左(-1,0)上(0,1)下(0,-1)
+	// 不存在滚转为(0,0)
 	private Vector2 GetMouseDirection()
 	{
 		Vector2 dir = new Vector2(0, 0);

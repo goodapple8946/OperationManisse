@@ -43,3 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525584cb74ee35141965278ca321d5af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  victoryCondition: 0
+  targetOption: 0
+  targets: []
+  isVictory: 0
+  audioVictory: {fileID: 8300000, guid: 500e5f1ff49ca4f4da83e80c5843b157, type: 3}

@@ -43,15 +43,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddeaa8f7267314e43a7a9fae483d5cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  corePrefab: {fileID: 0}
   playerObjects: {fileID: 0}
   enemyObjects: {fileID: 0}
+  mainCamera: {fileID: 0}
+  victoryController: {fileID: 0}
   gamePhase: 1
-  boundRightPreparation: 2.2
-  playerMoney: 1000
+  playerMoney: 2500
+  playerMoneyText: {fileID: 0}
   keyCtrl: 0
   unitBought: {fileID: 0}
-  xMinBuild: -8
-  xMaxBuild: 2.4
+  xMinBuild: -6
+  xMaxBuild: 7.8
   yMinBuild: -100
   yMaxBuild: 100
+  shop: {fileID: 0}
+  audioVictory: {fileID: 8300000, guid: 500e5f1ff49ca4f4da83e80c5843b157, type: 3}
+  victoryDialog: {fileID: 0}

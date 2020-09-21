@@ -226,8 +226,14 @@ public class Ball : Unit
             // 弹药随机角度
             missile.transform.Rotate(0, 0, Random.Range(-weaponRandomAngle, weaponRandomAngle));
 
-            // 添加入playerObjects
-            missile.transform.parent = gameController.playerObjects.transform;
+            if (player == 1)
+            {
+                missile.transform.parent = gameController.playerObjects.transform;
+            }
+            else if (player == 2)
+            {
+                missile.transform.parent = gameController.enemyObjects.transform;
+            }
 
             // Layer
             if (gameObject.layer == (int)GameController.Layer.PlayerBall)

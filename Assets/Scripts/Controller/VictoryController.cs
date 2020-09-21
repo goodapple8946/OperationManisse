@@ -4,23 +4,27 @@ using UnityEngine;
 
 public class VictoryController : MonoBehaviour
 {
-    public enum VictoryCondition { KillAllBalls, KillTargets }
+    public enum VictoryCondition { KillBall, EnterLocation }
+    public enum TargetOption { All, Target }
 
     public VictoryCondition victoryCondition;
+    public TargetOption targetOption;
 
-    private Unit[] targets;
+    public Unit[] targets;
+
+    public bool isVictory;
 
     public void Init()
     {
-        // KillTargets：击杀所有名称为"Target"的Ball
-        if (victoryCondition == VictoryCondition.KillTargets)
+        // KillBall + All
+        if (victoryCondition == VictoryCondition.KillBall && targetOption == TargetOption.All)
         {
             ArrayList units = new ArrayList();
             GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Ball");
             foreach (GameObject gameObject in gameObjects)
             {
                 Unit unit = gameObject.GetComponent<Unit>();
-                if (unit.isAlive && !unit.isSelling && unit.player == 2 && unit.gameObject.name == "Target")
+                if (unit != null && unit.isAlive && !unit.isSelling && unit.player == 2)
                 {
                     units.Add(unit);
                 }
@@ -28,15 +32,18 @@ public class VictoryController : MonoBehaviour
             targets = (Unit[])units.ToArray(typeof(Unit));
         }
 
-        // KillAllBalls：击杀所有Ball
-        if (victoryCondition == VictoryCondition.KillAllBalls)
+        // * + Target
+        if (targetOption == TargetOption.Target)
         {
             ArrayList units = new ArrayList();
-            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Ball");
+
+            ArrayList gameObjects = new ArrayList();
+            gameObjects.AddRange(GameObject.FindGameObjectsWithTag("Ball"));
+            gameObjects.AddRange(GameObject.FindGameObjectsWithTag("Block"));
             foreach (GameObject gameObject in gameObjects)
             {
                 Unit unit = gameObject.GetComponent<Unit>();
-                if (unit.isAlive && !unit.isSelling && unit.player == 2)
+                if (unit != null && unit.isAlive && !unit.isSelling && unit.gameObject.name == "Target")
                 {
                     units.Add(unit);
                 }
@@ -45,27 +52,27 @@ public class VictoryController : MonoBehaviour
         }
     }
 
-    public bool IsVictory()
+    void Update()
     {
         switch (victoryCondition)
         {
-            case VictoryCondition.KillAllBalls:
-                return KillTargets();
-            case VictoryCondition.KillTargets:
-                return KillTargets();
+            case VictoryCondition.KillBall:
+                KillBall();
+                break;
+            case VictoryCondition.EnterLocation:
+                break;
         }
-        return false;
     }
 
-    bool KillTargets()
+    void KillBall()
     {
-        foreach(Unit target in targets)
+        foreach (Unit target in targets)
         {
             if (target != null && target.isAlive)
             {
-                return false;
+                return;
             }
         }
-        return true;
+        isVictory = true;
     }
 }

@@ -112,9 +112,11 @@ public class Unit : MonoBehaviour
 
     protected virtual void Start()
     {
+        // 生命值条
         HPBar hPBar = Instantiate(resourceController.hpBarPrefab).GetComponent<HPBar>();
         hPBar.unit = this;
 
+        // 贴图变种
         if (sprites.Length > 0)
         {
             int rand = Random.Range(0, sprites.Length);

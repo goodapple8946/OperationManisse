@@ -10,7 +10,7 @@ public class LevelController : MonoBehaviour
 
     private AsyncOperation async;
 
-    private float distanceTitleTarget = 40f;
+    private float distanceTitleTarget = 32f;
     private Vector3 positionTitleTarget = Vector3.zero;
 
     private bool isLoading = false;
@@ -61,6 +61,7 @@ public class LevelController : MonoBehaviour
         new LevelInfo("1", "SHELTER", "Build some obstacles to block missiles."),
         new LevelInfo("2", "HIGHER", "Where is the weakness."),
         new LevelInfo("3", "IMPACT", "No weapons. Knock it Down."),
+        new LevelInfo("4", "DASH", "Full Ahead."),
     };
 
 	public void LoadLevel(int level)

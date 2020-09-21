@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    public GameObject corePrefab;
-
 	// 玩家所有物体的根节点
     public GameObject playerObjects;
     private GameObject playerObjectsSaved;
@@ -17,18 +15,13 @@ public class GameController : MonoBehaviour
     private GameObject enemyObjectsSaved;
 
     // Controller
-    private CameraController mainCamera;
-    private VictoryController victoryController;
+    public CameraController mainCamera;
+    public VictoryController victoryController;
 
     public enum Layer { Default, TransparentFX, IgnoreRaycast, Water = 4, UI, PlayerBall = 8, PlayerBlock, PlayerMissile, EnemyBall, EnemyBlock, EnemyMissile, Goods, Ground }
     public enum GamePhase { Menu, Preparation, Playing, Victory, Defeat, Pause }
 
     public GamePhase gamePhase;
-
-    private Vector2 coreOriginPosition = new Vector2(0f, 0.64f);
-
-    // 准备阶段放置区右边界
-    public float boundRightPreparation;
 
     // 玩家原始钱数
     private int playerMoneyOrigin;
@@ -37,7 +30,7 @@ public class GameController : MonoBehaviour
     public int playerMoney;
 
     // 玩家显示钱数Text
-    private Text playerMoneyText;
+    public Text playerMoneyText;
 
     // Ctrl键是否被按下
     public bool keyCtrl;
@@ -57,16 +50,14 @@ public class GameController : MonoBehaviour
     // 商店
     public GameObject shop;
 
-    void Awake()
-    {
-        mainCamera = GameObject.Find("Main Camera").GetComponent<CameraController>();
-        victoryController = GameObject.Find("Victory Controller").GetComponent<VictoryController>();
-        playerMoneyText = GameObject.Find("UI Canvas/UI Money Text").GetComponent<Text>();
-    }
+    // 胜利音效
+    public AudioClip audioVictory;
+
+    // 胜利对话框
+    public GameObject victoryDialog;
 
     void Start()
     {
-        gamePhase = GamePhase.Preparation;
         playerMoneyOrigin = playerMoney;
 
         SaveBeforeStart();
@@ -120,12 +111,12 @@ public class GameController : MonoBehaviour
     // 开始前保存场景
     void SaveBeforeStart()
     {
-        playerObjectsSaved = GameObject.Find("Player Objects");
+        playerObjectsSaved = Instantiate(playerObjects);
         playerObjectsSaved.SetActive(false);
         playerObjectsInit = Instantiate(playerObjectsSaved);
         playerObjectsInit.SetActive(false);
 
-        enemyObjectsSaved = GameObject.Find("Enemy Objects");
+        enemyObjectsSaved = Instantiate(enemyObjects);
         enemyObjectsSaved.SetActive(false);
     }
 
@@ -192,7 +183,7 @@ public class GameController : MonoBehaviour
         {
             Block block = gameObject.GetComponent<Block>();
 
-            if (block.isAlive && !block.isSelling)
+            if (block != null && block.isAlive && !block.isSelling)
             {
                 // 不再固定Block的Z轴
                 if (!block.isFixed && block.body != null)
@@ -346,7 +337,7 @@ public class GameController : MonoBehaviour
         {
             Block block = gameObject.GetComponent<Block>();
 
-            if (block.isAlive && !block.isSelling && block.player == 2)
+            if (block != null && block.isAlive && !block.isSelling && block.player == 2)
             {
                 block.AbsorptionCheck(0.3f);
             }
@@ -355,7 +346,7 @@ public class GameController : MonoBehaviour
         {
             Block block = gameObject.GetComponent<Block>();
 
-            if (block.isAlive && !block.isSelling && block.player == 2)
+            if (block != null && block.isAlive && !block.isSelling && block.player == 2)
             {
                 block.body.bodyType = RigidbodyType2D.Dynamic;
             }
@@ -378,11 +369,67 @@ public class GameController : MonoBehaviour
     // 胜利检测
     void VictoryCheck()
     {
-        if (victoryController.IsVictory())
+        if (victoryController.isVictory)
         {
-            // gamePhase = GamePhase.Victory;
-            Debug.Log("Victory");
+            gamePhase = GamePhase.Victory;
+            StartCoroutine(Victory());
         }
+    }
+
+    // 胜利
+    IEnumerator Victory()
+    {
+        float victoryWaitTime = 2f;
+
+        yield return new WaitForSeconds(victoryWaitTime);
+
+        victoryDialog.SetActive(true);
+        AudioSource.PlayClipAtPoint(audioVictory, mainCamera.transform.position);
+        mainCamera.movable = false;
+    }
+
+    // 玩家物体中心
+    public Vector2 GetCenterPlayerObjects()
+    {
+        Vector2 center = Vector2.zero;
+        int len = playerObjects.transform.childCount;
+        int cnt = 0;
+        for (int i = 0; i < len; i++)
+        {
+            Unit unit = playerObjects.transform.GetChild(i).GetComponent<Unit>();
+            if (unit != null && unit.isAlive)
+            {
+                center += (Vector2)unit.transform.position;
+                cnt++;
+            }
+        }
+        if (cnt != 0)
+        {
+            center /= cnt;
+        }
+        return center;
+    }
+
+    // 玩家物体平均速度
+    public Vector2 GetVelocityPlayerObjects()
+    {
+        Vector2 velocity = Vector2.zero;
+        int len = playerObjects.transform.childCount;
+        int cnt = 0;
+        for (int i = 0; i < len; i++)
+        {
+            Unit unit = playerObjects.transform.GetChild(i).GetComponent<Unit>();
+            if (unit != null && unit.isAlive && unit.body != null)
+            {
+                velocity += unit.body.velocity;
+                cnt++;
+            }
+        }
+        if (cnt != 0)
+        {
+            velocity /= cnt;
+        }
+        return velocity;
     }
 
     // Debug
