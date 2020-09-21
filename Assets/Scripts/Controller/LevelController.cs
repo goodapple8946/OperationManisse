@@ -62,6 +62,7 @@ public class LevelController : MonoBehaviour
         new LevelInfo("2", "HIGHER", "Where is the weakness."),
         new LevelInfo("3", "IMPACT", "No weapons. Knock it Down."),
         new LevelInfo("4", "DASH", "Full Ahead."),
+        new LevelInfo("5", "RISE", "Balloons and more balloons."),
     };
 
 	public void LoadLevel(int level)

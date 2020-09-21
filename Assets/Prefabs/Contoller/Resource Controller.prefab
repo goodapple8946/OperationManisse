@@ -46,18 +46,18 @@ MonoBehaviour:
   particleLinkPrefab: {fileID: 8728105212017883391, guid: 5ca256b7950e1c743a648418ac98b45c,
     type: 3}
   audiosLink:
-  - {fileID: 8300000, guid: 785821eae9855e04a83a0a59517774dd, type: 3}
-  - {fileID: 8300000, guid: 45fdc4750b9585a43be0d158201b9944, type: 3}
-  - {fileID: 8300000, guid: badabb63454a10b439f6db213a12dfe9, type: 3}
-  - {fileID: 8300000, guid: c95b4c955469e0f4fabf9035a6e4b2a9, type: 3}
-  - {fileID: 8300000, guid: 7a2fea8d2cb29644c8e108a9a5c4a512, type: 3}
+  - {fileID: 8300000, guid: e526d960620f35b448a9e7b4821c9e6e, type: 3}
+  - {fileID: 8300000, guid: 073e94f91ee47234f83cfe50c6e645c0, type: 3}
+  - {fileID: 8300000, guid: 4ef58f963984145458b26e2fff5e8e33, type: 3}
+  - {fileID: 8300000, guid: d9f2fa576273aeb44a24c97a46efbc1f, type: 3}
+  - {fileID: 8300000, guid: 1d1df3532f6bbfd49869ff8a2ee2cd0d, type: 3}
   audiosDelete:
-  - {fileID: 8300000, guid: d3b11b80263d8a145ad7641f5e978ff4, type: 3}
-  - {fileID: 8300000, guid: 6e125c7f6c3574341bb7b01fe6b9dfee, type: 3}
-  - {fileID: 8300000, guid: 3af8a9d07bc438e458fa25f5e334a22b, type: 3}
-  - {fileID: 8300000, guid: f72a112b8aedd154887e21eb1e70c0f8, type: 3}
-  - {fileID: 8300000, guid: 918f83b22a83106499b56f98ef8934cc, type: 3}
-  - {fileID: 8300000, guid: b084521af24466e4b8bbf8743d5c2493, type: 3}
+  - {fileID: 8300000, guid: 7c7595d21f4704d43986433b787dd7aa, type: 3}
+  - {fileID: 8300000, guid: 451a9bb7da9d26a4ebec16d6abfe07b4, type: 3}
+  - {fileID: 8300000, guid: a103cd80ec944ac4eb076a59bbadbc8c, type: 3}
+  - {fileID: 8300000, guid: bef56f4b71c2d7749b153c6c9dff54c0, type: 3}
+  - {fileID: 8300000, guid: 33e2d9535f26eed4f90f2f57e1b5cd02, type: 3}
+  - {fileID: 8300000, guid: 774c716db6f57114ca786885946dd9f8, type: 3}
   mute: {fileID: 21300000, guid: 6b5f010a4365aae4ca0a570b1fdd0da2, type: 3}
   unmute: {fileID: 21300000, guid: 901fee87f1056ce4ba79f176e1e427ea, type: 3}
   hpBarPrefab: {fileID: 5438377093910908434, guid: 9a25f6745485b9448aa585e5e7ab546f,

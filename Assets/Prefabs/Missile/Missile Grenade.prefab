@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8da0eedd0f8df7543b34b595528d6126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceLaunch: 15
+  forceLaunch: 20
   forceHit: 90
   damage: 75
   duration: 3
@@ -156,5 +156,6 @@ MonoBehaviour:
     type: 3}
   isMelee: 0
   player: 0
+  audioLaunch: {fileID: 0}
   body: {fileID: 0}
-  radiusExplode: 1.28
+  radiusExplode: 1.92

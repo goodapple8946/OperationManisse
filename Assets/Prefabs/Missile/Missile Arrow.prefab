@@ -154,5 +154,8 @@ MonoBehaviour:
   particleHitPrefab: {fileID: 0}
   isMelee: 0
   player: 0
-  audioLaunch: {fileID: 0}
+  audiosLaunch:
+  - {fileID: 8300000, guid: bde9763c29473c04d9d1cccca5d1b0d4, type: 3}
+  - {fileID: 8300000, guid: f23687b964ff5f342ba9ddf794136874, type: 3}
+  - {fileID: 8300000, guid: 8ecce9001034034499d2d07d28bd1ba1, type: 3}
   body: {fileID: 0}

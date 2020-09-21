@@ -128,7 +128,7 @@ public class Unit : MonoBehaviour
     {
         if (isAlive)
         {
-            if (!isSelling && isForceProvider && gameController.gamePhase == GameController.GamePhase.Playing)
+            if (!isSelling && isForceProvider && (gameController.gamePhase == GameController.GamePhase.Playing || gameController.gamePhase == GameController.GamePhase.Victory))
             {
                 ProvideForce();
             }
@@ -476,13 +476,13 @@ public class Unit : MonoBehaviour
         if (transform.position.y + radius > gameController.yMaxBuild)
         {
             MouseLeftDown();
-            transform.Translate(gameController.yMaxBuild - transform.position.y - radius - 0.01f, 0, 0);
+            transform.Translate(0, gameController.yMaxBuild - transform.position.y - radius - 0.01f, 0);
             MouseLeftUp();
         }
         else if (transform.position.y - radius < gameController.yMinBuild)
         {
             MouseLeftDown();
-            transform.Translate(gameController.yMinBuild - transform.position.y + radius + 0.01f, 0, 0);
+            transform.Translate(0, gameController.yMinBuild - transform.position.y + radius + 0.01f, 0);
             MouseLeftUp();
         }
     }

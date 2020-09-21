@@ -34,7 +34,7 @@ public class BlockBalloon : Block
             {
                 // 画线
                 line.SetPosition(0, (Vector2)transform.position);
-                line.SetPosition(1, (Vector2)block.transform.position + new Vector2(0, block.radius));
+                line.SetPosition(1, (Vector2)block.transform.position /*+ new Vector2(0, block.radius)*/);
 
                 // 调整距离
                 ((DistanceJoint2D)joints[(int)LinkDirection.Down]).distance = lineDistance;
@@ -66,14 +66,20 @@ public class BlockBalloon : Block
 
         Unlink();
 
-        body.bodyType = RigidbodyType2D.Static;
+        if (body != null)
+        {
+            body.bodyType = RigidbodyType2D.Static;
+        }
         SetSpriteSortingLayer("Pick");
     }
 
     // 鼠标左键抬起
     public override void MouseLeftUp()
     {
-        body.bodyType = RigidbodyType2D.Dynamic;
+        if (body != null)
+        {
+            body.bodyType = RigidbodyType2D.Dynamic;
+        }
         SetSpriteSortingLayer("Unit");
 
         AdsorptionCheck();
@@ -102,11 +108,11 @@ public class BlockBalloon : Block
                 }
 
                 // 断开连接的Block
-                // block.blocksLinked[directionNegativeIndex] = null;
-                // if (block.joints[directionNegativeIndex] != null)
-                // {
-                //     Destroy(block.joints[directionNegativeIndex]);
-                // }
+                block.blocksLinked[directionNegativeIndex] = null;
+                if (block.joints[directionNegativeIndex] != null)
+                {
+                    Destroy(block.joints[directionNegativeIndex]);
+                }
 
                 // 更新连接的遮罩
                 block.UpdateCover();
@@ -139,16 +145,28 @@ public class BlockBalloon : Block
             // 物体是Block，Block不是商品、不是单向连接的、上方没有连接
             if (block != null && block.isAlive && !block.isSelling && !block.isOneLink && block.blocksLinked[(int)LinkDirection.Up] == null)
             {
+                DistanceJoint2D joint;
+
                 // 该Block连接目标Block
                 blocksLinked[(int)LinkDirection.Down] = block;
 
-                DistanceJoint2D joint = gameObject.AddComponent<DistanceJoint2D>();
+                joint = gameObject.AddComponent<DistanceJoint2D>();
                 joint.connectedBody = block.body;
                 joint.maxDistanceOnly = true;
+                joint.distance = (MouseController.MouseWorldPosition() - (Vector2)block.transform.position).magnitude;
                 lineDistance = joint.distance;
 
                 joints[(int)LinkDirection.Down] = joint;
 
+                // 目标Block连接该Block
+                block.blocksLinked[(int)LinkDirection.Up] = this;
+
+                joint = block.gameObject.AddComponent<DistanceJoint2D>();
+                joint.connectedBody = body;
+                joint.maxDistanceOnly = true;
+                joint.distance = (MouseController.MouseWorldPosition() - (Vector2)block.transform.position).magnitude;
+
+                block.joints[(int)LinkDirection.Up] = joint;
 
                 // 添加线
                 line = gameObject.AddComponent<LineRenderer>();

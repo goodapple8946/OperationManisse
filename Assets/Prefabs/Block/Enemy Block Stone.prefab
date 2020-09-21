@@ -231,7 +231,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7847521607252601206}
-  m_BodyType: 0
+  m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 1
@@ -258,6 +258,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthMax: 350
   health: 350
+  isInvincible: 0
   isAlive: 1
   price: 50
   rebuyable: 0
@@ -292,8 +293,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 13b0547000e1b4a46a1a76e0242f82a3, type: 3}
   - {fileID: 21300000, guid: bc808f429e87853459412fe34c472c6b, type: 3}
   - {fileID: 21300000, guid: 863346a9c8923284788906a374850234, type: 3}
-  damageCollisionBall: 10
-  damageCollisionBlock: 0
+  damageCollision: 10
   body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}

@@ -157,13 +157,13 @@ MonoBehaviour:
   radius: 0.45
   mass: 0.25
   isForceProvider: 1
-  force: 5
+  force: 8
   forceAngle: 90
-  speedMax: 0.5
+  speedMax: 2
   particlePrefab: {fileID: 0}
   particle: {fileID: 0}
   sprites: []
-  damageCollision: 10
+  damageCollision: 0
   body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}

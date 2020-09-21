@@ -50,7 +50,7 @@ public class Block : Unit
     protected float breakTorquePlayer = 75f;
 
     // 连接断开扭矩（中立及敌人）
-    protected float breakTorque = 5f;
+    protected float breakTorque = 10f;
 
     /*
      * 松开鼠标左键时，Block连接的逻辑：
@@ -444,7 +444,7 @@ public class Block : Unit
             // 目标Block
             Block block = blocksLinked[i];
 
-            if (block != null && block.checkTag != checkTag)
+            if (block != null && block.checkTag != checkTag && !(block is BlockBalloon))
             {
                 // 目标Block将要移动到的位置
                 Vector2 endPosition = transform.position;
@@ -590,14 +590,14 @@ public class Block : Unit
         {
             Unlink();
             MouseLeftDown();
-            transform.Translate(gameController.yMaxBuild - transform.position.y - radius - 0.01f, 0, 0);
+            transform.Translate(0, gameController.yMaxBuild - transform.position.y - radius - 0.01f, 0);
             MouseLeftUp();
         }
         else if (transform.position.y - radius < gameController.yMinBuild)
         {
             Unlink();
             MouseLeftDown();
-            transform.Translate(gameController.yMinBuild - transform.position.y + radius + 0.01f, 0, 0);
+            transform.Translate(0, gameController.yMinBuild - transform.position.y + radius + 0.01f, 0);
             MouseLeftUp();
         }
     }
