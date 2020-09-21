@@ -329,7 +329,8 @@ public class GameController : MonoBehaviour
 		renderer.sprite = buildingArea;
 		renderer.sortingLayerName = "UI";
 		// 初始完全透明
-		Color color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, 0.0f);
+		Color color = renderer.color;
+		color. a = 0.0f;
 		renderer.color = color;
 		renderer.drawMode = SpriteDrawMode.Tiled;
 
@@ -344,6 +345,20 @@ public class GameController : MonoBehaviour
 		float yScale = (yMaxBuild - yMinBuild) / initSize.y;
 		buildingAreaObj.transform.localScale = new Vector3(xScale, yScale, 1);
 		return buildingAreaObj;
+	}
+
+	public float GetBuildingAreaAlpha()
+	{
+		SpriteRenderer renderer = buildingAreaObj.GetComponent<SpriteRenderer>();
+		return renderer.color.a;
+	}
+
+	public void SetBuildingAreaAlpha(float alpha)
+	{
+		SpriteRenderer renderer = buildingAreaObj.GetComponent<SpriteRenderer>();
+		Color color = renderer.color;
+		color.a = alpha;
+		renderer.color = color;
 	}
 
 	// 跳跃
@@ -480,4 +495,5 @@ public class GameController : MonoBehaviour
         // 点击跳跃
         //Jump();
     }
+
 }

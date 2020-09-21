@@ -455,32 +455,54 @@ public class Unit : MonoBehaviour
         }
     }
 
-    //准备阶段的建造范围
+    // 准备阶段的建造范围
     protected virtual void BuildLocationCheck()
     {
-        if (transform.position.x + radius > gameController.xMaxBuild)
-        {
-            MouseLeftDown();
-            transform.Translate(gameController.xMaxBuild - transform.position.x - radius - 0.01f, 0, 0);
-            MouseLeftUp();
-        }
-        else if (transform.position.x - radius < gameController.xMinBuild)
-        {
-            MouseLeftDown();
-            transform.Translate(gameController.xMinBuild - transform.position.x + radius + 0.01f, 0, 0);
-            MouseLeftUp();
-        }
-        if (transform.position.y + radius > gameController.yMaxBuild)
-        {
-            MouseLeftDown();
-            transform.Translate(0, gameController.yMaxBuild - transform.position.y - radius - 0.01f, 0);
-            MouseLeftUp();
-        }
-        else if (transform.position.y - radius < gameController.yMinBuild)
-        {
-            MouseLeftDown();
-            transform.Translate(0, gameController.yMinBuild - transform.position.y + radius + 0.01f, 0);
-            MouseLeftUp();
-        }
-    }
+		// TODO：砖块不走这个?
+		float rightMost = transform.position.x + radius;
+		float leftMost = transform.position.x - radius;
+		float topMost = transform.position.y + radius;
+		float bottomMost = transform.position.y - radius;
+
+		bool outOfRightArea = rightMost > gameController.xMaxBuild;
+		bool outOfLeftArea = leftMost < gameController.xMinBuild;
+		bool outOfTopArea = topMost > gameController.yMaxBuild;
+		bool outofBottomArea = bottomMost < gameController.yMinBuild;
+
+		bool outOfBuildingArea = outOfRightArea || outOfLeftArea || outOfTopArea || outofBottomArea;
+
+		if (!outOfBuildingArea)
+		{
+			// 更改建造范围框透明度
+			float alpha = gameController.GetBuildingAreaAlpha();
+			gameController.SetBuildingAreaAlpha(Mathf.Max(alpha - 0.03f, 0.0f));
+		}
+		else
+		{
+			Vector3 transVec = Vector3.zero;
+			if (outOfRightArea)
+			{
+				transVec += new Vector3(gameController.xMaxBuild - rightMost - 0.01f, 0, 0);
+			}
+			else if (outOfLeftArea)
+			{
+				transVec += new Vector3(gameController.xMinBuild - leftMost + 0.01f, 0, 0);
+			}
+			if (outOfTopArea)
+			{
+				transVec += new Vector3(0, gameController.yMaxBuild - topMost - 0.01f, 0);
+			}
+			else if (outofBottomArea)
+			{
+				transVec += new Vector3(0, gameController.yMinBuild - bottomMost + 0.01f, 0);
+			}
+			// 超出边界模拟鼠标往反方向拖
+			MouseLeftDown();
+			transform.Translate(transVec);
+			MouseLeftUp();
+			// 更改建造范围框透明度
+			float alpha = gameController.GetBuildingAreaAlpha();
+			gameController.SetBuildingAreaAlpha(Mathf.Min(alpha + 0.03f, 1.0f));
+		}
+	}
 }
