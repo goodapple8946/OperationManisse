@@ -54,8 +54,8 @@ MonoBehaviour:
   unitBought: {fileID: 0}
   xMinBuild: -6
   xMaxBuild: 7.8
-  yMinBuild: 0
-  yMaxBuild: 8
+  yMinBuild: -100
+  yMaxBuild: 12
   shop: {fileID: 0}
   audioVictory: {fileID: 8300000, guid: 500e5f1ff49ca4f4da83e80c5843b157, type: 3}
   victoryDialog: {fileID: 0}

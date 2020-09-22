@@ -463,6 +463,7 @@ public class Unit : MonoBehaviour
 		float leftMost = transform.position.x - radius;
 		float topMost = transform.position.y + radius;
 		float bottomMost = transform.position.y - radius;
+
 		// 四种超出边界的判断
 		bool outOfRightArea = rightMost > gameController.xMaxBuild;
 		bool outOfLeftArea = leftMost < gameController.xMinBuild;

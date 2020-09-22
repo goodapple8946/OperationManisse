@@ -62,7 +62,8 @@ public class GameController : MonoBehaviour
 	void Start()
     {
         playerMoneyOrigin = playerMoney;
-		// 创建建造范围限制O框
+
+		// 建造范围限制框
 		InitBuildingArea();
 
 		SaveBeforeStart();
