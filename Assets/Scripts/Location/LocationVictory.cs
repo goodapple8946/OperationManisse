@@ -10,7 +10,7 @@ public class LocationVictory : MonoBehaviour
     {
         Unit unit = collider.gameObject.GetComponent<Unit>();
 
-        if (unit != null && unit.player == 1 && victoryController.victoryCondition == VictoryController.VictoryCondition.EnterLocation)
+        if (unit != null && unit.player == Unit.Player.Player && victoryController.victoryCondition == VictoryController.VictoryCondition.EnterLocation)
         {
             if (victoryController.targetOption == VictoryController.TargetOption.All)
             {

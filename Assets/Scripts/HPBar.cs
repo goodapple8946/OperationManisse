@@ -19,9 +19,17 @@ public class HPBar : MonoBehaviour
     public Sprite frontEnemy;
     public Sprite back;
 
+    protected GameObject HPBarObjects;
+
+    void Awake()
+    {
+        HPBarObjects = GameObject.Find("HP Bar Objects");
+        transform.parent = HPBarObjects.transform;
+    }
+
     void Update()
     {
-        if (unit == null || !unit.isAlive)
+        if (unit == null)
         {
             Destroy(gameObject);
         }
@@ -33,15 +41,15 @@ public class HPBar : MonoBehaviour
                 {
                     transform.localScale = Vector2.one;
                     valueMax = unit.healthMax;
-                    if (unit.player == 0)
+                    if (unit.player == Unit.Player.Neutral)
                     {
                         transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = frontNeutral;
                     }
-                    else if (unit.player == 1)
+                    else if (unit.player == Unit.Player.Player)
                     {
                         transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = frontPlayer;
                     }
-                    else if (unit.player == 2)
+                    else if (unit.player == Unit.Player.Enemy)
                     {
                         transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = frontEnemy;
                     }

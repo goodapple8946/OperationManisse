@@ -5,21 +5,25 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-	// 玩家所有物体的根节点
+    public enum Layer { Default, TransparentFX, IgnoreRaycast, Water = 4, UI, PlayerBall = 8, PlayerBlock, PlayerMissile, EnemyBall, EnemyBlock, EnemyMissile, Goods, Ground }
+    public enum GamePhase { Menu, Preparation, Playing, Victory, Defeat, Pause }
+
+    // 玩家所有物体的根节点
     public GameObject playerObjects;
     private GameObject playerObjectsSaved;
     private GameObject playerObjectsInit;
 
-	// 敌人物体的根节点
-	public GameObject enemyObjects;
+    // 敌人物体的根节点
+    public GameObject enemyObjects;
     private GameObject enemyObjectsSaved;
 
     // Controller
-    public CameraController mainCamera;
-    public VictoryController victoryController;
+    private CameraController cameraController;
+    private VictoryController victoryController;
+    private PreparationController preparationController;
 
-    public enum Layer { Default, TransparentFX, IgnoreRaycast, Water = 4, UI, PlayerBall = 8, PlayerBlock, PlayerMissile, EnemyBall, EnemyBlock, EnemyMissile, Goods, Ground }
-    public enum GamePhase { Menu, Preparation, Playing, Victory, Defeat, Pause }
+    // 玩家显示钱数Text
+    private Text playerMoneyText;
 
     public GamePhase gamePhase;
 
@@ -29,77 +33,37 @@ public class GameController : MonoBehaviour
     // 玩家钱数
     public int playerMoney;
 
-    // 玩家显示钱数Text
-    public Text playerMoneyText;
-
-    // Ctrl键是否被按下
-    public bool keyCtrl;
-
-    // 当前鼠标拖动的Unit
-    public ArrayList unitsDraging = new ArrayList();
-
-    // 上一次购买的物品时，新生成的商品
-    public Unit unitBought;
-
-    // 准备阶段的建造范围
-    public float xMinBuild;
-    public float xMaxBuild;
-    public float yMinBuild;
-    public float yMaxBuild;
-
-    // 商店
-    public GameObject shop;
-
     // 胜利音效
     public AudioClip audioVictory;
 
     // 胜利对话框
-    public GameObject victoryDialog;
+    private GameObject victoryDialog;
 
-	// 初始建造范围框
-	public GameObject buildingArea;
+    void Awake()
+    {
+        playerObjects = GameObject.Find("Player Objects");
+        enemyObjects = GameObject.Find("Enemy Objects");
+        cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
+        victoryController = GameObject.Find("Victory Controller").GetComponent<VictoryController>();
+        preparationController = GameObject.Find("Preparation Controller").GetComponent<PreparationController>();
+        playerMoneyText = GameObject.Find("UI Canvas/UI Money Text").GetComponent<Text>();
+        victoryDialog = GameObject.Find("UI Canvas/UI Victory");
+
+        gamePhase = GamePhase.Preparation;
+    }
 
 	void Start()
     {
-        playerMoneyOrigin = playerMoney;
-
-		// 建造范围限制框
-		InitBuildingArea();
-
 		SaveBeforeStart();
         NewGame();
     }
 
     void Update()
     {
-        // 鼠标键抬起
-        if (Input.GetMouseButtonUp(0))
-        {
-            FixBlockBodyType();
-        }
-
         // 空格键开始或停止
         if (Input.GetKeyDown(KeyCode.Space)) 
         {
             StartOrStop();
-        }
-
-        // Q键快速重复上一次购买的物体
-        if (Input.GetKeyDown(KeyCode.Q) && gamePhase == GamePhase.Preparation)
-        {
-            RepeatBuy();
-        }
-
-        // Ctrl键按下
-        if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl))
-        {
-            keyCtrl = true;
-        }
-
-        // Ctrl键抬起
-        if (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl))
-        {
-            keyCtrl = false;
         }
 
         if (gamePhase == GamePhase.Playing)
@@ -117,12 +81,16 @@ public class GameController : MonoBehaviour
     // 开始前保存场景
     void SaveBeforeStart()
     {
+        // 保存玩家钱数
+        playerMoneyOrigin = playerMoney;
+
+        // 保存玩家物体
         playerObjectsSaved = Instantiate(playerObjects);
         playerObjectsSaved.SetActive(false);
         playerObjectsInit = Instantiate(playerObjectsSaved);
         playerObjectsInit.SetActive(false);
 
-        EnemyBlockLink();
+        // 保存敌人物体
         enemyObjectsSaved = Instantiate(enemyObjects);
         enemyObjectsSaved.SetActive(false);
     }
@@ -160,58 +128,29 @@ public class GameController : MonoBehaviour
         }
     }
 
-    // Q键快速重复上一次购买的物体
-    void RepeatBuy()
-    {
-        if (unitBought != null)
-        {
-            Unit unit = unitBought.Buy();
-            if (unit != null)
-            {
-                unit.transform.position = MouseController.MouseWorldPosition();
-                unit.MouseLeftUp();
-            }
-        }
-    }
-
     // 开始游戏
     public void StartGame()
     {
         gamePhase = GamePhase.Playing;
+
+        preparationController.StartGame();
 
         // 保存玩家的物体
         Destroy(playerObjectsSaved);
         playerObjectsSaved = Instantiate(playerObjects);
         playerObjectsSaved.SetActive(false);
 
-        // 遍历Block
-        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Block");
-        foreach (GameObject gameObject in gameObjects)
+        // 网格Block连接
+        preparationController.LinkAllBlocks();
+
+        // 为所有Unit将BodyType变为Dynamic
+        ArrayList unitObjects = new ArrayList();
+        unitObjects.AddRange(GameObject.FindGameObjectsWithTag("Ball"));
+        unitObjects.AddRange(GameObject.FindGameObjectsWithTag("Block"));
+        foreach(GameObject unitObject in unitObjects)
         {
-            Block block = gameObject.GetComponent<Block>();
-
-            if (block != null && block.isAlive && !block.isSelling)
-            {
-                // 不再固定Block的Z轴
-                if (!block.isFixed && block.body != null)
-                {
-                    block.body.constraints = RigidbodyConstraints2D.None;
-                }
-
-                // 添加粒子预设
-                if (block.particle == null && block.particlePrefab != null)
-                {
-                    block.particle = Instantiate(block.particlePrefab);
-                    block.particle.transform.position = block.transform.position;
-                    block.particle.transform.parent = block.transform;
-                }
-            }
-        }
-
-        // 隐藏商店
-        if (shop != null)
-        {
-            shop.SetActive(false);
+            Unit unit = unitObject.GetComponent<Unit>();
+            unit.body.bodyType = RigidbodyType2D.Dynamic;
         }
     }
 
@@ -227,7 +166,7 @@ public class GameController : MonoBehaviour
     private void NewGame()
     {
 		// 重置摄像机
-		mainCamera.Init();
+		cameraController.Init();
 
         // 清除放置的物体
         if (playerObjects != null)
@@ -248,13 +187,6 @@ public class GameController : MonoBehaviour
         enemyObjects = Instantiate(enemyObjectsSaved);
         enemyObjects.SetActive(true);
         enemyObjects.name = "Enemy Objects";
-        EnemyBlockLink();
-
-        // 显示商店
-        if (shop != null)
-        {
-            shop.SetActive(true);
-        }
 
         victoryController.Init();
     }
@@ -317,88 +249,6 @@ public class GameController : MonoBehaviour
         playerMoneyText.color = Color.white;
     }
 
-	// 初始化建造范围框对象
-	private void InitBuildingArea()
-	{
-		//设置位置及大小
-		Vector3 pos = new Vector3(
-			(xMinBuild + xMaxBuild) / 2,
-			(yMinBuild + yMaxBuild) / 2, 0);
-		buildingArea.transform.position = pos;
-		SpriteRenderer renderer = buildingArea.GetComponent<SpriteRenderer>();
-		renderer.size = new Vector2(xMaxBuild - xMinBuild, yMaxBuild - yMinBuild);
-	}
-
-	public float GetBuildingAreaAlpha()
-	{
-		SpriteRenderer renderer = buildingArea.GetComponent<SpriteRenderer>();
-		return renderer.color.a;
-	}
-
-	public void SetBuildingAreaAlpha(float alpha)
-	{
-		SpriteRenderer renderer = buildingArea.GetComponent<SpriteRenderer>();
-		Color color = renderer.color;
-		color.a = alpha;
-		renderer.color = color;
-	}
-
-	// 跳跃
-	void Jump()
-    {
-        if (gamePhase == GamePhase.Playing && Input.GetMouseButtonDown(0))
-        {
-            // 所有玩家的Ball跳跃
-            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Ball");
-            foreach(GameObject gameObject in gameObjects)
-            {
-                Ball ball = gameObject.GetComponent<Ball>();
-                if (ball.body != null && ball.player == 1 && ball.IsGrounded())
-                {
-                    ball.body.AddForce(new Vector2(50f, 50f));
-                }
-            }
-        }
-    }
-
-    // 敌人Block连接，并且不再固定
-    void EnemyBlockLink()
-    {
-        // 遍历Block
-        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Block");
-        foreach (GameObject gameObject in gameObjects)
-        {
-            Block block = gameObject.GetComponent<Block>();
-
-            if (block != null && block.isAlive && !block.isSelling && block.player == 2)
-            {
-                block.AbsorptionCheck(0.3f);
-            }
-        }
-        foreach (GameObject gameObject in gameObjects)
-        {
-            Block block = gameObject.GetComponent<Block>();
-
-            if (block != null && block.isAlive && !block.isSelling && block.player == 2)
-            {
-                block.body.bodyType = RigidbodyType2D.Dynamic;
-            }
-        }
-    }
-
-    // 这是一个无可奈何的丑陋的补丁：鼠标抬起时，修正正在拖动Block的BodyType
-    void FixBlockBodyType()
-    {
-        foreach (Unit unit in unitsDraging)
-        {
-            if (unit.body != null)
-            {
-                unit.body.bodyType = RigidbodyType2D.Dynamic;
-            }
-        }
-        unitsDraging.Clear();
-    }
-
     // 胜利检测
     void VictoryCheck()
     {
@@ -417,8 +267,8 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(victoryWaitTime);
 
         victoryDialog.SetActive(true);
-        AudioSource.PlayClipAtPoint(audioVictory, mainCamera.transform.position);
-        mainCamera.movable = false;
+        AudioSource.PlayClipAtPoint(audioVictory, cameraController.transform.position);
+        cameraController.movable = false;
     }
 
     // 玩家物体中心
@@ -430,7 +280,7 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < len; i++)
         {
             Unit unit = playerObjects.transform.GetChild(i).GetComponent<Unit>();
-            if (unit != null && unit.isAlive)
+            if (unit != null)
             {
                 center += (Vector2)unit.transform.position;
                 cnt++;
@@ -452,7 +302,7 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < len; i++)
         {
             Unit unit = playerObjects.transform.GetChild(i).GetComponent<Unit>();
-            if (unit != null && unit.isAlive && unit.body != null)
+            if (unit != null && unit.body != null)
             {
                 velocity += unit.body.velocity;
                 cnt++;
@@ -473,9 +323,5 @@ public class GameController : MonoBehaviour
         {
             Debug.Log(MouseController.MouseWorldPosition());
         }
-
-        // 点击跳跃
-        //Jump();
     }
-
 }

@@ -173,8 +173,9 @@ GameObject:
   - component: {fileID: 5031007299273667338}
   - component: {fileID: 5031007299273667335}
   - component: {fileID: 5544914087492235667}
+  - component: {fileID: 1313326036275847334}
   m_Layer: 9
-  m_Name: Goods Block Camo
+  m_Name: Player Block Camo
   m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -236,23 +237,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthMax: 250
   health: 250
-  isAlive: 1
-  price: 50
-  rebuyable: 1
-  prefab: {fileID: 5031007299273667334}
-  clickable: 1
-  isSelling: 1
-  isSellable: 1
-  player: 0
   priority: -100
   radius: 0.3
-  mass: 1
-  isForceProvider: 0
-  force: 0
-  forceAngle: 0
-  speedMax: 0
-  particlePrefab: {fileID: 0}
-  particle: {fileID: 0}
   sprites:
   - {fileID: 21300000, guid: f0cf0382b99827447be889ee2a2ba4f5, type: 3}
   - {fileID: 21300000, guid: a529de962a0d9b04c98c4b200a3aaa6c, type: 3}
@@ -270,6 +256,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a67929e656364024887bd8a76c961a97, type: 3}
   - {fileID: 21300000, guid: 74082c20690c5274ba6434de1107649d, type: 3}
   - {fileID: 21300000, guid: 62aad3adf3734db44ba783e02d7fef24, type: 3}
+  damageCollision: 10
+  player: 1
+  gridX: -1
+  gridY: -1
+  price: 50
   body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}
@@ -281,9 +272,24 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  absorptionProvision: 1
-  coverPrefab: {fileID: 0}
-  isFixed: 0
-  isCore: 0
-  isOneLink: 0
-  isWheel: 0
+--- !u!50 &1313326036275847334
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5031007299273667334}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.5
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
