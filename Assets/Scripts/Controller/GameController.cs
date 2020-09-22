@@ -211,6 +211,8 @@ public class GameController : MonoBehaviour
         {
             shop.SetActive(false);
         }
+		// 删除建造范围限制对象
+		buildingAreaObj = null;
     }
 
     // 停止游戏
@@ -253,7 +255,7 @@ public class GameController : MonoBehaviour
         {
             shop.SetActive(true);
         }
-
+		// 创建建造范围限制Object
 		if(buildingAreaObj == null)
 		{
 			buildingAreaObj = CreateBuildingArea();

@@ -503,9 +503,10 @@ public class Unit : MonoBehaviour
 		}
 	}
 
+	// 超出边界餐区的行为
 	protected virtual void OutOfBuildingAreaAction(Vector3 transVec)
 	{
-		// 超出边界模拟鼠标往反方向拖
+		// 超出边界模拟鼠标往反方向拖	
 		MouseLeftDown();
 		transform.Translate(transVec);
 		MouseLeftUp();
