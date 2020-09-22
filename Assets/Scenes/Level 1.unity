@@ -2552,18 +2552,24 @@ PrefabInstance:
     - target: {fileID: 775198180736573023, guid: 49f97fab1ca7f254d9250fa45cefc386,
         type: 3}
       propertyPath: yMinBuild
-      value: -100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 775198180736573023, guid: 49f97fab1ca7f254d9250fa45cefc386,
         type: 3}
       propertyPath: yMaxBuild
-      value: 100
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 775198180736573023, guid: 49f97fab1ca7f254d9250fa45cefc386,
         type: 3}
       propertyPath: playerMoney
       value: 750
       objectReference: {fileID: 0}
+    - target: {fileID: 775198180736573023, guid: 49f97fab1ca7f254d9250fa45cefc386,
+        type: 3}
+      propertyPath: buildingArea
+      value: 
+      objectReference: {fileID: 21300000, guid: 52e46814d2535094eafafafced4d4bfa,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49f97fab1ca7f254d9250fa45cefc386, type: 3}
 --- !u!1001 &1834079936

@@ -91,14 +91,11 @@ public class Unit : MonoBehaviour
     protected ResourceController resourceController;
 
 	// 一次伤害闪烁次数
-	private int flashTime = 2;
-
+	private int flashTimes = 2;
 	// 剩余闪烁次数
-	private int currFlashTime = 0;
-
+	private int currFlashTimes = 0;
 	// 每次闪烁间隔
 	private float flashGapTime = 0.02f;
-
 	// 当前剩余闪烁间隔
 	private float currFlashGapTime = 0.0f;
 
@@ -142,7 +139,7 @@ public class Unit : MonoBehaviour
         {
             BuildLocationCheck();
         }
-		if (currFlashTime > 0)
+		if (currFlashTimes > 0)
 		{
 			//WaitAndFlash();
 		}
@@ -251,7 +248,7 @@ public class Unit : MonoBehaviour
 
 	private void FlashOnce()
 	{
-		currFlashTime = (currFlashTime % flashTime) + flashTime;
+		currFlashTimes = (currFlashTimes % flashTimes) + flashTimes;
 	}
 
 	private void WaitAndFlash()
@@ -271,7 +268,7 @@ public class Unit : MonoBehaviour
 				renderer.color = new Color(
 					renderer.color.r, renderer.color.g, renderer.color.b, alpha);
 				currFlashGapTime = flashGapTime;
-				currFlashTime--;
+				currFlashTimes--;
 			}
 		}
 	}
@@ -458,32 +455,61 @@ public class Unit : MonoBehaviour
         }
     }
 
-    //准备阶段的建造范围
-    protected virtual void BuildLocationCheck()
+    // 准备阶段的建造范围
+    protected void BuildLocationCheck()
     {
-        if (transform.position.x + radius > gameController.xMaxBuild)
-        {
-            MouseLeftDown();
-            transform.Translate(gameController.xMaxBuild - transform.position.x - radius - 0.01f, 0, 0);
-            MouseLeftUp();
-        }
-        else if (transform.position.x - radius < gameController.xMinBuild)
-        {
-            MouseLeftDown();
-            transform.Translate(gameController.xMinBuild - transform.position.x + radius + 0.01f, 0, 0);
-            MouseLeftUp();
-        }
-        if (transform.position.y + radius > gameController.yMaxBuild)
-        {
-            MouseLeftDown();
-            transform.Translate(0, gameController.yMaxBuild - transform.position.y - radius - 0.01f, 0);
-            MouseLeftUp();
-        }
-        else if (transform.position.y - radius < gameController.yMinBuild)
-        {
-            MouseLeftDown();
-            transform.Translate(0, gameController.yMinBuild - transform.position.y + radius + 0.01f, 0);
-            MouseLeftUp();
-        }
-    }
+		// Unit四个边界的坐标
+		float rightMost = transform.position.x + radius;
+		float leftMost = transform.position.x - radius;
+		float topMost = transform.position.y + radius;
+		float bottomMost = transform.position.y - radius;
+		// 四种超出边界的判断
+		bool outOfRightArea = rightMost > gameController.xMaxBuild;
+		bool outOfLeftArea = leftMost < gameController.xMinBuild;
+		bool outOfTopArea = topMost > gameController.yMaxBuild;
+		bool outofBottomArea = bottomMost < gameController.yMinBuild;
+		bool outOfBuildingArea = outOfRightArea 
+			|| outOfLeftArea || outOfTopArea || outofBottomArea;
+
+		if (outOfBuildingArea)
+		{
+			Vector3 transVec = Vector3.zero;
+			if (outOfRightArea)
+			{
+				transVec += new Vector3(gameController.xMaxBuild - rightMost - 0.01f, 0, 0);
+			}
+			else if (outOfLeftArea)
+			{
+				transVec += new Vector3(gameController.xMinBuild - leftMost + 0.01f, 0, 0);
+			}
+			if (outOfTopArea)
+			{
+				transVec += new Vector3(0, gameController.yMaxBuild - topMost - 0.01f, 0);
+			}
+			else if (outofBottomArea)
+			{
+				transVec += new Vector3(0, gameController.yMinBuild - bottomMost + 0.01f, 0);
+			}
+			OutOfBuildingAreaAction(transVec);
+			// 更改建造范围框透明度
+			float alpha = gameController.GetBuildingAreaAlpha();
+			gameController.SetBuildingAreaAlpha(Mathf.Min(alpha + 0.03f, 1.0f));
+		}
+		else
+		{
+			// 更改建造范围框透明度
+			float alpha = gameController.GetBuildingAreaAlpha();
+			gameController.SetBuildingAreaAlpha(Mathf.Max(alpha - 0.03f, 0.0f));
+		}
+	}
+
+	// 超出边界餐区的行为
+	protected virtual void OutOfBuildingAreaAction(Vector3 transVec)
+	{
+		// 超出边界模拟鼠标往反方向拖	
+		MouseLeftDown();
+		transform.Translate(transVec);
+		MouseLeftUp();
+	}
+
 }

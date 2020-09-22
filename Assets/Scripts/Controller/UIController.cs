@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static GameController;
 
-public class UIController : MonoBehaviour
+public class UIController : MonoBehaviour, IPointerExitHandler
 {
     // 这个按钮可以在哪个游戏阶段使用
     public GameController.GamePhase[] interactablePhases;
@@ -91,5 +91,13 @@ public class UIController : MonoBehaviour
 	public void UIToLevel()
     {
         SceneManager.LoadScene("Level Panel");
+	}
+
+	// 鼠标离开Option面板时，收起下拉菜单
+	public void OnPointerExit(PointerEventData eventData)
+	{
+		// TODO:只有Option受到OnPointerExit控制?
+		GameObject menuObject = transform.GetChild(0).gameObject;
+		menuObject.SetActive(false);
 	}
 }

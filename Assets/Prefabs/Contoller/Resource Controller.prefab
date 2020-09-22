@@ -62,3 +62,4 @@ MonoBehaviour:
   unmute: {fileID: 21300000, guid: 901fee87f1056ce4ba79f176e1e427ea, type: 3}
   hpBarPrefab: {fileID: 5438377093910908434, guid: 9a25f6745485b9448aa585e5e7ab546f,
     type: 3}
+  buildingArea: {fileID: 21300000, guid: 52e46814d2535094eafafafced4d4bfa, type: 3}
