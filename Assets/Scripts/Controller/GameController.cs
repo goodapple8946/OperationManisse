@@ -211,8 +211,9 @@ public class GameController : MonoBehaviour
         {
             shop.SetActive(false);
         }
+
 		// 删除建造范围限制对象
-		buildingAreaObj = null;
+		// buildingAreaObj = null;
     }
 
     // 停止游戏

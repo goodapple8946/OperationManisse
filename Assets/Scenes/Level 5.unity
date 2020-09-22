@@ -13495,7 +13495,7 @@ PrefabInstance:
     - target: {fileID: 775198180736573023, guid: 49f97fab1ca7f254d9250fa45cefc386,
         type: 3}
       propertyPath: yMinBuild
-      value: -100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 775198180736573023, guid: 49f97fab1ca7f254d9250fa45cefc386,
         type: 3}

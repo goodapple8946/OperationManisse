@@ -30400,6 +30400,11 @@ PrefabInstance:
       propertyPath: victoryDialog
       value: 
       objectReference: {fileID: 8600615601783198383}
+    - target: {fileID: 775198180736573023, guid: 49f97fab1ca7f254d9250fa45cefc386,
+        type: 3}
+      propertyPath: yMaxBuild
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49f97fab1ca7f254d9250fa45cefc386, type: 3}
 --- !u!1001 &2330418803815284194
