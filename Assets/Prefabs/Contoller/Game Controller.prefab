@@ -59,4 +59,4 @@ MonoBehaviour:
   shop: {fileID: 0}
   audioVictory: {fileID: 8300000, guid: 500e5f1ff49ca4f4da83e80c5843b157, type: 3}
   victoryDialog: {fileID: 0}
-  buildingArea: {fileID: 21300000, guid: 52e46814d2535094eafafafced4d4bfa, type: 3}
+  buildingArea: {fileID: 0}
