@@ -1768,7 +1768,7 @@ GameObject:
   - component: {fileID: 441981587}
   - component: {fileID: 441981588}
   m_Layer: 0
-  m_Name: Audio Rain
+  m_Name: Ambience
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
