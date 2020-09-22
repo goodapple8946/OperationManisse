@@ -568,37 +568,10 @@ public class Block : Unit
             }
         }
     }
-    
-    //准备阶段的建造范围
-    protected override void BuildLocationCheck()
-    {
-        if (transform.position.x + radius > gameController.xMaxBuild)
-        {
-            Unlink();
-            MouseLeftDown();
-            transform.Translate(gameController.xMaxBuild - transform.position.x - radius - 0.01f, 0, 0);
-            MouseLeftUp();
-        }
-        else if (transform.position.x - radius < gameController.xMinBuild)
-        {
-            Unlink();
-            MouseLeftDown();
-            transform.Translate(gameController.xMinBuild - transform.position.x + radius + 0.01f, 0, 0);
-            MouseLeftUp();
-        }
-        if (transform.position.y + radius > gameController.yMaxBuild)
-        {
-            Unlink();
-            MouseLeftDown();
-            transform.Translate(0, gameController.yMaxBuild - transform.position.y - radius - 0.01f, 0);
-            MouseLeftUp();
-        }
-        else if (transform.position.y - radius < gameController.yMinBuild)
-        {
-            Unlink();
-            MouseLeftDown();
-            transform.Translate(0, gameController.yMinBuild - transform.position.y + radius + 0.01f, 0);
-            MouseLeftUp();
-        }
-    }
+
+	protected override void OutOfBuildingAreaAction(Vector3 transVec)
+	{
+		Unlink();
+		base.OutOfBuildingAreaAction(transVec);
+	}
 }

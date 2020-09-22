@@ -456,28 +456,22 @@ public class Unit : MonoBehaviour
     }
 
     // 准备阶段的建造范围
-    protected virtual void BuildLocationCheck()
+    protected void BuildLocationCheck()
     {
-		// TODO：砖块不走这个?
+		// Unit四个边界的坐标
 		float rightMost = transform.position.x + radius;
 		float leftMost = transform.position.x - radius;
 		float topMost = transform.position.y + radius;
 		float bottomMost = transform.position.y - radius;
-
+		// 四种超出边界的判断
 		bool outOfRightArea = rightMost > gameController.xMaxBuild;
 		bool outOfLeftArea = leftMost < gameController.xMinBuild;
 		bool outOfTopArea = topMost > gameController.yMaxBuild;
 		bool outofBottomArea = bottomMost < gameController.yMinBuild;
+		bool outOfBuildingArea = outOfRightArea 
+			|| outOfLeftArea || outOfTopArea || outofBottomArea;
 
-		bool outOfBuildingArea = outOfRightArea || outOfLeftArea || outOfTopArea || outofBottomArea;
-
-		if (!outOfBuildingArea)
-		{
-			// 更改建造范围框透明度
-			float alpha = gameController.GetBuildingAreaAlpha();
-			gameController.SetBuildingAreaAlpha(Mathf.Max(alpha - 0.03f, 0.0f));
-		}
-		else
+		if (outOfBuildingArea)
 		{
 			Vector3 transVec = Vector3.zero;
 			if (outOfRightArea)
@@ -496,13 +490,25 @@ public class Unit : MonoBehaviour
 			{
 				transVec += new Vector3(0, gameController.yMinBuild - bottomMost + 0.01f, 0);
 			}
-			// 超出边界模拟鼠标往反方向拖
-			MouseLeftDown();
-			transform.Translate(transVec);
-			MouseLeftUp();
+			OutOfBuildingAreaAction(transVec);
 			// 更改建造范围框透明度
 			float alpha = gameController.GetBuildingAreaAlpha();
 			gameController.SetBuildingAreaAlpha(Mathf.Min(alpha + 0.03f, 1.0f));
 		}
+		else
+		{
+			// 更改建造范围框透明度
+			float alpha = gameController.GetBuildingAreaAlpha();
+			gameController.SetBuildingAreaAlpha(Mathf.Max(alpha - 0.03f, 0.0f));
+		}
 	}
+
+	protected virtual void OutOfBuildingAreaAction(Vector3 transVec)
+	{
+		// 超出边界模拟鼠标往反方向拖
+		MouseLeftDown();
+		transform.Translate(transVec);
+		MouseLeftUp();
+	}
+
 }
