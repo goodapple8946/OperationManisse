@@ -3042,6 +3042,11 @@ PrefabInstance:
       propertyPath: xMaxBuild
       value: 3.6
       objectReference: {fileID: 0}
+    - target: {fileID: 775198180736573023, guid: 49f97fab1ca7f254d9250fa45cefc386,
+        type: 3}
+      propertyPath: yMaxBuild
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49f97fab1ca7f254d9250fa45cefc386, type: 3}
 --- !u!1001 &1767909166
@@ -9264,6 +9269,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6055346309545712629}
     m_Modifications:
+    - target: {fileID: 184814382030521740, guid: 7083fda1e26696248b98db1cf3661fc9,
+        type: 3}
+      propertyPath: m_DrawMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1218294590528101931, guid: 7083fda1e26696248b98db1cf3661fc9,
         type: 3}
       propertyPath: m_Name

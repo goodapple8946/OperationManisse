@@ -56,15 +56,16 @@ public class GameController : MonoBehaviour
     // 胜利对话框
     public GameObject victoryDialog;
 
-	// 初始建造区域边界的图片
-	public Sprite buildingArea;
-	private GameObject buildingAreaObj;
+	// 初始建造范围框
+	public GameObject buildingArea;
 
 	void Start()
     {
         playerMoneyOrigin = playerMoney;
+		// 创建建造范围限制O框
+		InitBuildingArea();
 
-        SaveBeforeStart();
+		SaveBeforeStart();
         NewGame();
     }
 
@@ -211,8 +212,6 @@ public class GameController : MonoBehaviour
         {
             shop.SetActive(false);
         }
-		// 删除建造范围限制对象
-		buildingAreaObj = null;
     }
 
     // 停止游戏
@@ -255,11 +254,6 @@ public class GameController : MonoBehaviour
         {
             shop.SetActive(true);
         }
-		// 创建建造范围限制Object
-		if(buildingAreaObj == null)
-		{
-			buildingAreaObj = CreateBuildingArea();
-		}
 
         victoryController.Init();
     }
@@ -322,42 +316,27 @@ public class GameController : MonoBehaviour
         playerMoneyText.color = Color.white;
     }
 
-	// 创建一个透明的建造范围限制GameObject
-	private GameObject CreateBuildingArea()
+	// 初始化建造范围框对象
+	private void InitBuildingArea()
 	{
-		GameObject buildingAreaObj = new GameObject();
-		// 设置SpriteRenderer所在layer和透明度
-		SpriteRenderer renderer = buildingAreaObj.AddComponent<SpriteRenderer>();
-		renderer.sprite = buildingArea;
-		renderer.sortingLayerName = "UI";
-		// 初始完全透明
-		Color color = renderer.color;
-		color. a = 0.0f;
-		renderer.color = color;
-		renderer.drawMode = SpriteDrawMode.Tiled;
-
 		//设置位置及大小
 		Vector3 pos = new Vector3(
 			(xMinBuild + xMaxBuild) / 2,
 			(yMinBuild + yMaxBuild) / 2, 0);
-		buildingAreaObj.transform.position = pos;
-		Vector2 initSize = renderer.size;
-		//Debug.Log(initSize);
-		float xScale = (xMaxBuild - xMinBuild) / initSize.x;
-		float yScale = (yMaxBuild - yMinBuild) / initSize.y;
-		buildingAreaObj.transform.localScale = new Vector3(xScale, yScale, 1);
-		return buildingAreaObj;
+		buildingArea.transform.position = pos;
+		SpriteRenderer renderer = buildingArea.GetComponent<SpriteRenderer>();
+		renderer.size = new Vector2(xMaxBuild - xMinBuild, yMaxBuild - yMinBuild);
 	}
 
 	public float GetBuildingAreaAlpha()
 	{
-		SpriteRenderer renderer = buildingAreaObj.GetComponent<SpriteRenderer>();
+		SpriteRenderer renderer = buildingArea.GetComponent<SpriteRenderer>();
 		return renderer.color.a;
 	}
 
 	public void SetBuildingAreaAlpha(float alpha)
 	{
-		SpriteRenderer renderer = buildingAreaObj.GetComponent<SpriteRenderer>();
+		SpriteRenderer renderer = buildingArea.GetComponent<SpriteRenderer>();
 		Color color = renderer.color;
 		color.a = alpha;
 		renderer.color = color;
