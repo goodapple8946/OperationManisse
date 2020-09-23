@@ -68,7 +68,7 @@ public class VictoryController : MonoBehaviour
     {
         foreach (Unit target in targets)
         {
-            if (target != null)
+            if (target != null && target.IsAlive())
             {
                 return;
             }

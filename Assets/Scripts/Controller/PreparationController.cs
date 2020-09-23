@@ -26,6 +26,9 @@ public class PreparationController : MonoBehaviour
     // 当前鼠标持有的Unit
     public Unit mouseUnit;
 
+    // 连续购买（是购买并安放的，而非移动网格中现有的）
+    private bool buyContinuous;
+
     public GameObject square;
     private GameController gameController;
     private ResourceController resourceController;
@@ -40,7 +43,7 @@ public class PreparationController : MonoBehaviour
 
     void Start()
     {
-        // Debug: 每个网格的中心点
+        // 显示网格
         for (int x = 0; x < xNum; x++)
         {
             for (int y = 0; y < yNum; y++)
@@ -48,6 +51,16 @@ public class PreparationController : MonoBehaviour
                 GameObject squareObj = Instantiate(square);
                 squareObj.transform.position = CoordToPosition(x, y);
                 squareObj.transform.parent = transform;
+                squareObj.GetComponent<SpriteRenderer>().sortingLayerName = "Area";
+
+                if ((x + y) % 2 == 0)
+                {
+                    squareObj.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.1f);
+                }
+                else
+                {
+                    squareObj.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.2f);
+                }
             }
         }
     }
@@ -57,6 +70,17 @@ public class PreparationController : MonoBehaviour
         if (mouseUnit != null)
         {
             mouseUnit.transform.position = MouseController.MouseWorldPosition();
+
+            // R键旋转
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                Block block = mouseUnit as Block;
+
+                if (block != null)
+                {
+                    block.Rotate();
+                }
+            }
         }
     }
 
@@ -64,7 +88,17 @@ public class PreparationController : MonoBehaviour
     {
         if (gameController.gamePhase == GameController.GamePhase.Preparation)
         {
-            CheckAbsorption(unit);
+            if (mouseUnit != null && mouseUnit == unit)
+            {
+                // 安放鼠标上的物体到网格中
+                CheckAbsorption(unit);
+            }
+            else
+            {
+                // 移动网格中的物体
+                buyContinuous = false;
+                Pick(unit);
+            }
         }
     }
 
@@ -77,21 +111,49 @@ public class PreparationController : MonoBehaviour
     }
 
     // 购买
-    void Buy(GameObject prefab)
+    public void Buy(GameObject prefab)
     {
+        buyContinuous = true;
+
         Unit unit = prefab.GetComponent<Unit>();
 
-        if (gameController.playerMoney >= unit.price)
+        if (mouseUnit == null)
         {
-            gameController.playerMoney -= unit.price;
-            mouseUnit = Instantiate(prefab).GetComponent<Unit>();
-            mouseUnit.name = prefab.name;
-            mouseUnit.transform.parent = gameController.playerObjects.transform;
+            if (gameController.playerMoney >= unit.price)
+            {
+                gameController.playerMoney -= unit.price;
+
+                Unit unitBought = Instantiate(prefab).GetComponent<Unit>();
+                unitBought.name = prefab.name;
+
+                Pick(unitBought);
+            }
+            else
+            {
+                gameController.MoneyNotEnough();
+            }
+        }
+        else
+        {
+            if (gameController.playerMoney + mouseUnit.price >= unit.price)
+            {
+                gameController.playerMoney += mouseUnit.price - unit.price;
+                Destroy(mouseUnit.gameObject);
+
+                Unit unitBought = Instantiate(prefab).GetComponent<Unit>();
+                unitBought.name = prefab.name;
+
+                Pick(unitBought);
+            }
+            else
+            {
+                gameController.MoneyNotEnough();
+            }
         }
     }
 
     // 出售
-    void Sell(Unit unit)
+    public void Sell(Unit unit)
     {
         gameController.playerMoney += unit.price;
         Destroy(unit.gameObject);
@@ -100,17 +162,21 @@ public class PreparationController : MonoBehaviour
         AudioSource.PlayClipAtPoint(resourceController.audiosDelete[rand], unit.transform.position);
     }
 
-    // 开始游戏
-    public void StartGame()
+    // 拾起
+    public void Pick(Unit unit)
     {
-        // 清除鼠标上的Unit
-        if (mouseUnit != null)
+        int x = unit.gridX;
+        int y = unit.gridY;
+        if (x != -1 && y != -1)
         {
-            Destroy(mouseUnit);
+            grid[x, y] = null;
+            unit.gridX = unit.gridY = -1;
         }
+        unit.SetSpriteLayer("Pick");
+        mouseUnit = unit;
     }
 
-    // 安置，吸附到最近的网格
+    // 安放，吸附到最近的网格
     public void CheckAbsorption(Unit unit)
     {
         Vector2 pos = unit.transform.position;
@@ -122,20 +188,37 @@ public class PreparationController : MonoBehaviour
 
             if (grid[x, y] == null)
             {
-                // 如果钱够，继续购买
-                if (gameController.playerMoney >= unit.price)
+                mouseUnit = null;
+
+                // 如果是购买并安放的（而非移动网格中现有的），而且钱够，继续购买
+                if (buyContinuous && gameController.playerMoney >= unit.price)
                 {
                     Buy(unit.gameObject);
                 }
-                else
-                {
-                    mouseUnit = null;
-                }
 
+                // 安放
                 grid[x, y] = unit;
                 unit.gridX = x;
                 unit.gridY = y;
                 unit.transform.position = CoordToPosition(x, y);
+                unit.transform.parent = gameController.playerObjects.transform;
+                unit.SetSpriteLayer("Unit");
+            }
+        }
+    }
+
+    // 根据Unit的网格坐标安放
+    public void PutAllUnits()
+    {
+        ArrayList unitObjects = new ArrayList();
+        unitObjects.AddRange(GameObject.FindGameObjectsWithTag("Ball"));
+        unitObjects.AddRange(GameObject.FindGameObjectsWithTag("Block"));
+        foreach (GameObject unitObject in unitObjects)
+        {
+            Unit unit = unitObject.GetComponent<Unit>();
+            if (unit.player == Unit.Player.Player && unit.gridX != -1 && unit.gridY != -1)
+            {
+                grid[unit.gridX, unit.gridY] = unit;
             }
         }
     }
@@ -166,27 +249,17 @@ public class PreparationController : MonoBehaviour
     // 连接两Block
     void Link(Block block, Block another, int direction)
     {
-        FixedJoint2D joint;
         int directionNeg = GetDirectionNegative(direction);
 
-        // Block连接Another
-        joint = block.gameObject.AddComponent<FixedJoint2D>();
-        joint.connectedBody = another.body;
-        block.blocksLinked[direction] = another;
-        block.joints[direction] = joint;
-
-        // Another连接Block
-        joint = another.gameObject.AddComponent<FixedJoint2D>();
-        joint.connectedBody = block.body;
-        another.blocksLinked[directionNeg] = block;
-        another.joints[directionNeg] = joint;
+        block.LinkTo(another, direction);
+        another.LinkTo(block, directionNeg);
     }
 
     // 检测两Block是否能连接
     bool CanLink(Block block, Block another, int direction)
     {
         int directionNeg = GetDirectionNegative(direction);
-        // Block的相应方向提供连接性
+        // Block的相应方向是可连接的
         bool linkAvailable = block.IsLinkAvailable(direction) && another.IsLinkAvailable(directionNeg);
         // Block的相应方向未连接
         bool unlinked = block.blocksLinked[direction] == null && another.blocksLinked[directionNeg] == null;
@@ -196,9 +269,17 @@ public class PreparationController : MonoBehaviour
     // 根据方向获取相邻的Block
     Block GetNeighborBlock(int x, int y, int direction)
     {
-        int anotherX = x + dir[direction, 0];
-        int anotherY = y + dir[direction, 1];
-        return grid[anotherX, anotherY] as Block;
+        // 超出边界
+        if (direction == 0 && x == xNum - 1 || direction == 1 && y == yNum - 1 || direction == 2 && x == 0 || direction == 3 && y == 0) 
+        {
+            return null;
+        }
+        else
+        {
+            int anotherX = x + dir[direction, 0];
+            int anotherY = y + dir[direction, 1];
+            return grid[anotherX, anotherY] as Block;
+        }
     }
 
     // 离Position最近的网格的(x, y)
@@ -217,6 +298,7 @@ public class PreparationController : MonoBehaviour
                     ret = new int[] { x, y };
                 }
             }
+
         }
         return ret;
     }

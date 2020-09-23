@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -80,38 +81,48 @@ public abstract class Unit : MonoBehaviour
         DeathCheck();
 	}
 
-
     protected void OnMouseOver()
     {
-        // 鼠标左键按下
-        if (Input.GetMouseButtonDown(0))
+        // 鼠标不在UI上
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-
-        }
-
-        // 鼠标左键抬起
-        if (Input.GetMouseButtonUp(0))
-        {
-
-        }
-
-        // 鼠标左键按住
-        if (Input.GetMouseButton(0))
-        {
-            if (player == Player.Player)
+            // 鼠标左键按下
+            if (Input.GetMouseButtonDown(0))
             {
-                preparationController.LeftClickUnit(this);
+                if (player == Player.Player)
+                {
+                    preparationController.LeftClickUnit(this);
+                }
+            }
+
+            // 鼠标左键按住
+            if (Input.GetMouseButton(0))
+            {
+
+            }
+
+            // 鼠标右键按下
+            if (Input.GetMouseButtonDown(1))
+            {
+                if (player == Player.Player)
+                {
+                    preparationController.RightClickUnit(this);
+                }
+            }
+
+            // 鼠标右键按住
+            if (Input.GetMouseButton(1))
+            {
+
             }
         }
+    }
 
-        // 鼠标右键按下
-        if (Input.GetMouseButtonDown(1))
-        {
-            if (player == Player.Player)
-            {
-                preparationController.RightClickUnit(this);
-            }
-        }
+    // 游戏开始时调用
+    public virtual void GameStart()
+    {
+        // 设置刚体类型
+        body.bodyType = RigidbodyType2D.Dynamic;
     }
 
     // 生命值条初始化
@@ -131,14 +142,17 @@ public abstract class Unit : MonoBehaviour
             // 与之碰撞的另一个Unit
             Unit unit = collision.gameObject.GetComponent<Unit>();
 
-            // 造成伤害的有效相对速度
-            float velocity = collision.relativeVelocity.magnitude - velocityCollision;
-
-            if (velocity >= 0)
+            if (unit != null)
             {
-                float damage = velocity * damageCollision;
+                // 造成伤害的有效相对速度
+                float velocity = collision.relativeVelocity.magnitude - velocityCollision;
 
-                unit.TakeDamage((int)damage);
+                if (velocity >= 0)
+                {
+                    float damage = velocity * damageCollision;
+
+                    unit.TakeDamage((int)damage);
+                }
             }
         }
     }
@@ -150,17 +164,26 @@ public abstract class Unit : MonoBehaviour
         health -= damage;
 	}
 
-    // 死亡
+    // 死亡检测
     protected virtual void DeathCheck()
     {
         if (!IsAlive())
         {
-            // 摧毁物体
-            Destroy(gameObject);
-
-            // 创建尸体图像
-            CreateCorp();
+            Die();
         }
+    }
+
+    // 死亡
+    protected virtual void Die()
+    {
+        // 解除固定
+        body.constraints = RigidbodyConstraints2D.None;
+
+        // 移除碰撞
+        Destroy(GetComponent<Collider2D>());
+
+        // 摧毁物体
+        Destroy(gameObject, deathDuration);
     }
 
     // 是否在地面上
@@ -176,18 +199,8 @@ public abstract class Unit : MonoBehaviour
         return hit.transform != null;
     }
 
-    // 设置图像层级（不包括子物体）
-    protected void SetSpriteSortingLayer(string layer)
-    {
-        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-        if (sprite != null)
-        {
-            sprite.sortingLayerName = layer;
-        }
-    }
-
-    // 设置图像层级（包括子物体）
-    protected void SetSpriteAndChildSortingLayer(string layer)
+    // 设置图像层级
+    public void SetSpriteLayer(string layer)
     {
         SpriteRenderer sprite = GetComponent<SpriteRenderer>();
         if (sprite != null)
@@ -197,7 +210,10 @@ public abstract class Unit : MonoBehaviour
         SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer spriteChild in sprites)
         {
-            spriteChild.sortingLayerName = layer;
+            if (spriteChild.sortingLayerName != "Cover" && spriteChild.sortingLayerName != "Outline")
+            {
+                spriteChild.sortingLayerName = layer;
+            }
         }
     }
 
@@ -206,11 +222,4 @@ public abstract class Unit : MonoBehaviour
     {
         return health > 0;
     }
-
-    protected void CreateCorp()
-    {
-        //TODO
-    }
-
-    //protected abstract void LinkTo(Unit another, int direction, Joint2D joint);
 }

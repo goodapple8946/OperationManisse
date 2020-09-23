@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
@@ -99,12 +100,16 @@ public class CameraController : MonoBehaviour
 	// 缩放
 	private void Zoom()
     {
-        float zoomSize = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
-        if (zoomSize != 0)
+        // 鼠标不在UI上
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if (mainCamera.orthographicSize - zoomSize >= zoomSizeMin - 0.05f && mainCamera.orthographicSize - zoomSize <= zoomSizeMax + 0.05f)
+            float zoomSize = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
+            if (zoomSize != 0)
             {
-                mainCamera.orthographicSize -= zoomSize;
+                if (mainCamera.orthographicSize - zoomSize >= zoomSizeMin - 0.05f && mainCamera.orthographicSize - zoomSize <= zoomSizeMax + 0.05f)
+                {
+                    mainCamera.orthographicSize -= zoomSize;
+                }
             }
         }
     }

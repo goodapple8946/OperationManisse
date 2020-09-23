@@ -33,6 +33,9 @@ public class GameController : MonoBehaviour
     // 玩家钱数
     public int playerMoney;
 
+    // 商店
+    private GameObject shop;
+
     // 胜利音效
     public AudioClip audioVictory;
 
@@ -48,6 +51,9 @@ public class GameController : MonoBehaviour
         preparationController = GameObject.Find("Preparation Controller").GetComponent<PreparationController>();
         playerMoneyText = GameObject.Find("UI Canvas/UI Money Text").GetComponent<Text>();
         victoryDialog = GameObject.Find("UI Canvas/UI Victory");
+        shop = GameObject.Find("UI Canvas/UI Shop");
+
+        victoryDialog.SetActive(false);
 
         gamePhase = GamePhase.Preparation;
     }
@@ -133,7 +139,12 @@ public class GameController : MonoBehaviour
     {
         gamePhase = GamePhase.Playing;
 
-        preparationController.StartGame();
+        Unit mouseUnit = preparationController.mouseUnit;
+        if (mouseUnit != null)
+        {
+            playerMoney += mouseUnit.price;
+            Destroy(mouseUnit.gameObject);
+        }
 
         // 保存玩家的物体
         Destroy(playerObjectsSaved);
@@ -143,15 +154,15 @@ public class GameController : MonoBehaviour
         // 网格Block连接
         preparationController.LinkAllBlocks();
 
-        // 为所有Unit将BodyType变为Dynamic
-        ArrayList unitObjects = new ArrayList();
-        unitObjects.AddRange(GameObject.FindGameObjectsWithTag("Ball"));
-        unitObjects.AddRange(GameObject.FindGameObjectsWithTag("Block"));
-        foreach(GameObject unitObject in unitObjects)
-        {
-            Unit unit = unitObject.GetComponent<Unit>();
-            unit.body.bodyType = RigidbodyType2D.Dynamic;
-        }
+        // 向所有物体发送消息
+        playerObjects.BroadcastMessage("GameStart");
+        enemyObjects.BroadcastMessage("GameStart");
+
+        // 隐藏商店
+        shop.SetActive(false);
+
+        // 隐藏网格
+        preparationController.gameObject.SetActive(false);
     }
 
     // 停止游戏
@@ -168,6 +179,12 @@ public class GameController : MonoBehaviour
 		// 重置摄像机
 		cameraController.Init();
 
+        // 显示商店
+        shop.SetActive(true);
+
+        // 显示网格
+        preparationController.gameObject.SetActive(true);
+
         // 清除放置的物体
         if (playerObjects != null)
         {
@@ -182,6 +199,9 @@ public class GameController : MonoBehaviour
         playerObjects = Instantiate(playerObjectsSaved);
         playerObjects.SetActive(true);
         playerObjects.name = "Player Objects";
+
+        // 网格Unit安放
+        preparationController.PutAllUnits();
 
         // 放置敌人保存的物体
         enemyObjects = Instantiate(enemyObjectsSaved);

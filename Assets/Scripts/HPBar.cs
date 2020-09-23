@@ -29,7 +29,7 @@ public class HPBar : MonoBehaviour
 
     void Update()
     {
-        if (unit == null)
+        if (unit == null || !unit.IsAlive())
         {
             Destroy(gameObject);
         }

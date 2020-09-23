@@ -31,7 +31,7 @@ public class Ball : Unit
 
         WeaponCoolDown();
 
-        if (gameController.gamePhase == GameController.GamePhase.Playing)
+        if (IsAlive() && gameController.gamePhase == GameController.GamePhase.Playing)
         {
             // 寻找敌人
             Unit target = FindEnemy();
@@ -63,12 +63,10 @@ public class Ball : Unit
             player == Player.Player && unit.player == Player.Enemy ||
             player == Player.Enemy && unit.player == Player.Player;
 
-        return unitInRange && unitIsOpponent;
+        return unit.IsAlive() && unitInRange && unitIsOpponent;
     }
-
-    /// <summary>
-    /// 索敌。返回最佳目标，如果没有则返回null
-    /// </summary>
+    
+    // 索敌。返回最佳目标，如果没有则返回null
     protected Unit FindEnemy()
     {
         ArrayList gameObjects = new ArrayList();
@@ -76,7 +74,7 @@ public class Ball : Unit
         gameObjects.AddRange(GameObject.FindGameObjectsWithTag("Block"));
 
         Unit currentTarget = null;
-        float currentPriority = 0;
+        float currentPriority = float.MinValue;
         foreach (GameObject gameObject in gameObjects)
         {
             Unit unit = gameObject.GetComponent<Unit>();
@@ -175,11 +173,11 @@ public class Ball : Unit
     {
         if (transform.localEulerAngles.z < 90f || transform.localEulerAngles.z > 270f)
         {
-            transform.GetChild(0).localScale = new Vector3(1, 1, 1);
+            transform.GetChild(1).localScale = new Vector3(1, 1, 1);
         }
         else
         {
-            transform.GetChild(0).localScale = new Vector3(1, -1, 1);
+            transform.GetChild(1).localScale = new Vector3(1, -1, 1);
         }
     }
 

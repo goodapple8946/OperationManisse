@@ -48,7 +48,7 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Shop
+  - name: Area
     uniqueID: 3397823729
     locked: 0
   - name: Covered
