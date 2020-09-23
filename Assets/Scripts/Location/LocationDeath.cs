@@ -8,7 +8,7 @@ public class LocationDeath : MonoBehaviour
     {
         Unit unit = collider.GetComponent<Unit>();
 
-        if (unit != null && unit.isAlive)
+        if (unit != null)
         {
             unit.health = 0;
         }

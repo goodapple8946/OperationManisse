@@ -91,9 +91,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4016460913362679638}
   - component: {fileID: 4016460913362679643}
-  - component: {fileID: 4512486343727330767}
+  - component: {fileID: -6314085231527007753}
+  - component: {fileID: -5647705616805812022}
   m_Layer: 9
-  m_Name: Goods Propeller
+  m_Name: Player Propeller
   m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142,7 +143,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.6, y: 0.6}
   m_EdgeRadius: 0
---- !u!114 &4512486343727330767
+--- !u!50 &-6314085231527007753
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4016460913362679642}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 6200000, guid: 37da85ef7e8c27f439b81871c95070df, type: 2}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &-5647705616805812022
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -151,33 +173,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 4016460913362679642}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 618c5a4eab080f2499baad844377673a, type: 3}
+  m_Script: {fileID: 11500000, guid: e086f38478eba1f40bb8a2f2644df9ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   healthMax: 300
   health: 300
-  isInvincible: 0
-  isAlive: 1
-  price: 200
-  rebuyable: 1
-  prefab: {fileID: 4016460913362679642}
-  clickable: 1
-  isSelling: 1
-  isSellable: 1
-  player: 0
   priority: 0
   radius: 0.3
-  mass: 1
-  isForceProvider: 1
-  force: 5
-  forceAngle: 0
-  speedMax: 5
-  particlePrefab: {fileID: 3907941134862332719, guid: f1c3826a8225d224c9aed073a2737291,
-    type: 3}
-  particle: {fileID: 0}
   sprites: []
   damageCollision: 10
+  player: 1
+  gridX: -1
+  gridY: -1
+  price: 200
   body: {fileID: 0}
+  direction: 0
   blocksLinked:
   - {fileID: 0}
   - {fileID: 0}
@@ -188,12 +198,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  absorptionProvision: 1
-  coverPrefab: {fileID: 0}
-  isFixed: 0
-  isCore: 0
-  isOneLink: 0
-  isWheel: 0
+  force: 5
+  speedMax: 10
+  particlePrefab: {fileID: 3907941134862332719, guid: f1c3826a8225d224c9aed073a2737291,
+    type: 3}
 --- !u!1 &5062797990722392560
 GameObject:
   m_ObjectHideFlags: 0

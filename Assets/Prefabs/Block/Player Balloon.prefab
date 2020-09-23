@@ -92,8 +92,9 @@ GameObject:
   - component: {fileID: 4261955057781621039}
   - component: {fileID: 4261955057781621037}
   - component: {fileID: 4261955057781621036}
+  - component: {fileID: 3605115141803814343}
   m_Layer: 9
-  m_Name: Goods Balloon
+  m_Name: Player Balloon
   m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -144,27 +145,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthMax: 100
   health: 100
-  isInvincible: 0
-  isAlive: 1
-  price: 100
-  rebuyable: 1
-  prefab: {fileID: 4261955057781622481}
-  clickable: 1
-  isSelling: 1
-  isSellable: 1
-  player: 0
   priority: -100
   radius: 0.45
-  mass: 0.25
-  isForceProvider: 1
-  force: 8
-  forceAngle: 90
-  speedMax: 2
-  particlePrefab: {fileID: 0}
-  particle: {fileID: 0}
   sprites: []
   damageCollision: 0
+  player: 1
+  gridX: -1
+  gridY: -1
+  price: 100
   body: {fileID: 0}
+  direction: 0
   blocksLinked:
   - {fileID: 0}
   - {fileID: 0}
@@ -175,13 +165,24 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  absorptionProvision: 0
-  coverPrefab: {fileID: 0}
-  isFixed: 0
-  isCore: 0
-  isOneLink: 1
-  isWheel: 0
-  materialLine: {fileID: 2100000, guid: e8ff8c6dc48ebcf438e24339a7065f09, type: 2}
-  line: {fileID: 0}
-  lineDistance: 0
-  lineDistanceMax: 5
+--- !u!50 &3605115141803814343
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4261955057781622481}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.5
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 6200000, guid: 9e9f93ecbdbabc142a534279def90757, type: 2}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

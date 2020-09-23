@@ -24,7 +24,7 @@ public class VictoryController : MonoBehaviour
             foreach (GameObject gameObject in gameObjects)
             {
                 Unit unit = gameObject.GetComponent<Unit>();
-                if (unit != null && unit.isAlive && !unit.isSelling && unit.player == 2)
+                if (unit != null && unit.player == Unit.Player.Enemy)
                 {
                     units.Add(unit);
                 }
@@ -43,7 +43,7 @@ public class VictoryController : MonoBehaviour
             foreach (GameObject gameObject in gameObjects)
             {
                 Unit unit = gameObject.GetComponent<Unit>();
-                if (unit != null && unit.isAlive && !unit.isSelling && unit.gameObject.name == "Target")
+                if (unit != null && unit.gameObject.name == "Target")
                 {
                     units.Add(unit);
                 }
@@ -68,7 +68,7 @@ public class VictoryController : MonoBehaviour
     {
         foreach (Unit target in targets)
         {
-            if (target != null && target.isAlive)
+            if (target != null && target.IsAlive())
             {
                 return;
             }

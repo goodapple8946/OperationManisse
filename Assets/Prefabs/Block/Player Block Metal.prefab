@@ -173,8 +173,9 @@ GameObject:
   - component: {fileID: 6794195198073714014}
   - component: {fileID: 6794195198073714003}
   - component: {fileID: 6299149434715060167}
+  - component: {fileID: 1158740729411879588}
   m_Layer: 9
-  m_Name: Goods Block Metal
+  m_Name: Player Block Metal
   m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -236,23 +237,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthMax: 1000
   health: 1000
-  isAlive: 1
-  price: 150
-  rebuyable: 1
-  prefab: {fileID: 6794195198073714002}
-  clickable: 1
-  isSelling: 1
-  isSellable: 1
-  player: 0
   priority: 0
   radius: 0.3
-  mass: 3
-  isForceProvider: 0
-  force: 0
-  forceAngle: 0
-  speedMax: 0
-  particlePrefab: {fileID: 0}
-  particle: {fileID: 0}
   sprites:
   - {fileID: 21300000, guid: 08c85c6110163984f94535b6b7aaee69, type: 3}
   - {fileID: 21300000, guid: 3ef00a34e8fcfb14fb8b204f5f24c868, type: 3}
@@ -270,9 +256,13 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 2d8ee988343b80243ae5d0967ac9380a, type: 3}
   - {fileID: 21300000, guid: 697102881cb9cac4ebcad8321df26367, type: 3}
   - {fileID: 21300000, guid: f20143eeb7cb13641b38f5dd11ee777f, type: 3}
-  damageCollisionBall: 10
-  damageCollisionBlock: 0
+  damageCollision: 10
+  player: 1
+  gridX: -1
+  gridY: -1
+  price: 150
   body: {fileID: 0}
+  direction: 0
   blocksLinked:
   - {fileID: 0}
   - {fileID: 0}
@@ -283,9 +273,24 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  absorptionProvision: 1
-  coverPrefab: {fileID: 0}
-  isFixed: 0
-  isCore: 0
-  isOneLink: 0
-  isWheel: 0
+--- !u!50 &1158740729411879588
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6794195198073714002}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 3
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 6200000, guid: 37da85ef7e8c27f439b81871c95070df, type: 2}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

@@ -98,27 +98,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthMax: 200
   health: 200
-  isInvincible: 0
-  isAlive: 1
-  price: 0
-  rebuyable: 0
-  prefab: {fileID: 2882552430367811224}
-  clickable: 1
-  isSelling: 0
-  isSellable: 0
-  player: 1
   priority: 100
   radius: 0.3
-  mass: 1
-  isForceProvider: 0
-  force: 0
-  forceAngle: 0
-  speedMax: 0
-  particlePrefab: {fileID: 0}
-  particle: {fileID: 0}
   sprites: []
   damageCollision: 10
+  player: 1
+  gridX: -1
+  gridY: -1
+  price: 0
   body: {fileID: 0}
+  direction: 0
   blocksLinked:
   - {fileID: 0}
   - {fileID: 0}
@@ -129,12 +118,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  absorptionProvision: 1
-  coverPrefab: {fileID: 0}
-  isFixed: 0
-  isCore: 1
-  isOneLink: 0
-  isWheel: 0
 --- !u!61 &2882552430367811228
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -169,7 +152,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2882552430367811224}
-  m_BodyType: 0
+  m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -177,7 +160,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 37da85ef7e8c27f439b81871c95070df, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0

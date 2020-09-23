@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unit;
 
 public class Missile : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class Missile : MonoBehaviour
     public bool isMelee;
 
     // 所属玩家
-    public int player;
+    public Player player;
 
     // 发射音效
     public AudioClip[] audiosLaunch;
@@ -73,7 +74,7 @@ public class Missile : MonoBehaviour
         {
             // 击中Ball
             Ball ball = other.gameObject.GetComponent<Ball>();
-            if (ball != null && !ball.isInvincible)
+            if (ball != null)
             {
 				ball.TakeDamage(damage);
                 if (ball.body != null)
@@ -84,7 +85,7 @@ public class Missile : MonoBehaviour
 
             // 击中Block
             Block block = other.gameObject.GetComponent<Block>();
-            if (block != null && !block.isInvincible)
+            if (block != null)
             {
 				block.TakeDamage(damage);
                 if (block.body != null)
