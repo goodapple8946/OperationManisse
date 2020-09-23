@@ -17,7 +17,7 @@ public class Block : Unit
 
     // 断开扭矩
     private float breakTorquePlayer = 75f;
-    private float breakTorque = 5f;
+    private float breakTorque = 10f;
 
     // 与另一个Block连接
     public void LinkTo(Block another, int direction)

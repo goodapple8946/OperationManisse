@@ -203,6 +203,9 @@ public class PreparationController : MonoBehaviour
                 unit.transform.position = CoordToPosition(x, y);
                 unit.transform.parent = gameController.playerObjects.transform;
                 unit.SetSpriteLayer("Unit");
+
+                int rand = Random.Range(0, resourceController.audiosPut.Length);
+                AudioSource.PlayClipAtPoint(resourceController.audiosPut[rand], unit.transform.position);
             }
         }
     }

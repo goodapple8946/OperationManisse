@@ -33,7 +33,7 @@ public class ShopController : MonoBehaviour
             shopObject.GetComponent<Button>().onClick.AddListener(() => preparationController.Buy(gameObject));
             shopObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, offset);
             shopObject.GetComponent<RectTransform>().localScale = new Vector2(1.5f, 1.5f);
-            for(int i=1;i< gameObject.transform.childCount; i++)
+            for (int i = 1; i < gameObject.transform.childCount; i++) 
             {
                 shopObject.transform.GetChild(i - 1).GetComponent<Image>().sprite = gameObject.transform.GetChild(i).GetComponent<SpriteRenderer>().sprite;
                 shopObject.transform.GetChild(i - 1).GetComponent<Image>().SetNativeSize();
