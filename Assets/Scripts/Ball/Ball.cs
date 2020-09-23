@@ -25,6 +25,9 @@ public class Ball : Unit
     // 弹药预设
     public GameObject missilePrefab;
 
+    // 目标优先级容差
+    private float priorityTolerant = 10f;
+
     protected override void Update()
     {
         base.Update();
@@ -85,7 +88,7 @@ public class Ball : Unit
                 float priority = GetTargetPriority(unit);
 
                 // 优先级更高的目标
-                if (priority > currentPriority)
+                if (priority > currentPriority + priorityTolerant)
                 {
                     currentTarget = unit;
                     currentPriority = priority;

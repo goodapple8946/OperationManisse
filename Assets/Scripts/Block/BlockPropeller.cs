@@ -13,12 +13,15 @@ public class BlockPropeller : Block
     // 粒子预设
     public GameObject particlePrefab;
 
+    // 粒子
+    protected GameObject particle;
+
     public override void GameStart()
     {
         base.GameStart();
 
         // 创建粒子
-        GameObject particle = Instantiate(particlePrefab);
+        particle = Instantiate(particlePrefab);
         particle.transform.position = transform.position;
         particle.transform.parent = transform;
         particle.transform.Rotate(0, 0, GetAngleByDirection(direction));
@@ -29,10 +32,18 @@ public class BlockPropeller : Block
         base.Update();
 
         // 向朝向的方向施加力
-        if (body.velocity.magnitude <= speedMax)
+        if (IsAlive() && body.velocity.magnitude <= speedMax)
         {
             Vector2 forceAdded = Quaternion.AngleAxis(transform.localEulerAngles.z, Vector3.forward) * Vector2.right * force;
             body.AddForce(forceAdded);
         }
+    }
+
+    protected override void Die()
+    {
+        // 删除粒子
+        Destroy(particle);
+
+        base.Die();
     }
 }

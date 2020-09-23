@@ -4794,7 +4794,7 @@ PrefabInstance:
         type: 3}
       propertyPath: gameObjects.Array.data[4]
       value: 
-      objectReference: {fileID: 4261955057781622481, guid: 44cae03d9d70a6b4893763a144e3d16f,
+      objectReference: {fileID: 4016460913362679642, guid: 2144e02a99ff7c74f9565956de2e8c76,
         type: 3}
     - target: {fileID: 1746587266178757177, guid: f57181b2f918b834baba233020195ff3,
         type: 3}
@@ -17286,7 +17286,7 @@ PrefabInstance:
     - target: {fileID: 2882552430367811229, guid: 54df0f9bcfea1a242a56955e3dc2e63a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.22
       objectReference: {fileID: 0}
     - target: {fileID: 2882552430367811229, guid: 54df0f9bcfea1a242a56955e3dc2e63a,
         type: 3}
