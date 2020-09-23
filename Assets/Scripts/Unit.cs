@@ -66,7 +66,10 @@ public abstract class Unit : MonoBehaviour
 
     protected virtual void Start()
     {
-        HPBarInit();
+        if (player != Player.Neutral)
+        {
+            HPBarInit();
+        }
 
         // 贴图变种
         if (sprites.Length > 0)
@@ -89,32 +92,32 @@ public abstract class Unit : MonoBehaviour
             // 鼠标左键按下
             if (Input.GetMouseButtonDown(0))
             {
-                if (player == Player.Player)
-                {
-                    preparationController.LeftClickUnit(this);
-                }
-            }
-
-            // 鼠标左键按住
-            if (Input.GetMouseButton(0))
-            {
-
+                LeftClick();
             }
 
             // 鼠标右键按下
             if (Input.GetMouseButtonDown(1))
             {
-                if (player == Player.Player)
-                {
-                    preparationController.RightClickUnit(this);
-                }
+                RightClick();
             }
+        }
+    }
 
-            // 鼠标右键按住
-            if (Input.GetMouseButton(1))
-            {
+    // 鼠标左键按下
+    protected virtual void LeftClick()
+    {
+        if (player == Player.Player)
+        {
+            preparationController.LeftClickUnit(this);
+        }
+    }
 
-            }
+    // 鼠标右键按下
+    protected virtual void RightClick()
+    {
+        if (player == Player.Player)
+        {
+            preparationController.RightClickUnit(this);
         }
     }
 

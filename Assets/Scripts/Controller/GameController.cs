@@ -151,7 +151,8 @@ public class GameController : MonoBehaviour
         playerObjectsSaved = Instantiate(playerObjects);
         playerObjectsSaved.SetActive(false);
 
-        // 网格Block连接
+        // Block连接
+        // preparationController.LinkAllBlocksInGrid();
         preparationController.LinkAllBlocks();
 
         // 向所有物体发送消息
@@ -300,7 +301,7 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < len; i++)
         {
             Unit unit = playerObjects.transform.GetChild(i).GetComponent<Unit>();
-            if (unit != null)
+            if (unit != null && unit.IsAlive())
             {
                 center += (Vector2)unit.transform.position;
                 cnt++;
@@ -322,7 +323,7 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < len; i++)
         {
             Unit unit = playerObjects.transform.GetChild(i).GetComponent<Unit>();
-            if (unit != null && unit.body != null)
+            if (unit != null && unit.IsAlive() && unit.body != null)
             {
                 velocity += unit.body.velocity;
                 cnt++;

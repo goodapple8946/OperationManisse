@@ -93,7 +93,7 @@ public class PreparationController : MonoBehaviour
                 // 安放鼠标上的物体到网格中
                 CheckAbsorption(unit);
             }
-            else
+            else if (mouseUnit == null)
             {
                 // 移动网格中的物体
                 buyContinuous = false;
@@ -223,8 +223,8 @@ public class PreparationController : MonoBehaviour
         }
     }
 
-    // 连接所有Block
-    public void LinkAllBlocks()
+    // 连接所有网格中的Block
+    public void LinkAllBlocksInGrid()
     {
         for (int x = 0; x < xNum; x++)
         {
@@ -233,17 +233,100 @@ public class PreparationController : MonoBehaviour
                 Block block = grid[x, y] as Block;
                 if (block != null)
                 {
-                    for (int i = 0; i < 4; i++)
+                    for (int direction = 0; direction < 4; direction++)
                     {
-                        Block another = GetNeighborBlock(x, y, i);
-                        if (another != null && CanLink(block, another, i))
+                        Block another = GetNeighborBlock(x, y, direction);
+                        if (another != null && CanLink(block, another, direction))
                         {
-                            Link(block, another, i);
+                            Link(block, another, direction);
                         }
                     }
                 }
             }
         }
+    }
+
+    // 连接所有Block
+    public void LinkAllBlocks()
+    {
+        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Block");
+        foreach (GameObject gameObject in gameObjects)
+        {
+            Block block = gameObject.GetComponent<Block>();
+            for (int direction = 0; direction < 4; direction++)
+            {
+                if (block.blocksLinked[direction] == null)
+                {
+                    Block another = GetLinkableBlockByDirection(block, direction);
+
+                    // 连接
+                    if (another != null)
+                    {
+                        Link(block, another, direction);
+                    }
+                }
+            }
+        }
+    }
+
+    // 检测该方向范围内是否有可连接的Block
+    Block GetLinkableBlockByDirection(Block block, int direction)
+    {
+        // 检测连接距离
+        float distanceCheck = 0.3f;
+
+        int directionNeg = GetDirectionNegative(direction);
+
+        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Block");
+        foreach (GameObject gameObject in gameObjects)
+        {
+            Block another = gameObject.GetComponent<Block>();
+
+            if (another != block &&
+                // 所属同一名玩家
+                block.player == another.player &&
+                // Another的位置可以连接
+                another.IsLinkAvailable(directionNeg) == true &&
+                // Another的位置没有被占用
+                another.blocksLinked[directionNeg] == null)
+            {
+                // Another的连接点
+                Vector2 absorptionPoint = LinkPoint(another, directionNeg);
+
+                // Block与连接点的距离
+                float distance = ((Vector2)block.transform.position - absorptionPoint).magnitude;
+
+                // 满足吸附距离
+                if (distance <= distanceCheck)
+                {
+                    // 返回满足的Another
+                    return another;
+                }
+            }
+        }
+        return null;
+    }
+
+    // 按照方向返回Block的连接点
+    public Vector2 LinkPoint(Block block, int direction)
+    {
+        Vector2 point = block.transform.position;
+        switch (direction)
+        {
+            case 0:
+                point += Vector2.right * 2 * block.radius;
+                break;
+            case 1:
+                point += Vector2.up * 2 * block.radius;
+                break;
+            case 2:
+                point += Vector2.left * 2 * block.radius;
+                break;
+            case 3:
+                point += Vector2.down * 2 * block.radius;
+                break;
+        }
+        return point;
     }
 
     // 连接两Block

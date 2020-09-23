@@ -15,12 +15,24 @@ public class Block : Unit
 
     public Joint2D[] joints = new Joint2D[4];
 
+    // 断开扭矩
+    private float breakTorquePlayer = 75f;
+    private float breakTorque = 5f;
+
     // 与另一个Block连接
     public void LinkTo(Block another, int direction)
     {
         int directionNeg = GetDirectionNegative(direction);
 
         FixedJoint2D  joint = gameObject.AddComponent<FixedJoint2D>();
+        if (player == Player.Player)
+        {
+            joint.breakTorque = breakTorquePlayer;
+        }
+        else
+        {
+            joint.breakTorque = breakTorque;
+        }
         joint.connectedBody = another.body;
         joints[direction] = joint;
         blocksLinked[direction] = another;
@@ -81,9 +93,8 @@ public class Block : Unit
     protected override void Die()
     {
         // 解除连接
-        for (int i = 0; i < 4; i++)
+        for (int direction = 0; direction < 4; direction++)
         {
-            int direction = i;
             int directionNeg = GetDirectionNegative(direction);
 
             Block another = blocksLinked[direction];
