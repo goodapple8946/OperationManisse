@@ -50,7 +50,7 @@ public class Block : Unit
         blocksLinked[direction] = null;
     }
 
-    public void Rotate()
+    public virtual void Rotate()
     {
         direction = (direction + 1) % 4;
         transform.Rotate(0, 0, 90f);

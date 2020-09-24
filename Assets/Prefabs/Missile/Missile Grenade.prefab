@@ -149,11 +149,10 @@ MonoBehaviour:
   duration: 3
   durationHit: 0
   isAlive: 1
-  particleLaunchPerfab: {fileID: 2351009409937276409, guid: 6168c74241e049a4aa2b9735a3168583,
+  particleLaunchPerfab: {fileID: 6261028658808350284, guid: 8c6f765049fd2964587bdaf80710ad07,
     type: 3}
   particleFlyingPrefab: {fileID: 0}
-  particleHitPrefab: {fileID: 2174169386443458371, guid: 11300aa73aa8d9a4caad299455e49c2b,
-    type: 3}
+  particleHitPrefab: {fileID: 0}
   isMelee: 0
   player: 0
   audiosLaunch: []

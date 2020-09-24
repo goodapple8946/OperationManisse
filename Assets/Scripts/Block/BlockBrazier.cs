@@ -1,0 +1,66 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
+
+public class BlockBrazier : Block
+{
+    // 粒子预设
+    public GameObject particlePrefab;
+
+    // 粒子
+    protected GameObject particle;
+
+    // 照亮范围
+    protected float[] outerRaiuds = { 7.2f, 8.8f };
+
+    protected override void Start()
+    {
+        base.Start();
+
+        // 创建粒子
+        particle = Instantiate(particlePrefab);
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        if (IsAlive())
+        {
+            // 粒子跟随
+            particle.transform.position = transform.position;
+
+            // 随机照亮范围
+            transform.GetChild(1).GetComponent<Light2D>().pointLightOuterRadius = Random.Range(outerRaiuds[0], outerRaiuds[1]);
+        }
+    }
+
+    protected override void Die()
+    {
+        base.Die();
+
+        // 删除粒子
+        Destroy(particle);
+    }
+
+    protected void OnDestroy()
+    {
+        if (particle != null)
+        {
+            // 删除粒子
+            Destroy(particle);
+        }
+    }
+
+    public override bool IsLinkAvailable(int direction)
+    {
+        // 只能连接反方向
+        return direction == (this.direction + 2) % 4;
+    }
+
+    public override void Rotate()
+    {
+
+    }
+}

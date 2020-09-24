@@ -155,7 +155,7 @@ MonoBehaviour:
   gridY: -1
   price: 300
   body: {fileID: 0}
-  weaponOffset: 0.66
+  weaponOffset: 0.6
   findEnemyRange: 10
   weaponCDMax: 2
   weaponAngle: 4

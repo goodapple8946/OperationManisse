@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1375,6 +1375,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1746587264943081524, guid: f57181b2f918b834baba233020195ff3,
         type: 3}
+      propertyPath: blockObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1746587264943081524, guid: f57181b2f918b834baba233020195ff3,
+        type: 3}
+      propertyPath: ballObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1746587264943081524, guid: f57181b2f918b834baba233020195ff3,
+        type: 3}
       propertyPath: gameObjects.Array.data[0]
       value: 
       objectReference: {fileID: 3692407995292545339, guid: b176872d7840a0a478feea854669486b,
@@ -1382,6 +1392,18 @@ PrefabInstance:
     - target: {fileID: 1746587264943081524, guid: f57181b2f918b834baba233020195ff3,
         type: 3}
       propertyPath: gameObjects.Array.data[1]
+      value: 
+      objectReference: {fileID: 1218294590528101931, guid: 7083fda1e26696248b98db1cf3661fc9,
+        type: 3}
+    - target: {fileID: 1746587264943081524, guid: f57181b2f918b834baba233020195ff3,
+        type: 3}
+      propertyPath: blockObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 3692407995292545339, guid: b176872d7840a0a478feea854669486b,
+        type: 3}
+    - target: {fileID: 1746587264943081524, guid: f57181b2f918b834baba233020195ff3,
+        type: 3}
+      propertyPath: ballObjects.Array.data[0]
       value: 
       objectReference: {fileID: 1218294590528101931, guid: 7083fda1e26696248b98db1cf3661fc9,
         type: 3}
