@@ -29,6 +29,9 @@ public class PreparationController : MonoBehaviour
     // 连续购买（是购买并安放的，而非移动网格中现有的）
     private bool buyContinuous;
 
+    // 放置位置背景颜色深度
+    public float colorAlpha = 0.2f;
+
     public GameObject square;
     private GameController gameController;
     private ResourceController resourceController;
@@ -43,26 +46,7 @@ public class PreparationController : MonoBehaviour
 
     void Start()
     {
-        // 显示网格
-        for (int x = 0; x < xNum; x++)
-        {
-            for (int y = 0; y < yNum; y++)
-            {
-                GameObject squareObj = Instantiate(square);
-                squareObj.transform.position = CoordToPosition(x, y);
-                squareObj.transform.parent = transform;
-                squareObj.GetComponent<SpriteRenderer>().sortingLayerName = "Area";
-
-                if ((x + y) % 2 == 0)
-                {
-                    squareObj.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.1f);
-                }
-                else
-                {
-                    squareObj.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.2f);
-                }
-            }
-        }
+        ShowGrid();
     }
 
     void Update()
@@ -114,6 +98,30 @@ public class PreparationController : MonoBehaviour
         if (gameController.gamePhase == GameController.GamePhase.Preparation)
         {
             Sell(unit);
+        }
+    }
+
+    void ShowGrid()
+    {
+        // 显示网格
+        for (int x = 0; x < xNum; x++)
+        {
+            for (int y = 0; y < yNum; y++)
+            {
+                GameObject squareObj = Instantiate(square);
+                squareObj.transform.position = CoordToPosition(x, y);
+                squareObj.transform.parent = transform;
+                squareObj.GetComponent<SpriteRenderer>().sortingLayerName = "Area";
+
+                if ((x + y) % 2 == 0)
+                {
+                    squareObj.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, colorAlpha / 2);
+                }
+                else
+                {
+                    squareObj.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, colorAlpha);
+                }
+            }
         }
     }
 

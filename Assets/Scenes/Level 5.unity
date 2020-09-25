@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -3437,7 +3437,7 @@ PrefabInstance:
     - target: {fileID: 8525632781483782199, guid: bc45d86080c2f7e4cb4f7d222cf458b4,
         type: 3}
       propertyPath: origin.x
-      value: -6.4
+      value: -3.2
       objectReference: {fileID: 0}
     - target: {fileID: 8525632781483782199, guid: bc45d86080c2f7e4cb4f7d222cf458b4,
         type: 3}
@@ -3447,12 +3447,17 @@ PrefabInstance:
     - target: {fileID: 8525632781483782199, guid: bc45d86080c2f7e4cb4f7d222cf458b4,
         type: 3}
       propertyPath: xNum
-      value: 21
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 8525632781483782199, guid: bc45d86080c2f7e4cb4f7d222cf458b4,
         type: 3}
       propertyPath: yNum
-      value: 10
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8525632781483782199, guid: bc45d86080c2f7e4cb4f7d222cf458b4,
+        type: 3}
+      propertyPath: colorAlpha
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bc45d86080c2f7e4cb4f7d222cf458b4, type: 3}
@@ -5149,7 +5154,7 @@ PrefabInstance:
         type: 3}
       propertyPath: blockObjects.Array.data[3]
       value: 
-      objectReference: {fileID: 4016460913362679642, guid: 2144e02a99ff7c74f9565956de2e8c76,
+      objectReference: {fileID: 2194669006221252467, guid: 8e0cd27683b65624996b482424441a78,
         type: 3}
     - target: {fileID: 1746587264943081524, guid: f57181b2f918b834baba233020195ff3,
         type: 3}
@@ -16819,7 +16824,7 @@ PrefabInstance:
     - target: {fileID: 892597361540345568, guid: 8e4a3eb2ea6879d49a5309b499248be1,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.1772
+      value: -4.1772
       objectReference: {fileID: 0}
     - target: {fileID: 892597361540345568, guid: 8e4a3eb2ea6879d49a5309b499248be1,
         type: 3}
@@ -24804,7 +24809,7 @@ PrefabInstance:
     - target: {fileID: 892597361540345568, guid: 8e4a3eb2ea6879d49a5309b499248be1,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.9828
+      value: 3.9828
       objectReference: {fileID: 0}
     - target: {fileID: 892597361540345568, guid: 8e4a3eb2ea6879d49a5309b499248be1,
         type: 3}
