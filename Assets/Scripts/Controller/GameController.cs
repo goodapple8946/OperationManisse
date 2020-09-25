@@ -160,9 +160,18 @@ public class GameController : MonoBehaviour
         preparationController.LinkAllBlocks();
 
         // 向所有物体发送消息
-        playerObjects.BroadcastMessage("GameStart");
-        neutralObjects.BroadcastMessage("GameStart");
-        enemyObjects.BroadcastMessage("GameStart");
+        if (playerObjects.transform.childCount > 0)
+        {
+            playerObjects.BroadcastMessage("GameStart");
+        }
+        if (neutralObjects.transform.childCount > 0)
+        {
+            neutralObjects.BroadcastMessage("GameStart");
+        }
+        if (enemyObjects.transform.childCount > 0)
+        {
+            enemyObjects.BroadcastMessage("GameStart");
+        }
 
         // 隐藏商店
         shop.SetActive(false);
