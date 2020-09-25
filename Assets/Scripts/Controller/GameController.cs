@@ -139,12 +139,7 @@ public class GameController : MonoBehaviour
     {
         gamePhase = GamePhase.Playing;
 
-        Unit mouseUnit = preparationController.mouseUnit;
-        if (mouseUnit != null)
-        {
-            playerMoney += mouseUnit.price;
-            Destroy(mouseUnit.gameObject);
-        }
+        preparationController.ClearMouseUnit();
 
         // 保存玩家的物体
         Destroy(playerObjectsSaved);
@@ -215,6 +210,8 @@ public class GameController : MonoBehaviour
     // 玩家物体初始化
     public void Reset()
     {
+        preparationController.ClearMouseUnit();
+
         Destroy(playerObjectsSaved);
         playerObjectsSaved = Instantiate(playerObjectsInit);
         playerObjectsSaved.SetActive(false);

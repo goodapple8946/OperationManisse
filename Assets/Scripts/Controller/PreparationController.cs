@@ -413,4 +413,14 @@ public class PreparationController : MonoBehaviour
     {
         grid[x, y] = null;
     }
+
+    // 清除MouseUnit
+    public void ClearMouseUnit()
+    {
+        if (mouseUnit != null)
+        {
+            gameController.playerMoney += mouseUnit.price;
+            Destroy(mouseUnit.gameObject);
+        }
+    }
 }
