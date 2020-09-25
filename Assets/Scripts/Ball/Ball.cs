@@ -107,7 +107,7 @@ public class Ball : Unit
         // 目标在射程内
         if (distance <= findEnemyRange)
         {
-            priority += (int)((distance - findEnemyRange) * 10f);
+            priority += (int)((findEnemyRange - distance) * 10f);
             priority += unit.priority;
         }
         return priority;

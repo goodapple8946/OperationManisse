@@ -88,13 +88,22 @@ public class CameraController : MonoBehaviour
     // 跟随玩家
     private void Follow()
     {
-		Vector3 corePosition = gameController.GetCenterPlayerObjects();
-		Vector3 cameraDepth = new Vector3(0, 0, cameraZ);
-		Vector3 newOffset = CalcuteFollowOffset(gameController.GetVelocityPlayerObjects());
-		// 维护更新followOffset
-		followOffset = newOffset;
-		// 设置摄像机位置
-		transform.position = corePosition + cameraDepth + newOffset;
+        Vector2 center = Vector2.zero;
+        Vector2 velocity = Vector2.zero;
+
+        bool canFollow = gameController.CenterOfPlayerObjects(out center) && gameController.VelocityOfPlayerObjects(velocity);
+        if (canFollow)
+        {
+            Vector3 cameraDepth = new Vector3(0, 0, cameraZ);
+            Vector3 newOffset = CalcuteFollowOffset(velocity);
+
+            // 维护更新followOffset
+            followOffset = newOffset;
+
+            // 设置摄像机位置
+            transform.position = (Vector3)center + cameraDepth + newOffset;
+        }
+        
     }
 
 	// 缩放

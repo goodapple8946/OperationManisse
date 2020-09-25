@@ -198,8 +198,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  force: 10
-  speedMax: 5
+  force: 8
   particlePrefab: {fileID: 3907941134862332719, guid: f1c3826a8225d224c9aed073a2737291,
     type: 3}
 --- !u!1 &5062797990722392560
