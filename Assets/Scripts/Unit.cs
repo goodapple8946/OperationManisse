@@ -182,8 +182,13 @@ public abstract class Unit : MonoBehaviour
         // 解除固定
         body.constraints = RigidbodyConstraints2D.None;
 
+        // 无阻力
+        body.drag = 0;
+        body.angularDrag = 0;
+
         // 移除碰撞
         Destroy(GetComponent<Collider2D>());
+
 
         // 摧毁物体
         Destroy(gameObject, deathDuration);

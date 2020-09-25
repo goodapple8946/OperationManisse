@@ -47,4 +47,5 @@ MonoBehaviour:
   yNum: 12
   origin: {x: -7, y: 0.5}
   mouseUnit: {fileID: 0}
+  colorAlpha: 0.2
   square: {fileID: 2503016499548747961, guid: af8111420e9e3144aad430b09a64adb8, type: 3}

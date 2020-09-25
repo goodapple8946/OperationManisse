@@ -7,8 +7,8 @@ public class BlockUmbrella : Block
     // 力的大小
     public float force;
 
-    // 提供力时的最大速度
-    public float speedMax;
+    // 转向正上方的力矩
+    protected float forceTorque = 1f;
 
     // 粒子预设
     public GameObject particlePrefab;
@@ -31,11 +31,20 @@ public class BlockUmbrella : Block
     {
         base.Update();
 
-        // 向上施加力
-        if (IsAlive() && body.velocity.magnitude <= speedMax)
+        if (IsAlive())
         {
-            Vector2 forceAdded = Vector2.up * force;
-            body.AddForce(forceAdded);
+            // 向上施加力
+            body.AddForce(Vector2.up * force);
+
+            // 朝向上方
+            if (transform.eulerAngles.z > 270f || transform.eulerAngles.z < 88f)
+            {
+                body.AddTorque(forceTorque);
+            }
+            else if (transform.eulerAngles.z > 92f && transform.eulerAngles.z <= 270f)
+            {
+                body.AddTorque(-forceTorque);
+            }
         }
     }
 

@@ -300,9 +300,9 @@ public class GameController : MonoBehaviour
     }
 
     // 玩家物体中心
-    public Vector2 GetCenterPlayerObjects()
+    public bool CenterOfPlayerObjects(out Vector2 center)
     {
-        Vector2 center = Vector2.zero;
+        center = Vector2.zero;
         int len = playerObjects.transform.childCount;
         int cnt = 0;
         for (int i = 0; i < len; i++)
@@ -317,14 +317,18 @@ public class GameController : MonoBehaviour
         if (cnt != 0)
         {
             center /= cnt;
+            return true;
         }
-        return center;
+        else
+        {
+            return false;
+        }
     }
 
     // 玩家物体平均速度
-    public Vector2 GetVelocityPlayerObjects()
+    public bool VelocityOfPlayerObjects(Vector2 velocity)
     {
-        Vector2 velocity = Vector2.zero;
+        velocity = Vector2.zero;
         int len = playerObjects.transform.childCount;
         int cnt = 0;
         for (int i = 0; i < len; i++)
@@ -339,8 +343,12 @@ public class GameController : MonoBehaviour
         if (cnt != 0)
         {
             velocity /= cnt;
+            return true;
         }
-        return velocity;
+        else
+        {
+            return false;
+        }
     }
 
     // Debug

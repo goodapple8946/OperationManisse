@@ -7,9 +7,6 @@ public class BlockPropeller : Block
     // 力的大小
     public float force;
 
-    // 提供力时的最大速度
-    public float speedMax;
-
     // 粒子预设
     public GameObject particlePrefab;
 
@@ -32,7 +29,7 @@ public class BlockPropeller : Block
         base.Update();
 
         // 向朝向的方向施加力
-        if (IsAlive() && body.velocity.magnitude <= speedMax)
+        if (IsAlive())
         {
             Vector2 forceAdded = Quaternion.AngleAxis(transform.localEulerAngles.z, Vector3.forward) * Vector2.right * force;
             body.AddForce(forceAdded);

@@ -8,7 +8,7 @@ public class BlockLight : Block
     public GameObject particlePrefab;
 
     // 粒子
-    protected GameObject particle;
+    public GameObject particle;
 
     protected override void Start()
     {
