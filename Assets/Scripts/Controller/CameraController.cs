@@ -91,7 +91,7 @@ public class CameraController : MonoBehaviour
         Vector2 center = Vector2.zero;
         Vector2 velocity = Vector2.zero;
 
-        bool canFollow = gameController.CenterOfPlayerObjects(out center) && gameController.VelocityOfPlayerObjects(velocity);
+        bool canFollow = gameController.CenterOfPlayerObjects(out center) && gameController.VelocityOfPlayerObjects(out velocity);
         if (canFollow)
         {
             Vector3 cameraDepth = new Vector3(0, 0, cameraZ);

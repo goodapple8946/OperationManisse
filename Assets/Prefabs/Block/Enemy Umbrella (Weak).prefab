@@ -73,7 +73,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.25
-  m_LinearDrag: 64
+  m_LinearDrag: 128
   m_AngularDrag: 64
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: 37da85ef7e8c27f439b81871c95070df, type: 2}
@@ -115,7 +115,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  force: 8
+  force: 25
   particlePrefab: {fileID: 1078013431715204588, guid: 4b1c8cad80fcffd4fb17c011bc6e4935,
     type: 3}
 --- !u!1 &7409024154844821292

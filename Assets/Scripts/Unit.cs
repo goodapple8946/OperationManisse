@@ -84,6 +84,11 @@ public abstract class Unit : MonoBehaviour
         DeathCheck();
 	}
 
+    protected virtual void FixedUpdate()
+    {
+
+    }
+
     protected void OnMouseOver()
     {
         // 鼠标不在UI上

@@ -115,7 +115,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  force: 16
+  force: 50
   particlePrefab: {fileID: 1078013431715204588, guid: 4b1c8cad80fcffd4fb17c011bc6e4935,
     type: 3}
 --- !u!1 &8037511140215386585

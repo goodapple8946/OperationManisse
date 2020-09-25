@@ -24,9 +24,9 @@ public class BlockPropeller : Block
         particle.transform.Rotate(0, 0, GetAngleByDirection(direction));
     }
 
-    protected override void Update()
+    protected override void FixedUpdate()
     {
-        base.Update();
+        base.FixedUpdate();
 
         // 向朝向的方向施加力
         if (IsAlive())
