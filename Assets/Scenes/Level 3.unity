@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2876,6 +2876,16 @@ PrefabInstance:
       propertyPath: origin.y
       value: 0.3
       objectReference: {fileID: 0}
+    - target: {fileID: 8525632781483782199, guid: bc45d86080c2f7e4cb4f7d222cf458b4,
+        type: 3}
+      propertyPath: origin.x
+      value: -3.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8525632781483782199, guid: bc45d86080c2f7e4cb4f7d222cf458b4,
+        type: 3}
+      propertyPath: xNum
+      value: 12
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bc45d86080c2f7e4cb4f7d222cf458b4, type: 3}
 --- !u!1001 &1201319802
@@ -3919,7 +3929,7 @@ PrefabInstance:
     - target: {fileID: 775198180736573023, guid: 49f97fab1ca7f254d9250fa45cefc386,
         type: 3}
       propertyPath: playerMoney
-      value: 2000
+      value: 1800
       objectReference: {fileID: 0}
     - target: {fileID: 775198180736573023, guid: 49f97fab1ca7f254d9250fa45cefc386,
         type: 3}

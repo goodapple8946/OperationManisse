@@ -11,6 +11,7 @@ public class VictoryController : MonoBehaviour
     public TargetOption targetOption;
 
     public Unit[] targets;
+    public string targetName;
 
     public bool isVictory;
 
@@ -43,7 +44,7 @@ public class VictoryController : MonoBehaviour
             foreach (GameObject gameObject in gameObjects)
             {
                 Unit unit = gameObject.GetComponent<Unit>();
-                if (unit != null && unit.gameObject.name == "Target")
+                if (unit != null && unit.gameObject.name == targetName)
                 {
                     units.Add(unit);
                 }

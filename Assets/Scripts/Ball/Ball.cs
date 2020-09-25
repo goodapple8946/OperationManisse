@@ -26,7 +26,7 @@ public class Ball : Unit
     public GameObject missilePrefab;
 
     // 目标优先级容差
-    private float priorityTolerant = 10f;
+    private float priorityTolerant = 3f;
 
     protected override void Update()
     {
