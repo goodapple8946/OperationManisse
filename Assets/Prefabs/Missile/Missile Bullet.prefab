@@ -52,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -149,7 +149,7 @@ MonoBehaviour:
   duration: 3
   durationHit: 0
   isAlive: 1
-  particleLaunchPerfab: {fileID: 5487729138252501634, guid: 8c6f765049fd2964587bdaf80710ad07,
+  particleLaunchPerfab: {fileID: 6261028658808350284, guid: 8c6f765049fd2964587bdaf80710ad07,
     type: 3}
   particleFlyingPrefab: {fileID: 0}
   particleHitPrefab: {fileID: 8293551352877460187, guid: 5fce293de388b844f8c9712eaf109f0a,

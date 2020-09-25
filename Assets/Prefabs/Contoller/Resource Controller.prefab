@@ -58,6 +58,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: bef56f4b71c2d7749b153c6c9dff54c0, type: 3}
   - {fileID: 8300000, guid: 33e2d9535f26eed4f90f2f57e1b5cd02, type: 3}
   - {fileID: 8300000, guid: 774c716db6f57114ca786885946dd9f8, type: 3}
+  audiosPut:
+  - {fileID: 8300000, guid: 420e0e3b84b3f0b47ae8618cf218999b, type: 3}
+  - {fileID: 8300000, guid: c967f436a71c5a94f8ea6ae424fa72f2, type: 3}
   mute: {fileID: 21300000, guid: 6b5f010a4365aae4ca0a570b1fdd0da2, type: 3}
   unmute: {fileID: 21300000, guid: 901fee87f1056ce4ba79f176e1e427ea, type: 3}
   hpBarPrefab: {fileID: 5438377093910908434, guid: 9a25f6745485b9448aa585e5e7ab546f,

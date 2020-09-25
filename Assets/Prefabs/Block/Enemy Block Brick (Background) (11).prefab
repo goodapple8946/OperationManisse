@@ -49,7 +49,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -91,7 +91,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7804408229111812110}
   - component: {fileID: 4334407005905727311}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,7 +130,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -171,7 +171,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7838400699922406647}
-  m_Layer: 12
+  - component: {fileID: 4748855808814415721}
+  - component: {fileID: 26757063919551600}
+  m_Layer: 0
   m_Name: Enemy Block Brick (Background) (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,3 +196,74 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4748855808814415721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7838400699922406651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 618c5a4eab080f2499baad844377673a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthMax: 1
+  health: 1
+  priority: 0
+  radius: 0
+  sprites:
+  - {fileID: 21300000, guid: fd6da27d8a22b7c4c8802f7a9a8103b2, type: 3}
+  - {fileID: 21300000, guid: ab9ff989c6eecc94fa3a03fc25b5c7ee, type: 3}
+  - {fileID: 21300000, guid: 063cd653eb0120f44becea4be2527a04, type: 3}
+  - {fileID: 21300000, guid: 8a3067df93991a54b9a3e106c6fdd75d, type: 3}
+  - {fileID: 21300000, guid: f2f05ca0eb824464099f8c8b7abf1b63, type: 3}
+  - {fileID: 21300000, guid: 013d526e1942003458b61ae8a6c53cad, type: 3}
+  - {fileID: 21300000, guid: dccc27927b9a8cc4fb416354bb6121b3, type: 3}
+  - {fileID: 21300000, guid: 8ef0303c1c2ae944cb8f04e4a39a5995, type: 3}
+  - {fileID: 21300000, guid: 460f8a35eeac0cd4b9f7329609c02a38, type: 3}
+  - {fileID: 21300000, guid: 14976096e0f608545befce07e1b9f076, type: 3}
+  - {fileID: 21300000, guid: 0792a0e97b053b24b876858b4daa2506, type: 3}
+  - {fileID: 21300000, guid: 2a99ed48ad359c94f8d47791fee80894, type: 3}
+  - {fileID: 21300000, guid: 2d07a4620e58b054489994eb89202d60, type: 3}
+  - {fileID: 21300000, guid: 77d2b2b3bcd7a2542b718966290e131a, type: 3}
+  - {fileID: 21300000, guid: cf804306810ddf74bb9d4cfb27309550, type: 3}
+  - {fileID: 21300000, guid: 1aed1c90f1721214e9fb381de2065cb3, type: 3}
+  damageCollision: 0
+  player: 0
+  gridX: -1
+  gridY: -1
+  price: 0
+  body: {fileID: 0}
+  direction: 0
+  blocksLinked:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  joints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!50 &26757063919551600
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7838400699922406651}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7

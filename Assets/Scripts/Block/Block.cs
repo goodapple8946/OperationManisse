@@ -17,7 +17,7 @@ public class Block : Unit
 
     // 断开扭矩
     private float breakTorquePlayer = 75f;
-    private float breakTorque = 5f;
+    private float breakTorque = 10f;
 
     // 与另一个Block连接
     public void LinkTo(Block another, int direction)
@@ -50,7 +50,7 @@ public class Block : Unit
         blocksLinked[direction] = null;
     }
 
-    public void Rotate()
+    public virtual void Rotate()
     {
         direction = (direction + 1) % 4;
         transform.Rotate(0, 0, 90f);

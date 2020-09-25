@@ -88,12 +88,19 @@ public class PreparationController : MonoBehaviour
     {
         if (gameController.gamePhase == GameController.GamePhase.Preparation)
         {
-            if (mouseUnit != null && mouseUnit == unit)
+            if (mouseUnit != null)
             {
-                // 安放鼠标上的物体到网格中
-                CheckAbsorption(unit);
+                if (mouseUnit == unit)
+                {
+                    // 安放鼠标上的物体到网格中
+                    CheckAbsorption(unit);
+                }
+                else
+                {
+                    // 将网格物体与鼠标物体交换
+                }
             }
-            else if (mouseUnit == null)
+            else
             {
                 // 移动网格中的物体
                 buyContinuous = false;
@@ -203,6 +210,9 @@ public class PreparationController : MonoBehaviour
                 unit.transform.position = CoordToPosition(x, y);
                 unit.transform.parent = gameController.playerObjects.transform;
                 unit.SetSpriteLayer("Unit");
+
+                int rand = Random.Range(0, resourceController.audiosPut.Length);
+                AudioSource.PlayClipAtPoint(resourceController.audiosPut[rand], unit.transform.position);
             }
         }
     }
@@ -255,7 +265,7 @@ public class PreparationController : MonoBehaviour
             Block block = gameObject.GetComponent<Block>();
             for (int direction = 0; direction < 4; direction++)
             {
-                if (block.blocksLinked[direction] == null)
+                if (block.blocksLinked[direction] == null && block.IsLinkAvailable(direction))
                 {
                     Block another = GetLinkableBlockByDirection(block, direction);
 
@@ -402,5 +412,15 @@ public class PreparationController : MonoBehaviour
     public void Clear(int x, int y)
     {
         grid[x, y] = null;
+    }
+
+    // 清除MouseUnit
+    public void ClearMouseUnit()
+    {
+        if (mouseUnit != null)
+        {
+            gameController.playerMoney += mouseUnit.price;
+            Destroy(mouseUnit.gameObject);
+        }
     }
 }
