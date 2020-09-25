@@ -13,6 +13,10 @@ public class GameController : MonoBehaviour
     private GameObject playerObjectsSaved;
     private GameObject playerObjectsInit;
 
+    // 中立物体的根节点
+    public GameObject neutralObjects;
+    private GameObject neutralObjectsSaved;
+
     // 敌人物体的根节点
     public GameObject enemyObjects;
     private GameObject enemyObjectsSaved;
@@ -46,6 +50,7 @@ public class GameController : MonoBehaviour
     {
         playerObjects = GameObject.Find("Player Objects");
         enemyObjects = GameObject.Find("Enemy Objects");
+        neutralObjects = GameObject.Find("Neutral Objects");
         cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
         victoryController = GameObject.Find("Victory Controller").GetComponent<VictoryController>();
         preparationController = GameObject.Find("Preparation Controller").GetComponent<PreparationController>();
@@ -95,6 +100,10 @@ public class GameController : MonoBehaviour
         playerObjectsSaved.SetActive(false);
         playerObjectsInit = Instantiate(playerObjectsSaved);
         playerObjectsInit.SetActive(false);
+
+        // 保存中立物体
+        neutralObjectsSaved = Instantiate(neutralObjects);
+        neutralObjectsSaved.SetActive(false);
 
         // 保存敌人物体
         enemyObjectsSaved = Instantiate(enemyObjects);
@@ -152,6 +161,7 @@ public class GameController : MonoBehaviour
 
         // 向所有物体发送消息
         playerObjects.BroadcastMessage("GameStart");
+        neutralObjects.BroadcastMessage("GameStart");
         enemyObjects.BroadcastMessage("GameStart");
 
         // 隐藏商店
@@ -182,14 +192,9 @@ public class GameController : MonoBehaviour
         preparationController.gameObject.SetActive(true);
 
         // 清除放置的物体
-        if (playerObjects != null)
-        {
-            Destroy(playerObjects);
-        }
-        if (enemyObjects != null)
-        {
-            Destroy(enemyObjects);
-        }
+        Destroy(playerObjects);
+        Destroy(neutralObjects);
+        Destroy(enemyObjects);
 
         // 放置玩家保存的物体
         playerObjects = Instantiate(playerObjectsSaved);
@@ -198,6 +203,11 @@ public class GameController : MonoBehaviour
 
         // 网格Unit安放
         preparationController.PutAllUnits();
+
+        // 放置中立保存的物体
+        neutralObjects = Instantiate(neutralObjectsSaved);
+        neutralObjects.SetActive(true);
+        neutralObjects.name = "Enemy Objects";
 
         // 放置敌人保存的物体
         enemyObjects = Instantiate(enemyObjectsSaved);
