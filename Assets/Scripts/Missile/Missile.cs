@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Unit;
+using static GameController;
 
 public class Missile : MonoBehaviour
 {
@@ -85,7 +85,7 @@ public class Missile : MonoBehaviour
 
             // 击中Block
             Block block = other.gameObject.GetComponent<Block>();
-            if (block != null)
+            if (block != null && block.gameObject.layer != (int)Layer.Ground)
             {
 				block.TakeDamage(damage);
                 if (block.body != null)

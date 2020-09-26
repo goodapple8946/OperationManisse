@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using static GameController;
 
 public abstract class Unit : MonoBehaviour
 {
-    public enum Player { Neutral, Player, Enemy }
-
     // 生命最大值
     public int healthMax;
 
@@ -51,32 +50,26 @@ public abstract class Unit : MonoBehaviour
     // 价格
     public int price;
 
+    // 是编辑器创建的
+    public bool isEditorCreated;
+
     public Rigidbody2D body;
     protected GameController gameController;
-    protected PreparationController preparationController;
+    protected EditorController editorController;
     protected ResourceController resourceController;
 
 	protected virtual void Awake()
     {
         body = GetComponent<Rigidbody2D>();
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
-        preparationController = GameObject.Find("Preparation Controller").GetComponent<PreparationController>();
+        editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
         resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
     }
 
     protected virtual void Start()
     {
-        if (player != Player.Neutral)
-        {
-            HPBarInit();
-        }
-
-        // 贴图变种
-        if (sprites.Length > 0)
-        {
-            int rand = Random.Range(0, sprites.Length);
-            transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = sprites[rand];
-        }
+        HPBarInit();
+        UpdateSprite();
     }
 
     protected virtual void Update()
@@ -94,16 +87,21 @@ public abstract class Unit : MonoBehaviour
         // 鼠标不在UI上
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            // 鼠标左键按下
-            if (Input.GetMouseButtonDown(0))
+            // 可以相应鼠标的阶段
+            if (gameController.gamePhase == GamePhase.Editor ||
+                (gameController.gamePhase == GamePhase.Preparation && player == Player.Player))
             {
-                LeftClick();
-            }
+                // 鼠标左键按下
+                if (Input.GetMouseButtonDown(0))
+                {
+                    LeftClick();
+                }
 
-            // 鼠标右键按下
-            if (Input.GetMouseButtonDown(1))
-            {
-                RightClick();
+                // 鼠标右键按下
+                if (Input.GetMouseButtonDown(1))
+                {
+                    RightClick();
+                }
             }
         }
     }
@@ -111,19 +109,13 @@ public abstract class Unit : MonoBehaviour
     // 鼠标左键按下
     protected virtual void LeftClick()
     {
-        if (player == Player.Player)
-        {
-            preparationController.LeftClickUnit(this);
-        }
+        editorController.LeftClickUnit(this);
     }
 
     // 鼠标右键按下
     protected virtual void RightClick()
     {
-        if (player == Player.Player)
-        {
-            preparationController.RightClickUnit(this);
-        }
+        editorController.RightClickUnit(this);
     }
 
     // 游戏开始时调用
@@ -133,24 +125,35 @@ public abstract class Unit : MonoBehaviour
         body.bodyType = RigidbodyType2D.Dynamic;
     }
 
+    // 更新贴图变种
+    public void UpdateSprite()
+    {
+        // 贴图变种
+        if (sprites.Length > 0)
+        {
+            int rand = Random.Range(0, sprites.Length);
+            transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = sprites[rand];
+        }
+    }
+
     // 生命值条初始化
     protected virtual void HPBarInit()
     {
         // 生命值条
         HPBar hPBar = Instantiate(resourceController.hpBarPrefab).GetComponent<HPBar>();
         hPBar.unit = this;
+        hPBar.transform.parent = gameController.hpBarObjects.transform;
     }
 
     // 碰撞
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        // 可以造成碰撞伤害
-        if (gameController.gamePhase == GameController.GamePhase.Playing)
+        if (gameController.gamePhase == GamePhase.Playing)
         {
             // 与之碰撞的另一个Unit
             Unit unit = collision.gameObject.GetComponent<Unit>();
 
-            if (unit != null)
+            if (unit != null && unit.gameObject.layer != (int)Layer.Ground)
             {
                 // 造成伤害的有效相对速度
                 float velocity = collision.relativeVelocity.magnitude - velocityCollision;

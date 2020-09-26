@@ -2,363 +2,288 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
+    public enum Player { Neutral, Player, Enemy }
     public enum Layer { Default, TransparentFX, IgnoreRaycast, Water = 4, UI, PlayerBall = 8, PlayerBlock, PlayerMissile, EnemyBall, EnemyBlock, EnemyMissile, Goods, Ground }
-    public enum GamePhase { Menu, Preparation, Playing, Victory, Defeat, Pause }
+    public enum GamePhase { Editor, Preparation, Playing, Victory }
 
-    // 玩家所有物体的根节点
-    public GameObject playerObjects;
-    private GameObject playerObjectsSaved;
-    private GameObject playerObjectsInit;
-
-    // 中立物体的根节点
-    public GameObject neutralObjects;
-    private GameObject neutralObjectsSaved;
-
-    // 敌人物体的根节点
-    public GameObject enemyObjects;
-    private GameObject enemyObjectsSaved;
-
-    // Controller
-    private CameraController cameraController;
-    private VictoryController victoryController;
-    private PreparationController preparationController;
-
-    // 玩家显示钱数Text
-    private Text playerMoneyText;
-
+    // 初始场景阶段
     public GamePhase gamePhase;
 
-    // 玩家原始钱数
-    private int playerMoneyOrigin;
+    // 所有物体的根节点
+    [HideInInspector] public GameObject unitObjects;
+    [HideInInspector] public GameObject missileObjects;
+    [HideInInspector] public GameObject hpBarObjects;
+    private GameObject unitObjectsSaved;
+    private GameObject unitObjectsOrigin;
 
-    // 玩家钱数
-    public int playerMoney;
+    private EditorController editorController;
 
-    // 商店
-    private GameObject shop;
+    private GameObject uiEditor;
+    private GameObject uiGame;
 
-    // 胜利音效
-    public AudioClip audioVictory;
-
-    // 胜利对话框
-    private GameObject victoryDialog;
+    /**
+     * 生命周期函数
+     */
 
     void Awake()
     {
-        playerObjects = GameObject.Find("Player Objects");
-        enemyObjects = GameObject.Find("Enemy Objects");
-        neutralObjects = GameObject.Find("Neutral Objects");
-        cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
-        victoryController = GameObject.Find("Victory Controller").GetComponent<VictoryController>();
-        preparationController = GameObject.Find("Preparation Controller").GetComponent<PreparationController>();
-        playerMoneyText = GameObject.Find("UI Canvas/UI Money Text").GetComponent<Text>();
-        victoryDialog = GameObject.Find("UI Canvas/UI Victory");
-        shop = GameObject.Find("UI Canvas/UI Shop");
+        uiEditor = GameObject.Find("UI Canvas/UI Editor");
+        uiGame = GameObject.Find("UI Canvas/UI Game");
+        editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
 
-        victoryDialog.SetActive(false);
-
-        gamePhase = GamePhase.Preparation;
+        Init();
     }
 
 	void Start()
     {
-		SaveBeforeStart();
-        NewGame();
+        uiGame.SetActive(false);
     }
 
     void Update()
     {
-        // 空格键开始或停止
-        if (Input.GetKeyDown(KeyCode.Space)) 
-        {
-            StartOrStop();
-        }
-
-        if (gamePhase == GamePhase.Playing)
-        {
-            VictoryCheck();
-        }
         DebugGame();
     }
 
     void FixedUpdate()
     {
-        UpdatePlayerMoney();
+
     }
 
-    // 开始前保存场景
-    void SaveBeforeStart()
+    /**
+     * UI按键响应
+     */ 
+
+    // Editor阶段，按下UI的Run键
+    public void Run()
     {
-        // 保存玩家钱数
-        playerMoneyOrigin = playerMoney;
-
-        // 保存玩家物体
-        playerObjectsSaved = Instantiate(playerObjects);
-        playerObjectsSaved.SetActive(false);
-        playerObjectsInit = Instantiate(playerObjectsSaved);
-        playerObjectsInit.SetActive(false);
-
-        // 保存中立物体
-        neutralObjectsSaved = Instantiate(neutralObjects);
-        neutralObjectsSaved.SetActive(false);
-
-        // 保存敌人物体
-        enemyObjectsSaved = Instantiate(enemyObjects);
-        enemyObjectsSaved.SetActive(false);
+        FromPhaseEditor();
+        ToPhasePreparation();
     }
 
-    // 根据位置及预设类型创建物体（Unit）
-    public GameObject Create(Vector2 position, GameObject prefab)
-    {
-        // 创建实例
-        GameObject gameObject = Instantiate(prefab);
-
-        // 设置名称
-        gameObject.name = prefab.name;
-
-        // 移动位置
-        gameObject.transform.position = position;
-
-        // 添加入playerObjects
-        gameObject.transform.parent = playerObjects.transform;
-
-        return gameObject;
-    }
-
-    // 空格键开始或停止游戏
-    void StartOrStop()
-    {
-        // 开始游戏
-        if (gamePhase == GamePhase.Preparation)
-        {
-            StartGame();
-        }
-        // 停止游戏
-        else if (gamePhase == GamePhase.Playing)
-        {
-            StopGame();
-        }
-    }
-
-    // 开始游戏
-    public void StartGame()
-    {
-        gamePhase = GamePhase.Playing;
-
-        preparationController.ClearMouseUnit();
-
-        // 保存玩家的物体
-        Destroy(playerObjectsSaved);
-        playerObjectsSaved = Instantiate(playerObjects);
-        playerObjectsSaved.SetActive(false);
-
-        // Block连接
-        // preparationController.LinkAllBlocksInGrid();
-        preparationController.LinkAllBlocks();
-
-        // 向所有物体发送消息
-        if (playerObjects.transform.childCount > 0)
-        {
-            playerObjects.BroadcastMessage("GameStart");
-        }
-        if (neutralObjects.transform.childCount > 0)
-        {
-            neutralObjects.BroadcastMessage("GameStart");
-        }
-        if (enemyObjects.transform.childCount > 0)
-        {
-            enemyObjects.BroadcastMessage("GameStart");
-        }
-
-        // 隐藏商店
-        shop.SetActive(false);
-
-        // 隐藏网格
-        preparationController.gameObject.SetActive(false);
-    }
-
-    // 停止游戏
-    public void StopGame()
-    {
-        gamePhase = GamePhase.Preparation;
-
-        NewGame();
-    }
-
-    // 新游戏
-    private void NewGame()
-    {
-		// 重置摄像机
-		cameraController.Init();
-
-        // 显示商店
-        shop.SetActive(true);
-
-        // 显示网格
-        preparationController.gameObject.SetActive(true);
-
-        // 清除放置的物体
-        Destroy(playerObjects);
-        Destroy(neutralObjects);
-        Destroy(enemyObjects);
-
-        // 放置玩家保存的物体
-        playerObjects = Instantiate(playerObjectsSaved);
-        playerObjects.SetActive(true);
-        playerObjects.name = "Player Objects";
-
-        // 网格Unit安放
-        preparationController.PutAllUnits();
-
-        // 放置中立保存的物体
-        neutralObjects = Instantiate(neutralObjectsSaved);
-        neutralObjects.SetActive(true);
-        neutralObjects.name = "Enemy Objects";
-
-        // 放置敌人保存的物体
-        enemyObjects = Instantiate(enemyObjectsSaved);
-        enemyObjects.SetActive(true);
-        enemyObjects.name = "Enemy Objects";
-
-        victoryController.Init();
-    }
-
-    // 玩家物体初始化
+    // Preparation阶段，按下UI的Reset键
     public void Reset()
     {
-        preparationController.ClearMouseUnit();
-
-        Destroy(playerObjectsSaved);
-        playerObjectsSaved = Instantiate(playerObjectsInit);
-        playerObjectsSaved.SetActive(false);
-
-        playerMoney = playerMoneyOrigin;
-
-        NewGame();
+        LoadUnitsOrigin();
     }
 
-    // 更新玩家钱数
-    void UpdatePlayerMoney()
+    // Preparation阶段，按下UI的Start键
+    public void StartGame()
     {
-        int textMoney = int.Parse(playerMoneyText.text);
-        int difference = Mathf.Abs(playerMoney - textMoney);
-
-        // 每次变化值
-        int deltaMoney = 1;
-
-        if (difference > 10000)
-        {
-            deltaMoney = 10000;
-        }
-        else if (difference > 1000)
-        {
-            deltaMoney = 1000;
-        }
-        else if (difference > 100)
-        {
-            deltaMoney = 100;
-        }
-        else if (difference > 10)
-        {
-            deltaMoney = 10;
-        }
-
-        if (textMoney < playerMoney)
-        {
-            playerMoneyText.text = (textMoney + deltaMoney).ToString();
-        }
-        else if (textMoney > playerMoney)
-        {
-            playerMoneyText.text = (textMoney - deltaMoney).ToString();
-        }
+        ToPhasePlaying();
     }
 
-    // 钱不够提示
-    public IEnumerator MoneyNotEnough()
+    // Playing阶段，按下UI的Stop键
+    public void StopGame()
     {
-        playerMoneyText.color = Color.red;
-
-        yield return new WaitForSeconds(0.5f);
-
-        playerMoneyText.color = Color.white;
+        ToPhasePreparation();
     }
 
-    // 胜利检测
-    void VictoryCheck()
+    // Preparation、Playing、Victory阶段，按下UI的Menu键
+    public void Menu()
     {
-        if (victoryController.isVictory)
+        ToMenu();
+    }
+
+    /**
+     * 游戏阶段切换
+     */
+
+    // 进入Editor阶段
+    void ToPhaseEditor()
+    {
+        gamePhase = GamePhase.Editor;
+        uiEditor.SetActive(true);
+        uiGame.SetActive(false);
+        uiGame.GetComponent<UIGame>().UpdateActive();
+        LoadUnitsOrigin();
+    }
+
+    // 离开Editor阶段
+    void FromPhaseEditor()
+    {
+        editorController.InitPlayerMoney();
+        uiEditor.SetActive(false);
+        uiGame.SetActive(true);
+        SaveUnits();
+    }
+
+    // 进入Preparation阶段
+    void ToPhasePreparation()
+    {
+        gamePhase = GamePhase.Preparation;
+        editorController.ShowGrids(true);
+        uiGame.GetComponent<UIGame>().UpdateActive();
+        LoadUnits();
+    }
+
+    // 进入Playing阶段
+    void ToPhasePlaying()
+    {
+        gamePhase = GamePhase.Playing;
+        editorController.ShowGrids(false);
+        uiGame.GetComponent<UIGame>().UpdateActive();
+        SaveUnits();
+
+        // 连接所有Block
+        editorController.LinkAllBlocksInGrid();
+
+        // 向所有物体发送GameStart信号
+        unitObjects.BroadcastMessage("GameStart");
+    }
+
+    // 返回主菜单
+    void ToMenu()
+    {
+        SceneManager.LoadScene("Level Panel");
+    }
+
+    /**
+     * 载入与保存
+     */
+
+    // 初始化
+    void Init()
+    {
+        if (unitObjects)
         {
-            gamePhase = GamePhase.Victory;
-            StartCoroutine(Victory());
+            Destroy(unitObjects);
         }
-    }
-
-    // 胜利
-    IEnumerator Victory()
-    {
-        float victoryWaitTime = 2f;
-
-        yield return new WaitForSeconds(victoryWaitTime);
-
-        victoryDialog.SetActive(true);
-        AudioSource.PlayClipAtPoint(audioVictory, cameraController.transform.position);
-        cameraController.movable = false;
-    }
-
-    // 玩家物体中心
-    public bool CenterOfPlayerObjects(out Vector2 center)
-    {
-        center = Vector2.zero;
-        int len = playerObjects.transform.childCount;
-        int cnt = 0;
-        for (int i = 0; i < len; i++)
+        if (missileObjects)
         {
-            Unit unit = playerObjects.transform.GetChild(i).GetComponent<Unit>();
-            if (unit != null && unit.IsAlive())
+            Destroy(missileObjects);
+        }
+        if (hpBarObjects)
+        {
+            Destroy(hpBarObjects);
+        }
+        unitObjects = new GameObject("Unit Objects");
+        missileObjects = new GameObject("Missile Objects");
+        hpBarObjects = new GameObject("HP Bar Objects");
+    }
+
+    // 保存物体
+    void SaveUnits()
+    {
+        if (unitObjectsSaved != null)
+        {
+            Destroy(unitObjectsSaved);
+        }
+        unitObjectsSaved = Instantiate(unitObjects);
+        unitObjectsSaved.name = "Unit Objects Saved";
+        unitObjectsSaved.SetActive(false);
+    }
+
+    // 保存最初的物体
+    void SaveUnitsOrigin()
+    {
+        if (unitObjectsOrigin != null)
+        {
+            Destroy(unitObjectsOrigin);
+        }
+        unitObjectsOrigin = Instantiate(unitObjects);
+        unitObjectsOrigin.name = "Unit Objects Origin";
+        unitObjectsOrigin.SetActive(false);
+    }
+
+    // 载入物体
+    void LoadUnits()
+    {
+        if (unitObjects != null)
+        {
+            Destroy(unitObjects);
+        }
+        unitObjects = Instantiate(unitObjectsSaved);
+        unitObjects.name = "Unit Objects";
+        unitObjects.SetActive(true);
+        editorController.UpdateGridWithAllUnits();
+    }
+
+    // 载入最初的物体
+    void LoadUnitsOrigin()
+    {
+        if (unitObjects != null)
+        {
+            Destroy(unitObjects);
+        }
+        if (unitObjectsSaved != null)
+        {
+            Destroy(unitObjectsSaved);
+        }
+        unitObjects = Instantiate(unitObjectsOrigin);
+        unitObjects.name = "Unit Objects";
+        unitObjects.SetActive(true);
+        SaveUnits();
+        editorController.UpdateGridWithAllUnits();
+    }
+
+    /**
+     * 工具函数
+     */
+
+    // 获取场景中的Unit
+    public Unit[] GetUnits()
+    {
+        return unitObjects.GetComponentsInChildren<Unit>();
+    }
+
+    /// <summary>
+    /// 获取场景中的Unit，通过Player
+    /// </summary>
+    public Unit[] GetUnits(Player player)
+    {
+        ArrayList arr = new ArrayList();
+        Unit[] units = unitObjects.GetComponentsInChildren<Unit>();
+        foreach(Unit unit in units)
+        {
+            if (unit.player == player)
             {
-                center += (Vector2)unit.transform.position;
-                cnt++;
+                arr.Add(unit);
             }
         }
-        if (cnt != 0)
-        {
-            center /= cnt;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (Unit[])arr.ToArray(typeof(Unit));
     }
 
-    // 玩家物体平均速度
-    public bool VelocityOfPlayerObjects(out Vector2 velocity)
+    /// <summary>
+    /// 获取场景中的Unit，通过Tag
+    /// </summary>
+    public Unit[] GetUnits(string tag)
     {
-        velocity = Vector2.zero;
-        int len = playerObjects.transform.childCount;
-        int cnt = 0;
-        for (int i = 0; i < len; i++)
+        ArrayList arr = new ArrayList();
+        Unit[] units = unitObjects.GetComponentsInChildren<Unit>();
+        foreach (Unit unit in units)
         {
-            Unit unit = playerObjects.transform.GetChild(i).GetComponent<Unit>();
-            if (unit != null && unit.IsAlive() && unit.body != null)
+            if (unit.tag == tag)
             {
-                velocity += unit.body.velocity;
-                cnt++;
+                arr.Add(unit);
             }
         }
-        if (cnt != 0)
-        {
-            velocity /= cnt;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (Unit[])arr.ToArray(typeof(Unit));
     }
+
+    /// <summary>
+    /// 获取场景中的Unit，通过Player和Tag
+    /// </summary>
+    public Unit[] GetUnits(Player player, string tag)
+    {
+        ArrayList arr = new ArrayList();
+        Unit[] units = unitObjects.GetComponentsInChildren<Unit>();
+        foreach (Unit unit in units)
+        {
+            if (unit.player == player && unit.tag == tag)
+            {
+                arr.Add(unit);
+            }
+        }
+        return (Unit[])arr.ToArray(typeof(Unit));
+    }
+
+    /**
+     * Debug
+     */
 
     // Debug
     void DebugGame()

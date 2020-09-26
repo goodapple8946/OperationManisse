@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameController;
 
 public class HPBar : MonoBehaviour
 {
@@ -19,14 +20,6 @@ public class HPBar : MonoBehaviour
     public Sprite frontEnemy;
     public Sprite back;
 
-    protected GameObject HPBarObjects;
-
-    void Awake()
-    {
-        HPBarObjects = GameObject.Find("HP Bar Objects");
-        transform.parent = HPBarObjects.transform;
-    }
-
     void Update()
     {
         if (unit == null || !unit.IsAlive())
@@ -41,15 +34,15 @@ public class HPBar : MonoBehaviour
                 {
                     transform.localScale = Vector2.one;
                     valueMax = unit.healthMax;
-                    if (unit.player == Unit.Player.Neutral)
+                    if (unit.player == Player.Neutral)
                     {
                         transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = frontNeutral;
                     }
-                    else if (unit.player == Unit.Player.Player)
+                    else if (unit.player == Player.Player)
                     {
                         transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = frontPlayer;
                     }
-                    else if (unit.player == Unit.Player.Enemy)
+                    else if (unit.player == Player.Enemy)
                     {
                         transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = frontEnemy;
                     }
