@@ -31865,7 +31865,7 @@ PrefabInstance:
     - target: {fileID: 1746587264943081524, guid: f57181b2f918b834baba233020195ff3,
         type: 3}
       propertyPath: blockObjects.Array.size
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 1746587264943081524, guid: f57181b2f918b834baba233020195ff3,
         type: 3}
@@ -31961,6 +31961,12 @@ PrefabInstance:
       propertyPath: blockObjects.Array.data[9]
       value: 
       objectReference: {fileID: 2194669006221252467, guid: 8e0cd27683b65624996b482424441a78,
+        type: 3}
+    - target: {fileID: 1746587264943081524, guid: f57181b2f918b834baba233020195ff3,
+        type: 3}
+      propertyPath: blockObjects.Array.data[10]
+      value: 
+      objectReference: {fileID: 5768820571617251058, guid: fa61511624b643244a2511a249df0aef,
         type: 3}
     - target: {fileID: 1746587265934639205, guid: f57181b2f918b834baba233020195ff3,
         type: 3}

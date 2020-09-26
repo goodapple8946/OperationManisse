@@ -335,7 +335,7 @@ public class GameController : MonoBehaviour
     }
 
     // 玩家物体平均速度
-    public bool VelocityOfPlayerObjects(Vector2 velocity)
+    public bool VelocityOfPlayerObjects(out Vector2 velocity)
     {
         velocity = Vector2.zero;
         int len = playerObjects.transform.childCount;
