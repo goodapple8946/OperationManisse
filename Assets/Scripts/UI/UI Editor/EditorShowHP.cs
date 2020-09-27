@@ -5,15 +5,22 @@ using UnityEngine.UI;
 
 public class EditorShowHP : MonoBehaviour
 {
-    private Dropdown dropdown;
+    private Toggle toggle;
+    private EditorController editorController;
 
     public void Awake()
     {
-        dropdown = GetComponent<Dropdown>();
-        dropdown.onValueChanged.AddListener(value =>
+        editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
+
+        toggle = GetComponent<Toggle>();
+        toggle.onValueChanged.AddListener(value =>
         {
-            bool showHP = value == 1;
-            GameObject.Find("Editor Controller").GetComponent<EditorController>().isShowingHP = showHP;
+            editorController.isShowingHP = value;
         });
+    }
+
+    public void Update()
+    {
+        toggle.transform.GetChild(1).GetComponent<Text>().text = editorController.isShowingHP ? "On" : "Off";
     }
 }

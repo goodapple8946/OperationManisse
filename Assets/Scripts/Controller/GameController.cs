@@ -21,6 +21,7 @@ public class GameController : MonoBehaviour
     private GameObject unitObjectsOrigin;
 
     private EditorController editorController;
+    private VictoryController victoryController;
     private ShopController shopController;
 
     private GameObject uiEditor;
@@ -35,6 +36,7 @@ public class GameController : MonoBehaviour
         uiEditor = GameObject.Find("UI Canvas/UI Editor");
         uiGame = GameObject.Find("UI Canvas/UI Game");
         editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
+        victoryController = GameObject.Find("Victory Controller").GetComponent<VictoryController>();
         shopController = GameObject.Find("UI Canvas/UI Shop").GetComponent<ShopController>();
 
         Init();
@@ -129,6 +131,7 @@ public class GameController : MonoBehaviour
         editorController.ShowGrids(true);
         uiGame.GetComponent<UIGame>().UpdateActive();
         shopController.UpdateShop();
+        ClearMissile();
         LoadUnits();
     }
 
@@ -138,6 +141,7 @@ public class GameController : MonoBehaviour
         gamePhase = GamePhase.Playing;
         editorController.ShowGrids(false);
         uiGame.GetComponent<UIGame>().UpdateActive();
+        victoryController.Init();
         SaveUnits();
 
         // 连接所有Block
@@ -231,6 +235,16 @@ public class GameController : MonoBehaviour
         SaveUnits();
         editorController.InitPlayerMoney();
         editorController.UpdateGridWithAllUnits();
+    }
+
+    // 清除投掷物
+    void ClearMissile()
+    {
+        if (missileObjects != null)
+        {
+            Destroy(missileObjects);
+        }
+        missileObjects = new GameObject("Missile Objects");
     }
 
     /**
