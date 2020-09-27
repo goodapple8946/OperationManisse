@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameController;
 
 public class HPBar : MonoBehaviour
 {
@@ -19,12 +20,19 @@ public class HPBar : MonoBehaviour
     public Sprite frontEnemy;
     public Sprite back;
 
-    protected GameObject HPBarObjects;
+    private new SpriteRenderer renderer;
+    private EditorController editorController;
 
     void Awake()
     {
-        HPBarObjects = GameObject.Find("HP Bar Objects");
-        transform.parent = HPBarObjects.transform;
+        renderer = transform.GetChild(1).GetComponent<SpriteRenderer>();
+        editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
+    }
+
+    void Start()
+    {
+        valueMax = unit.healthMax;
+        transform.GetChild(2).GetComponent<SpriteRenderer>().sprite = back;
     }
 
     void Update()
@@ -35,28 +43,27 @@ public class HPBar : MonoBehaviour
         }
         else
         {
-            if (unit.health != unit.healthMax)
+            if ((unit.health != unit.healthMax || editorController.isShowingHP) &&
+                unit != editorController.mouseUnit)
             {
-                if (!init)
+                if (gamePhase == GamePhase.Editor || !init)
                 {
-                    transform.localScale = Vector2.one;
-                    valueMax = unit.healthMax;
-                    if (unit.player == Unit.Player.Neutral)
+                    switch (unit.player)
                     {
-                        transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = frontNeutral;
+                        case Player.Neutral:
+                            renderer.sprite = frontNeutral;
+                            break;
+                        case Player.Player:
+                            renderer.sprite = frontPlayer;
+                            break;
+                        case Player.Enemy:
+                            renderer.sprite = frontEnemy;
+                            break;
                     }
-                    else if (unit.player == Unit.Player.Player)
-                    {
-                        transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = frontPlayer;
-                    }
-                    else if (unit.player == Unit.Player.Enemy)
-                    {
-                        transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = frontEnemy;
-                    }
-                    transform.GetChild(2).GetComponent<SpriteRenderer>().sprite = back;
-
                     init = true;
                 }
+
+                transform.localScale = Vector2.one;
 
                 value = unit.health;
                 if (valueBack < value)
@@ -76,6 +83,10 @@ public class HPBar : MonoBehaviour
                 float backScale = valueBack / valueMax;
                 transform.GetChild(2).localScale = new Vector3(backScale, 1, 1);
                 transform.GetChild(2).transform.position = transform.position + new Vector3(((backScale - 1) / 2) * 0.64f, 0, 0);
+            }
+            else
+            {
+                transform.localScale = Vector2.zero;
             }
         }
     }

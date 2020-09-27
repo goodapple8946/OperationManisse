@@ -8,220 +8,136 @@ public class CameraController : MonoBehaviour
     // 摄像机Z轴
     private static float cameraZ = -10f;
 
-    private Vector3 originPosition = new Vector3(0f, 2.88f, cameraZ);
+    // 摄像机坐标
+    private Vector3 positionOrigin = new Vector3(0f, 0f, cameraZ);
 
-    public Camera mainCamera;
+    // 摄像机尺寸
+    private float orthographicSizeOrigin = 3.2f;
 
-    // 屏幕缩放速度
-    public float zoomSpeed;
+    // 摄像机缩放速度
+    private float zoomSpeedOrigin = 2f;
+    private float zoomSpeed;
 
-    // 屏幕尺寸范围
-    public float zoomSizeMax;
-    public float zoomSizeMin;
+    // 摄像机滚动速度
+    private float scrollSpeedOrigin = 12f;
+    private float scrollSpeed;
 
-    // 屏幕滚动速度
-    public float scrollSpeed;
-
-    // 屏幕滚动触发边缘距离
+    // 摄像机滚动触发边缘距离
     private int scrollDistance = 10;
 
-    // 可移动的
-    public bool movable = true;
+    // 跟随
+    [HideInInspector] public bool follow;
 
-    // 屏幕跟随
-    public bool follow;
-
-    // 屏幕边界
-    public float xMin;
-    public float xMax;
-    public float yMin;
-    public float yMax;
-
-    private GameController gameController;
-
-	// 记录上一次镜头跟player core需要的偏移
-	private Vector3 followOffset;
+    private EditorController editorController;
 
     void Awake()
     {
-        mainCamera = GetComponent<Camera>();
-        gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
-    }
+        editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
 
-	void Start()
-    {
-		Init();
+        Init();
     }
 
     void Update()
     {
-		bool mouseOutOfScreen = (GetMouseDirection() != Vector2.zero);
-		if (mouseOutOfScreen)
-		{
-			follow = false;
-		}
-
-        if (movable)
-        {
-            if (follow)
-            {
-                Zoom();
-                Follow();
-                FixBound();
-            }
-            else
-            {
-                Zoom();
-                Scroll();
-                FixBound();
-            }
-        }
+        Zoom();
+        Scroll();
+        FixBound();
     }
 
-    // 初始化Camera
-    public void Init()
+    // 初始化
+    void Init()
     {
-        transform.position = originPosition;
-        followOffset = new Vector3(0, 0, 0);
+        // 初始化位置
+        transform.position = positionOrigin;
+        // 初始化尺寸
+        GetComponent<Camera>().orthographicSize = orthographicSizeOrigin;
+        // 初始化缩放速度
+        zoomSpeed = zoomSpeedOrigin;
+        // 初始化滚动速度
+        scrollSpeed = scrollSpeedOrigin;
     }
 
-    // 跟随玩家
-    private void Follow()
+    // 缩放
+    private void Zoom()
     {
-        Vector2 center = Vector2.zero;
-        Vector2 velocity = Vector2.zero;
+        Camera camera = GetComponent<Camera>();
 
-        bool canFollow = gameController.CenterOfPlayerObjects(out center) && gameController.VelocityOfPlayerObjects(out velocity);
-        if (canFollow)
-        {
-            Vector3 cameraDepth = new Vector3(0, 0, cameraZ);
-            Vector3 newOffset = CalcuteFollowOffset(velocity);
-
-            // 维护更新followOffset
-            followOffset = newOffset;
-
-            // 设置摄像机位置
-            transform.position = (Vector3)center + cameraDepth + newOffset;
-        }
-        
-    }
-
-	// 缩放
-	private void Zoom()
-    {
         // 鼠标不在UI上
         if (!EventSystem.current.IsPointerOverGameObject())
         {
             float zoomSize = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
             if (zoomSize != 0)
             {
-                if (mainCamera.orthographicSize - zoomSize >= zoomSizeMin - 0.05f && mainCamera.orthographicSize - zoomSize <= zoomSizeMax + 0.05f)
+                // 摄像机尺寸不能为负
+                if (camera.orthographicSize - zoomSize > 0)
                 {
-                    mainCamera.orthographicSize -= zoomSize;
+                    camera.orthographicSize -= zoomSize;
                 }
             }
         }
     }
 
-	// 滚转
-	private void Scroll()
+    // 滚动
+    private void Scroll()
     {
-		Vector2 dir = GetMouseDirection();
-		transform.Translate(scrollSpeed * Time.deltaTime * dir);
+        Vector2 dir = GetMouseDirection();
+        transform.Translate(scrollSpeed * Time.deltaTime * dir);
     }
 
-	// 将摄像头限制在游戏地图内
-	private void FixBound()
+    // 鼠标接近屏幕边缘时滚动,
+    // 右(1,0)左(-1,0)上(0,1)下(0,-1)
+    // 不存在滚动为(0,0)
+    private Vector2 GetMouseDirection()
     {
-        if (transform.position.x > xMax)
+        Vector2 dir = new Vector2(0, 0);
+        // 向右
+        if (Input.mousePosition.x > Screen.width - scrollDistance && transform.position.x <= editorController.xMax)
         {
-            transform.position = new Vector3(xMax, transform.position.y, cameraZ);
+            dir += new Vector2(1, 0);
         }
-        else if (transform.position.x < xMin)
+        // 向左
+        else if (Input.mousePosition.x < scrollDistance && transform.position.x >= editorController.xMin)
         {
-            transform.position = new Vector3(xMin, transform.position.y, cameraZ);
+            dir += new Vector2(-1, 0);
         }
-        if (transform.position.y > yMax)
+
+        // 向上
+        if (Input.mousePosition.y > Screen.height - scrollDistance && transform.position.y <= editorController.yMax)
         {
-            transform.position = new Vector3(transform.position.x, yMax, cameraZ);
+            dir += new Vector2(0, 1);
         }
-        else if (transform.position.y < yMin)
+        // 向下
+        else if (Input.mousePosition.y < scrollDistance && transform.position.y >= editorController.yMin)
         {
-            transform.position = new Vector3(transform.position.x, yMin, cameraZ);
+            dir += new Vector2(0, -1);
         }
+        return dir;
     }
 
-	private Vector2 CalcuteFollowOffset(Vector2 velocity)
-	{
-		// 获取当前镜头屏幕的一半长，一半宽
-		float cameraHeight = mainCamera.orthographicSize;
-		float cameraWeight = mainCamera.orthographicSize * mainCamera.aspect;
+    // 变化Follow
+    public void ToggleFollow()
+    {
+        follow = !follow;
+    }
 
-		// 获取玩家核心的运动方向向量
-		Vector2 moveDirection = velocity.normalized;
-
-		// 采取两者中小的,以获得平滑的效果
-		float weightX = Mathf.Abs(velocity.x) < Mathf.Abs(moveDirection.x) ? 
-			velocity.x : moveDirection.x;
-		float weightY = Mathf.Abs(velocity.y) < Mathf.Abs(moveDirection.y) ?
-			velocity.y : moveDirection.y;
-
-		// 采用与屏幕size相关的较小量,以获得平滑的效果
-		float offsetFactor = 0.001f;
-		offsetFactor *= Mathf.Sqrt(cameraHeight * cameraHeight + cameraWeight * cameraWeight);
-		Vector2 newFollowOffset = new Vector2(
-			followOffset.x + offsetFactor * weightX,
-			followOffset.y + offsetFactor * weightY);
-
-		// 如果玩家核心快要超出镜头，就限制offset到(factor*cameraWeight, factor*cameraHeight)的镜头内
-		float coreZoneFactor = 0.6f;
-		newFollowOffset = ClipIntoSquare(
-			newFollowOffset, cameraWeight * coreZoneFactor, cameraHeight * coreZoneFactor);
-		return newFollowOffset;
-	}
-
-	// 若镜头相对核心偏移超过cameraHeight,cameraWeight,也即看不到玩家核心
-	// 将偏移收缩至([-weight, height], [-weight, height])
-	private Vector2 ClipIntoSquare(Vector2 vect, float weight, float height)
-	{
-		if (Mathf.Abs(vect.x) >= weight)
-		{
-			vect.x = vect.x >= 0 ? weight : -weight;
-		}
-		if (Mathf.Abs(vect.y) >= height)
-		{
-			vect.y = vect.y >= 0 ? height : -height;
-		}
-		return vect;
-	}
-
-	// 鼠标接近屏幕边缘触发的滚珠方向向量,
-	// 右(1,0)左(-1,0)上(0,1)下(0,-1)
-	// 不存在滚转为(0,0)
-	private Vector2 GetMouseDirection()
-	{
-		Vector2 dir = new Vector2(0, 0);
-		// 向右
-		if (Input.mousePosition.x > Screen.width - scrollDistance && transform.position.x <= xMax)
-		{
-			dir += new Vector2(1, 0);
-		}
-		// 向左
-		else if (Input.mousePosition.x < scrollDistance && transform.position.x >= xMin)
-		{
-			dir += new Vector2(-1, 0);
-		}
-
-		// 向上
-		if (Input.mousePosition.y > Screen.height - scrollDistance && transform.position.y <= yMax)
-		{
-			dir += new Vector2(0, 1);
-		}
-		// 向下
-		else if (Input.mousePosition.y < scrollDistance && transform.position.y >= yMin)
-		{
-			dir += new Vector2(0, -1);
-		}
-		return dir;
-	}
+    // 将摄像头限制在游戏地图内
+    private void FixBound()
+    {
+        if (transform.position.x > editorController.xMax)
+        {
+            transform.position = new Vector3(editorController.xMax, transform.position.y, cameraZ);
+        }
+        else if (transform.position.x < editorController.xMin)
+        {
+            transform.position = new Vector3(editorController.xMin, transform.position.y, cameraZ);
+        }
+        if (transform.position.y > editorController.yMax)
+        {
+            transform.position = new Vector3(transform.position.x, editorController.yMax, cameraZ);
+        }
+        else if (transform.position.y < editorController.yMin)
+        {
+            transform.position = new Vector3(transform.position.x, editorController.yMin, cameraZ);
+        }
+    }
 }

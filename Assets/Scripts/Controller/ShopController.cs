@@ -2,80 +2,79 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
+using static GameController;
 
 public class ShopController : MonoBehaviour
 {
+    // 每个物品占据的高度
+    private float goodsHeight = 150f;
+
     private GameObject content;
 
+    public GameObject[] editorObjects;
     public GameObject[] blockObjects;
     public GameObject[] ballObjects;
     private GameObject[] gameObjects;
 
     public GameObject shopObjectPrefab;
 
-    private PreparationController preparationController;
-
-    // 每个物品占据的高度
-    private float goodsHeight = 150f;
-
-    // 每个物品显示的尺寸比例
-    private float goodsScale = 1.5f;
+    private ShopObject[] shopObjects;
 
     void Awake()
     {
-        preparationController = GameObject.Find("Preparation Controller").GetComponent<PreparationController>();
-
         content = transform.GetChild(0).GetChild(0).gameObject;
 
-        // 将blockObjects与ballObjects合并为gameObjects，因此在商店中的位置block排在ball前面
-        gameObjects = new GameObject[blockObjects.Length + ballObjects.Length];
-        blockObjects.CopyTo(gameObjects, 0);
-        ballObjects.CopyTo(gameObjects, blockObjects.Length);
+        // 将editorObjects、blockObjects、ballObjects合并为gameObjects，因此在商店中排序为editor、block、ball
+        gameObjects = new GameObject[editorObjects.Length + blockObjects.Length + ballObjects.Length];
+        editorObjects.CopyTo(gameObjects, 0);
+        blockObjects.CopyTo(gameObjects, editorObjects.Length);
+        ballObjects.CopyTo(gameObjects, editorObjects.Length + blockObjects.Length);
     }
 
     void Start()
     {
-        float offset = -goodsHeight / 2;
+        ArrayList arr = new ArrayList();
 
         // 为每个添加的物体
         foreach (GameObject gameObject in gameObjects)
         {
-            // 创建商品实例
-            GameObject shopObject = Instantiate(shopObjectPrefab);
+            // 创建商品实例，并且父物体设为Content
+            GameObject obj = Instantiate(shopObjectPrefab, content.transform);
 
-            // 将商品设为Content的子物体
-            shopObject.transform.SetParent(content.transform);
+            // 商品初始化
+            obj.GetComponent<ShopObject>().Init(gameObject);
 
-            // 商品图像为添加物体的图像
-            shopObject.GetComponent<Button>().image.sprite = gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
-            
-            // 商品使用默认图像尺寸
-            shopObject.GetComponent<Button>().image.SetNativeSize();
-           
-            // 商品点击事件：购买添加的物体
-            shopObject.GetComponent<Button>().onClick.AddListener(() => preparationController.Buy(gameObject));
-            
-            // 商品移动到指定位置
-            shopObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, offset);
-           
-            // 商品按照比例缩放
-            shopObject.GetComponent<RectTransform>().localScale = new Vector2(goodsScale, goodsScale);
-           
-            // 根据添加物体的子物体设置商品子物体的图像与尺寸
-            for (int i = 1; i < gameObject.transform.childCount; i++) 
-            {
-                if (gameObject.transform.GetChild(i).GetComponent<SpriteRenderer>() != null)
-                {
-                    shopObject.transform.GetChild(i - 1).GetComponent<Image>().sprite = gameObject.transform.GetChild(i).GetComponent<SpriteRenderer>().sprite;
-                    shopObject.transform.GetChild(i - 1).GetComponent<Image>().SetNativeSize();
-                }
-            }
-            
             // 可滑动区域的高度增加一个商品的高度
             transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().sizeDelta += new Vector2(0, goodsHeight);
 
-            offset -= goodsHeight;
+            arr.Add(obj.GetComponent<ShopObject>());
         }
+        shopObjects = (ShopObject[])arr.ToArray(typeof(ShopObject));
+    }
+
+    // 根据商品可见性更新商店
+    public void UpdateShop()
+    {
+        // 显示商品的计数
+        int count = 0;
+        foreach (ShopObject shopObject in shopObjects)
+        {
+            // 应用商品是否显示
+            if (shopObject.isVisible || gamePhase == GamePhase.Editor)
+            {
+                shopObject.gameObject.SetActive(true);
+                count++;
+            }
+            else
+            {
+                shopObject.gameObject.SetActive(false);
+            }
+
+            // 显示或隐藏商品的显示按钮
+            shopObject.transform.GetChild(1).gameObject.SetActive(gamePhase == GamePhase.Editor);
+        }
+
+        // 更新可滑动区域的高度
+        transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(0, goodsHeight * count);
     }
 }

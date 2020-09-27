@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameController;
 
 public class Ball : Unit
 {
@@ -34,7 +35,7 @@ public class Ball : Unit
 
         WeaponCoolDown();
 
-        if (IsAlive() && gameController.gamePhase == GameController.GamePhase.Playing)
+        if (IsAlive() && gamePhase == GamePhase.Playing)
         {
             // 寻找敌人
             Unit target = FindEnemy();
@@ -202,23 +203,17 @@ public class Ball : Unit
         // 弹药随机角度
         missile.transform.Rotate(0, 0, Random.Range(-weaponAngle, weaponAngle));
 
-        if (player == Player.Player)
-        {
-            missile.transform.parent = gameController.playerObjects.transform;
-        }
-        else if (player == Player.Enemy)
-        {
-            missile.transform.parent = gameController.enemyObjects.transform;
-        }
+        // 设置父物体
+        missile.transform.parent = gameController.missileObjects.transform;
 
         // Layer
-        if (gameObject.layer == (int)GameController.Layer.PlayerBall)
+        if (gameObject.layer == (int)Layer.PlayerBall)
         {
-            missile.gameObject.layer = (int)GameController.Layer.PlayerMissile;
+            missile.gameObject.layer = (int)Layer.PlayerMissile;
         }
-        else if (gameObject.layer == (int)GameController.Layer.EnemyBall)
+        else if (gameObject.layer == (int)Layer.EnemyBall)
         {
-            missile.gameObject.layer = (int)GameController.Layer.EnemyMissile;
+            missile.gameObject.layer = (int)Layer.EnemyMissile;
         }
 
         return missile;

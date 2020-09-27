@@ -1,0 +1,22 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class EditorMoney : MonoBehaviour
+{
+    InputField inputField;
+
+    public void Awake()
+    {
+        inputField = GetComponent<InputField>();
+        inputField.onValueChanged.AddListener(value => 
+        {
+            if(value != "" && value != "-")
+            {
+                int money = int.Parse(value);
+                GameObject.Find("Editor Controller").GetComponent<EditorController>().playerMoneyOrigin = money;
+            }
+        });
+    }
+}

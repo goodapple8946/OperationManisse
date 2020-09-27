@@ -4,19 +4,10 @@ using UnityEngine;
 
 public class MouseController : MonoBehaviour
 {
-    private GameController gameController;
-    private static Camera mainCamera;
-
     // 鼠标起点、终点、偏移量
     public static Vector2 startPosition;
     public static Vector2 endPosition;
     public static Vector2 offset;
-
-    void Start()
-    {
-        gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
-        mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
-    }
 
     void Update()
     {
@@ -44,6 +35,6 @@ public class MouseController : MonoBehaviour
     // 鼠标的世界位置
     public static Vector2 MouseWorldPosition()
     {
-        return mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        return Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 }
