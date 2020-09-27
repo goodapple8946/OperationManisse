@@ -17,6 +17,9 @@ public class ResourceController : MonoBehaviour
     // 向网格中放置时的音效
     public AudioClip[] audiosPut;
 
+    // 胜利时的音效
+    public AudioClip audioVictory;
+
     // 静音图片
     public Sprite mute;
 

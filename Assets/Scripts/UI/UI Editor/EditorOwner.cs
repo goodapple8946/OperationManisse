@@ -7,14 +7,21 @@ using static GameController;
 public class EditorOwner : MonoBehaviour
 {
     private Dropdown dropdown;
+    private EditorController editorController;
 
     public void Awake()
     {
+        editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
         dropdown = GetComponent<Dropdown>();
         dropdown.onValueChanged.AddListener(value =>
         {
             Player player = (Player)value;
-            GameObject.Find("Editor Controller").GetComponent<EditorController>().playerOwner = player;
+            editorController.playerOwner = player;
         });
+    }
+
+    void Update()
+    {
+        dropdown.SetValueWithoutNotify((int)editorController.playerOwner);
     }
 }
