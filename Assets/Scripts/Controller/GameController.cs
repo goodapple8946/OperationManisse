@@ -10,8 +10,8 @@ public class GameController : MonoBehaviour
     public enum Layer { Default, TransparentFX, IgnoreRaycast, Water = 4, UI, PlayerBall = 8, PlayerBlock, PlayerMissile, EnemyBall, EnemyBlock, EnemyMissile, Goods, Ground }
     public enum GamePhase { Editor, Preparation, Playing, Victory }
 
-    // 初始场景阶段
-    public GamePhase gamePhase;
+    // 场景阶段
+    public static GamePhase gamePhase;
 
     // 所有物体的根节点
     [HideInInspector] public GameObject unitObjects;
@@ -105,9 +105,10 @@ public class GameController : MonoBehaviour
     // 离开Editor阶段
     void FromPhaseEditor()
     {
-        editorController.InitPlayerMoney();
+        editorController.FinishEditor();
         uiEditor.SetActive(false);
         uiGame.SetActive(true);
+        SaveUnitsOrigin();
         SaveUnits();
     }
 
@@ -217,6 +218,7 @@ public class GameController : MonoBehaviour
         unitObjects.name = "Unit Objects";
         unitObjects.SetActive(true);
         SaveUnits();
+        editorController.InitPlayerMoney();
         editorController.UpdateGridWithAllUnits();
     }
 

@@ -10,8 +10,8 @@ public class EditorController : MonoBehaviour
     private Unit[,] grid;
 
     // 网格尺寸
-    public int xNum;
-    public int yNum;
+    private int xNum = 8;
+    private int yNum = 8;
 
     // 网格的四个边坐标
     [HideInInspector] public float xMin;
@@ -33,16 +33,19 @@ public class EditorController : MonoBehaviour
     private float distanceAbsorption = 0.6f;
 
     // 当前鼠标持有的Unit
-    private Unit mouseUnit;
+    [HideInInspector] public Unit mouseUnit;
 
     // 连续购买（是购买并安放的，而非移动网格中现有的）
-    private bool buyContinuous;
+    private bool buyContinuous = false;
 
     // 放置位置背景颜色深度
     [SerializeField] private float colorAlpha = 0.2f;
 
     // 玩家钱数
     [HideInInspector] public int playerMoney;
+
+    // 显示HP
+    [HideInInspector] public bool isShowingHP;
     
     // Editor面板：Owner
     [HideInInspector] public Player playerOwner;
@@ -57,8 +60,6 @@ public class EditorController : MonoBehaviour
 
     void Awake()
     {
-        gridObjects = new GameObject("Grid Objects");
-
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
         resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
     }
@@ -90,7 +91,8 @@ public class EditorController : MonoBehaviour
 
     void Init()
     {
-        // 初始化网格数组
+        // 初始化网格
+        gridObjects = new GameObject("Grid Objects");
         grid = new Unit[xNum, yNum];
 
         // 初始化四个边坐标
@@ -117,8 +119,12 @@ public class EditorController : MonoBehaviour
         else
         {
             // 移动网格中的物体
-            buyContinuous = false;
-            Pick(unit);
+            if (gamePhase == GamePhase.Editor ||
+                gamePhase == GamePhase.Preparation && unit.player == Player.Player)
+            {
+                buyContinuous = false;
+                Pick(unit);
+            }
         }
     }
 
@@ -159,9 +165,9 @@ public class EditorController : MonoBehaviour
 
         if (mouseUnit == null)
         {
-            if (playerMoney >= unit.price || gameController.gamePhase == GamePhase.Editor)
+            if (playerMoney >= unit.price || gamePhase == GamePhase.Editor)
             {
-                if (gameController.gamePhase == GamePhase.Preparation)
+                if (gamePhase == GamePhase.Preparation)
                 {
                     playerMoney -= unit.price;
                 }
@@ -178,9 +184,9 @@ public class EditorController : MonoBehaviour
         }
         else
         {
-            if (playerMoney + mouseUnit.price >= unit.price || gameController.gamePhase == GamePhase.Editor)
+            if (playerMoney + mouseUnit.price >= unit.price || gamePhase == GamePhase.Editor)
             {
-                if (gameController.gamePhase == GamePhase.Preparation)
+                if (gamePhase == GamePhase.Preparation)
                 {
                     playerMoney += mouseUnit.price - unit.price;
                 }
@@ -207,14 +213,19 @@ public class EditorController : MonoBehaviour
     // 出售
     public void Sell(Unit unit)
     {
-        if (gameController.gamePhase == GamePhase.Preparation)
+        // 满足出售条件
+        if (gamePhase == GamePhase.Editor ||
+            gamePhase == GamePhase.Preparation && !unit.isEditorCreated)
         {
-            playerMoney += unit.price;
-        }
-        Destroy(unit.gameObject);
+            if (gamePhase == GamePhase.Preparation)
+            {
+                playerMoney += unit.price;
+            }
+            Destroy(unit.gameObject);
 
-        int rand = UnityEngine.Random.Range(0, resourceController.audiosDelete.Length);
-        AudioSource.PlayClipAtPoint(resourceController.audiosDelete[rand], unit.transform.position);
+            int rand = UnityEngine.Random.Range(0, resourceController.audiosDelete.Length);
+            AudioSource.PlayClipAtPoint(resourceController.audiosDelete[rand], unit.transform.position);
+        }
     }
 
     // 拾起
@@ -257,7 +268,7 @@ public class EditorController : MonoBehaviour
                 unit.gridY = y;
                 unit.transform.position = CoordToPosition(x, y);
                 unit.transform.parent = gameController.unitObjects.transform;
-                unit.isEditorCreated = gameController.gamePhase == GamePhase.Editor;
+                unit.isEditorCreated = gamePhase == GamePhase.Editor;
 
                 if (unit.gameObject.layer != (int)Layer.Ground)
                 {
@@ -476,7 +487,7 @@ public class EditorController : MonoBehaviour
     // 在网格中
     bool IsInGrid(Unit unit)
     {
-        return unit.gridX != -1 && unit.gridY != -1;
+        return unit.gridX >= 0 && unit.gridY >= 0 && unit.gridX < xNum && unit.gridY < yNum;
     }
 
     // 根据Player和Unit获取Layer
@@ -528,9 +539,56 @@ public class EditorController : MonoBehaviour
         gridObjects.SetActive(show);
     }
 
+    // 结束编辑模式
+    public void FinishEditor()
+    {
+        InitPlayerMoney();
+
+        // 放置物体所有者切换至玩家
+        playerOwner = Player.Player;
+
+        // 不一直显示HP
+        isShowingHP = false;
+    }
+
     // 初始化玩家钱数
     public void InitPlayerMoney()
     {
         playerMoney = playerMoneyOrigin;
+    }
+
+    // 修改网格尺寸
+    public void SetXNum(int x)
+    {
+        SetXYNum(x, yNum);
+    }
+
+    public void SetYNum(int y)
+    {
+        SetXYNum(xNum, y);
+    }
+
+    void SetXYNum(int x, int y)
+    {
+        xNum = x;
+        yNum = y;
+
+        // 删除网格之外的物体
+        Unit[] units = gameController.GetUnits();
+        foreach (Unit unit in units)
+        {
+            if (!IsInGrid(unit))
+            {
+                Destroy(unit.gameObject);
+            }
+        }
+
+        // 删除当前网格
+        Destroy(gridObjects);
+
+        // 重建
+        Init();
+        UpdateGridWithAllUnits();
+        ShowGrid();
     }
 }

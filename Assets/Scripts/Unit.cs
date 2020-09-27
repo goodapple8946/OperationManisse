@@ -87,21 +87,16 @@ public abstract class Unit : MonoBehaviour
         // 鼠标不在UI上
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            // 可以相应鼠标的阶段
-            if (gameController.gamePhase == GamePhase.Editor ||
-                (gameController.gamePhase == GamePhase.Preparation && player == Player.Player))
+            // 鼠标左键按下
+            if (Input.GetMouseButton(0))
             {
-                // 鼠标左键按下
-                if (Input.GetMouseButtonDown(0))
-                {
-                    LeftClick();
-                }
+                LeftClick();
+            }
 
-                // 鼠标右键按下
-                if (Input.GetMouseButtonDown(1))
-                {
-                    RightClick();
-                }
+            // 鼠标右键按下
+            if (Input.GetMouseButton(1))
+            {
+                RightClick();
             }
         }
     }
@@ -148,7 +143,7 @@ public abstract class Unit : MonoBehaviour
     // 碰撞
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        if (gameController.gamePhase == GamePhase.Playing)
+        if (gamePhase == GamePhase.Playing)
         {
             // 与之碰撞的另一个Unit
             Unit unit = collision.gameObject.GetComponent<Unit>();
