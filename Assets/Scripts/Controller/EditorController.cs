@@ -442,6 +442,7 @@ public class EditorController : MonoBehaviour
         bool linkAvailable = block.IsLinkAvailable(direction) && another.IsLinkAvailable(directionNeg);
         // Block的相应方向未连接
         bool unlinked = block.blocksLinked[direction] == null && another.blocksLinked[directionNeg] == null;
+
         return samePlayer && linkAvailable && unlinked;
     }
 
@@ -568,6 +569,9 @@ public class EditorController : MonoBehaviour
 
         // 不一直显示HP
         isShowingHP = false;
+
+        // 关闭快速放置
+        isClickHold = false;
     }
 
     // 初始化玩家钱数
