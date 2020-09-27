@@ -7435,8 +7435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65125c1dcb9040447848b02162242298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorObjects:
-  - {fileID: 3243820019913981384, guid: 6394ac5b44f3e0244baa8197debf789d, type: 3}
+  editorObjects: []
   blockObjects:
   - {fileID: 9102851139242749904, guid: a256f40d52ebb0841b1775aed40f2b67, type: 3}
   - {fileID: 5472045338137121768, guid: fe92d42538472904c847571d9c2da20a, type: 3}
@@ -7455,6 +7454,7 @@ MonoBehaviour:
   - {fileID: 6700966226780164277, guid: 8d379b7c20862d142bf0696accaa0a12, type: 3}
   - {fileID: 628507357035931378, guid: 59f92773785bc734cae050131b7172e7, type: 3}
   - {fileID: 2019012135359395236, guid: 5ee0b73e13c849549bd62bba078b181d, type: 3}
+  - {fileID: 482596519982492694, guid: 2be91bedcdbaa7648ba207bbbfea4382, type: 3}
   shopObjectPrefab: {fileID: 4878333435263144934, guid: d64a86ddeb6c4e246b48d105fc2af6f5,
     type: 3}
 --- !u!224 &3428022055294437637

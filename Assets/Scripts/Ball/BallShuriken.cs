@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameController;
 
 public class BallShuriken : Ball
 {
@@ -15,7 +16,7 @@ public class BallShuriken : Ball
 			WeaponCoolDown();
 		}
 	
-		if (IsAlive() && gameController.gamePhase == GameController.GamePhase.Playing)
+		if (IsAlive() && gamePhase == GamePhase.Playing)
 		{
 			// 寻找敌人
 			Unit target = FindEnemy();

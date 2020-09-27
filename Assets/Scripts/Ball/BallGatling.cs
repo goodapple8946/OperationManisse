@@ -19,7 +19,7 @@ public class BallGatling : Ball
 	{
 		base.Update();
 		// 开始游戏后
-		if (gameController.gamePhase == GamePhase.Playing)
+		if (gamePhase == GamePhase.Playing)
 		{
 			UpdatePreheat();
 			UpdateGatlingColor();

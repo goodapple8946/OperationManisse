@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1417459725220471961}
   - component: {fileID: 5529716295472161968}
   - component: {fileID: 6296198997654118904}
-  m_Layer: 8
-  m_Name: Player Ball Shuriken
+  m_Layer: 0
+  m_Name: Ball Shuriken
   m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90,10 +90,11 @@ MonoBehaviour:
   radius: 0.3
   sprites: []
   damageCollision: 10
-  player: 1
+  player: 0
   gridX: -1
   gridY: -1
   price: 250
+  isEditorCreated: 0
   body: {fileID: 0}
   weaponOffset: 0
   weaponCDMax: 1
