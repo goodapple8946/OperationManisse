@@ -114,7 +114,7 @@ public class Ball : Unit
     }
 
     // 攻击
-    protected void CheckCDAndAttack(Unit target)
+    protected virtual void CheckCDAndAttack(Unit target)
     {
         if (weaponCD <= 0)
         {
@@ -185,7 +185,7 @@ public class Ball : Unit
     }
 
     // 创建弹药
-    protected Missile CreateMissile()
+    protected virtual Missile CreateMissile()
     {
         // 创建弹药
         Missile missile = Instantiate(missilePrefab).GetComponent<Missile>();

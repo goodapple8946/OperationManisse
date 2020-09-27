@@ -4,33 +4,22 @@ using UnityEngine;
 
 public class MissileShuriken : Missile
 {
-	public enum Status { attack, recall, hold }
-
 	public float shurikenSpeed = 8.0f;
 	public float shurikenRotateSpeed = 300.0f;
 
-	private Status status;
-	private Vector2 targetPos;
-	private Vector2 originLocalPos;
-	
-	// Start is called before the first frame update
-	protected override void Start()
-	{
-		base.Start();
-		status = Status.hold;
-		originLocalPos = transform.localPosition;
-	}
+	public BallShuriken originBall;
+	private Unit target;
+	// 当前位置+ findEnemyRange*敌人方向向量
+	private Vector2 attackTarPos;
 
 	// Update is called once per frame
 	protected override void Update()
 	{
 		Vector2 currPos = transform.position;
-		Vector2 dir2Tar = targetPos - currPos;
-		Vector2 currLocalPos = transform.localPosition;
-		Vector2 dir2Origin = originLocalPos - currLocalPos;
-		
-		if (status == Status.attack)
+		// 存在敌人，速度朝向敌人方向
+		if (target != null)
 		{
+			Vector2 dir2Tar = attackTarPos - currPos;
 			Vector2 dir2TarNormal = dir2Tar.normalized;
 			transform.GetComponent<Rigidbody2D>().velocity = shurikenSpeed * dir2TarNormal;
 			// 自转
@@ -38,41 +27,52 @@ public class MissileShuriken : Missile
 			// 距离目标距离小于一定值
 			if (dir2Tar.magnitude <= 0.10)
 			{
-				status = Status.recall;
+				target = null;
 			}
 		}
-		else if(status == Status.recall)
+		else
 		{
-			Vector2 dir2OriginNormal = dir2Origin.normalized;
-			transform.GetComponent<Rigidbody2D>().velocity = shurikenSpeed * dir2OriginNormal;
-			// 自转
-			transform.Rotate(Vector3.forward, shurikenRotateSpeed * Time.deltaTime);
-			// 回到起始位置, local相对坐标系比绝对坐标系的值要小一点
-			if (dir2Origin.magnitude <= 0.03)
+			// 不存在敌人，发射球没死
+			if (originBall.IsAlive())
 			{
-				status = Status.hold;
-				// 重置球的CD
-				transform.parent.GetComponent<BallShuriken>().ResetCD();
+				Vector2 originPos = originBall.transform.position;
+				Vector2 dir2Origin = originPos - currPos;
+				Vector2 dir2OriginNormal = dir2Origin.normalized;
+				transform.GetComponent<Rigidbody2D>().velocity = shurikenSpeed * dir2OriginNormal;
+				// 自转
+				transform.Rotate(Vector3.forward, shurikenRotateSpeed * Time.deltaTime);
+				// 回到起始位置, local相对坐标系比绝对坐标系的值要小一点
+				if (dir2Origin.magnitude <= 0.10)
+				{
+					// 重置球
+					originBall.ReholdShuriken();
+					Die();
+				}
 			}
 		}
-		
 	}
 
 	public void Attack(Unit target)
 	{
-		this.targetPos = target.transform.position;
-		status = Status.attack;
+		this.target = target;
+		if(target != null)
+		{
+			Vector2 dir2Tar = target.transform.position - transform.position;
+			float ratio = originBall.findEnemyRange / dir2Tar.magnitude;
+			Vector2 currPos = transform.position;
+			attackTarPos = currPos + ratio * dir2Tar;
+		}
 	}
 
 	public void OnTriggerEnter2D(Collider2D other)
 	{
-		Unit unit = other.gameObject.GetComponent<Unit>();
-		if (unit != null && unit.player == Unit.Player.Enemy)
+		Unit target = other.gameObject.GetComponent<Unit>();
+		if (target != null && this.player != target.player)
 		{
-			unit.TakeDamage(this.damage);
-			if (unit.body != null)
+			target.TakeDamage(this.damage);
+			if (target.body != null)
 			{
-				unit.body.AddForce(transform.right * forceHit);
+				target.body.AddForce(transform.right * forceHit);
 			}
 		}
 
