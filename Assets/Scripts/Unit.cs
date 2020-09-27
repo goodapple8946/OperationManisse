@@ -47,8 +47,14 @@ public abstract class Unit : MonoBehaviour
     public int gridX = -1;
     public int gridY = -1;
 
-    // 价格
-    public int price;
+	/* 
+	* Link Direction:
+	* 0: Right, 1: Top, 2: Left, 3: Bottom
+	*/
+	public int direction = 0;
+
+	// 价格
+	public int price;
 
     // 是编辑器创建的
     public bool isEditorCreated;
@@ -140,8 +146,10 @@ public abstract class Unit : MonoBehaviour
         hPBar.transform.parent = gameController.hpBarObjects.transform;
     }
 
-    // 碰撞
-    protected virtual void OnCollisionEnter2D(Collision2D collision)
+	public abstract void Rotate();
+
+	// 碰撞
+	protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if (gamePhase == GamePhase.Playing)
         {

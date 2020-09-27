@@ -218,4 +218,10 @@ public class Ball : Unit
 
         return missile;
     }
+
+	public override void Rotate()
+	{
+		this.direction = (this.direction + 2) % 4;
+		transform.Rotate(0, 0, 180f);
+	}
 }

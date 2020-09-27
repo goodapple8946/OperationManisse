@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// 商店里面的物品按钮
+/// </summary>
 public class ShopObject : MonoBehaviour
 {
     // 每个物品显示的尺寸比例

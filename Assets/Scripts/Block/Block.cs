@@ -6,12 +6,6 @@ using static GameController;
 
 public class Block : Unit
 {
-    /* Link Direction:
-     * 0: Right, 1: Top, 2: Left, 3: Bottom
-     */
-
-    public int direction = 0;
-
     public Block[] blocksLinked = new Block[4];
 
     public Joint2D[] joints = new Joint2D[4];
@@ -51,7 +45,7 @@ public class Block : Unit
         blocksLinked[direction] = null;
     }
 
-    public virtual void Rotate()
+    public override void Rotate()
     {
         direction = (direction + 1) % 4;
         transform.Rotate(0, 0, 90f);
