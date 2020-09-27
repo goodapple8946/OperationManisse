@@ -13,7 +13,7 @@ public class EditorController : MonoBehaviour
     private int xNum = 8;
     private int yNum = 8;
 
-    // 网格的四个边坐标
+    // 网格的四个边的世界位置
     [HideInInspector] public float xMin;
     [HideInInspector] public float xMax;
     [HideInInspector] public float yMin;
@@ -67,7 +67,7 @@ public class EditorController : MonoBehaviour
     void Start()
     {
         Init();
-        ShowGrid();
+        CreateGridSprites();
     }
 
     void Update()
@@ -133,9 +133,9 @@ public class EditorController : MonoBehaviour
         Sell(unit);
     }
 
-    void ShowGrid()
+    void CreateGridSprites()
     {
-        // 显示网格
+        // 创建网格
         for (int x = 0; x < xNum; x++)
         {
             for (int y = 0; y < yNum; y++)
@@ -589,6 +589,6 @@ public class EditorController : MonoBehaviour
         // 重建
         Init();
         UpdateGridWithAllUnits();
-        ShowGrid();
+        CreateGridSprites();
     }
 }

@@ -88,13 +88,13 @@ public abstract class Unit : MonoBehaviour
         if (!EventSystem.current.IsPointerOverGameObject())
         {
             // 鼠标左键按下
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButtonDown(0))
             {
                 LeftClick();
             }
 
             // 鼠标右键按下
-            if (Input.GetMouseButton(1))
+            if (Input.GetMouseButtonDown(1))
             {
                 RightClick();
             }

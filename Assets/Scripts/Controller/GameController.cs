@@ -82,10 +82,16 @@ public class GameController : MonoBehaviour
         ToPhasePreparation();
     }
 
-    // Preparation、Playing、Victory阶段，按下UI的Menu键
+    // 任意阶段，按下UI的Menu键
     public void Menu()
     {
         ToMenu();
+    }
+
+    // 任意阶段，按下UI的EditorMode键
+    public void EditorMode()
+    {
+        ToPhaseEditor();
     }
 
     /**
@@ -96,6 +102,7 @@ public class GameController : MonoBehaviour
     void ToPhaseEditor()
     {
         gamePhase = GamePhase.Editor;
+        editorController.ShowGrids(true);
         uiEditor.SetActive(true);
         uiGame.SetActive(false);
         uiGame.GetComponent<UIGame>().UpdateActive();
