@@ -8,6 +8,9 @@ public class ShopObject : MonoBehaviour
     // 每个物品显示的尺寸比例
     private float goodsScale = 1.5f;
 
+    // 物品是显示的（编辑模式下强制显示）
+    public bool isVisible;
+
     private EditorController editorController;
 
     void Awake()

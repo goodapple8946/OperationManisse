@@ -6,6 +6,12 @@ using static GameController;
 
 public class EditorController : MonoBehaviour
 {
+    // 编辑模式
+    public enum EditorMode { None, Unit }
+
+    // 当前编辑模式
+    [HideInInspector] public EditorMode editorMode;
+
     // 玩家放置物体的网格
     private Unit[,] grid;
 
@@ -34,6 +40,9 @@ public class EditorController : MonoBehaviour
 
     // 当前鼠标持有的Unit
     [HideInInspector] public Unit mouseUnit;
+
+    // 允许接收按住鼠标左键或右键
+    [HideInInspector] public bool isClickHold;
 
     // 连续购买（是购买并安放的，而非移动网格中现有的）
     private bool buyContinuous = false;
@@ -72,21 +81,11 @@ public class EditorController : MonoBehaviour
 
     void Update()
     {
-        if (mouseUnit != null)
-        {
-            mouseUnit.transform.position = MouseController.MouseWorldPosition();
+        // 更新编辑模式
+        UpdateEditorMode();
 
-            // R键旋转
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                Block block = mouseUnit as Block;
-
-                if (block != null)
-                {
-                    block.Rotate();
-                }
-            }
-        }
+        // 键盘指令
+        KeyOrder();
     }
 
     void Init()
@@ -102,8 +101,24 @@ public class EditorController : MonoBehaviour
         yMax = gridSize * yNum;
     }
 
-    public void LeftClickUnit(Unit unit)
+    void UpdateEditorMode()
     {
+        if (mouseUnit == null)
+        {
+            editorMode = EditorMode.None;
+        }
+        else
+        {
+            editorMode = EditorMode.Unit;
+        }
+    }
+
+    public void LeftClickUnit(Unit unit, bool hold = false)
+    {
+        if (!isClickHold && hold)
+        {
+            return;
+        }
         if (mouseUnit != null)
         {
             if (mouseUnit == unit)
@@ -128,8 +143,12 @@ public class EditorController : MonoBehaviour
         }
     }
 
-    public void RightClickUnit(Unit unit)
+    public void RightClickUnit(Unit unit, bool hold = false)
     {
+        if (!isClickHold && hold)
+        {
+            return;
+        }
         Sell(unit);
     }
 
@@ -590,5 +609,25 @@ public class EditorController : MonoBehaviour
         Init();
         UpdateGridWithAllUnits();
         CreateGridSprites();
+    }
+
+    // 键盘指令
+    void KeyOrder()
+    {
+        if (mouseUnit != null)
+        {
+            mouseUnit.transform.position = MouseController.MouseWorldPosition();
+
+            // R键旋转
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                Block block = mouseUnit as Block;
+
+                if (block != null)
+                {
+                    block.Rotate();
+                }
+            }
+        }
     }
 }

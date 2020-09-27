@@ -41,6 +41,7 @@ public class CameraController : MonoBehaviour
     {
         Zoom();
         Scroll();
+        FixBound();
     }
 
     // 初始化
@@ -117,5 +118,26 @@ public class CameraController : MonoBehaviour
     public void ToggleFollow()
     {
         follow = !follow;
+    }
+
+    // 将摄像头限制在游戏地图内
+    private void FixBound()
+    {
+        if (transform.position.x > editorController.xMax)
+        {
+            transform.position = new Vector3(editorController.xMax, transform.position.y, cameraZ);
+        }
+        else if (transform.position.x < editorController.xMin)
+        {
+            transform.position = new Vector3(editorController.xMin, transform.position.y, cameraZ);
+        }
+        if (transform.position.y > editorController.yMax)
+        {
+            transform.position = new Vector3(transform.position.x, editorController.yMax, cameraZ);
+        }
+        else if (transform.position.y < editorController.yMin)
+        {
+            transform.position = new Vector3(transform.position.x, editorController.yMin, cameraZ);
+        }
     }
 }

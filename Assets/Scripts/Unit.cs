@@ -90,27 +90,27 @@ public abstract class Unit : MonoBehaviour
             // 鼠标左键按下
             if (Input.GetMouseButtonDown(0))
             {
-                LeftClick();
+                editorController.LeftClickUnit(this);
+            }
+
+            // 鼠标左键按住
+            if (Input.GetMouseButton(0))
+            {
+                editorController.LeftClickUnit(this, true);
             }
 
             // 鼠标右键按下
             if (Input.GetMouseButtonDown(1))
             {
-                RightClick();
+                editorController.RightClickUnit(this);
+            }
+
+            // 鼠标右键按住
+            if (Input.GetMouseButton(1))
+            {
+                editorController.RightClickUnit(this, true);
             }
         }
-    }
-
-    // 鼠标左键按下
-    protected virtual void LeftClick()
-    {
-        editorController.LeftClickUnit(this);
-    }
-
-    // 鼠标右键按下
-    protected virtual void RightClick()
-    {
-        editorController.RightClickUnit(this);
     }
 
     // 游戏开始时调用

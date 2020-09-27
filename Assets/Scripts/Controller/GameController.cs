@@ -21,6 +21,7 @@ public class GameController : MonoBehaviour
     private GameObject unitObjectsOrigin;
 
     private EditorController editorController;
+    private ShopController shopController;
 
     private GameObject uiEditor;
     private GameObject uiGame;
@@ -34,6 +35,7 @@ public class GameController : MonoBehaviour
         uiEditor = GameObject.Find("UI Canvas/UI Editor");
         uiGame = GameObject.Find("UI Canvas/UI Game");
         editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
+        shopController = GameObject.Find("UI Canvas/UI Shop").GetComponent<ShopController>();
 
         Init();
     }
@@ -106,6 +108,7 @@ public class GameController : MonoBehaviour
         uiEditor.SetActive(true);
         uiGame.SetActive(false);
         uiGame.GetComponent<UIGame>().UpdateActive();
+        shopController.UpdateShop();
         LoadUnitsOrigin();
     }
 
@@ -125,6 +128,7 @@ public class GameController : MonoBehaviour
         gamePhase = GamePhase.Preparation;
         editorController.ShowGrids(true);
         uiGame.GetComponent<UIGame>().UpdateActive();
+        shopController.UpdateShop();
         LoadUnits();
     }
 
