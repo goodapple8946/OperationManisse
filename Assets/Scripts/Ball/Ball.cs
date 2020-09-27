@@ -7,23 +7,23 @@ public class Ball : Unit
     // 武器发射偏移
     public float weaponOffset;
 
-    // 索敌范围
-    public float findEnemyRange;
+	// 武器冷却最大值
+	public float weaponCDMax;
 
-    // 旋转速率
-    protected float rotationSpeed = 2f;
+	// 武器角度
+	public float weaponAngle;
 
-    // 武器冷却最大值
-    public float weaponCDMax;
+	// 索敌范围
+	public float findEnemyRange;
+
+	// 弹药预设
+	public GameObject missilePrefab;
+
+	// 旋转速率
+	protected float rotationSpeed = 2f;
 
     // 武器冷却
     protected float weaponCD = 0;
-
-    // 武器角度
-    public float weaponAngle;
-
-    // 弹药预设
-    public GameObject missilePrefab;
 
     // 目标优先级容差
     private float priorityTolerant = 3f;

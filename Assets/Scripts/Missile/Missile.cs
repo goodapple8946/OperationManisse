@@ -32,9 +32,6 @@ public class Missile : MonoBehaviour
     // 撞击粒子预设
     public GameObject particleHitPrefab;
 
-    // 近战
-    public bool isMelee;
-
     // 所属玩家
     public Player player;
 
@@ -56,10 +53,7 @@ public class Missile : MonoBehaviour
             RotateToVelocity();
         }
 
-        if (!isMelee)
-        {
-            UpdateDuration();
-        }
+		UpdateDuration();
 
         if (duration <= 0)
         {
@@ -72,30 +66,18 @@ public class Missile : MonoBehaviour
     {
         if (isAlive)
         {
-            // 击中Ball
-            Ball ball = other.gameObject.GetComponent<Ball>();
-            if (ball != null)
-            {
-				ball.TakeDamage(damage);
-                if (ball.body != null)
-                {
-                    ball.body.AddForce(transform.right * forceHit);
-                }
-            }
+			Unit unit = other.gameObject.GetComponent<Unit>();
+			if (unit != null)
+			{
+				unit.TakeDamage(this.damage);
+				if (unit.body != null)
+				{
+					unit.body.AddForce(transform.right * forceHit);
+				}
+			}
 
-            // 击中Block
-            Block block = other.gameObject.GetComponent<Block>();
-            if (block != null)
-            {
-				block.TakeDamage(damage);
-                if (block.body != null)
-                {
-                    block.body.AddForce(transform.right * forceHit);
-                }
-            }
-
-            // 撞击粒子
-            if (particleHitPrefab != null)
+			// 撞击粒子
+			if (particleHitPrefab != null)
             {
                 GameObject particle = Instantiate(particleHitPrefab);
                 particle.transform.position = transform.position;
@@ -103,11 +85,8 @@ public class Missile : MonoBehaviour
             }
 
             // 剩余飞行时间
-            if (!isMelee)
-            {
-                duration = durationHit;
-                isAlive = false;
-            }
+			duration = durationHit;
+			isAlive = false;
         }
     }
 
