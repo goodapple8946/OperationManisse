@@ -8,11 +8,13 @@ public class EditorSave : MonoBehaviour
 {
 	private EditorController editorController;
 	private ResourceController resourceController;
+	private ShopController shopController;
 
 	public void Awake()
 	{
 		editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
 		resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
+		shopController = GameObject.Find("Shop Controller").GetComponent<ShopController>();
 	}
 
 	public void SaveFile()
@@ -22,7 +24,7 @@ public class EditorSave : MonoBehaviour
 		List<Unit> units = editorController.Grid.OfType<Unit>().ToList();
 		Debug.Log(units.Count);
 
-		List<string> goodsVisable = 
+		List<string> goodsVisable = shopController.GetShopObjectVisibility();
 		Serializer.Serialize(editorController, units, goodsVisable, filename);
 	}
 }

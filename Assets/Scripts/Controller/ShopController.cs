@@ -23,9 +23,11 @@ public class ShopController : MonoBehaviour
 
     void Awake()
     {
-        content = transform.GetChild(0).GetChild(0).gameObject;
+		resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
+		content = transform.GetChild(0).GetChild(0).gameObject;
 
         // 将editorObjects、blockObjects、ballObjects合并为gameObjects，因此在商店中排序为editor、block、ball
+
         gameObjects = new GameObject[resourceController.editorObjects.Length + resourceController.blockObjects.Length + resourceController.ballObjects.Length];
         resourceController.editorObjects.CopyTo(gameObjects, 0);
         resourceController.blockObjects.CopyTo(gameObjects, resourceController.editorObjects.Length);
@@ -90,7 +92,7 @@ public class ShopController : MonoBehaviour
     }
 
     // 获得商品可见性：返回一个所有可见的商品名称数组
-    public List<string> SetShopObjectVisibility()
+    public List<string> GetShopObjectVisibility()
     {
         List<string> ret = new List<string>();
         foreach (ShopObject shopObject in shopObjects)

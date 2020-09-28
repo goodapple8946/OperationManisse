@@ -8,11 +8,13 @@ public class EditorLoad : MonoBehaviour
 {
 	private EditorController editorController;
 	private ResourceController resourceController;
+	private ShopController shopController;
 
 	public void Awake()
 	{
 		editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
 		resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
+		shopController = GameObject.Find("Shop Controller").GetComponent<ShopController>();
 	}
 
 	// 被点击是调用LoadFile方法
@@ -37,9 +39,9 @@ public class EditorLoad : MonoBehaviour
 			LoadUnit(xmlUnit);
 		}
 
+		// 加载货物可见性
 		List<string> goodsVisable = game.goodsVisable;
-		//goodVisable
-
+		shopController.SetShopObjectVisibility(goodsVisable);
 		// 开始游戏
 		// gameController.Run();
 	}
