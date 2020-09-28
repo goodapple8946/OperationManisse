@@ -36,6 +36,10 @@ public class EditorLoad : MonoBehaviour
 		{
 			LoadUnit(xmlUnit);
 		}
+
+		List<string> goodsVisable = game.goodsVisable;
+		//goodVisable
+
 		// 开始游戏
 		// gameController.Run();
 	}

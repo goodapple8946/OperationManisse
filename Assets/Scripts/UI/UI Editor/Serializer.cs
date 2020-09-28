@@ -16,7 +16,9 @@ public static class Serializer
 	/// <summary>
 	/// 根据参数构造Game并序列化
 	/// </summary>
-	public static void Serialize(EditorController editorController, List<Unit> units, string path)
+	public static void Serialize(
+		EditorController editorController, List<Unit> units, 
+		List<string> goodsVisable, string path)
 	{
 		XMLMap map = EditorController2XMLMap(editorController);
 
@@ -27,7 +29,7 @@ public static class Serializer
 			xmlUnits.Add(xmlUnit);
 		}
 
-		XMLGame game = new XMLGame(map, xmlUnits);
+		XMLGame game = new XMLGame(map, xmlUnits, goodsVisable);
 		Serialize(game, path);
 	}
 
@@ -92,14 +94,16 @@ public class XMLGame
 {
 	public XMLMap xmlMap;
 	public List<XMLUnit> xmlUnits;
+	public List<String> goodsVisable;
 
 	// 默认无参构造函数
 	public XMLGame() { }
 
-	public XMLGame(XMLMap xmlMap, List<XMLUnit> xmlUnits)
+	public XMLGame(XMLMap xmlMap, List<XMLUnit> xmlUnits, List<String> goodsVisable)
 	{
 		this.xmlMap = xmlMap;
 		this.xmlUnits = xmlUnits;
+		this.goodsVisable = goodsVisable;
 	}
 }
 

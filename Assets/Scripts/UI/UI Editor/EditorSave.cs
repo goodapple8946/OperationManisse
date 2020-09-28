@@ -21,6 +21,8 @@ public class EditorSave : MonoBehaviour
 
 		List<Unit> units = editorController.Grid.OfType<Unit>().ToList();
 		Debug.Log(units.Count);
-		Serializer.Serialize(editorController, units, filename);
+
+		List<string> goodsVisable = 
+		Serializer.Serialize(editorController, units, goodsVisable, filename);
 	}
 }
