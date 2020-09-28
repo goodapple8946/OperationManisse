@@ -8,6 +8,7 @@
   </xmlMap>
   <xmlUnits>
     <XMLUnit>
+<<<<<<< HEAD
       <name>Block Wood</name>
       <player>0</player>
       <x>1</x>
@@ -15,4 +16,28 @@
       <direction>0</direction>
     </XMLUnit>
   </xmlUnits>
+=======
+      <name>Block Stone(Clone)</name>
+      <player>1</player>
+      <x>0</x>
+      <y>3</y>
+      <direction>0</direction>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Stone(Clone)</name>
+      <player>1</player>
+      <x>1</x>
+      <y>0</y>
+      <direction>0</direction>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Stone(Clone)</name>
+      <player>1</player>
+      <x>2</x>
+      <y>1</y>
+      <direction>0</direction>
+    </XMLUnit>
+  </xmlUnits>
+  <goodsVisable />
+>>>>>>> dev
 </XMLGame>

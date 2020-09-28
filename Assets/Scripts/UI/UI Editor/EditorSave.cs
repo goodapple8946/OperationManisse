@@ -12,7 +12,7 @@ public class EditorSave : MonoBehaviour
 		string filename = Path.Combine(Application.dataPath, "1.xml");
 
 		List<Unit> units = editorController.Grid.OfType<Unit>().ToList();
-		Debug.Log(units.Count);
-		Serializer.Serialize(editorController, units, filename);
+		List<string> goodsVisible = shopController.GetShopObjectVisibility();
+		Serializer.Serialize(editorController, units, goodsVisible, filename);
 	}
 }
