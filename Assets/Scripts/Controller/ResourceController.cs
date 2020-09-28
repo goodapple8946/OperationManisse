@@ -5,10 +5,13 @@ using UnityEngine.UI;
 
 public class ResourceController : MonoBehaviour
 {
-	// 所有单位的prefab
+	// 所有单位的Prefab
 	public GameObject[] editorObjects;
 	public GameObject[] blockObjects;
 	public GameObject[] ballObjects;
+
+    // 背景的Prefab
+    public GameObject[] backgroundObjects;
 
 	// 根据上面的生成的dictionary
 	public Dictionary<string, GameObject> unitDictionary;

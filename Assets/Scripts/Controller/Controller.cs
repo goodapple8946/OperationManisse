@@ -15,16 +15,15 @@ public class Controller: MonoBehaviour
     public enum Layer            { Default, TransparentFX, IgnoreRaycast, Water = 4, UI, PlayerBall = 8, PlayerBlock, PlayerMissile, EnemyBall, EnemyBlock, EnemyMissile, Goods, Ground }
     public enum GamePhase        { Editor, Preparation, Playing, Victory }
     public enum VictoryCondition { None, KillAll, KillTarget, EnterLocation, HoldOn }
+    public enum EditorMode       { Unit, Background, Location }
 
     void Awake()
     {
-
-
-    gameController     = GameObject.Find("Controller/Game Controller").    GetComponent<GameController>();
-    editorController   = GameObject.Find("Controller/Editor Controller").  GetComponent<EditorController>();
-    mouseController    = GameObject.Find("Controller/Mouse Controller").   GetComponent<MouseController>();
-    resourceController = GameObject.Find("Controller/Resource Controller").GetComponent<ResourceController>();
-    victoryController  = GameObject.Find("Controller/Victory Controller"). GetComponent<VictoryController>();
-    shopController     = GameObject.Find("Controller/Shop Controller").    GetComponent<ShopController>();
-}
+        gameController     = GameObject.Find("Controller/Game Controller").    GetComponent<GameController>();
+        editorController   = GameObject.Find("Controller/Editor Controller").  GetComponent<EditorController>();
+        mouseController    = GameObject.Find("Controller/Mouse Controller").   GetComponent<MouseController>();
+        resourceController = GameObject.Find("Controller/Resource Controller").GetComponent<ResourceController>();
+        victoryController  = GameObject.Find("Controller/Victory Controller"). GetComponent<VictoryController>();
+        shopController     = GameObject.Find("Controller/Shop Controller").    GetComponent<ShopController>();
+    }
 }

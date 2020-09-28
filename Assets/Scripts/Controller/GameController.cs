@@ -102,18 +102,17 @@ public class GameController : MonoBehaviour
     void ToPhaseEditor()
     {
         gamePhase = GamePhase.Editor;
-        editorController.ShowGrids(true);
+        editorController.ToPhaseEditor();
         uiEditor.SetActive(true);
         uiGame.SetActive(false);
         uiGame.GetComponent<UIGame>().UpdateActive();
-        shopController.UpdateShop();
         LoadUnitsOrigin();
     }
 
     // 离开Editor阶段
     void FromPhaseEditor()
     {
-        editorController.FinishEditor();
+        editorController.FromPhaseEditor();
         uiEditor.SetActive(false);
         uiGame.SetActive(true);
         SaveUnitsOrigin();
@@ -126,7 +125,6 @@ public class GameController : MonoBehaviour
         gamePhase = GamePhase.Preparation;
         editorController.ShowGrids(true);
         uiGame.GetComponent<UIGame>().UpdateActive();
-        shopController.UpdateShop();
         ClearMissile();
         LoadUnits();
         victoryController.Init();

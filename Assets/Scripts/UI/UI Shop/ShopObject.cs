@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static Controller;
 
 /// <summary>
 /// 商店里面的物品按钮
@@ -14,17 +15,31 @@ public class ShopObject : MonoBehaviour
     // 物品是显示的（编辑模式下强制显示）
     public bool isVisible;
 
-    private EditorController editorController;
+    // 购买时实例化的物体
+    public ClickableObject clickableObject;
+
+    // Toggle
+    private GameObject toggleObject;
 
     void Awake()
     {
-        editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
+        toggleObject = transform.GetChild(1).gameObject;
     }
 
     public void Init(GameObject gameObject)
     {
-        // 商品图像为添加物体的图像
-        GetComponent<Button>().image.sprite = gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
+        clickableObject = gameObject.GetComponent<ClickableObject>();
+
+        if (clickableObject is Unit)
+        {
+            // 商品图像为添加物体的图像
+            GetComponent<Button>().image.sprite = gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
+        }
+        else if (clickableObject is Background)
+        {
+            // 商品图像为添加物体的图像
+            GetComponent<Button>().image.sprite = gameObject.GetComponent<SpriteRenderer>().sprite;
+        }
 
         // 商品使用默认图像尺寸
         GetComponent<Button>().image.SetNativeSize();
@@ -43,6 +58,19 @@ public class ShopObject : MonoBehaviour
                 transform.GetChild(0).GetChild(i - 1).GetComponent<Image>().sprite = gameObject.transform.GetChild(i).GetComponent<SpriteRenderer>().sprite;
                 transform.GetChild(0).GetChild(i - 1).GetComponent<Image>().SetNativeSize();
             }
+        }
+    }
+
+    // 显示或隐藏商品的显示按钮
+    public void UpdateToggle()
+    {
+        if (clickableObject is Unit)
+        {
+            toggleObject.SetActive(gameController.gamePhase == GamePhase.Editor);
+        }
+        else
+        {
+            toggleObject.SetActive(false);
         }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using static Controller;
 
-public abstract class Unit : MonoBehaviour
+public abstract class Unit : ClickableObject
 {
     // 生命最大值
     public int healthMax;
@@ -52,6 +52,7 @@ public abstract class Unit : MonoBehaviour
 	* 0: Right, 1: Top, 2: Left, 3: Bottom
 	*/
 	protected int direction = 0;
+
 	#region direction peoperty
 	public int Direction
 	{
@@ -92,37 +93,6 @@ public abstract class Unit : MonoBehaviour
     protected virtual void FixedUpdate()
     {
 
-    }
-
-    protected void OnMouseOver()
-    {
-        // 鼠标不在UI上
-        if (!EventSystem.current.IsPointerOverGameObject())
-        {
-            // 鼠标左键按下
-            if (Input.GetMouseButtonDown(0))
-            {
-                editorController.LeftClickUnit(this);
-            }
-
-            // 鼠标左键按住
-            if (Input.GetMouseButton(0))
-            {
-                editorController.LeftClickUnit(this, true);
-            }
-
-            // 鼠标右键按下
-            if (Input.GetMouseButtonDown(1))
-            {
-                editorController.RightClickUnit(this);
-            }
-
-            // 鼠标右键按住
-            if (Input.GetMouseButton(1))
-            {
-                editorController.RightClickUnit(this, true);
-            }
-        }
     }
 
     // 游戏开始时调用
@@ -222,24 +192,6 @@ public abstract class Unit : MonoBehaviour
 
         // 如果射线触碰到物体
         return hit.transform != null;
-    }
-
-    // 设置图像层级
-    public void SetSpriteLayer(string layer)
-    {
-        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-        if (sprite != null)
-        {
-            sprite.sortingLayerName = layer;
-        }
-        SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
-        foreach (SpriteRenderer spriteChild in sprites)
-        {
-            if (spriteChild.sortingLayerName != "Cover" && spriteChild.sortingLayerName != "Outline")
-            {
-                spriteChild.sortingLayerName = layer;
-            }
-        }
     }
 
     // 是否存活
