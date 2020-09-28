@@ -29,7 +29,7 @@ public class Ball : Unit
     // 目标优先级容差
     private float priorityTolerant = 3f;
 
-    protected override void Update()
+    protected override void FixedUpdate()
     {
         base.Update();
 

@@ -15,7 +15,7 @@ public class BallGatling : Ball
     // 机枪发红色
     private Color maxColor = Color.white;
 
-	protected override void Update()
+	protected override void FixedUpdate()
 	{
 		base.Update();
 		// 开始游戏后

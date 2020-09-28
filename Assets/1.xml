@@ -8,23 +8,23 @@
   </xmlMap>
   <xmlUnits>
     <XMLUnit>
-      <name>Block Stone(Clone)</name>
+      <name>Block Wood(Clone)</name>
       <player>1</player>
-      <x>0</x>
+      <x>4</x>
+      <y>2</y>
+      <direction>0</direction>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Wood(Clone)</name>
+      <player>1</player>
+      <x>4</x>
       <y>3</y>
       <direction>0</direction>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Stone(Clone)</name>
+      <name>Block Wood(Clone)</name>
       <player>1</player>
-      <x>1</x>
-      <y>0</y>
-      <direction>0</direction>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Stone(Clone)</name>
-      <player>1</player>
-      <x>2</x>
+      <x>7</x>
       <y>1</y>
       <direction>0</direction>
     </XMLUnit>
