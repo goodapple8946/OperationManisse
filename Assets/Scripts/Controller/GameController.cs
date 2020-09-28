@@ -24,6 +24,7 @@ public class GameController : MonoBehaviour
     private EditorController editorController;
     private VictoryController victoryController;
     private ShopController shopController;
+    private ResourceController resourceController;
 
 	// 编辑器部分的UI
     private GameObject uiEditor;
@@ -40,6 +41,7 @@ public class GameController : MonoBehaviour
         editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
         victoryController = GameObject.Find("Victory Controller").GetComponent<VictoryController>();
         shopController = GameObject.Find("UI Canvas/UI Shop").GetComponent<ShopController>();
+        resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
 
         Init();
     }
@@ -51,6 +53,10 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
+        if (gamePhase == GamePhase.Playing && victoryController.isVictory)
+        {
+            ToVictory();
+        }
         DebugGame();
     }
 
@@ -135,6 +141,7 @@ public class GameController : MonoBehaviour
         shopController.UpdateShop();
         ClearMissile();
         LoadUnits();
+        victoryController.Init();
     }
 
     // 进入Playing阶段
@@ -143,7 +150,6 @@ public class GameController : MonoBehaviour
         gamePhase = GamePhase.Playing;
         editorController.ShowGrids(false);
         uiGame.GetComponent<UIGame>().UpdateActive();
-        victoryController.Init();
         SaveUnits();
 
         // 连接所有Block
@@ -151,6 +157,15 @@ public class GameController : MonoBehaviour
 
         // 向所有物体发送GameStart信号
         unitObjects.BroadcastMessage("GameStart");
+    }
+
+    // 进入Victory阶段
+    void ToVictory()
+    {
+        gamePhase = GamePhase.Victory;
+        uiGame.GetComponent<UIGame>().UpdateActive();
+
+        AudioSource.PlayClipAtPoint(resourceController.audioVictory, Camera.main.transform.position);
     }
 
     // 返回主菜单
