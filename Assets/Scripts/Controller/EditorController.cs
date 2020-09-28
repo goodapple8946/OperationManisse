@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 using static GameController;
@@ -717,4 +718,59 @@ public class EditorController : MonoBehaviour
 		}
 	}
 
+	//public void LoadFile()
+	//{
+	//	// 初始化网格
+	//	XNum = 0;
+	//	YNum = 0;
+
+	//	// 根据文件生成Game
+	//	string filename = "C://Users//asus//Desktop//1.xml";
+	//	XMLGame game = Serializer.Deserialized(filename);
+
+	//	// 加载地图信息
+	//	XMLMap map = game.xmlMap;
+	//	LoadMap(map);
+
+	//	// 加载单位信息
+	//	List<XMLUnit> xmlUnits = game.xmlUnits;
+	//	foreach (XMLUnit xmlUnit in xmlUnits)
+	//	{
+	//		LoadUnit(xmlUnit);
+	//	}
+	//	// 开始游戏
+	//	// gameController.Run();
+	//}
+
+	//private void LoadMap(XMLMap map)
+	//{
+	//	XNum = map.xNum;
+	//	YNum = map.yNum;
+	//	PlayerMoneyOrigin = map.money;
+	//	LightIntensity = map.lightIntensity;
+	//}
+
+	//private void LoadUnit(XMLUnit xmlUnit)
+	//{
+	//	// 复制一份物体
+	//	GameObject objPrefab = resourceController.unitDictionary[xmlUnit.name];
+	//	GameObject objClone = Instantiate(objPrefab);
+	//	// 设置位置,player和方向信息
+	//	Unit unit = objClone.GetComponent<Unit>();
+	//	Put(xmlUnit.x, xmlUnit.y, unit);
+	//	unit.Direction = xmlUnit.direction;
+	//	// TODO: 更新血条？
+	//	unit.player = (Player)xmlUnit.player;
+	//	// 设置成编辑器创建
+	//	unit.isEditorCreated = true;
+	//}
+
+	//public void SaveFile()
+	//{
+	//	string filename = "C://Users//asus//Desktop//1.xml";
+
+	//	List<Unit> units = Grid.OfType<Unit>().ToList();
+	//	Debug.Log(units.Count);
+	//	Serializer.Serialize(this, units, filename);
+	//}
 }

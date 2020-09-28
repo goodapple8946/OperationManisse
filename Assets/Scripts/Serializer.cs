@@ -5,8 +5,90 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using UnityEngine;
+using static GameController;
 
-public static class Serializer
+public class EditorLoadFile : MonoBehaviour
+{
+	private EditorController editorController;
+	private ResourceController resourceController;
+
+	public void Awake()
+	{
+		editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
+		resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
+	}
+
+	public void LoadFile()
+	{
+		// 初始化网格
+		editorController.XNum = 0;
+		editorController.YNum = 0;
+
+		// 根据文件生成Game
+		string filename = "C://Users//asus//Desktop//1.xml";
+		XMLGame game = Serializer.Deserialized(filename);
+
+		// 加载地图信息
+		XMLMap map = game.xmlMap;
+		LoadMap(map);
+
+		// 加载单位信息
+		List<XMLUnit> xmlUnits = game.xmlUnits;
+		foreach (XMLUnit xmlUnit in xmlUnits)
+		{
+			LoadUnit(xmlUnit);
+		}
+		// 开始游戏
+		// gameController.Run();
+	}
+
+	private void LoadMap(XMLMap map)
+	{
+		editorController.XNum = map.xNum;
+		editorController.YNum = map.yNum;
+		editorController.PlayerMoneyOrigin = map.money;
+		editorController.LightIntensity = map.lightIntensity;
+	}
+
+	private void LoadUnit(XMLUnit xmlUnit)
+	{
+		// 复制一份物体
+		GameObject objPrefab = resourceController.unitDictionary[xmlUnit.name];
+		GameObject objClone = Instantiate(objPrefab);
+		// 设置位置,player和方向信息
+		Unit unit = objClone.GetComponent<Unit>();
+		editorController.Put(xmlUnit.x, xmlUnit.y, unit);
+		unit.Direction = xmlUnit.direction;
+		// TODO: 更新血条？
+		unit.player = (Player)xmlUnit.player;
+		// 设置成编辑器创建
+		unit.isEditorCreated = true;
+	}
+}
+
+public class EditorSaveFile : MonoBehaviour
+{
+	private EditorController editorController;
+	private ResourceController resourceController;
+
+	public void Awake()
+	{
+		editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
+		resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
+	}
+
+	public void SaveFile()
+	{
+		string filename = "C://Users//asus//Desktop//1.xml";
+
+		List<Unit> units = editorController.Grid.OfType<Unit>().ToList();
+		Debug.Log(units.Count);
+		Serializer.Serialize(editorController, units, filename);
+	}
+}
+
+static class Serializer
 {
 	/// <summary>
 	/// 根据参数构造Game并序列化
@@ -31,9 +113,17 @@ public static class Serializer
 	/// </summary>
 	public static XMLGame Deserialized(string path)
 	{
-		XmlSerializer serializer = new XmlSerializer(typeof(XMLGame));
+		return Deserialized<XMLGame>(path);
+	}
+
+	/// <summary>
+	/// 将xml文件转换成T类型的对象
+	/// </summary>
+	private static T Deserialized<T>(string path)
+	{
+		XmlSerializer serializer = new XmlSerializer(typeof(T));
 		StreamReader reader = new StreamReader(path);
-		XMLGame deserialized = (XMLGame)serializer.Deserialize(reader.BaseStream);
+		T deserialized = (T)serializer.Deserialize(reader.BaseStream);
 		reader.Close();
 		return deserialized;
 	}
@@ -66,7 +156,7 @@ public static class Serializer
 	/// <summary>
 	/// 将item的所有public字段添加到path文件的尾部
 	/// </summary>
-	private static void Serialize(Object item, string path)
+	private static void Serialize(System.Object item, string path)
 	{
 		XmlSerializer serializer = new XmlSerializer(item.GetType());
 		StreamWriter writer = new StreamWriter(path);
@@ -75,7 +165,7 @@ public static class Serializer
 	}
 }
 
-public class XMLGame
+class XMLGame
 {
 	public XMLMap xmlMap;
 	public List<XMLUnit> xmlUnits;
@@ -89,7 +179,7 @@ public class XMLGame
 	}
 }
 
-public class XMLUnit
+class XMLUnit
 {
 	// ResourceController 的 prefab name 
 	public String name;
@@ -111,8 +201,7 @@ public class XMLUnit
 	}
 }
 
-
-public class XMLMap
+class XMLMap
 {
 	public int xNum;
 	public int yNum;
