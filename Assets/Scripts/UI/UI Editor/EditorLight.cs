@@ -13,7 +13,12 @@ public class EditorLight : MonoBehaviour
         slider = GetComponent<Slider>();
         slider.onValueChanged.AddListener(value =>
         {
-            GameObject.Find("Global Light").GetComponent<Light2D>().intensity = value;
+			GameObject.Find("Editor Controller").GetComponent<EditorController>().LightIntensity = value;
         });
     }
+
+	public void ShowLight(float light)
+	{
+		slider.SetValueWithoutNotify(light);
+	}
 }

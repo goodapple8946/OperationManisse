@@ -15,8 +15,13 @@ public class EditorMoney : MonoBehaviour
             if(value != "" && value != "-")
             {
                 int money = int.Parse(value);
-                GameObject.Find("Editor Controller").GetComponent<EditorController>().playerMoneyOrigin = money;
+                GameObject.Find("Editor Controller").GetComponent<EditorController>().PlayerMoneyOrigin = money;
             }
         });
     }
+
+	public void ShowMoney(int money)
+	{
+		inputField.text = money + "";
+	}
 }

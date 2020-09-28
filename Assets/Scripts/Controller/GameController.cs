@@ -13,8 +13,9 @@ public class GameController : MonoBehaviour
     // 场景阶段
     public static GamePhase gamePhase;
 
-    // 所有物体的根节点
-    [HideInInspector] public GameObject unitObjects;
+	// 所有物体的根节点
+	/// <summary>preparation和playing阶段,场景中所有Unit</summary>
+	[HideInInspector] public GameObject unitObjects;
     [HideInInspector] public GameObject missileObjects;
     [HideInInspector] public GameObject hpBarObjects;
     private GameObject unitObjectsSaved;
@@ -32,7 +33,7 @@ public class GameController : MonoBehaviour
     /**
      * 生命周期函数
      */
-    void Awake()
+    public void Awake()
     {
         uiEditor = GameObject.Find("UI Canvas/UI Editor");
         uiGame = GameObject.Find("UI Canvas/UI Game");
@@ -43,7 +44,7 @@ public class GameController : MonoBehaviour
         Init();
     }
 
-	void Start()
+	public void Start()
     {
         uiGame.SetActive(false);
     }
@@ -163,7 +164,7 @@ public class GameController : MonoBehaviour
      */
 
     // 初始化
-    void Init()
+    public void Init()
     {
         if (unitObjects)
         {
@@ -247,13 +248,14 @@ public class GameController : MonoBehaviour
         }
         missileObjects = new GameObject("Missile Objects");
     }
+	
 
-    /**
-     * 工具函数
-     */
+	//---------------- 工具函数 ---------------//
 
-    // 获取场景中的Unit
-    public Unit[] GetUnits()
+	/// <summary>
+	/// 获取场景中的Unit 
+	/// </summary>
+	public Unit[] GetUnits()
     {
         return unitObjects.GetComponentsInChildren<Unit>();
     }

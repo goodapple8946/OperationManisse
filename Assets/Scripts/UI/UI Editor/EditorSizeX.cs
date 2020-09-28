@@ -7,7 +7,7 @@ public class EditorSizeX : MonoBehaviour
 {
     InputField inputField;
 
-    public void Awake()
+	public void Awake()
     {
         inputField = GetComponent<InputField>();
         inputField.onEndEdit.AddListener(value =>
@@ -15,8 +15,13 @@ public class EditorSizeX : MonoBehaviour
             if (value != "" && value != "-")
             {
                 int x = int.Parse(value);
-                GameObject.Find("Editor Controller").GetComponent<EditorController>().SetXNum(x);
-            }
+				GameObject.Find("Editor Controller").GetComponent<EditorController>().XNum = x;
+			}
         });
     }
+
+	public void ShowX(int x)
+	{
+		inputField.text = x + "";
+	}
 }

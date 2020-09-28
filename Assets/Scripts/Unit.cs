@@ -51,7 +51,19 @@ public abstract class Unit : MonoBehaviour
 	* Link Direction:
 	* 0: Right, 1: Top, 2: Left, 3: Bottom
 	*/
-	public int direction = 0;
+	protected int direction = 0;
+	#region direction peoperty
+	public int Direction
+	{
+		get => direction;
+		set
+		{
+			// 设置direction并更新方向
+			transform.Rotate(0, 0, (value - Direction) * 90f);
+			direction = value;
+		} 
+	}
+	#endregion
 
 	// 价格
 	public int price;

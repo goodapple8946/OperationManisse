@@ -15,8 +15,13 @@ public class EditorSizeY : MonoBehaviour
             if (value != "" && value != "-")
             {
                 int y = int.Parse(value);
-                GameObject.Find("Editor Controller").GetComponent<EditorController>().SetYNum(y);
+				GameObject.Find("Editor Controller").GetComponent<EditorController>().YNum = y;
             }
         });
     }
+
+	public void ShowY(int y)
+	{
+		inputField.text = y + "";
+	}
 }

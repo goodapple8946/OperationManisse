@@ -5,6 +5,13 @@ using UnityEngine.UI;
 
 public class ResourceController : MonoBehaviour
 {
+	// 所有单位的prefab
+	public GameObject[] editorObjects;
+	public GameObject[] blockObjects;
+	public GameObject[] ballObjects;
+	// 根据上面的生成的dictionary
+	public Dictionary<string, GameObject> unitDictionary;
+
     // Block连接时的粒子预设
     public GameObject particleLinkPrefab;
     
@@ -25,4 +32,22 @@ public class ResourceController : MonoBehaviour
 
     // 生命值Prefab
     public GameObject hpBarPrefab;
+
+	protected void Start()
+	{
+		// 初始化unitDictionary
+		unitDictionary = new Dictionary<string, GameObject>();
+		foreach(GameObject obj in editorObjects)
+		{
+			unitDictionary.Add(obj.name, obj);
+		}
+		foreach (GameObject obj in blockObjects)
+		{
+			unitDictionary.Add(obj.name, obj);
+		}
+		foreach (GameObject obj in ballObjects)
+		{
+			unitDictionary.Add(obj.name, obj);
+		}
+	}
 }

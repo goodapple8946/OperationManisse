@@ -14,7 +14,12 @@ public class EditorOwner : MonoBehaviour
         dropdown.onValueChanged.AddListener(value =>
         {
             Player player = (Player)value;
-            GameObject.Find("Editor Controller").GetComponent<EditorController>().playerOwner = player;
+            GameObject.Find("Editor Controller").GetComponent<EditorController>().PlayerOwner = player;
         });
     }
+
+	public void ShowOwner(Player player)
+	{
+		dropdown.SetValueWithoutNotify((int)player);
+	}
 }

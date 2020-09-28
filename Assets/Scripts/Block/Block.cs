@@ -47,8 +47,7 @@ public class Block : Unit
 
     public override void Rotate()
     {
-        direction = (direction + 1) % 4;
-        transform.Rotate(0, 0, 90f);
+        Direction = (Direction + 1) % 4;
     }
 
     public virtual bool IsLinkAvailable(int direction)

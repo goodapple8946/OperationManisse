@@ -2,76 +2,149 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 using static GameController;
 
 public class EditorController : MonoBehaviour
 {
-    // 编辑模式
-    public enum EditorMode { None, Unit }
+	// 编辑模式
+	public enum EditorMode { None, Unit }
 
-    // 当前编辑模式
-    [HideInInspector] public EditorMode editorMode;
+	// 当前编辑模式
+	[HideInInspector] public EditorMode editorMode;
 
-    // 玩家放置物体的网格
-    private Unit[,] grid;
+	// 玩家放置物体的网格
+	private Unit[,] grid;
+	[HideInInspector] public Unit[,] Grid { get => grid;}
 
-    // 网格尺寸
-    private int xNum = 8;
-    private int yNum = 8;
+	// Editor面板：网格尺寸x
+	[HideInInspector] private int xNum = 8;
+	// Editor面板：网格尺寸y
+	[HideInInspector] private int yNum = 8;
+	// Editor面板：编辑者当前使用的UnitOwner
+	[HideInInspector] private Player playerOwner = Player.Player;
+	// Editor面板：编辑者当前设置的玩家初始钱数
+	[HideInInspector] private int playerMoneyOrigin = 0;
+	// Editor面板：编辑者当前设置的全局光照
+	[HideInInspector] private float lightIntensity = 1.0f;
+	#region Property Function
+	// 更新EditorSizeX的显示
+	public int XNum
+	{
+		get => xNum;
+		set
+		{
+			xNum = value;
+			// 同步数据变更到UI显示
+			editorSizeX.ShowX(xNum);
+			// 更新网格信息
+			UpdateGridAfterResize();
+		}
+	}
+	// 更新EditorSizeY的显示
+	public int YNum
+	{
+		get => yNum;
+		set
+		{
+			yNum = value;
+			// 同步数据变更到UI显示
+			editorSizeY.ShowY(yNum);
+			// 更新网格信息
+			UpdateGridAfterResize();
+		}
+	}
+	// 更新Editor的显示
+	public Player PlayerOwner
+	{
+		get => playerOwner;
+		set
+		{
+			playerOwner = value;
+			editorOwener.ShowOwner(playerOwner);
+		}
+	}
+	// 更新Editor的显示
+	public int PlayerMoneyOrigin
+	{
+		get => playerMoneyOrigin;
+		set
+		{
+			playerMoneyOrigin = value;
+			editorMoney.ShowMoney(playerMoneyOrigin);
+		}
+	}
+	// 改变光照强度并更新Editor的显示
+	public float LightIntensity
+	{
+		get => lightIntensity;
+		set
+		{
+			lightIntensity = value;
+			GameObject.Find("Global Light").GetComponent<Light2D>().intensity = lightIntensity;
+			editorLight.ShowLight(lightIntensity);
+		}
+	}
+	#endregion
 
-    // 网格的四个边的世界位置
-    [HideInInspector] public float xMin;
-    [HideInInspector] public float xMax;
-    [HideInInspector] public float yMin;
-    [HideInInspector] public float yMax;
+	// 摄像机的四个边的世界位置
+	[HideInInspector] public float xMin;
+	[HideInInspector] public float xMax;
+	[HideInInspector] public float yMin;
+	[HideInInspector] public float yMax;
 
-    // 每个网格的大小
-    private float gridSize = 0.6f;
+	// 每个网格的大小
+	private float gridSize = 0.6f;
 
-    // 整个网格的左下角的坐标
-    private Vector2 origin = Vector2.zero;
+	// 整个网格的左下角的坐标
+	private Vector2 origin = Vector2.zero;
 
-    // 根据方向获取坐标偏移
-    private int[,] dir4 = { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };
-    private int[,] dir8 = { { 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 }, { -1, -1 }, { 0, -1 }, { 1, -1 } };
+	// 根据方向获取坐标偏移
+	private int[,] dir4 = { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };
+	private int[,] dir8 = { { 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 }, { -1, -1 }, { 0, -1 }, { 1, -1 } };
 
-    // Unit吸附的最大范围
-    private float distanceAbsorption = 0.6f;
+	// Unit吸附的最大范围
+	private float distanceAbsorption = 0.6f;
 
-    // 当前鼠标持有的Unit
-    [HideInInspector] public Unit mouseUnit;
+	// 当前鼠标持有的Unit
+	[HideInInspector] public Unit mouseUnit;
 
-    // 允许接收按住鼠标左键或右键
-    [HideInInspector] public bool isClickHold;
+	// 允许接收按住鼠标左键或右键
+	[HideInInspector] public bool isClickHold;
 
-    // 连续购买（是购买并安放的，而非移动网格中现有的）
-    private bool buyContinuous = false;
+	// 连续购买（是购买并安放的，而非移动网格中现有的）
+	private bool buyContinuous = false;
 
-    // 放置位置背景颜色深度
-    [SerializeField] private float colorAlpha = 0.2f;
+	// 放置位置背景颜色深度
+	[SerializeField] private float colorAlpha = 0.2f;
 
-    // 玩家钱数
-    [HideInInspector] public int playerMoney;
+	// 玩家钱数
+	[HideInInspector] public int playerMoney;
 
-    // 显示HP
-    [HideInInspector] public bool isShowingHP;
-    
-    // Editor面板：Owner
-    [HideInInspector] public Player playerOwner;
-    // Editor面板：Money
-    [HideInInspector] public int playerMoneyOrigin;
+	// 显示HP
+	[HideInInspector] public bool isShowingHP;
 
-    [SerializeField] private GameObject square;
+	[SerializeField] private GameObject square;
     private GameController gameController;
-    private ResourceController resourceController;
+	private ResourceController resourceController;
+	private EditorMoney editorMoney;
+	private EditorOwner editorOwener;
+	private EditorLight editorLight;
+	private EditorSizeX editorSizeX;
+	private EditorSizeY editorSizeY;
 
-    private GameObject gridObjects;
+	private GameObject gridObjects;
 
-    void Awake()
-    {
-        gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
-        resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
-    }
+	void Awake()
+	{
+		gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
+		resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
+		editorMoney = GameObject.Find("UI Editor").GetComponentInChildren<EditorMoney>();
+		editorOwener = GameObject.Find("UI Editor").GetComponentInChildren<EditorOwner>();
+		editorLight = GameObject.Find("UI Editor").GetComponentInChildren<EditorLight>();
+		editorSizeX = GameObject.Find("UI Editor").GetComponentInChildren<EditorSizeX>();
+		editorSizeY = GameObject.Find("UI Editor").GetComponentInChildren<EditorSizeY>();
+	}
 
     void Start()
     {
@@ -92,13 +165,13 @@ public class EditorController : MonoBehaviour
     {
         // 初始化网格
         gridObjects = new GameObject("Grid Objects");
-        grid = new Unit[xNum, yNum];
+        grid = new Unit[XNum, YNum];
 
         // 初始化四个边坐标
         xMin = 0;
         yMin = 0;
-        xMax = gridSize * xNum;
-        yMax = gridSize * yNum;
+        xMax = gridSize * XNum;
+        yMax = gridSize * YNum;
     }
 
     void UpdateEditorMode()
@@ -155,9 +228,9 @@ public class EditorController : MonoBehaviour
     void CreateGridSprites()
     {
         // 创建网格
-        for (int x = 0; x < xNum; x++)
+        for (int x = 0; x < XNum; x++)
         {
-            for (int y = 0; y < yNum; y++)
+            for (int y = 0; y < YNum; y++)
             {
                 GameObject squareObj = Instantiate(square, gridObjects.transform);
                 squareObj.transform.position = CoordToPosition(x, y);
@@ -240,6 +313,11 @@ public class EditorController : MonoBehaviour
             {
                 playerMoney += unit.price;
             }
+			// 设置unit所在格子为null
+			if (IsInGrid(unit))
+			{
+				grid[unit.gridX, unit.gridY] = null;
+			}
             Destroy(unit.gameObject);
 
             int rand = UnityEngine.Random.Range(0, resourceController.audiosDelete.Length);
@@ -281,28 +359,17 @@ public class EditorController : MonoBehaviour
                     Buy(unit.gameObject);
                 }
 
-                // 安放
-                grid[x, y] = unit;
-                unit.gridX = x;
-                unit.gridY = y;
-                unit.transform.position = CoordToPosition(x, y);
-                unit.transform.parent = gameController.unitObjects.transform;
-                unit.isEditorCreated = gamePhase == GamePhase.Editor;
-
-                if (unit.gameObject.layer != (int)Layer.Ground)
-                {
-                    unit.SetSpriteLayer("Unit");
-
-                    // Editor面板内容
-                    unit.player = playerOwner;
-                    unit.gameObject.layer = (int)GetUnitLayer(playerOwner, unit);
-                }
-
-                int rand = UnityEngine.Random.Range(0, resourceController.audiosPut.Length);
-                AudioSource.PlayClipAtPoint(resourceController.audiosPut[rand], unit.transform.position);
-            }
+				Put(x, y, unit);
+				PlayPutIntoGridSound(unit);
+			}
         }
     }
+
+	private void PlayPutIntoGridSound(Unit unit)
+	{
+		int rand = UnityEngine.Random.Range(0, resourceController.audiosPut.Length);
+		AudioSource.PlayClipAtPoint(resourceController.audiosPut[rand], unit.transform.position);
+	}
 
     // 根据载入的Unit的坐标，与网格建立联系
     public void UpdateGridWithAllUnits()
@@ -320,9 +387,9 @@ public class EditorController : MonoBehaviour
     // 连接所有网格中的Block
     public void LinkAllBlocksInGrid()
     {
-        for (int x = 0; x < xNum; x++)
+        for (int x = 0; x < XNum; x++)
         {
-            for (int y = 0; y < yNum; y++)
+            for (int y = 0; y < YNum; y++)
             {
                 Block block = grid[x, y] as Block;
                 if (block != null)
@@ -450,7 +517,7 @@ public class EditorController : MonoBehaviour
     Block GetNeighborBlock(int x, int y, int direction)
     {
         // 超出边界
-        if (direction == 0 && x == xNum - 1 || direction == 1 && y == yNum - 1 || direction == 2 && x == 0 || direction == 3 && y == 0)
+        if (direction == 0 && x == XNum - 1 || direction == 1 && y == YNum - 1 || direction == 2 && x == 0 || direction == 3 && y == 0)
         {
             return null;
         }
@@ -467,9 +534,9 @@ public class EditorController : MonoBehaviour
     {
         int[] ret = null;
         float distanceClosest = distanceAbsorption;
-        for (int x = 0; x < xNum; x++)
+        for (int x = 0; x < XNum; x++)
         {
-            for (int y = 0; y < yNum; y++)
+            for (int y = 0; y < YNum; y++)
             {
                 float distance = (CoordToPosition(x, y) - position).magnitude;
                 if (distance < distanceClosest)
@@ -507,11 +574,13 @@ public class EditorController : MonoBehaviour
     // 在网格中
     bool IsInGrid(Unit unit)
     {
-        return unit.gridX >= 0 && unit.gridY >= 0 && unit.gridX < xNum && unit.gridY < yNum;
+        return unit.gridX >= 0 && unit.gridY >= 0 && unit.gridX < XNum && unit.gridY < YNum;
     }
-
-    // 根据Player和Unit获取Layer
-    public Layer GetUnitLayer(Player player, Unit unit)
+	
+	/// <summary>
+	/// 根据Player和Unit获取Layer 
+	/// </summary>
+	public Layer GetUnitLayer(Player player, Unit unit)
     {
         if (player == Player.Player)
         {
@@ -544,7 +613,7 @@ public class EditorController : MonoBehaviour
     // 坐标是否合法
     bool IsLegalCoord(int x, int y)
     {
-        return x >= 0 && x < xNum && y >= 0 && y < yNum;
+        return x >= 0 && x < XNum && y >= 0 && y < YNum;
     }
 
     // 这一格合法且是地面
@@ -565,7 +634,7 @@ public class EditorController : MonoBehaviour
         InitPlayerMoney();
 
         // 放置物体所有者切换至玩家
-        playerOwner = Player.Player;
+        PlayerOwner = Player.Player;
 
         // 不一直显示HP
         isShowingHP = false;
@@ -577,25 +646,12 @@ public class EditorController : MonoBehaviour
     // 初始化玩家钱数
     public void InitPlayerMoney()
     {
-        playerMoney = playerMoneyOrigin;
+        playerMoney = PlayerMoneyOrigin;
     }
 
-    // 修改网格尺寸
-    public void SetXNum(int x)
+	// xNum与yNum变更后更新网格
+	private void UpdateGridAfterResize()
     {
-        SetXYNum(x, yNum);
-    }
-
-    public void SetYNum(int y)
-    {
-        SetXYNum(xNum, y);
-    }
-
-    void SetXYNum(int x, int y)
-    {
-        xNum = x;
-        yNum = y;
-
         // 删除网格之外的物体
         Unit[] units = gameController.GetUnits();
         foreach (Unit unit in units)
@@ -629,4 +685,36 @@ public class EditorController : MonoBehaviour
             }
         }
     }
+
+	/// <summary>
+	/// 将unit放入(x,y), 设置位置。添加到gameController管理
+	/// </summary>
+	public void Put(int x, int y, Unit unit)
+	{
+		// 安放
+		grid[x, y] = unit;
+		unit.gridX = x;
+		unit.gridY = y;
+		unit.transform.position = CoordToPosition(x, y);
+
+		Add2GameControllerAndSetLayer(unit);
+	}
+
+	private void Add2GameControllerAndSetLayer(Unit unit)
+	{
+		unit.transform.parent = gameController.unitObjects.transform;
+		unit.isEditorCreated = (gamePhase == GamePhase.Editor);
+		// 如果单位不是地面,则设置所有单位的显示层为Unit
+		// 如果单位是地面, 默认拥有者是中立,显示物理层不变
+		if (unit.gameObject.layer != (int)Layer.Ground)
+		{
+			// 设置Unit显示层
+			unit.SetSpriteLayer("Unit");
+			// 设置player
+			unit.player = PlayerOwner;
+			// 设置Unit物理层
+			unit.gameObject.layer = (int)GetUnitLayer(PlayerOwner, unit);
+		}
+	}
+
 }
