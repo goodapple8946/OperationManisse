@@ -11,6 +11,7 @@ public class ShopController : MonoBehaviour
 
     private GameObject content;
 
+	// prefab
     public GameObject[] editorObjects;
     public GameObject[] blockObjects;
     public GameObject[] ballObjects;
@@ -18,6 +19,7 @@ public class ShopController : MonoBehaviour
 
     public GameObject shopObjectPrefab;
 
+	// 所有的商店中的物品
     private ShopObject[] shopObjects;
 
     void Awake()

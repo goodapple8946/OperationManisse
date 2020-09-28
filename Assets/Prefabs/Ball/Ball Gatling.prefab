@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 628507356808408034}
   - component: {fileID: 628507356808408033}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 628507356808408035}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.137, z: 0}
   m_LocalScale: {x: 0.8793889, y: 0.68196416, z: 1}
   m_Children: []
   m_Father: {fileID: 628507357035931375}
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 00168171016b6e8409205b71d8428b40, type: 3}
-  m_Color: {r: 0.80392164, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -93,8 +93,8 @@ GameObject:
   - component: {fileID: 628507357035931377}
   - component: {fileID: -5567803682464269790}
   - component: {fileID: -3313053000362919951}
-  m_Layer: 0
-  m_Name: Ball Gatling
+  m_Layer: 8
+  m_Name: Player Ball Gatling
   m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150,19 +150,18 @@ MonoBehaviour:
   radius: 0.3
   sprites: []
   damageCollision: 10
-  player: 0
+  player: 1
   gridX: -1
   gridY: -1
   price: 500
-  isEditorCreated: 0
   body: {fileID: 0}
   weaponOffset: 0.9
-  findEnemyRange: 10
   weaponCDMax: 0.1
   weaponAngle: 6.5
+  findEnemyRange: 10
   missilePrefab: {fileID: 8991482200070230743, guid: 64f72a8e7a85d8f4a9c1ffc30243c07f,
     type: 3}
-  preheatTime: 2
+  preheatTime: 3
   currPreheatTime: 0
 --- !u!50 &-3313053000362919951
 Rigidbody2D:

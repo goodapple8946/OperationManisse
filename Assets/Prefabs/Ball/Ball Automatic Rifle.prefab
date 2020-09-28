@@ -157,9 +157,9 @@ MonoBehaviour:
   isEditorCreated: 0
   body: {fileID: 0}
   weaponOffset: 0.6
-  findEnemyRange: 10
   weaponCDMax: 0.75
   weaponAngle: 4
+  findEnemyRange: 10
   missilePrefab: {fileID: 8991482200070230743, guid: 64f72a8e7a85d8f4a9c1ffc30243c07f,
     type: 3}
 --- !u!50 &-4278119593528944783

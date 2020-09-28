@@ -25,13 +25,14 @@ public class GameController : MonoBehaviour
     private ShopController shopController;
     private ResourceController resourceController;
 
+	// 编辑器部分的UI
     private GameObject uiEditor;
+	// 游戏部分的UI
     private GameObject uiGame;
 
     /**
      * 生命周期函数
      */
-
     void Awake()
     {
         uiEditor = GameObject.Find("UI Canvas/UI Editor");

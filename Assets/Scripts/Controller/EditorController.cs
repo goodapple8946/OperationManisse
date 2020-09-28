@@ -625,12 +625,7 @@ public class EditorController : MonoBehaviour
             // R键旋转
             if (Input.GetKeyDown(KeyCode.R))
             {
-                Block block = mouseUnit as Block;
-
-                if (block != null)
-                {
-                    block.Rotate();
-                }
+				mouseUnit.Rotate();
             }
         }
     }
