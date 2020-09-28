@@ -8,87 +8,10 @@ using System.Xml.Serialization;
 using UnityEngine;
 using static GameController;
 
-public class EditorLoadFile : MonoBehaviour
-{
-	private EditorController editorController;
-	private ResourceController resourceController;
-
-	public void Awake()
-	{
-		editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
-		resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
-	}
-
-	public void LoadFile()
-	{
-		// 初始化网格
-		editorController.XNum = 0;
-		editorController.YNum = 0;
-
-		// 根据文件生成Game
-		string filename = "C://Users//asus//Desktop//1.xml";
-		XMLGame game = Serializer.Deserialized(filename);
-
-		// 加载地图信息
-		XMLMap map = game.xmlMap;
-		LoadMap(map);
-
-		// 加载单位信息
-		List<XMLUnit> xmlUnits = game.xmlUnits;
-		foreach (XMLUnit xmlUnit in xmlUnits)
-		{
-			LoadUnit(xmlUnit);
-		}
-		// 开始游戏
-		// gameController.Run();
-	}
-
-	private void LoadMap(XMLMap map)
-	{
-		editorController.XNum = map.xNum;
-		editorController.YNum = map.yNum;
-		editorController.PlayerMoneyOrigin = map.money;
-		editorController.LightIntensity = map.lightIntensity;
-	}
-
-	private void LoadUnit(XMLUnit xmlUnit)
-	{
-		// 复制一份物体
-		GameObject objPrefab = resourceController.unitDictionary[xmlUnit.name];
-		GameObject objClone = Instantiate(objPrefab);
-		// 设置位置,player和方向信息
-		Unit unit = objClone.GetComponent<Unit>();
-		editorController.Put(xmlUnit.x, xmlUnit.y, unit);
-		unit.Direction = xmlUnit.direction;
-		// TODO: 更新血条？
-		unit.player = (Player)xmlUnit.player;
-		// 设置成编辑器创建
-		unit.isEditorCreated = true;
-	}
-}
-
-public class EditorSaveFile : MonoBehaviour
-{
-	private EditorController editorController;
-	private ResourceController resourceController;
-
-	public void Awake()
-	{
-		editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
-		resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
-	}
-
-	public void SaveFile()
-	{
-		string filename = "C://Users//asus//Desktop//1.xml";
-
-		List<Unit> units = editorController.Grid.OfType<Unit>().ToList();
-		Debug.Log(units.Count);
-		Serializer.Serialize(editorController, units, filename);
-	}
-}
-
-static class Serializer
+/// <summary>
+/// 辅助save和load的工具类
+/// </summary>
+public static class Serializer
 {
 	/// <summary>
 	/// 根据参数构造Game并序列化
@@ -165,11 +88,12 @@ static class Serializer
 	}
 }
 
-class XMLGame
+public class XMLGame
 {
 	public XMLMap xmlMap;
 	public List<XMLUnit> xmlUnits;
 
+	// 默认无参构造函数
 	public XMLGame() { }
 
 	public XMLGame(XMLMap xmlMap, List<XMLUnit> xmlUnits)
@@ -179,7 +103,7 @@ class XMLGame
 	}
 }
 
-class XMLUnit
+public class XMLUnit
 {
 	// ResourceController 的 prefab name 
 	public String name;
@@ -201,7 +125,7 @@ class XMLUnit
 	}
 }
 
-class XMLMap
+public class XMLMap
 {
 	public int xNum;
 	public int yNum;
