@@ -9,7 +9,7 @@ using static Controller;
 public class EditorController : MonoBehaviour
 {
 	// 编辑模式
-	public enum EditorMode { None, Unit }
+	public enum EditorMode { Unit, Background, Location }
 
 	// 当前编辑模式
 	[HideInInspector] public EditorMode editorMode;
@@ -23,7 +23,7 @@ public class EditorController : MonoBehaviour
 	// Editor面板：网格尺寸y
 	[HideInInspector] private int yNum = 8;
 	// Editor面板：编辑者当前使用的UnitOwner
-	[HideInInspector] private Player playerOwner = Player.Player;
+	[HideInInspector] private Player playerOwner = Player.Neutral;
 	// Editor面板：编辑者当前设置的玩家初始钱数
 	[HideInInspector] private int playerMoneyOrigin = 0;
 	// Editor面板：编辑者当前设置的全局光照
@@ -152,9 +152,6 @@ public class EditorController : MonoBehaviour
 
     void Update()
     {
-        // 更新编辑模式
-        UpdateEditorMode();
-
         // 键盘指令
         KeyOrder();
     }
@@ -170,18 +167,6 @@ public class EditorController : MonoBehaviour
         yMin = 0;
         xMax = gridSize * XNum;
         yMax = gridSize * YNum;
-    }
-
-    void UpdateEditorMode()
-    {
-        if (mouseUnit == null)
-        {
-            editorMode = EditorMode.None;
-        }
-        else
-        {
-            editorMode = EditorMode.Unit;
-        }
     }
 
     public void LeftClickUnit(Unit unit, bool hold = false)

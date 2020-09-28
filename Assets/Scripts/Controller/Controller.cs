@@ -18,13 +18,11 @@ public class Controller: MonoBehaviour
 
     void Awake()
     {
-
-
-    gameController     = GameObject.Find("Controller/Game Controller").    GetComponent<GameController>();
-    editorController   = GameObject.Find("Controller/Editor Controller").  GetComponent<EditorController>();
-    mouseController    = GameObject.Find("Controller/Mouse Controller").   GetComponent<MouseController>();
-    resourceController = GameObject.Find("Controller/Resource Controller").GetComponent<ResourceController>();
-    victoryController  = GameObject.Find("Controller/Victory Controller"). GetComponent<VictoryController>();
-    shopController     = GameObject.Find("Controller/Shop Controller").    GetComponent<ShopController>();
-}
+        gameController     = GameObject.Find("Controller/Game Controller").    GetComponent<GameController>();
+        editorController   = GameObject.Find("Controller/Editor Controller").  GetComponent<EditorController>();
+        mouseController    = GameObject.Find("Controller/Mouse Controller").   GetComponent<MouseController>();
+        resourceController = GameObject.Find("Controller/Resource Controller").GetComponent<ResourceController>();
+        victoryController  = GameObject.Find("Controller/Victory Controller"). GetComponent<VictoryController>();
+        shopController     = GameObject.Find("Controller/Shop Controller").    GetComponent<ShopController>();
+    }
 }
