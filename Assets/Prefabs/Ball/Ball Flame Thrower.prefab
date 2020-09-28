@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 6872813403385637930}
   - component: {fileID: 5366163776855680167}
   - component: {fileID: 1544411649836049550}
-  - component: {fileID: -9000193316437060796}
-  m_Layer: 0
+  - component: {fileID: 5195159365275906624}
+  m_Layer: 8
   m_Name: Ball Flame Thrower
   m_TagString: Ball
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 6872813403385637928}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: f327ae9ac69e71a4195d1031aa6d2339, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -72,7 +72,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-9000193316437060796
+--- !u!114 &5195159365275906624
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -81,9 +81,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 6872813403385637928}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f9d48a2a41430948be8c4d203f1465b, type: 3}
+  m_Script: {fileID: 11500000, guid: ff2e380ef4facc443ba646cd8db790ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthMax: 100
+  health: 100
+  priority: 1000
+  radius: 0.6
+  sprites: []
+  damageCollision: 10
+  player: 0
+  gridX: -1
+  gridY: -1
+  price: 300
+  isEditorCreated: 0
+  body: {fileID: 0}
+  weaponOffset: 0.6
+  weaponCDMax: 0.1
+  weaponAngle: 0.1
+  findEnemyRange: 6
+  missilePrefab: {fileID: 2625591034799234768, guid: c24df044ea12e224191b809a93441948,
+    type: 3}
 --- !u!1 &6975489233847638300
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,7 +112,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8106083921907471497}
   - component: {fileID: 3247041828502394306}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,8 +169,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 158068497
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 24e5ee68711986a4d94d4f8388858fc6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -175,7 +193,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8733755403598501704}
   - component: {fileID: 8733755403598501705}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -232,8 +250,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 158068497
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: c7dd24f6fbc67d949aa22fb0985ea0d6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

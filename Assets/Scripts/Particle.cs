@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class Particle : MonoBehaviour
 {
-    private ParticleSystem ParticleSystem;
+	// 粒子所在系统
+    private ParticleSystem _particleSystem;
 
     void Start()
     {
-        ParticleSystem = gameObject.GetComponent<ParticleSystem>();
+		_particleSystem = gameObject.GetComponent<ParticleSystem>();
     }
 
     void Update()
     {
-        if (!ParticleSystem.IsAlive())
+        if (!_particleSystem.IsAlive())
         {
             Destroy(gameObject);
         }

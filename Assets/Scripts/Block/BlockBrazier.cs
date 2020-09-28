@@ -18,6 +18,8 @@ public class BlockBrazier : Block
     {
         base.Start();
 
+		// 设置方向
+		Direction = 1;
         // 创建粒子
         particle = Instantiate(particlePrefab);
     }

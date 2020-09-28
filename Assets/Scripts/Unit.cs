@@ -41,18 +41,17 @@ public abstract class Unit : ClickableObject
     protected float velocityCollision = 3f;
 
     // 玩家
-    public Player player;
+    [HideInInspector] public Player player;
 
-    // 在网格中的位置（-1代表未在网格中）
-    public int gridX = -1;
-    public int gridY = -1;
+	// 在网格中的位置（-1代表未在网格中）
+	[HideInInspector] public int gridX = -1;
+	[HideInInspector] public int gridY = -1;
 
 	/* 
 	* Link Direction:
 	* 0: Right, 1: Top, 2: Left, 3: Bottom
 	*/
 	protected int direction = 0;
-
 	#region direction peoperty
 	public int Direction
 	{
@@ -70,7 +69,7 @@ public abstract class Unit : ClickableObject
 	public int price;
 
     // 是编辑器创建的
-    public bool isEditorCreated;
+    [HideInInspector] public bool isEditorCreated;
 
     public Rigidbody2D body;
 

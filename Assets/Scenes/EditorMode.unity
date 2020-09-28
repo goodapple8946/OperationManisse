@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -5375,8 +5375,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1032820972}
   m_HandleRect: {fileID: 1032820971}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.6735484
+  m_Value: 1.0000002
+  m_Size: 0.67467064
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10134,6 +10134,7 @@ MonoBehaviour:
   - {fileID: 628507357035931378, guid: 59f92773785bc734cae050131b7172e7, type: 3}
   - {fileID: 2019012135359395236, guid: 5ee0b73e13c849549bd62bba078b181d, type: 3}
   - {fileID: 482596519982492694, guid: 2be91bedcdbaa7648ba207bbbfea4382, type: 3}
+  - {fileID: 6872813403385637928, guid: 03ea9a0d910199f489c7b3e7753866bf, type: 3}
   backgroundObjects:
   - {fileID: 8378984809343144978, guid: c1bd1d8a8e4550c46bfcb6c97616dd7d, type: 3}
   particleLinkPrefab: {fileID: 8728105212017883391, guid: 5ca256b7950e1c743a648418ac98b45c,

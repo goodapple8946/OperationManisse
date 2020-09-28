@@ -10,6 +10,7 @@ public class BallShuriken : Ball
 	protected override void FixedUpdate()
 	{
 		DeathCheck();
+
 		// 只改了这一处，当握着手里剑时才会减CD
 		if (holdShuriken)
 		{

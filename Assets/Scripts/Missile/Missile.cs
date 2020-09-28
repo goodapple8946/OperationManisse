@@ -8,7 +8,7 @@ public class Missile : MonoBehaviour
     // 发射力
     public float forceLaunch;
 
-    // 冲击力
+    // 冲击力施加给目标的力
     public float forceHit;
 
     // 伤害
@@ -17,11 +17,11 @@ public class Missile : MonoBehaviour
     // 飞行时间（飞行时间为0时，才判定为死亡）
     public float duration;
 
-    // 撞击后剩余飞行时间
+    // 发生碰撞后, 剩余飞行时间
     public float durationHit;
 
     // 存活 （不存活时仍然存在，但是不造成伤害）
-    public bool isAlive;
+    [HideInInspector] public bool isAlive = true;
 
     // 发射粒子预设
     public GameObject particleLaunchPerfab;
@@ -61,8 +61,10 @@ public class Missile : MonoBehaviour
         }
     }
 
-    // 撞击
-    protected virtual void OnCollisionEnter2D(Collision2D other)
+    /// <summary>
+	/// 由于layer不会与右方碰撞,所以不会对友方造成伤害
+	/// </summary>
+	protected virtual void OnCollisionEnter2D(Collision2D other)
     {
         if (isAlive)
         {
