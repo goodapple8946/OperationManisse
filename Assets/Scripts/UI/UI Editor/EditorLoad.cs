@@ -27,6 +27,9 @@ public class EditorLoad : MonoBehaviour
 		{
 			LoadUnit(xmlUnit);
 		}
+
+		List<string> goodsVisible = game.goodsVisable;
+		shopController.SetShopObjectVisibility(goodsVisible);
 		// 开始游戏
 		// gameController.Run();
 	}

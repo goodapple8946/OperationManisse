@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<XMLGame xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <xmlMap>
+    <xNum>8</xNum>
+    <yNum>8</yNum>
+    <money>0</money>
+    <lightIntensity>1</lightIntensity>
+  </xmlMap>
+  <xmlUnits>
+    <XMLUnit>
+      <name>Block Stone(Clone)</name>
+      <player>1</player>
+      <x>0</x>
+      <y>3</y>
+      <direction>0</direction>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Stone(Clone)</name>
+      <player>1</player>
+      <x>1</x>
+      <y>0</y>
+      <direction>0</direction>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Stone(Clone)</name>
+      <player>1</player>
+      <x>2</x>
+      <y>1</y>
+      <direction>0</direction>
+    </XMLUnit>
+  </xmlUnits>
+  <goodsVisable />
+</XMLGame>
