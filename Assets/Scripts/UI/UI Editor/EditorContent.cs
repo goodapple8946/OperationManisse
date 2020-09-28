@@ -25,8 +25,8 @@ public class EditorContent : MonoBehaviour
         }
     }
 
-    void Update()
+    public void UpdateActive()
     {
-
+        editorUnit.SetActive(editorController.EditorMode == EditorMode.Unit);
     }
 }

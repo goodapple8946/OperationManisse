@@ -7,14 +7,16 @@ public class VictoryController : MonoBehaviour
 {
     private string targetName = "Target";
 
-    /*[HideInInspector] */public VictoryCondition victoryCondition;
-    /*[HideInInspector] */public Unit[] targets;
-    /*[HideInInspector] */public float holdOnTimeOrigin;
-    /*[HideInInspector] */public float holdOnTime;
-    /*[HideInInspector] */public bool isVictory;
+    [HideInInspector] public VictoryCondition victoryCondition;
+    [HideInInspector] public Unit[] targets;
+    [HideInInspector] public float holdOnTimeOrigin;
+    [HideInInspector] public float holdOnTime;
+    [HideInInspector] public bool isVictory;
 
     public void Init()
     {
+        isVictory = false;
+
         // Kill All：将所有敌人放入Targets
         if (victoryCondition == VictoryCondition.KillAll)
         {

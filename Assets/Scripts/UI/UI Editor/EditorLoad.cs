@@ -47,8 +47,9 @@ public class EditorLoad : MonoBehaviour
 		// 复制一份物体
 		GameObject objPrefab = resourceController.unitDictionary[xmlUnit.name];
 		GameObject objClone = Instantiate(objPrefab);
-		// 设置位置,player和方向信息
-		Unit unit = objClone.GetComponent<Unit>();
+        objClone.name = objPrefab.name;
+        // 设置位置,player和方向信息
+        Unit unit = objClone.GetComponent<Unit>();
 		editorController.Put(xmlUnit.x, xmlUnit.y, unit);
 		unit.Direction = xmlUnit.direction;
 		// TODO: 更新血条？

@@ -8,85 +8,27 @@ using static Controller;
 
 public class EditorController : MonoBehaviour
 {
-	// 编辑模式
-	public enum EditorMode { Unit, Background, Location }
-
 	// 当前编辑模式
-	[HideInInspector] public EditorMode editorMode;
+	[HideInInspector] private EditorMode editorMode;
 
 	// 玩家放置物体的网格
 	private Unit[,] grid;
-	[HideInInspector] public Unit[,] Grid { get => grid;}
+	[HideInInspector] public Unit[,] Grid { get => grid; }
 
 	// Editor面板：网格尺寸x
 	[HideInInspector] private int xNum = 8;
+
 	// Editor面板：网格尺寸y
 	[HideInInspector] private int yNum = 8;
+
 	// Editor面板：编辑者当前使用的UnitOwner
 	[HideInInspector] private Player playerOwner = Player.Neutral;
+
 	// Editor面板：编辑者当前设置的玩家初始钱数
 	[HideInInspector] private int playerMoneyOrigin = 0;
+
 	// Editor面板：编辑者当前设置的全局光照
 	[HideInInspector] private float lightIntensity = 1.0f;
-	#region Property Function
-	// 更新EditorSizeX的显示
-	public int XNum
-	{
-		get => xNum;
-		set
-		{
-			xNum = value;
-			// 同步数据变更到UI显示
-			editorSizeX.ShowX(xNum);
-			// 更新网格信息
-			UpdateGridAfterResize();
-		}
-	}
-	// 更新EditorSizeY的显示
-	public int YNum
-	{
-		get => yNum;
-		set
-		{
-			yNum = value;
-			// 同步数据变更到UI显示
-			editorSizeY.ShowY(yNum);
-			// 更新网格信息
-			UpdateGridAfterResize();
-		}
-	}
-	// 更新Editor的显示
-	public Player PlayerOwner
-	{
-		get => playerOwner;
-		set
-		{
-			playerOwner = value;
-			editorOwener.ShowOwner(playerOwner);
-		}
-	}
-	// 更新Editor的显示
-	public int PlayerMoneyOrigin
-	{
-		get => playerMoneyOrigin;
-		set
-		{
-			playerMoneyOrigin = value;
-			editorMoney.ShowMoney(playerMoneyOrigin);
-		}
-	}
-	// 改变光照强度并更新Editor的显示
-	public float LightIntensity
-	{
-		get => lightIntensity;
-		set
-		{
-			lightIntensity = value;
-			GameObject.Find("Global Light").GetComponent<Light2D>().intensity = lightIntensity;
-			editorLight.ShowLight(lightIntensity);
-		}
-	}
-	#endregion
 
 	// 摄像机的四个边的世界位置
 	[HideInInspector] public float xMin;
@@ -108,10 +50,11 @@ public class EditorController : MonoBehaviour
 	private float distanceAbsorption = 0.6f;
 
 	// 当前鼠标持有的Unit
-	[HideInInspector] public Unit mouseUnit;
+	[HideInInspector] public ClickableObject mouseObject;
 
-	// 允许接收按住鼠标左键或右键
-	[HideInInspector] public bool isClickHold;
+    // 允许接收按住鼠标左键或右键
+    // 只有EditorMode是Unit模式下，isClickHold才能为true
+    [HideInInspector] public bool isClickHold;
 
 	// 连续购买（是购买并安放的，而非移动网格中现有的）
 	private bool buyContinuous = false;
@@ -125,15 +68,97 @@ public class EditorController : MonoBehaviour
 	// 显示HP
 	[HideInInspector] public bool isShowingHP;
 
+    // 背景
+    [HideInInspector] public HashSet<Background> backgrounds;
+
 	[SerializeField] private GameObject square;
 
-	private EditorMoney editorMoney;
+    #region Property Function
+    public int XNum
+    {
+        get => xNum;
+        set
+        {
+            xNum = value;
+            // 同步数据变更到UI显示
+            editorSizeX.ShowX(xNum);
+            // 更新网格信息
+            UpdateGridAfterResize();
+        }
+    }
+    public int YNum
+    {
+        get => yNum;
+        set
+        {
+            yNum = value;
+            // 同步数据变更到UI显示
+            editorSizeY.ShowY(yNum);
+            // 更新网格信息
+            UpdateGridAfterResize();
+        }
+    }
+    public Player PlayerOwner
+    {
+        get => playerOwner;
+        set
+        {
+            playerOwner = value;
+            editorOwener.ShowOwner(playerOwner);
+        }
+    }
+    public int PlayerMoneyOrigin
+    {
+        get => playerMoneyOrigin;
+        set
+        {
+            playerMoneyOrigin = value;
+            editorMoney.ShowMoney(playerMoneyOrigin);
+        }
+    }
+    public EditorMode EditorMode
+    {
+        get => editorMode;
+        set
+        {
+            editorMode = value;
+            editorEditorMode.ShowEditorMode(editorMode);
+            IsClickHold = false;
+            shopController.UpdateShop();
+            ClearMouseObject();
+        }
+    }
+    public bool IsClickHold
+    {
+        get => isClickHold;
+        set
+        {
+            isClickHold = value;
+            editorHold.ShowHold(isClickHold);
+        }
+    }
+
+	public float LightIntensity
+    {
+        get => lightIntensity;
+        set
+        {
+            lightIntensity = value;
+            GameObject.Find("Global Light").GetComponent<Light2D>().intensity = lightIntensity;
+            editorLight.ShowLight(lightIntensity);
+        }
+    }
+    #endregion
+
+    private EditorMoney editorMoney;
 	private EditorOwner editorOwener;
 	private EditorLight editorLight;
 	private EditorSizeX editorSizeX;
 	private EditorSizeY editorSizeY;
+    private EditorEditorMode editorEditorMode;
+    private EditorHold editorHold;
 
-	private GameObject gridObjects;
+    private GameObject gridObjects;
 
 	void Awake()
 	{
@@ -142,7 +167,9 @@ public class EditorController : MonoBehaviour
 		editorLight = GameObject.Find("UI Editor").GetComponentInChildren<EditorLight>();
 		editorSizeX = GameObject.Find("UI Editor").GetComponentInChildren<EditorSizeX>();
 		editorSizeY = GameObject.Find("UI Editor").GetComponentInChildren<EditorSizeY>();
-	}
+        editorEditorMode = GameObject.Find("UI Editor").GetComponentInChildren<EditorEditorMode>();
+        editorHold = GameObject.Find("UI Editor").GetComponentInChildren<EditorHold>();
+    }
 
     void Start()
     {
@@ -152,8 +179,8 @@ public class EditorController : MonoBehaviour
 
     void Update()
     {
-        // 键盘指令
-        KeyOrder();
+        // 指令
+        Order();
     }
 
     void Init()
@@ -167,45 +194,8 @@ public class EditorController : MonoBehaviour
         yMin = 0;
         xMax = gridSize * XNum;
         yMax = gridSize * YNum;
-    }
 
-    public void LeftClickUnit(Unit unit, bool hold = false)
-    {
-        if (!isClickHold && hold)
-        {
-            return;
-        }
-        if (mouseUnit != null)
-        {
-            if (mouseUnit == unit)
-            {
-                // 安放鼠标上的物体到网格中
-                CheckAbsorption(unit);
-            }
-            else
-            {
-                // 将网格物体与鼠标物体交换
-            }
-        }
-        else
-        {
-            // 移动网格中的物体
-            if (gameController.gamePhase == GamePhase.Editor ||
-                gameController.gamePhase == GamePhase.Preparation && unit.player == Player.Player)
-            {
-                buyContinuous = false;
-                Pick(unit);
-            }
-        }
-    }
-
-    public void RightClickUnit(Unit unit, bool hold = false)
-    {
-        if (!isClickHold && hold)
-        {
-            return;
-        }
-        Sell(unit);
+        backgrounds = new HashSet<Background>();
     }
 
     void CreateGridSprites()
@@ -231,84 +221,76 @@ public class EditorController : MonoBehaviour
         }
     }
 
-    // 购买
-    public void Buy(GameObject prefab)
+    // 鼠标左键点击
+    public void LeftClick(ClickableObject clickableObject, bool hold = false)
     {
-        buyContinuous = true;
-
-        Unit unit = prefab.GetComponent<Unit>();
-
-        if (mouseUnit == null)
+        // 如果没有开启连续放置模式，但是长按鼠标。则没有效果
+        if (!isClickHold && hold)
         {
-            if (playerMoney >= unit.price || gameController.gamePhase == GamePhase.Editor)
+            return;
+        }
+        // Unit模式下点击Unit，此时mouseObject一定是Unit或null
+        if (clickableObject is Unit && editorMode == EditorMode.Unit)
+        {
+            Unit unit = clickableObject as Unit;
+            LeftClick(unit);
+        }
+        // Background模式下点击Background，此时mouseObject一定是Background或null
+        else if (clickableObject is Background && editorMode == EditorMode.Background)
+        {
+            Background background = clickableObject as Background;
+            LeftClick(background);
+        }
+    }
+    // 鼠标左键点击Unit
+    public void LeftClick(Unit unit)
+    {
+        // 满足阶段
+        if (mouseObject != null)
+        {
+            if (mouseObject as Unit == unit)
             {
-                if (gameController.gamePhase == GamePhase.Preparation)
-                {
-                    playerMoney -= unit.price;
-                }
-
-                Unit unitBought = Instantiate(prefab).GetComponent<Unit>();
-                unitBought.name = prefab.name;
-
-                Pick(unitBought);
-            }
-            else
-            {
-                MoneyNotEnough();
+                // 安放鼠标上的物体到网格中
+                Place(unit);
             }
         }
         else
         {
-            if (playerMoney + mouseUnit.price >= unit.price || gameController.gamePhase == GamePhase.Editor)
+            // 移动网格中的Unit
+            if (
+                // 编辑阶段可以任意移动
+                gameController.gamePhase == GamePhase.Editor ||
+                //准备阶段：不能移动其他玩家的Unit、不能移动编辑器创建的Unit
+                (gameController.gamePhase == GamePhase.Preparation && unit.player == Player.Player && !unit.isEditorCreated))
             {
-                if (gameController.gamePhase == GamePhase.Preparation)
+                buyContinuous = false;
+                Pick(unit);
+            }
+        }
+    }
+    // 鼠标左键点击Background
+    public void LeftClick(Background background)
+    {
+        // 必须是编辑阶段
+        if (gameController.gamePhase == GamePhase.Editor)
+        {
+            if (mouseObject != null)
+            {
+                if (mouseObject as Background == background)
                 {
-                    playerMoney += mouseUnit.price - unit.price;
+                    // 安放鼠标上的背景到背景集合
+                    Place(background);
                 }
-                Destroy(mouseUnit.gameObject);
-
-                Unit unitBought = Instantiate(prefab).GetComponent<Unit>();
-                unitBought.name = prefab.name;
-
-                Pick(unitBought);
             }
             else
             {
-                MoneyNotEnough();
+                // 移动背景集合中的背景
+                buyContinuous = false;
+                Pick(background);
             }
         }
     }
-
-    // 钱不够
-    void MoneyNotEnough()
-    {
-
-    }
-
-    // 出售
-    public void Sell(Unit unit)
-    {
-        // 满足出售条件
-        if (gameController.gamePhase == GamePhase.Editor ||
-            gameController.gamePhase == GamePhase.Preparation && !unit.isEditorCreated)
-        {
-            if (gameController.gamePhase == GamePhase.Preparation)
-            {
-                playerMoney += unit.price;
-            }
-			// 设置unit所在格子为null
-			if (IsInGrid(unit))
-			{
-				grid[unit.gridX, unit.gridY] = null;
-			}
-            Destroy(unit.gameObject);
-
-            int rand = UnityEngine.Random.Range(0, resourceController.audiosDelete.Length);
-            AudioSource.PlayClipAtPoint(resourceController.audiosDelete[rand], unit.transform.position);
-        }
-    }
-
-    // 拾起
+    // 拾起Unit
     public void Pick(Unit unit)
     {
         int x = unit.gridX;
@@ -319,11 +301,36 @@ public class EditorController : MonoBehaviour
             unit.gridX = unit.gridY = -1;
         }
         unit.SetSpriteLayer("Pick");
-        mouseUnit = unit;
+        mouseObject = unit;
     }
+    // 拾起BackGround
+    public void Pick(Background background)
+    {
+        background.SetSpriteLayer("Pick");
+        mouseObject = background;
+    }
+    // 购买
+    public void Buy(GameObject prefab)
+    {
+        buyContinuous = true;
 
+        ClickableObject clickableObject = prefab.GetComponent<ClickableObject>();
+
+        // 购买Unit，此时mouseObject一定是Unit或null
+        if (clickableObject is Unit && editorMode == EditorMode.Unit)
+        {
+            Unit unit = clickableObject as Unit;
+            Buy(unit);
+        }
+        // 购买Background，此时mouseObject一定是Background或null
+        else if (clickableObject is Background && editorMode == EditorMode.Background)
+        {
+            Background background = clickableObject as Background;
+            Buy(background);
+        }
+    }
     // 安放，吸附到最近的网格
-    public void CheckAbsorption(Unit unit)
+    public void Place(Unit unit)
     {
         Vector2 pos = unit.transform.position;
         int[] coord = PositionToClosestCoord(pos);
@@ -334,7 +341,7 @@ public class EditorController : MonoBehaviour
 
             if (grid[x, y] == null)
             {
-                mouseUnit = null;
+                mouseObject = null;
 
                 // 如果是购买并安放的（而非移动网格中现有的），继续购买
                 if (buyContinuous)
@@ -342,12 +349,139 @@ public class EditorController : MonoBehaviour
                     Buy(unit.gameObject);
                 }
 
-				Put(x, y, unit);
-				PlayPutIntoGridSound(unit);
-			}
+                Put(x, y, unit);
+                PlayPutIntoGridSound(unit);
+            }
         }
     }
+    // 安放，放入背景集合
+    public void Place(Background background)
+    {
+        background.SetSpriteLayer("Background");
+        backgrounds.Add(background);
+        mouseObject = null;
+    }
+    // 购买Unit
+    void Buy(Unit unit)
+    {
+        if (mouseObject == null)
+        {
+            if (playerMoney >= unit.price || gameController.gamePhase == GamePhase.Editor)
+            {
+                if (gameController.gamePhase == GamePhase.Preparation)
+                {
+                    playerMoney -= unit.price;
+                }
 
+                Unit unitBought = Instantiate(unit.gameObject).GetComponent<Unit>();
+                unitBought.name = unit.gameObject.name;
+
+                Pick(unitBought);
+            }
+            else
+            {
+                MoneyNotEnough();
+            }
+        }
+        else
+        {
+            Unit mouseUnit = mouseObject as Unit;
+            if (playerMoney + mouseUnit.price >= unit.price || gameController.gamePhase == GamePhase.Editor)
+            {
+                if (gameController.gamePhase == GamePhase.Preparation)
+                {
+                    playerMoney += mouseUnit.price - unit.price;
+                }
+                Destroy(mouseUnit.gameObject);
+
+                Unit unitBought = Instantiate(unit.gameObject).GetComponent<Unit>();
+                unitBought.name = unit.gameObject.name;
+
+                Pick(unitBought);
+            }
+            else
+            {
+                MoneyNotEnough();
+            }
+        }
+    }
+    // 购买Background
+    void Buy(Background background)
+    {
+        if (mouseObject == null)
+        {
+            Background backgroundBought = Instantiate(background.gameObject).GetComponent<Background>();
+            backgroundBought.name = background.gameObject.name;
+
+            Pick(backgroundBought);
+        }
+        else
+        {
+            Background mouseBackground = mouseObject as Background;
+            Destroy(mouseBackground.gameObject);
+
+            Background backgroundBought = Instantiate(background.gameObject).GetComponent<Background>();
+            backgroundBought.name = background.gameObject.name;
+
+            Pick(backgroundBought);
+        }
+    }
+    // 钱不够
+    void MoneyNotEnough()
+    {
+
+    }
+    // 鼠标右键点击
+    public void RightClick(ClickableObject clickableObject, bool hold = false)
+    {
+        // 如果没有开启连续放置模式，但是长按鼠标。则没有效果
+        if (!isClickHold && hold)
+        {
+            return;
+        }
+        Sell(clickableObject);
+    }
+    // 出售
+    public void Sell(ClickableObject clickableObject)
+    {
+        if (clickableObject is Unit)
+        {
+            Unit unit = clickableObject as Unit;
+            Sell(unit);
+        }
+        else if (clickableObject is Background)
+        {
+            Background background = clickableObject as Background;
+            Sell(background);
+        }
+    }
+    // 出售Unit
+    public void Sell(Unit unit)
+    {
+        // 满足出售条件
+        if (gameController.gamePhase == GamePhase.Editor ||
+            gameController.gamePhase == GamePhase.Preparation && !unit.isEditorCreated)
+        {
+            if (gameController.gamePhase == GamePhase.Preparation)
+            {
+                playerMoney += unit.price;
+            }
+            // 设置unit所在格子为null
+            if (IsInGrid(unit))
+            {
+                grid[unit.gridX, unit.gridY] = null;
+            }
+            Destroy(unit.gameObject);
+
+            int rand = UnityEngine.Random.Range(0, resourceController.audiosDelete.Length);
+            AudioSource.PlayClipAtPoint(resourceController.audiosDelete[rand], unit.transform.position);
+        }
+    }
+    // 出售Background
+    public void Sell(Background background)
+    {
+        Destroy(background.gameObject);
+    }
 	private void PlayPutIntoGridSound(Unit unit)
 	{
 		int rand = UnityEngine.Random.Range(0, resourceController.audiosPut.Length);
@@ -545,12 +679,12 @@ public class EditorController : MonoBehaviour
         return (direction + 2) % 4;
     }
 
-    // 清除MouseUnit
-    public void ClearMouseUnit()
+    // 清除Mouse Object
+    public void ClearMouseObject()
     {
-        if (mouseUnit != null)
+        if (mouseObject != null)
         {
-            Destroy(mouseUnit.gameObject);
+            Destroy(mouseObject.gameObject);
         }
     }
 
@@ -611,21 +745,6 @@ public class EditorController : MonoBehaviour
         gridObjects.SetActive(show);
     }
 
-    // 结束编辑模式
-    public void FinishEditor()
-    {
-        InitPlayerMoney();
-
-        // 放置物体所有者切换至玩家
-        PlayerOwner = Player.Player;
-
-        // 不一直显示HP
-        isShowingHP = false;
-
-        // 关闭快速放置
-        isClickHold = false;
-    }
-
     // 初始化玩家钱数
     public void InitPlayerMoney()
     {
@@ -654,17 +773,22 @@ public class EditorController : MonoBehaviour
         CreateGridSprites();
     }
 
-    // 键盘指令
-    void KeyOrder()
+    // 指令
+    void Order()
     {
-        if (mouseUnit != null)
+        if (mouseObject != null)
         {
-            mouseUnit.transform.position = MouseController.MouseWorldPosition();
+            // 鼠标物体跟随鼠标
+            mouseObject.transform.position = MouseController.MouseWorldPosition();
 
-            // R键旋转
-            if (Input.GetKeyDown(KeyCode.R))
+            if (mouseObject is Unit)
             {
-				mouseUnit.Rotate();
+                Unit unit = mouseObject as Unit;
+                // R键旋转
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    unit.Rotate();
+                }
             }
         }
     }
@@ -700,59 +824,87 @@ public class EditorController : MonoBehaviour
 		}
 	}
 
-	//public void LoadFile()
-	//{
-	//	// 初始化网格
-	//	XNum = 0;
-	//	YNum = 0;
+    // 离开Editor阶段
+    public void FromPhaseEditor()
+    {
+        InitPlayerMoney();
 
-	//	// 根据文件生成Game
-	//	string filename = "C://Users//asus//Desktop//1.xml";
-	//	XMLGame game = Serializer.Deserialized(filename);
+        // 放置物体所有者切换至玩家
+        PlayerOwner = Player.Player;
 
-	//	// 加载地图信息
-	//	XMLMap map = game.xmlMap;
-	//	LoadMap(map);
+        // 不一直显示HP
+        isShowingHP = false;
 
-	//	// 加载单位信息
-	//	List<XMLUnit> xmlUnits = game.xmlUnits;
-	//	foreach (XMLUnit xmlUnit in xmlUnits)
-	//	{
-	//		LoadUnit(xmlUnit);
-	//	}
-	//	// 开始游戏
-	//	// gameController.Run();
-	//}
+        // 关闭快速放置
+        isClickHold = false;
 
-	//private void LoadMap(XMLMap map)
-	//{
-	//	XNum = map.xNum;
-	//	YNum = map.yNum;
-	//	PlayerMoneyOrigin = map.money;
-	//	LightIntensity = map.lightIntensity;
-	//}
+        EditorMode = EditorMode.Unit;
 
-	//private void LoadUnit(XMLUnit xmlUnit)
-	//{
-	//	// 复制一份物体
-	//	GameObject objPrefab = resourceController.unitDictionary[xmlUnit.name];
-	//	GameObject objClone = Instantiate(objPrefab);
-	//	// 设置位置,player和方向信息
-	//	Unit unit = objClone.GetComponent<Unit>();
-	//	Put(xmlUnit.x, xmlUnit.y, unit);
-	//	unit.Direction = xmlUnit.direction;
-	//	// TODO: 更新血条？
-	//	unit.player = (Player)xmlUnit.player;
-	//	// 设置成编辑器创建
-	//	unit.isEditorCreated = true;
-	//}
+        ClearMouseObject();
+    }
 
-	//public void SaveFile()
-	//{
-	//	string filename = "C://Users//asus//Desktop//1.xml";
+    // 进入Editor阶段
+    public void ToPhaseEditor()
+    {
+        // 显示网格
+        editorController.ShowGrids(true);
 
-	//	List<Unit> units = Grid.OfType<Unit>().ToList();
-	//	Debug.Log(units.Count);
-	//	Serializer.Serialize(this, units, filename);
-	//}
+        ClearMouseObject();
+    }
+
+    //public void LoadFile()
+    //{
+    //	// 初始化网格
+    //	XNum = 0;
+    //	YNum = 0;
+
+    //	// 根据文件生成Game
+    //	string filename = "C://Users//asus//Desktop//1.xml";
+    //	XMLGame game = Serializer.Deserialized(filename);
+
+    //	// 加载地图信息
+    //	XMLMap map = game.xmlMap;
+    //	LoadMap(map);
+
+    //	// 加载单位信息
+    //	List<XMLUnit> xmlUnits = game.xmlUnits;
+    //	foreach (XMLUnit xmlUnit in xmlUnits)
+    //	{
+    //		LoadUnit(xmlUnit);
+    //	}
+    //	// 开始游戏
+    //	// gameController.Run();
+    //}
+
+    //private void LoadMap(XMLMap map)
+    //{
+    //	XNum = map.xNum;
+    //	YNum = map.yNum;
+    //	PlayerMoneyOrigin = map.money;
+    //	LightIntensity = map.lightIntensity;
+    //}
+
+    //private void LoadUnit(XMLUnit xmlUnit)
+    //{
+    //	// 复制一份物体
+    //	GameObject objPrefab = resourceController.unitDictionary[xmlUnit.name];
+    //	GameObject objClone = Instantiate(objPrefab);
+    //	// 设置位置,player和方向信息
+    //	Unit unit = objClone.GetComponent<Unit>();
+    //	Put(xmlUnit.x, xmlUnit.y, unit);
+    //	unit.Direction = xmlUnit.direction;
+    //	// TODO: 更新血条？
+    //	unit.player = (Player)xmlUnit.player;
+    //	// 设置成编辑器创建
+    //	unit.isEditorCreated = true;
+    //}
+
+    //public void SaveFile()
+    //{
+    //	string filename = "C://Users//asus//Desktop//1.xml";
+
+    //	List<Unit> units = Grid.OfType<Unit>().ToList();
+    //	Debug.Log(units.Count);
+    //	Serializer.Serialize(this, units, filename);
+    //}
 }

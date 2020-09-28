@@ -12,7 +12,7 @@ public class ShopController : MonoBehaviour
     private GameObject content;
 
 	// prefab
-    private GameObject[] gameObjects;
+    public GameObject[] gameObjects;
 
     public GameObject shopObjectPrefab;
 
@@ -24,10 +24,11 @@ public class ShopController : MonoBehaviour
         content = GameObject.Find("UI Canvas/UI Shop/Viewport/Content");
 
         // 将editorObjects、blockObjects、ballObjects合并为gameObjects，因此在商店中排序为editor、block、ball
-        gameObjects = new GameObject[resourceController.editorObjects.Length + resourceController.blockObjects.Length + resourceController.ballObjects.Length];
+        gameObjects = new GameObject[resourceController.editorObjects.Length + resourceController.blockObjects.Length + resourceController.ballObjects.Length + resourceController.backgroundObjects.Length];
         resourceController.editorObjects.CopyTo(gameObjects, 0);
         resourceController.blockObjects.CopyTo(gameObjects, resourceController.editorObjects.Length);
         resourceController.ballObjects.CopyTo(gameObjects, resourceController.editorObjects.Length + resourceController.blockObjects.Length);
+        resourceController.backgroundObjects.CopyTo(gameObjects, resourceController.editorObjects.Length + resourceController.blockObjects.Length + resourceController.ballObjects.Length);
     }
 
     void Start()
@@ -43,12 +44,10 @@ public class ShopController : MonoBehaviour
             // 商品初始化
             obj.GetComponent<ShopObject>().Init(gameObject);
 
-            // 可滑动区域的高度增加一个商品的高度
-            content.GetComponent<RectTransform>().sizeDelta += new Vector2(0, goodsHeight);
-
             arr.Add(obj.GetComponent<ShopObject>());
         }
         shopObjects = (ShopObject[])arr.ToArray(typeof(ShopObject));
+        UpdateShop();
     }
 
     // 根据商品可见性更新商店
@@ -59,18 +58,27 @@ public class ShopController : MonoBehaviour
         foreach (ShopObject shopObject in shopObjects)
         {
             // 应用商品是否显示
-            if (shopObject.isVisible || gameController.gamePhase == GamePhase.Editor)
+            bool active = false;
+            if (gameController.gamePhase == GamePhase.Editor)
+            {
+                active |= editorController.EditorMode == EditorMode.Unit && shopObject.clickableObject is Unit;
+                active |= editorController.EditorMode == EditorMode.Background && shopObject.clickableObject is Background;
+            }
+            else if (gameController.gamePhase == GamePhase.Preparation)
+            {
+                active |= shopObject.clickableObject is Unit && shopObject.isVisible;
+            }
+
+            if (active)
             {
                 shopObject.gameObject.SetActive(true);
+                shopObject.UpdateToggle();
                 count++;
             }
             else
             {
                 shopObject.gameObject.SetActive(false);
             }
-
-            // 显示或隐藏商品的显示按钮
-            shopObject.transform.GetChild(1).gameObject.SetActive(gameController.gamePhase == GamePhase.Editor);
         }
 
         // 更新可滑动区域的高度
@@ -82,7 +90,7 @@ public class ShopController : MonoBehaviour
     {
         foreach (ShopObject shopObject in shopObjects)
         {
-            shopObject.isVisible = names.Contains(shopObject.name);
+            shopObject.isVisible = names.Contains(shopObject.gameObject.name);
         }
         UpdateShop();
     }
@@ -95,7 +103,7 @@ public class ShopController : MonoBehaviour
         {
             if (shopObject.isVisible)
             {
-                ret.Add(shopObject.name);
+                ret.Add(shopObject.gameObject.name);
             }
         }
         return ret;
