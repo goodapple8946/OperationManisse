@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static Controller;
 
 public class EditorMoney : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class EditorMoney : MonoBehaviour
             if(value != "" && value != "-")
             {
                 int money = int.Parse(value);
-                GameObject.Find("Editor Controller").GetComponent<EditorController>().PlayerMoneyOrigin = money;
+                editorController.PlayerMoneyOrigin = money;
             }
         });
     }

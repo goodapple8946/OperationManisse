@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static VictoryController;
+using static Controller;
 
 public class EditorVictoryCondition : MonoBehaviour
 {
@@ -14,7 +14,7 @@ public class EditorVictoryCondition : MonoBehaviour
         dropdown.onValueChanged.AddListener(value =>
         {
             VictoryCondition victoryCondition = (VictoryCondition)value;
-            GameObject.Find("Victory Controller").GetComponent<VictoryController>().victoryCondition = victoryCondition;
+            victoryController.victoryCondition = victoryCondition;
         });
     }
 }

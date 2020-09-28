@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static GameController;
+using static Controller;
 
 public class Block : Unit
 {

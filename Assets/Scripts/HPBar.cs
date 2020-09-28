@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static GameController;
+using static Controller;
 
 public class HPBar : MonoBehaviour
 {
@@ -46,7 +46,7 @@ public class HPBar : MonoBehaviour
             if ((unit.health != unit.healthMax || editorController.isShowingHP) &&
                 unit != editorController.mouseUnit)
             {
-                if (gamePhase == GamePhase.Editor || !init)
+                if (gameController.gamePhase == GamePhase.Editor || !init)
                 {
                     switch (unit.player)
                     {

@@ -1,19 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static EditorController;
+using static Controller;
 
 public class EditorContent : MonoBehaviour
 {
-    private EditorController editorController;
-
     private GameObject editorUnit;
     private GameObject editorMap;
 
     void Awake()
     {
-        editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
-
         for (int i = 0; i < transform.childCount; i++)
         {
             GameObject obj = transform.GetChild(i).gameObject;

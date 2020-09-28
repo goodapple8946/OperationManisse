@@ -2,19 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using static GameController;
+using static Controller;
 
 public class EditorLoad : MonoBehaviour
 {
-	private EditorController editorController;
-	private ResourceController resourceController;
-
-	public void Awake()
-	{
-		editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
-		resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
-	}
-
 	// 被点击是调用LoadFile方法
 	public void LoadFile()
 	{

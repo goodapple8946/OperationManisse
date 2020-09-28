@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static Controller;
 
 public class CameraController : MonoBehaviour
 {
@@ -28,12 +29,8 @@ public class CameraController : MonoBehaviour
     // 跟随
     [HideInInspector] public bool follow;
 
-    private EditorController editorController;
-
     void Awake()
     {
-        editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
-
         Init();
     }
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.UI;
+using static Controller;
 
 public class EditorLight : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class EditorLight : MonoBehaviour
         slider = GetComponent<Slider>();
         slider.onValueChanged.AddListener(value =>
         {
-			GameObject.Find("Editor Controller").GetComponent<EditorController>().LightIntensity = value;
+			editorController.LightIntensity = value;
         });
     }
 
