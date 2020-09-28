@@ -12,9 +12,6 @@ public class ShopController : MonoBehaviour
     private GameObject content;
 
 	// prefab
-    public GameObject[] editorObjects;
-    public GameObject[] blockObjects;
-    public GameObject[] ballObjects;
     private GameObject[] gameObjects;
 
     public GameObject shopObjectPrefab;
@@ -22,15 +19,17 @@ public class ShopController : MonoBehaviour
 	// 所有的商店中的物品
     private ShopObject[] shopObjects;
 
+    private ResourceController resourceController;
+
     void Awake()
     {
         content = transform.GetChild(0).GetChild(0).gameObject;
 
         // 将editorObjects、blockObjects、ballObjects合并为gameObjects，因此在商店中排序为editor、block、ball
-        gameObjects = new GameObject[editorObjects.Length + blockObjects.Length + ballObjects.Length];
-        editorObjects.CopyTo(gameObjects, 0);
-        blockObjects.CopyTo(gameObjects, editorObjects.Length);
-        ballObjects.CopyTo(gameObjects, editorObjects.Length + blockObjects.Length);
+        gameObjects = new GameObject[resourceController.editorObjects.Length + resourceController.blockObjects.Length + resourceController.ballObjects.Length];
+        resourceController.editorObjects.CopyTo(gameObjects, 0);
+        resourceController.blockObjects.CopyTo(gameObjects, resourceController.editorObjects.Length);
+        resourceController.ballObjects.CopyTo(gameObjects, resourceController.editorObjects.Length + resourceController.blockObjects.Length);
     }
 
     void Start()
@@ -78,5 +77,29 @@ public class ShopController : MonoBehaviour
 
         // 更新可滑动区域的高度
         transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(0, goodsHeight * count);
+    }
+
+    // 设置商品可见性：提供一个名称数组，若商品名称在该数组内，则可见；否则不可见
+    public void SetShopObjectVisibility(List<string> names)
+    {
+        foreach (ShopObject shopObject in shopObjects)
+        {
+            shopObject.isVisible = names.Contains(shopObject.name);
+        }
+        UpdateShop();
+    }
+
+    // 获得商品可见性：返回一个所有可见的商品名称数组
+    public List<string> SetShopObjectVisibility()
+    {
+        List<string> ret = new List<string>();
+        foreach (ShopObject shopObject in shopObjects)
+        {
+            if (shopObject.isVisible)
+            {
+                ret.Add(shopObject.name);
+            }
+        }
+        return ret;
     }
 }

@@ -9,6 +9,7 @@ public class ResourceController : MonoBehaviour
 	public GameObject[] editorObjects;
 	public GameObject[] blockObjects;
 	public GameObject[] ballObjects;
+
 	// 根据上面的生成的dictionary
 	public Dictionary<string, GameObject> unitDictionary;
 
