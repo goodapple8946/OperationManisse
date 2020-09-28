@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using UnityEngine;
-using static GameController;
+using static Controller;
 
 /// <summary>
 /// 辅助save和load的工具类

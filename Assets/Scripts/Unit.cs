@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using static GameController;
+using static Controller;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -72,16 +72,10 @@ public abstract class Unit : MonoBehaviour
     public bool isEditorCreated;
 
     public Rigidbody2D body;
-    protected GameController gameController;
-    protected EditorController editorController;
-    protected ResourceController resourceController;
 
 	protected virtual void Awake()
     {
         body = GetComponent<Rigidbody2D>();
-        gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
-        editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
-        resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
     }
 
     protected virtual void Start()
@@ -163,7 +157,7 @@ public abstract class Unit : MonoBehaviour
 	// 碰撞
 	protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        if (gamePhase == GamePhase.Playing)
+        if (gameController.gamePhase == GamePhase.Playing)
         {
             // 与之碰撞的另一个Unit
             Unit unit = collision.gameObject.GetComponent<Unit>();

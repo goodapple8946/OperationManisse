@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
-using static GameController;
+using static Controller;
 
 public class EditorController : MonoBehaviour
 {
@@ -126,8 +126,7 @@ public class EditorController : MonoBehaviour
 	[HideInInspector] public bool isShowingHP;
 
 	[SerializeField] private GameObject square;
-    private GameController gameController;
-	private ResourceController resourceController;
+
 	private EditorMoney editorMoney;
 	private EditorOwner editorOwener;
 	private EditorLight editorLight;
@@ -138,8 +137,6 @@ public class EditorController : MonoBehaviour
 
 	void Awake()
 	{
-		gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
-		resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
 		editorMoney = GameObject.Find("UI Editor").GetComponentInChildren<EditorMoney>();
 		editorOwener = GameObject.Find("UI Editor").GetComponentInChildren<EditorOwner>();
 		editorLight = GameObject.Find("UI Editor").GetComponentInChildren<EditorLight>();
@@ -208,8 +205,8 @@ public class EditorController : MonoBehaviour
         else
         {
             // 移动网格中的物体
-            if (gamePhase == GamePhase.Editor ||
-                gamePhase == GamePhase.Preparation && unit.player == Player.Player)
+            if (gameController.gamePhase == GamePhase.Editor ||
+                gameController.gamePhase == GamePhase.Preparation && unit.player == Player.Player)
             {
                 buyContinuous = false;
                 Pick(unit);
@@ -258,9 +255,9 @@ public class EditorController : MonoBehaviour
 
         if (mouseUnit == null)
         {
-            if (playerMoney >= unit.price || gamePhase == GamePhase.Editor)
+            if (playerMoney >= unit.price || gameController.gamePhase == GamePhase.Editor)
             {
-                if (gamePhase == GamePhase.Preparation)
+                if (gameController.gamePhase == GamePhase.Preparation)
                 {
                     playerMoney -= unit.price;
                 }
@@ -277,9 +274,9 @@ public class EditorController : MonoBehaviour
         }
         else
         {
-            if (playerMoney + mouseUnit.price >= unit.price || gamePhase == GamePhase.Editor)
+            if (playerMoney + mouseUnit.price >= unit.price || gameController.gamePhase == GamePhase.Editor)
             {
-                if (gamePhase == GamePhase.Preparation)
+                if (gameController.gamePhase == GamePhase.Preparation)
                 {
                     playerMoney += mouseUnit.price - unit.price;
                 }
@@ -307,10 +304,10 @@ public class EditorController : MonoBehaviour
     public void Sell(Unit unit)
     {
         // 满足出售条件
-        if (gamePhase == GamePhase.Editor ||
-            gamePhase == GamePhase.Preparation && !unit.isEditorCreated)
+        if (gameController.gamePhase == GamePhase.Editor ||
+            gameController.gamePhase == GamePhase.Preparation && !unit.isEditorCreated)
         {
-            if (gamePhase == GamePhase.Preparation)
+            if (gameController.gamePhase == GamePhase.Preparation)
             {
                 playerMoney += unit.price;
             }
@@ -704,7 +701,7 @@ public class EditorController : MonoBehaviour
 	private void Add2GameControllerAndSetLayer(Unit unit)
 	{
 		unit.transform.parent = gameController.unitObjects.transform;
-		unit.isEditorCreated = (gamePhase == GamePhase.Editor);
+		unit.isEditorCreated = (gameController.gamePhase == GamePhase.Editor);
 		// 如果单位不是地面,则设置所有单位的显示层为Unit
 		// 如果单位是地面, 默认拥有者是中立,显示物理层不变
 		if (unit.gameObject.layer != (int)Layer.Ground)

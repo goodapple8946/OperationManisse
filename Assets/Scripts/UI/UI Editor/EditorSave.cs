@@ -3,28 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using static Controller;
 
 public class EditorSave : MonoBehaviour
 {
-	private EditorController editorController;
-	private ResourceController resourceController;
-	private ShopController shopController;
-
-	public void Awake()
-	{
-		editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
-		resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
-		shopController = GameObject.Find("Shop Controller").GetComponent<ShopController>();
-	}
-
 	public void SaveFile()
 	{
 		string filename = Path.Combine(Application.dataPath, "1.xml");
 
 		List<Unit> units = editorController.Grid.OfType<Unit>().ToList();
 		Debug.Log(units.Count);
-
-		List<string> goodsVisable = shopController.GetShopObjectVisibility();
-		Serializer.Serialize(editorController, units, goodsVisable, filename);
+		Serializer.Serialize(editorController, units, filename);
 	}
 }

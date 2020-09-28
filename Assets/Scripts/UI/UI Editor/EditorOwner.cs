@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static GameController;
+using static Controller;
 
 public class EditorOwner : MonoBehaviour
 {
@@ -14,7 +14,7 @@ public class EditorOwner : MonoBehaviour
         dropdown.onValueChanged.AddListener(value =>
         {
             Player player = (Player)value;
-            GameObject.Find("Editor Controller").GetComponent<EditorController>().PlayerOwner = player;
+            editorController.PlayerOwner = player;
         });
     }
 

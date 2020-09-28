@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static GameController;
+using static Controller;
 
 public class BallGatling : Ball
 {
@@ -19,7 +19,7 @@ public class BallGatling : Ball
 	{
 		base.Update();
 		// 开始游戏后
-		if (gamePhase == GamePhase.Playing)
+		if (gameController.gamePhase == GamePhase.Playing)
 		{
 			UpdatePreheat();
 			UpdateGatlingColor();

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static GameController;
+using static Controller;
 
 public class Ball : Unit
 {
@@ -35,7 +35,7 @@ public class Ball : Unit
 
         WeaponCoolDown();
 
-        if (IsAlive() && gamePhase == GamePhase.Playing)
+        if (IsAlive() && gameController.gamePhase == GamePhase.Playing)
         {
             // 寻找敌人
             Unit target = FindEnemy();

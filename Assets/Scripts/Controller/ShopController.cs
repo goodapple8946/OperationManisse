@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static GameController;
+using static Controller;
 
 public class ShopController : MonoBehaviour
 {
@@ -19,15 +19,11 @@ public class ShopController : MonoBehaviour
 	// 所有的商店中的物品
     private ShopObject[] shopObjects;
 
-    private ResourceController resourceController;
-
     void Awake()
     {
-		resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
-		content = transform.GetChild(0).GetChild(0).gameObject;
+        content = GameObject.Find("UI Canvas/UI Shop/Viewport/Content");
 
         // 将editorObjects、blockObjects、ballObjects合并为gameObjects，因此在商店中排序为editor、block、ball
-
         gameObjects = new GameObject[resourceController.editorObjects.Length + resourceController.blockObjects.Length + resourceController.ballObjects.Length];
         resourceController.editorObjects.CopyTo(gameObjects, 0);
         resourceController.blockObjects.CopyTo(gameObjects, resourceController.editorObjects.Length);
@@ -48,7 +44,7 @@ public class ShopController : MonoBehaviour
             obj.GetComponent<ShopObject>().Init(gameObject);
 
             // 可滑动区域的高度增加一个商品的高度
-            transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().sizeDelta += new Vector2(0, goodsHeight);
+            content.GetComponent<RectTransform>().sizeDelta += new Vector2(0, goodsHeight);
 
             arr.Add(obj.GetComponent<ShopObject>());
         }
@@ -63,7 +59,7 @@ public class ShopController : MonoBehaviour
         foreach (ShopObject shopObject in shopObjects)
         {
             // 应用商品是否显示
-            if (shopObject.isVisible || gamePhase == GamePhase.Editor)
+            if (shopObject.isVisible || gameController.gamePhase == GamePhase.Editor)
             {
                 shopObject.gameObject.SetActive(true);
                 count++;
@@ -74,11 +70,11 @@ public class ShopController : MonoBehaviour
             }
 
             // 显示或隐藏商品的显示按钮
-            shopObject.transform.GetChild(1).gameObject.SetActive(gamePhase == GamePhase.Editor);
+            shopObject.transform.GetChild(1).gameObject.SetActive(gameController.gamePhase == GamePhase.Editor);
         }
 
         // 更新可滑动区域的高度
-        transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(0, goodsHeight * count);
+        content.GetComponent<RectTransform>().sizeDelta = new Vector2(0, goodsHeight * count);
     }
 
     // 设置商品可见性：提供一个名称数组，若商品名称在该数组内，则可见；否则不可见

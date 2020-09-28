@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using static Controller;
 
 public class GameController : MonoBehaviour
 {
-    public enum Player { Neutral, Player, Enemy }
-    public enum Layer { Default, TransparentFX, IgnoreRaycast, Water = 4, UI, PlayerBall = 8, PlayerBlock, PlayerMissile, EnemyBall, EnemyBlock, EnemyMissile, Goods, Ground }
-    public enum GamePhase { Editor, Preparation, Playing, Victory }
-
     // 场景阶段
-    public static GamePhase gamePhase;
+    public GamePhase gamePhase;
 
 	// 所有物体的根节点
 	/// <summary>preparation和playing阶段,场景中所有Unit</summary>
@@ -20,11 +17,6 @@ public class GameController : MonoBehaviour
     [HideInInspector] public GameObject hpBarObjects;
     private GameObject unitObjectsSaved;
     private GameObject unitObjectsOrigin;
-
-    private EditorController editorController;
-    private VictoryController victoryController;
-    private ShopController shopController;
-    private ResourceController resourceController;
 
 	// 编辑器部分的UI
     private GameObject uiEditor;
@@ -38,10 +30,6 @@ public class GameController : MonoBehaviour
     {
         uiEditor = GameObject.Find("UI Canvas/UI Editor");
         uiGame = GameObject.Find("UI Canvas/UI Game");
-        editorController = GameObject.Find("Editor Controller").GetComponent<EditorController>();
-        victoryController = GameObject.Find("Victory Controller").GetComponent<VictoryController>();
-        shopController = GameObject.Find("UI Canvas/UI Shop").GetComponent<ShopController>();
-        resourceController = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
 
         Init();
     }

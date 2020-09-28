@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static Controller;
 
 public class EditorSizeY : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class EditorSizeY : MonoBehaviour
             if (value != "" && value != "-")
             {
                 int y = int.Parse(value);
-				GameObject.Find("Editor Controller").GetComponent<EditorController>().YNum = y;
+				editorController.YNum = y;
             }
         });
     }

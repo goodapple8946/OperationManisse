@@ -1,11 +1,10 @@
 ﻿﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static GameController;
+using static Controller;
 
 public class VictoryController : MonoBehaviour
 {
-    public enum VictoryCondition { None, KillAll, KillTarget, EnterLocation, HoldOn }
     private string targetName = "Target";
 
     /*[HideInInspector] */public VictoryCondition victoryCondition;
@@ -13,13 +12,6 @@ public class VictoryController : MonoBehaviour
     /*[HideInInspector] */public float holdOnTimeOrigin;
     /*[HideInInspector] */public float holdOnTime;
     /*[HideInInspector] */public bool isVictory;
-
-    private GameController gameController;
-
-    void Awake()
-    {
-        gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
-    }
 
     public void Init()
     {
@@ -51,7 +43,7 @@ public class VictoryController : MonoBehaviour
 
     void Update()
     {
-        if (gamePhase == GamePhase.Playing)
+        if (gameController.gamePhase == GamePhase.Playing)
         {
             switch (victoryCondition)
             {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static GameController;
+using static Controller;
 
 public class UIGame : MonoBehaviour
 {
@@ -12,8 +12,6 @@ public class UIGame : MonoBehaviour
     private Button ButtonStop;
     private Button ButtonStart;
 
-    private GameController gameController;
-
     void Awake()
     {
         ButtonOption = transform.GetChild(0).GetChild(0).GetComponent<Button>();
@@ -21,13 +19,11 @@ public class UIGame : MonoBehaviour
         ButtonCamera = transform.GetChild(0).GetChild(2).GetComponent<Button>();
         ButtonStop = transform.GetChild(0).GetChild(3).GetComponent<Button>();
         ButtonStart = transform.GetChild(0).GetChild(4).GetComponent<Button>();
-
-        gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
     }
 
     public void UpdateActive()
     {
-        switch (gamePhase)
+        switch (gameController.gamePhase)
         {
             case GamePhase.Preparation:
                 ButtonReset.interactable = true;
