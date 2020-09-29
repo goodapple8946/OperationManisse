@@ -17,10 +17,18 @@ public static class Serializer
 	/// 根据参数构造Game并序列化
 	/// </summary>
 	public static void Serialize(
-		EditorController editorController, List<Unit> units, 
-		List<string> goodsVisable, string path)
+		EditorController editorController, List<Background> backgrounds, 
+		List<Unit> units, List<string> goodsVisable, string path)
 	{
-		XMLMap map = EditorController2XMLMap(editorController);
+		XMLMap map = EditorController2XML(editorController);
+
+		
+		List<XMLBackground> xmlBackgrounds = new List<XMLBackground>();
+		foreach (Background background in backgrounds)
+		{
+			XMLBackground xmlBackground = Background2XML(background);
+			xmlBackgrounds.Add(xmlBackground);
+		}
 
 		List<XMLUnit> xmlUnits = new List<XMLUnit>();
 		foreach (Unit unit in units)
@@ -29,7 +37,7 @@ public static class Serializer
 			xmlUnits.Add(xmlUnit);
 		}
 
-		XMLGame game = new XMLGame(map, xmlUnits, goodsVisable);
+		XMLGame game = new XMLGame(map, xmlBackgrounds, xmlUnits, goodsVisable);
 		Serialize(game, path);
 	}
 
@@ -53,6 +61,14 @@ public static class Serializer
 		return deserialized;
 	}
 
+	private static XMLBackground Background2XML(Background background)
+	{
+		string name = background.gameObject.name;
+		Vector3 position = background.transform.position;
+		Vector3 localScale = background.transform.localScale;
+		return new XMLBackground(name, position, localScale);
+	}
+
 	/// <summary>
 	/// 将Unit映射成XMLUnit
 	/// </summary>
@@ -70,7 +86,7 @@ public static class Serializer
 	/// <summary>
 	/// 将EditorController映射成XMLMap
 	/// </summary>
-	private static XMLMap EditorController2XMLMap(EditorController editorController)
+	private static XMLMap EditorController2XML(EditorController editorController)
 	{
 		int xNum = editorController.XNum;
 		int yNUm = editorController.YNum;
@@ -94,17 +110,36 @@ public static class Serializer
 public class XMLGame
 {
 	public XMLMap xmlMap;
+	public List<XMLBackground> xmlBackgrounds;
 	public List<XMLUnit> xmlUnits;
 	public List<String> goodsVisable;
 
 	// 默认无参构造函数
 	public XMLGame() { }
 
-	public XMLGame(XMLMap xmlMap, List<XMLUnit> xmlUnits, List<String> goodsVisable)
+	public XMLGame(XMLMap xmlMap, List<XMLBackground> xmlBackgrounds, List<XMLUnit> xmlUnits, List<String> goodsVisable)
 	{
 		this.xmlMap = xmlMap;
+		this.xmlBackgrounds = xmlBackgrounds;
 		this.xmlUnits = xmlUnits;
 		this.goodsVisable = goodsVisable;
+	}
+}
+
+public class XMLBackground
+{
+	public string name;
+	public Vector3 position;
+	public Vector3 localScale;
+
+	// 默认无参构造函数
+	public XMLBackground() { }
+
+	public XMLBackground(string name, Vector3 position, Vector3 localScale)
+	{
+		this.name = name;
+		this.position = position;
+		this.localScale = localScale;
 	}
 }
 
