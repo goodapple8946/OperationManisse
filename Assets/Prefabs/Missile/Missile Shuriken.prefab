@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8711533381244419228}
   - component: {fileID: 5562766324155525701}
   - component: {fileID: 1820836068703651009}
-  - component: {fileID: 1375706737143817355}
+  - component: {fileID: 7527693596569455211}
   m_Layer: 0
   m_Name: Missile Shuriken
   m_TagString: Missile
@@ -73,12 +73,12 @@ SpriteRenderer:
   m_SortingLayerID: -2104334341
   m_SortingLayer: 9
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: df78b85a6fd5efc43a44523b8ac972f2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f084f62af5a538946984f89f94157bb4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.24, y: 0.24}
+  m_Size: {x: 0.64, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -99,7 +99,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.125
+  m_Radius: 0.2
 --- !u!50 &1820836068703651009
 Rigidbody2D:
   serializedVersion: 4
@@ -121,7 +121,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &1375706737143817355
+--- !u!114 &7527693596569455211
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,21 +130,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 8711533381244419230}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40b6c1f5aa5c5fe48bbeb80314205c91, type: 3}
+  m_Script: {fileID: 11500000, guid: 3eb37cd8bb586a14e882e07ecec9604d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceLaunch: 20
-  forceHit: 10
-  damage: 25
-  duration: 0
+  forceLaunch: 60
+  forceHit: 0
+  damage: 10
+  duration: 3
   durationHit: 0
   isAlive: 1
   particleLaunchPerfab: {fileID: 0}
   particleFlyingPrefab: {fileID: 0}
   particleHitPrefab: {fileID: 0}
-  player: 1
+  player: 0
+  unit: {fileID: 0}
   audiosLaunch: []
   body: {fileID: 0}
-  shurikenSpeed: 8
-  shurikenRotateSpeed: 300
-  originBall: {fileID: 0}

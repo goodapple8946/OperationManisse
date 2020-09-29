@@ -33,7 +33,10 @@ public class Missile : MonoBehaviour
     public GameObject particleHitPrefab;
 
     // 所属玩家
-    public Player player;
+    [HideInInspector] public Player player;
+
+    // 发射者
+    [HideInInspector] public Unit unit;
 
     // 发射音效
     public AudioClip[] audiosLaunch;

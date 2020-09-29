@@ -40,6 +40,7 @@ public class ShopController : MonoBehaviour
         {
             // 创建商品实例，并且父物体设为Content
             GameObject obj = Instantiate(shopObjectPrefab, content.transform);
+            obj.name = gameObject.name;
 
             // 商品初始化
             obj.GetComponent<ShopObject>().Init(gameObject);
@@ -66,7 +67,7 @@ public class ShopController : MonoBehaviour
             }
             else if (gameController.gamePhase == GamePhase.Preparation)
             {
-                active |= shopObject.clickableObject is Unit && shopObject.isVisible;
+                active |= shopObject.clickableObject is Unit && shopObject.IsVisible;
             }
 
             if (active)
@@ -90,7 +91,7 @@ public class ShopController : MonoBehaviour
     {
         foreach (ShopObject shopObject in shopObjects)
         {
-            shopObject.isVisible = names.Contains(shopObject.gameObject.name);
+            shopObject.IsVisible = names.Contains(shopObject.gameObject.name);
         }
         UpdateShop();
     }
@@ -101,7 +102,7 @@ public class ShopController : MonoBehaviour
         List<string> ret = new List<string>();
         foreach (ShopObject shopObject in shopObjects)
         {
-            if (shopObject.isVisible)
+            if (shopObject.IsVisible)
             {
                 ret.Add(shopObject.gameObject.name);
             }

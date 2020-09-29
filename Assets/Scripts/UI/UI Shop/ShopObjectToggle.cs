@@ -12,7 +12,7 @@ public class ShopObjectToggle : MonoBehaviour
         toggle = GetComponent<Toggle>();
         toggle.onValueChanged.AddListener(value =>
         {
-            transform.parent.GetComponent<ShopObject>().isVisible = value;
+            transform.parent.GetComponent<ShopObject>().IsVisible = value;
         });
     }
 }

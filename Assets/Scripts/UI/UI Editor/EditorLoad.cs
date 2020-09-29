@@ -52,6 +52,7 @@ public class EditorLoad : MonoBehaviour
         Unit unit = objClone.GetComponent<Unit>();
 		editorController.Put(xmlUnit.x, xmlUnit.y, unit);
 		unit.Direction = xmlUnit.direction;
+		unit.gameObject.layer = xmlUnit.layer;
 		// TODO: 更新血条？
 		unit.player = (Player)xmlUnit.player;
 		// 设置成编辑器创建

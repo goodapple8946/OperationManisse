@@ -13,7 +13,16 @@ public class ShopObject : MonoBehaviour
     private float goodsScale = 1.5f;
 
     // 物品是显示的（编辑模式下强制显示）
-    public bool isVisible;
+    private bool isVisible;
+    public bool IsVisible
+    {
+        get => isVisible;
+        set
+        {
+            isVisible = value;
+            toggleObject.GetComponent<Toggle>().isOn = isVisible;
+        }
+    }
 
     // 购买时实例化的物体
     public ClickableObject clickableObject;

@@ -106,6 +106,7 @@ public class GameController : MonoBehaviour
         uiEditor.SetActive(true);
         uiGame.SetActive(false);
         uiGame.GetComponent<UIGame>().UpdateActive();
+        shopController.UpdateShop();
         LoadUnitsOrigin();
     }
 
@@ -125,6 +126,7 @@ public class GameController : MonoBehaviour
         gamePhase = GamePhase.Preparation;
         editorController.ShowGrids(true);
         uiGame.GetComponent<UIGame>().UpdateActive();
+        shopController.UpdateShop();
         ClearMissile();
         LoadUnits();
         victoryController.Init();

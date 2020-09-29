@@ -194,6 +194,9 @@ public class Ball : Unit
         // 弹药玩家
         missile.player = player;
 
+        // 弹药发射者
+        missile.unit = this;
+
         // 弹药发射点
         missile.transform.position = transform.position + transform.right * weaponOffset;
 
@@ -203,7 +206,7 @@ public class Ball : Unit
         // 弹药随机角度
         missile.transform.Rotate(0, 0, Random.Range(-weaponAngle, weaponAngle));
 
-        // 设置父物体
+        // 弹药父物体
         missile.transform.parent = gameController.missileObjects.transform;
 
         // Layer

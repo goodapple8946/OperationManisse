@@ -264,6 +264,7 @@ public class EditorController : MonoBehaviour
                 (gameController.gamePhase == GamePhase.Preparation && unit.player == Player.Player && !unit.isEditorCreated))
             {
                 buyContinuous = false;
+                PlayerOwner = unit.player;
                 Pick(unit);
             }
         }
@@ -846,6 +847,9 @@ public class EditorController : MonoBehaviour
     // 进入Editor阶段
     public void ToPhaseEditor()
     {
+        // 放置物体所有者切换至中立
+        PlayerOwner = Player.Neutral;
+
         // 显示网格
         editorController.ShowGrids(true);
 
