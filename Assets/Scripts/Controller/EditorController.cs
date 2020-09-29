@@ -494,6 +494,7 @@ public class EditorController : MonoBehaviour
     // 根据载入的Unit的坐标，与网格建立联系
     public void UpdateGridWithAllUnits()
     {
+        grid = new Unit[XNum, YNum];
         Unit[] units = gameController.GetUnits();
         foreach (Unit unit in units)
         {
@@ -692,7 +693,7 @@ public class EditorController : MonoBehaviour
     }
 
     // 在网格中
-    bool IsInGrid(Unit unit)
+    public bool IsInGrid(Unit unit)
     {
         return unit.gridX >= 0 && unit.gridY >= 0 && unit.gridX < XNum && unit.gridY < YNum;
     }

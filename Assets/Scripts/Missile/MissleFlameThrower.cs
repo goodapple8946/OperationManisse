@@ -8,9 +8,9 @@ public class MissleFlamethrower : Missile
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 		Unit unit = other.gameObject.GetComponent<Unit>();
-		if (unit != null && unit.player != this.player)
+		if (unit != null && unit.player != player)
 		{
-			unit.TakeDamage(this.damage);
+			unit.TakeDamage(damage);
 		}
 	}
 }
