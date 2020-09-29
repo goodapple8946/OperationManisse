@@ -10,9 +10,18 @@ public class EditorSave : MonoBehaviour
 	public void SaveFile()
 	{
 		string filename = Path.Combine(Application.dataPath, "1.xml");
+		List<Background> backgrounds = editorController.Backgrounds.OfType<Background>().ToList();
 
 		List<Unit> units = editorController.Grid.OfType<Unit>().ToList();
+		foreach(Unit unit in units)
+		{
+			if(unit.gameObject == null)
+			{
+				Debug.Log("EditorController.Grid中的Unit绑定的gameObject被销毁!");
+			}
+		}
+
 		List<string> goodsVisible = shopController.GetShopObjectVisibility();
-		Serializer.Serialize(editorController, units, goodsVisible, filename);
+		Serializer.Serialize(editorController, backgrounds, units, goodsVisible, filename);
 	}
 }

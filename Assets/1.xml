@@ -10,33 +10,9 @@
     <XMLUnit>
       <name>Ball Crossbow</name>
       <player>0</player>
-      <x>0</x>
+      <x>1</x>
       <y>1</y>
       <direction>2</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Umbrella</name>
-      <player>0</player>
-      <x>0</x>
-      <y>3</y>
-      <direction>2</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Ball Crossbow</name>
-      <player>0</player>
-      <x>1</x>
-      <y>0</y>
-      <direction>2</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Ball Crossbow</name>
-      <player>0</player>
-      <x>1</x>
-      <y>2</y>
-      <direction>0</direction>
       <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
@@ -44,79 +20,15 @@
       <player>0</player>
       <x>2</x>
       <y>1</y>
-      <direction>0</direction>
+      <direction>2</direction>
       <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Wheel</name>
-      <player>0</player>
-      <x>2</x>
-      <y>2</y>
-      <direction>0</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Wheel</name>
-      <player>0</player>
-      <x>2</x>
-      <y>4</y>
-      <direction>1</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Wheel</name>
+      <name>Ball Automatic Rifle</name>
       <player>0</player>
       <x>3</x>
-      <y>3</y>
-      <direction>1</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Wheel</name>
-      <player>0</player>
-      <x>4</x>
-      <y>1</y>
-      <direction>0</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Wheel</name>
-      <player>0</player>
-      <x>4</x>
       <y>2</y>
-      <direction>1</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Wheel</name>
-      <player>0</player>
-      <x>4</x>
-      <y>3</y>
-      <direction>1</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Wheel</name>
-      <player>0</player>
-      <x>5</x>
-      <y>0</y>
       <direction>0</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Wheel</name>
-      <player>0</player>
-      <x>5</x>
-      <y>5</y>
-      <direction>1</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Ball Gatling</name>
-      <player>0</player>
-      <x>7</x>
-      <y>2</y>
-      <direction>2</direction>
       <layer>0</layer>
     </XMLUnit>
   </xmlUnits>

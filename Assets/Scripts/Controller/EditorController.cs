@@ -15,6 +15,10 @@ public class EditorController : MonoBehaviour
 	private Unit[,] grid;
 	[HideInInspector] public Unit[,] Grid { get => grid; }
 
+	// 编辑者放置的背景
+	[HideInInspector] private HashSet<Background> backgrounds;
+	[HideInInspector] public HashSet<Background> Backgrounds { get; }
+
 	// Editor面板：网格尺寸x
 	[HideInInspector] private int xNum = 8;
 
@@ -67,9 +71,6 @@ public class EditorController : MonoBehaviour
 
 	// 显示HP
 	[HideInInspector] public bool isShowingHP;
-
-    // 背景
-    [HideInInspector] public HashSet<Background> backgrounds;
 
 	[SerializeField] private GameObject square;
 

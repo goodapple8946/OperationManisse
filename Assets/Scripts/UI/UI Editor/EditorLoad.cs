@@ -19,22 +19,25 @@ public class EditorLoad : MonoBehaviour
 
 		// 加载地图信息
 		XMLMap map = game.xmlMap;
-		LoadMap(map);
+		Load(map);
+
+		// 加载背景图片
+		List<XMLBackground> xmlBackgrounds = game.xmlBackgrounds;
+		xmlBackgrounds.ForEach(Load);
 
 		// 加载单位信息
 		List<XMLUnit> xmlUnits = game.xmlUnits;
-		foreach (XMLUnit xmlUnit in xmlUnits)
-		{
-			LoadUnit(xmlUnit);
-		}
+		xmlUnits.ForEach(Load);
 
+		// 加载可用商品
 		List<string> goodsVisible = game.goodsVisable;
 		shopController.SetShopObjectVisibility(goodsVisible);
+
 		// 开始游戏
 		// gameController.Run();
 	}
 
-	private void LoadMap(XMLMap map)
+	private void Load(XMLMap map)
 	{
 		editorController.XNum = map.xNum;
 		editorController.YNum = map.yNum;
@@ -42,7 +45,19 @@ public class EditorLoad : MonoBehaviour
 		editorController.LightIntensity = map.lightIntensity;
 	}
 
-	private void LoadUnit(XMLUnit xmlUnit)
+	private void Load(XMLBackground background)
+	{
+		// 复制一份物体
+		GameObject objPrefab = resourceController.unitDictionary[background.name];
+		GameObject objClone = Instantiate(objPrefab);
+		objClone.name = objPrefab.name; // 默认复制名称是GameObject Name (Clone)
+
+		// 设置位置和大小
+		objClone.transform.position = background.position;
+		objClone.transform.localScale = background.localScale;
+	}
+
+	private void Load(XMLUnit xmlUnit)
 	{
 		// 复制一份物体
 		GameObject objPrefab = resourceController.unitDictionary[xmlUnit.name];
@@ -60,7 +75,7 @@ public class EditorLoad : MonoBehaviour
 		unit.gameObject.layer = xmlUnit.layer; 
 		// TODO: 更新血条？
 		unit.player = (Player)xmlUnit.player;
-
+		
 		// 设置成编辑器创建
 		unit.isEditorCreated = true;
 	}
