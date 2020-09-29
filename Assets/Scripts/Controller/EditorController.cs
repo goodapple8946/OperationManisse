@@ -330,7 +330,8 @@ public class EditorController : MonoBehaviour
             Buy(background);
         }
     }
-    // 安放，吸附到最近的网格
+
+    // 安放，吸附到最近的网格,如果可以再次购买,就再次购买
     public void Place(Unit unit)
     {
         Vector2 pos = unit.transform.position;

@@ -17,9 +17,7 @@ public class BlockBrazier : Block
     protected override void Start()
     {
         base.Start();
-
-		// 设置方向
-		Direction = 1;
+		
         // 创建粒子
         particle = Instantiate(particlePrefab);
     }
@@ -58,11 +56,12 @@ public class BlockBrazier : Block
     public override bool IsLinkAvailable(int direction)
     {
         // 只能连接反方向
-        return direction == (this.direction + 2) % 4;
+        return direction == GetDirectionNegative(this.direction);
     }
 
+	// 不能旋转,只能朝上
     public override void Rotate()
     {
 
-    }
+	}
 }
