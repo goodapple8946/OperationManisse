@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MissileShuriKen : Missile
+public class MissileShuriken : Missile
 {
     // 旋转速率
     private float speedRotation = -1080f;

@@ -201,7 +201,7 @@ public class Ball : Unit
         missile.transform.position = transform.position + transform.right * weaponOffset;
 
         // 弹药朝向
-        missile.transform.right = transform.right;
+        missile.transform.rotation = transform.rotation;
 
         // 弹药随机角度
         missile.transform.Rotate(0, 0, Random.Range(-weaponAngle, weaponAngle));
