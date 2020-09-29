@@ -107,6 +107,7 @@ public class GameController : MonoBehaviour
         uiGame.SetActive(false);
         uiGame.GetComponent<UIGame>().UpdateActive();
         shopController.UpdateShop();
+        ClearMissile();
         LoadUnitsOrigin();
     }
 

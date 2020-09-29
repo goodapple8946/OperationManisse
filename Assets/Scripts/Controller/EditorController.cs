@@ -481,6 +481,7 @@ public class EditorController : MonoBehaviour
     // 出售Background
     public void Sell(Background background)
     {
+        backgrounds.Remove(background);
         Destroy(background.gameObject);
     }
 	private void PlayPutIntoGridSound(Unit unit)
