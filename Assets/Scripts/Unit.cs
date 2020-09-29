@@ -51,21 +51,21 @@ public abstract class Unit : ClickableObject
 	* Link Direction:
 	* 0: Right, 1: Top, 2: Left, 3: Bottom
 	*/
-	protected int direction = 0;
-	#region direction peoperty
-	public int Direction
-	{
-		get => direction;
-		set
-		{
-			// 设置direction并更新方向
-			transform.Rotate(0, 0, (value - Direction) * 90f);
-			direction = value;
-		} 
-	}
-	#endregion
+	/// <summary> 物体朝向的方向 </summary>
+	public int direction;
+	//public int Direction
+	//{
+	//	get => direction;
+	//	set
+	//	{
+	//		// 设置direction并更新方向
+	//		transform.Rotate(0, 0, (value - Direction) * 90f);
+	//		direction = value;
+	//	} 
+	//}
 
 	// 价格
+
 	public int price;
 
     // 是编辑器创建的
@@ -121,7 +121,24 @@ public abstract class Unit : ClickableObject
         hPBar.transform.parent = gameController.hpBarObjects.transform;
     }
 
-	public abstract void Rotate();
+	/// <summary>
+	/// 顺时针转动一下
+	/// </summary>
+	public virtual void Rotate()
+	{
+		Rotate(1);
+	}
+
+	/// <summary> times正数 </summary>
+	public void Rotate(int times)
+	{
+		if(times < 0)
+		{
+			throw new System.Exception();
+		}
+		direction = (direction + times) % 4;
+		transform.Rotate(0, 0, times * 90f);
+	}
 
 	// 碰撞
 	protected virtual void OnCollisionEnter2D(Collision2D collision)

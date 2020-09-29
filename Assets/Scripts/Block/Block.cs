@@ -45,12 +45,7 @@ public class Block : Unit
         blocksLinked[direction] = null;
     }
 
-    public override void Rotate()
-    {
-        Direction = (Direction + 1) % 4;
-    }
-
-    public virtual bool IsLinkAvailable(int direction)
+	public virtual bool IsLinkAvailable(int direction)
     {
         return true;
     }

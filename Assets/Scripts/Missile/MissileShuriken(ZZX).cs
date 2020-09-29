@@ -9,7 +9,7 @@ public class MissileShuriken : Missile
 
 	public BallShuriken originBall;
 	private Unit target;
-	// 当前位置+ findEnemyRange*敌人方向向量
+	// 当前位置+findEnemyRange*敌人方向向量
 	private Vector2 attackTarPos;
 
 	// Update is called once per frame

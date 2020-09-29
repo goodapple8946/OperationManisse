@@ -222,8 +222,11 @@ public class Ball : Unit
         return missile;
     }
 
+	/// <summary>
+	/// 一次转动两下
+	/// </summary>
 	public override void Rotate()
 	{
-		Direction = (Direction + 2) % 4;
+		Rotate(2);
 	}
 }
