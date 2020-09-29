@@ -57,6 +57,7 @@ MonoBehaviour:
   particleFlyingPrefab: {fileID: 0}
   particleHitPrefab: {fileID: 0}
   player: 0
+  unit: {fileID: 0}
   audiosLaunch: []
   body: {fileID: 0}
 --- !u!61 &2504444566194990575
@@ -100,14 +101,14 @@ MonoBehaviour:
   forceLaunch: 0
   forceHit: 0
   damage: 5
-  duration: 1
-  durationHit: 1
+  duration: 0.5
+  durationHit: 0.5
   isAlive: 1
-  particleLaunchPerfab: {fileID: 6853422757766255122, guid: c791a9fcf0087054a9e4af1ff8a4aec7,
-    type: 3}
+  particleLaunchPerfab: {fileID: 0}
   particleFlyingPrefab: {fileID: 0}
   particleHitPrefab: {fileID: 0}
   player: 0
+  unit: {fileID: 0}
   audiosLaunch: []
   body: {fileID: 0}
 --- !u!50 &7981584988096399773

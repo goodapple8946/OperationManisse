@@ -94,6 +94,15 @@ public abstract class Unit : ClickableObject
 
     }
 
+    //protected void OnDestroy()
+    //{
+    //    if (editorController.IsInGrid(this))
+    //    {
+    //        Debug.Log(gameObject.name);
+    //        editorController.Grid[gridX, gridY] = null;
+    //    }
+    //}
+
     // 游戏开始时调用
     public virtual void GameStart()
     {
