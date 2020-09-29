@@ -27,7 +27,7 @@ public abstract class Unit : ClickableObject
 
     // 地面检测射线长度
     protected float groundCheckDistance = 0.05f;
-
+	
     // 死亡时的效果力矩
     protected float torqueDeath = 1000f;
 
@@ -65,7 +65,6 @@ public abstract class Unit : ClickableObject
 	//}
 
 	// 价格
-
 	public int price;
 
     // 是编辑器创建的
@@ -138,13 +137,10 @@ public abstract class Unit : ClickableObject
 		Rotate(1);
 	}
 
-	/// <summary> times正数 </summary>
+	/// <summary> times必须是正数 </summary>
 	public void Rotate(int times)
 	{
-		if(times < 0)
-		{
-			throw new System.Exception();
-		}
+		Debug.Assert(times >= 0);
 		direction = (direction + times) % 4;
 		transform.Rotate(0, 0, times * 90f);
 	}
@@ -201,7 +197,6 @@ public abstract class Unit : ClickableObject
         // 移除碰撞
         Destroy(GetComponent<Collider2D>());
 
-
         // 摧毁物体
         Destroy(gameObject, deathDuration);
     }
@@ -220,7 +215,7 @@ public abstract class Unit : ClickableObject
     }
 
     // 是否存活
-    public bool IsAlive()
+    private bool IsAlive()
     {
         return health > 0;
     }

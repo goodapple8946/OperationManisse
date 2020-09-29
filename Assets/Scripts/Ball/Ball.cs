@@ -53,21 +53,7 @@ public class Ball : Unit
             }
         }
         // 更新朝向，保证武器图像顶部朝上
-        UpdateToward();
-    }
-
-    // 检查目标是否合法
-    protected bool IsLegalTarget(Unit unit)
-    {
-        // 射程范围之内
-        bool unitInRange = (unit.transform.position - transform.position).magnitude <= findEnemyRange;
-
-        // 敌对正营
-        bool unitIsOpponent =
-            player == Player.Player && unit.player == Player.Enemy ||
-            player == Player.Enemy && unit.player == Player.Player;
-
-        return unit.IsAlive() && unitInRange && unitIsOpponent;
+        UpdateFlip();
     }
     
     // 索敌。返回最佳目标，如果没有则返回null
@@ -86,7 +72,7 @@ public class Ball : Unit
             // 目标合法
             if (IsLegalTarget(unit))
             {
-                float priority = GetTargetPriority(unit);
+                float priority = CalculatePriority(unit);
 
                 // 优先级更高的目标
                 if (priority > currentPriority + priorityTolerant)
@@ -99,8 +85,24 @@ public class Ball : Unit
         return currentTarget;
     }
 
-    // 索敌优先级
-    protected int GetTargetPriority(Unit unit)
+	/// <summary>
+	/// true: 目标存活在范围内且是敌对的
+	/// </summary>
+	protected bool IsLegalTarget(Unit unit)
+	{
+		// 射程范围之内
+		bool unitInRange = (unit.transform.position - transform.position).magnitude <= findEnemyRange;
+
+		// 敌对正营
+		bool unitIsOpponent =
+			player == Player.Player && unit.player == Player.Enemy ||
+			player == Player.Enemy && unit.player == Player.Player;
+
+		return unit.IsAlive() && unitInRange && unitIsOpponent;
+	}
+
+	// 索敌优先级
+	protected int CalculatePriority(Unit unit)
     {
         float distance = (unit.transform.position - transform.position).magnitude;
         int priority = 0;
@@ -172,16 +174,17 @@ public class Ball : Unit
         weaponCD -= Time.deltaTime;
     }
 
-    // 朝向检测
-    protected virtual void UpdateToward()
+    // 根据条件判断是否翻转X轴
+    protected virtual void UpdateFlip()
     {
+		// 在一四象限不翻转
         if (transform.localEulerAngles.z < 90f || transform.localEulerAngles.z > 270f)
         {
-            transform.GetChild(1).localScale = new Vector3(1, 1, 1);
+			SetFlipX(false);
         }
         else
         {
-            transform.GetChild(1).localScale = new Vector3(1, -1, 1);
+			SetFlipX(true);
         }
     }
 
@@ -223,10 +226,35 @@ public class Ball : Unit
     }
 
 	/// <summary>
-	/// 一次转动两下
+	/// 转动两下
 	/// </summary>
 	public override void Rotate()
 	{
-		Rotate(2);
+		direction = (direction + 2) % 4;
+		FlipX();
+	}
+
+	/// <summary>
+	/// 以竖向为轴进行翻转
+	/// </summary>
+	protected void FlipX()
+	{
+		SpriteRenderer[] renders = transform.GetComponentsInChildren<SpriteRenderer>();
+		foreach(SpriteRenderer render in renders)
+		{
+			render.flipX = !render.flipX;
+		}
+	}
+
+	/// <summary>
+	/// 设置是否翻转
+	/// </summary>
+	protected void SetFlipX(bool value)
+	{
+		SpriteRenderer[] renders = transform.GetComponentsInChildren<SpriteRenderer>();
+		foreach (SpriteRenderer render in renders)
+		{
+			render.flipX = value;
+		}
 	}
 }

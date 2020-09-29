@@ -17,7 +17,7 @@ public class EditorController : MonoBehaviour
 
 	// 编辑者放置的背景
 	[HideInInspector] private HashSet<Background> backgrounds;
-	[HideInInspector] public HashSet<Background> Backgrounds { get; }
+	[HideInInspector] public HashSet<Background> Backgrounds { get => backgrounds; }
 
 	// Editor面板：网格尺寸x
 	[HideInInspector] private int xNum = 8;

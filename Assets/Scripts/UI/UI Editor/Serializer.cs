@@ -11,7 +11,7 @@ using static Controller;
 /// <summary>
 /// 辅助save和load的工具类
 /// </summary>
-public static class Serializer
+static class Serializer
 {
 	/// <summary>
 	/// 根据参数构造Game并序列化

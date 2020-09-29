@@ -48,7 +48,7 @@ public class EditorLoad : MonoBehaviour
 	private void Load(XMLBackground background)
 	{
 		// 复制一份物体
-		GameObject objPrefab = resourceController.unitDictionary[background.name];
+		GameObject objPrefab = resourceController.gameObjDictionary[background.name];
 		GameObject objClone = Instantiate(objPrefab);
 		objClone.name = objPrefab.name; // 默认复制名称是GameObject Name (Clone)
 
@@ -60,7 +60,7 @@ public class EditorLoad : MonoBehaviour
 	private void Load(XMLUnit xmlUnit)
 	{
 		// 复制一份物体
-		GameObject objPrefab = resourceController.unitDictionary[xmlUnit.name];
+		GameObject objPrefab = resourceController.gameObjDictionary[xmlUnit.name];
 		GameObject objClone = Instantiate(objPrefab);
         objClone.name = objPrefab.name; // 默认复制名称是GameObject Name (Clone)
 		
