@@ -172,7 +172,7 @@ public abstract class Unit : ClickableObject
         {
 			Destroy(gameObject);
 			//创建一个尸体, deathDuration后删除
-			GameObject corpse = CreateDeathClone(this.gameObject);
+			GameObject corpse = CreateDeathClone(gameObject);
 			Destroy(corpse, deathDuration);
 		}
     }
@@ -183,7 +183,7 @@ public abstract class Unit : ClickableObject
 	}
 
 	/// <summary>
-	/// 创建一个保留renderer,旋转rigidbody,无script组件和碰撞体的克隆
+	/// 根据origin, 创建一个保留renderer,旋转rigidbody,无script组件和碰撞体的克隆
 	/// </summary>
 	protected GameObject CreateDeathClone(GameObject origin)
 	{
