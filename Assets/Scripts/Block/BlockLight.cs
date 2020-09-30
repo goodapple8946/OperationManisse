@@ -23,10 +23,9 @@ public class BlockLight : Block
         }
     }
 
-    protected override void Die()
+    protected override void OnDestroy()
     {
-        base.Die();
-
+        base.OnDestroy();
         // 删除粒子
         Destroy(particle);
     }

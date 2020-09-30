@@ -36,21 +36,11 @@ public class BlockBrazier : Block
         }
     }
 
-    protected override void Die()
+    protected override void OnDestroy()
     {
-        base.Die();
-
-        // 删除粒子
-        Destroy(particle);
-    }
-
-    protected void OnDestroy()
-    {
-        if (particle != null)
-        {
-            // 删除粒子
-            Destroy(particle);
-        }
+		base.OnDestroy();
+		// 删除粒子
+		Destroy(particle);
     }
 
     public override bool IsLinkAvailable(int direction)

@@ -174,41 +174,35 @@ public class Ball : Unit
         weaponCD -= Time.deltaTime;
     }
 
-    // 根据条件判断是否翻转X轴
+    // 根据条件判断是否沿Y轴翻转
     protected virtual void UpdateFlip()
     {
-		// 在一四象限不翻转
-        if (transform.localEulerAngles.z < 90f || transform.localEulerAngles.z > 270f)
-        {
-			SetFlipX(false);
-        }
+		// 根据欧拉角设置图片翻转
+		if(transform.rotation.eulerAngles.z < 90f || transform.rotation.eulerAngles.z > 270f)
+		{
+			SetFlipY(false);
+		}
         else
         {
-			SetFlipX(true);
-        }
-    }
+			SetFlipY(true);
+		}
+	}
 
     // 创建弹药
     protected virtual Missile CreateMissile()
     {
         // 创建弹药
         Missile missile = Instantiate(missilePrefab).GetComponent<Missile>();
-
         // 弹药玩家
         missile.player = player;
-
         // 弹药发射者
         missile.unit = this;
-
         // 弹药发射点
         missile.transform.position = transform.position + transform.right * weaponOffset;
-
         // 弹药朝向
         missile.transform.rotation = transform.rotation;
-
         // 弹药随机角度
         missile.transform.Rotate(0, 0, Random.Range(-weaponAngle, weaponAngle));
-
         // 弹药父物体
         missile.transform.parent = gameController.missileObjects.transform;
 
@@ -231,30 +225,18 @@ public class Ball : Unit
 	public override void Rotate()
 	{
 		direction = (direction + 2) % 4;
-		FlipX();
+		transform.Rotate(0, 0, 180);
 	}
 
 	/// <summary>
-	/// 以竖向为轴进行翻转
+	/// 设置flipY,不改变欧拉角
 	/// </summary>
-	protected void FlipX()
-	{
-		SpriteRenderer[] renders = transform.GetComponentsInChildren<SpriteRenderer>();
-		foreach(SpriteRenderer render in renders)
-		{
-			render.flipX = !render.flipX;
-		}
-	}
-
-	/// <summary>
-	/// 设置是否翻转
-	/// </summary>
-	protected void SetFlipX(bool value)
+	protected void SetFlipY(bool value)
 	{
 		SpriteRenderer[] renders = transform.GetComponentsInChildren<SpriteRenderer>();
 		foreach (SpriteRenderer render in renders)
 		{
-			render.flipX = value;
+			render.flipY = value;
 		}
 	}
 }

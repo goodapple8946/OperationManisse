@@ -78,10 +78,15 @@ public class Block : Unit
         return direction * 90f;
     }
 
-    // 死亡
-    protected override void Die()
+	protected override void OnDestroy()
+	{
+		base.OnDestroy();
+		BreakLinks();
+	}
+
+	// 解除连接
+	protected void BreakLinks()
     {
-        // 解除连接
         for (int direction = 0; direction < 4; direction++)
         {
             int directionNeg = GetDirectionNegative(direction);
@@ -93,7 +98,6 @@ public class Block : Unit
                 another.UnlinkTo(this, directionNeg);
             }
         }
-        base.Die();
     }
 
     protected int GetDirectionNegative(int direction)

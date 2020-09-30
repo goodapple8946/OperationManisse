@@ -29,7 +29,7 @@ public abstract class Unit : ClickableObject
     protected float groundCheckDistance = 0.05f;
 	
     // 死亡时的效果力矩
-    protected float torqueDeath = 1000f;
+    protected static float torqueDeath = 1000f;
 
     // 可能的Sprite
     public Sprite[] sprites;
@@ -92,15 +92,6 @@ public abstract class Unit : ClickableObject
     {
 
     }
-
-    //protected void OnDestroy()
-    //{
-    //    if (editorController.IsInGrid(this))
-    //    {
-    //        Debug.Log(gameObject.name);
-    //        editorController.Grid[gridX, gridY] = null;
-    //    }
-    //}
 
     // 游戏开始时调用
     public virtual void GameStart()
@@ -180,29 +171,48 @@ public abstract class Unit : ClickableObject
     {
         if (!IsAlive())
         {
-            Die();
-        }
+			Destroy(gameObject);
+			//创建一个尸体, deathDuration后删除
+			GameObject corpse = CreateDeathClone(this.gameObject);
+			Destroy(corpse, deathDuration);
+
+		}
     }
+	
+	protected virtual void OnDestroy()
+	{
+		
+	}
 
-    // 死亡
-    protected virtual void Die()
-    {
-        // 解除固定
-        body.constraints = RigidbodyConstraints2D.None;
+	/// <summary>
+	/// 创建一个保留renderer,旋转rigidbody,无script组件和碰撞体的克隆
+	/// </summary>
+	protected GameObject CreateDeathClone(GameObject origin)
+	{
+		Transform transClone = Instantiate(origin.transform);
+		// 将tag改成未设置就不会被findEnemy
+		transClone.tag = "Untagged";
 
-        // 无阻力
-        body.drag = 0;
-        body.angularDrag = 0;
+		// 移除所有脚本和碰撞体
+		MonoBehaviour[] scripts = transClone.GetComponents<MonoBehaviour>();
+		System.Array.ForEach(scripts, script => Destroy(script));
+		Collider2D[] colliders = transClone.GetComponents<Collider2D>();
+		System.Array.ForEach(colliders, collider => Destroy(collider));
 
-        // 移除碰撞
-        Destroy(GetComponent<Collider2D>());
+		// 取消刚体固定
+		Rigidbody2D cloneBody = transClone.GetComponent<Rigidbody2D>();
+		cloneBody.constraints = RigidbodyConstraints2D.None;
+		// 无阻力
+		cloneBody.drag = 0;
+		cloneBody.angularDrag = 0;
+		// 死亡扭矩
+		cloneBody.AddTorque(torqueDeath);
 
-        // 摧毁物体
-        Destroy(gameObject, deathDuration);
-    }
+		return transClone.gameObject;
+	}
 
-    // 是否在地面上
-    public bool IsGrounded()
+	// 是否在地面上
+	public bool IsGrounded()
     {
         // 射线起始点
         Vector2 origin = (Vector2)transform.position + Vector2.down * (radius + groundCheckOffset);
@@ -215,7 +225,7 @@ public abstract class Unit : ClickableObject
     }
 
     // 是否存活
-    private bool IsAlive()
+    public bool IsAlive()
     {
         return health > 0;
     }

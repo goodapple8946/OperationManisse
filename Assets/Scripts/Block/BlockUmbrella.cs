@@ -48,12 +48,12 @@ public class BlockUmbrella : Block
         }
     }
 
-    protected override void Die()
+    protected override void OnDestroy()
     {
-        // 删除粒子
-        Destroy(particle);
 
-        base.Die();
+		base.OnDestroy();
+		// 删除粒子
+		Destroy(particle);
     }
 
     public override bool IsLinkAvailable(int direction)

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 628507356808408034}
   - component: {fileID: 628507356808408033}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 628507357035931377}
   - component: {fileID: -5567803682464269790}
   - component: {fileID: -3313053000362919951}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Ball Gatling
   m_TagString: Ball
   m_Icon: {fileID: 0}
@@ -256,7 +256,7 @@ SpriteRenderer:
   m_SortingLayerID: 158068497
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 24e5ee68711986a4d94d4f8388858fc6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a2e587ca35f93fb43aea495e0d58cd77, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

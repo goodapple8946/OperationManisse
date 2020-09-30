@@ -17,20 +17,12 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Ball Gatling</name>
+      <name>Ball Crossbow</name>
       <player>1</player>
       <x>0</x>
       <y>1</y>
       <direction>0</direction>
       <layer>8</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Brick</name>
-      <player>2</player>
-      <x>0</x>
-      <y>5</y>
-      <direction>0</direction>
-      <layer>12</layer>
     </XMLUnit>
     <XMLUnit>
       <name>Ground</name>
@@ -41,12 +33,12 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Brick</name>
-      <player>2</player>
+      <name>Ball Crossbow</name>
+      <player>1</player>
       <x>1</x>
-      <y>5</y>
+      <y>1</y>
       <direction>0</direction>
-      <layer>12</layer>
+      <layer>8</layer>
     </XMLUnit>
     <XMLUnit>
       <name>Ground</name>
@@ -57,20 +49,12 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Ball Gatling</name>
+      <name>Ball Crossbow</name>
       <player>1</player>
       <x>2</x>
       <y>1</y>
       <direction>0</direction>
       <layer>8</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Brick</name>
-      <player>2</player>
-      <x>2</x>
-      <y>5</y>
-      <direction>0</direction>
-      <layer>12</layer>
     </XMLUnit>
     <XMLUnit>
       <name>Ground</name>
@@ -81,6 +65,14 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
+      <name>Ball Crossbow</name>
+      <player>1</player>
+      <x>3</x>
+      <y>1</y>
+      <direction>0</direction>
+      <layer>8</layer>
+    </XMLUnit>
+    <XMLUnit>
       <name>Ground</name>
       <player>0</player>
       <x>4</x>
@@ -89,6 +81,14 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
+      <name>Ball Pistol</name>
+      <player>2</player>
+      <x>4</x>
+      <y>1</y>
+      <direction>2</direction>
+      <layer>11</layer>
+    </XMLUnit>
+    <XMLUnit>
       <name>Ground</name>
       <player>0</player>
       <x>5</x>
@@ -97,12 +97,12 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Ball Gatling</name>
-      <player>1</player>
+      <name>Ball Pistol</name>
+      <player>2</player>
       <x>5</x>
       <y>1</y>
-      <direction>0</direction>
-      <layer>8</layer>
+      <direction>2</direction>
+      <layer>11</layer>
     </XMLUnit>
     <XMLUnit>
       <name>Ground</name>
@@ -113,12 +113,28 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
+      <name>Ball Pistol</name>
+      <player>2</player>
+      <x>6</x>
+      <y>1</y>
+      <direction>2</direction>
+      <layer>11</layer>
+    </XMLUnit>
+    <XMLUnit>
       <name>Ground</name>
       <player>0</player>
       <x>7</x>
       <y>0</y>
       <direction>0</direction>
       <layer>15</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Ball Pistol</name>
+      <player>2</player>
+      <x>7</x>
+      <y>1</y>
+      <direction>2</direction>
+      <layer>11</layer>
     </XMLUnit>
   </xmlUnits>
   <goodsVisable />
