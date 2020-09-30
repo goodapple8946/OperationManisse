@@ -47,10 +47,9 @@ public abstract class Unit : ClickableObject
 	[HideInInspector] public int gridX = -1;
 	[HideInInspector] public int gridY = -1;
 
-	/* 
-	* Link Direction:
-	* 0: Right, 1: Top, 2: Left, 3: Bottom
-	*/
+
+	// Link Direction:
+	// 0: Right, 1: Top, 2: Left, 3: Bottom
 	/// <summary> 物体朝向的方向 </summary>
 	public int direction;
 	//public int Direction
@@ -175,7 +174,6 @@ public abstract class Unit : ClickableObject
 			//创建一个尸体, deathDuration后删除
 			GameObject corpse = CreateDeathClone(this.gameObject);
 			Destroy(corpse, deathDuration);
-
 		}
     }
 	
@@ -189,8 +187,9 @@ public abstract class Unit : ClickableObject
 	/// </summary>
 	protected GameObject CreateDeathClone(GameObject origin)
 	{
+		// 将origin整体复制
 		Transform transClone = Instantiate(origin.transform);
-		// 将tag改成未设置就不会被findEnemy
+		// 将tag改成Untagged就不会被findEnemy
 		transClone.tag = "Untagged";
 
 		// 移除所有脚本和碰撞体

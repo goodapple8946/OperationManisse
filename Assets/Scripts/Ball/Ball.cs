@@ -35,7 +35,7 @@ public class Ball : Unit
 
         WeaponCoolDown();
 
-        if (IsAlive() && gameController.gamePhase == GamePhase.Playing)
+        if (gameController.gamePhase == GamePhase.Playing)
         {
             // 寻找敌人
             Unit target = FindEnemy();
@@ -98,7 +98,7 @@ public class Ball : Unit
 			player == Player.Player && unit.player == Player.Enemy ||
 			player == Player.Enemy && unit.player == Player.Player;
 
-		return unit.IsAlive() && unitInRange && unitIsOpponent;
+		return unitInRange && unitIsOpponent;
 	}
 
 	// 索敌优先级

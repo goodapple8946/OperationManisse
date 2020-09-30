@@ -17,12 +17,12 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Ball Crossbow</name>
+      <name>Block Umbrella</name>
       <player>1</player>
       <x>0</x>
       <y>1</y>
       <direction>0</direction>
-      <layer>8</layer>
+      <layer>9</layer>
     </XMLUnit>
     <XMLUnit>
       <name>Ground</name>
@@ -33,12 +33,12 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Ball Crossbow</name>
+      <name>Block Light</name>
       <player>1</player>
       <x>1</x>
       <y>1</y>
       <direction>0</direction>
-      <layer>8</layer>
+      <layer>9</layer>
     </XMLUnit>
     <XMLUnit>
       <name>Ground</name>
@@ -49,12 +49,12 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Ball Crossbow</name>
+      <name>Block Propeller</name>
       <player>1</player>
       <x>2</x>
       <y>1</y>
-      <direction>0</direction>
-      <layer>8</layer>
+      <direction>3</direction>
+      <layer>9</layer>
     </XMLUnit>
     <XMLUnit>
       <name>Ground</name>
@@ -63,14 +63,6 @@
       <y>0</y>
       <direction>0</direction>
       <layer>15</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Ball Crossbow</name>
-      <player>1</player>
-      <x>3</x>
-      <y>1</y>
-      <direction>0</direction>
-      <layer>8</layer>
     </XMLUnit>
     <XMLUnit>
       <name>Ground</name>

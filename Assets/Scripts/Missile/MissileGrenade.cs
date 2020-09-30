@@ -26,7 +26,7 @@ public class MissileGrenade : Missile
         {
             Unit unit = gameObject.GetComponent<Unit>();
 
-            if (unit.IsAlive() && player != unit.player)
+            if (player != unit.player)
             {
                 // 爆炸中心与该Unit的向量
                 Vector2 vector = unit.transform.position - transform.position;

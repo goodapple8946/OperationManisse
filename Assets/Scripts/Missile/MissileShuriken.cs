@@ -40,7 +40,7 @@ public class MissileShuriken : Missile
         transform.Rotate(0, 0, speedRotation * Time.deltaTime);
         UpdateDuration();
 
-        if (unit != null && unit.IsAlive())
+        if (unit != null)
         {
             Vector2 toOwner = unit.transform.position - transform.position;
             body.AddForce(toOwner * forceScale);
