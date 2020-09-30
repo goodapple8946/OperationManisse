@@ -26,31 +26,19 @@ public class BlockBrazier : Block
     {
         base.Update();
 
-        if (IsAlive())
-        {
-            // 粒子跟随
-            particle.transform.position = transform.position;
+        // 粒子跟随
+        particle.transform.position = transform.position;
 
-            // 随机照亮范围
-            transform.GetChild(1).GetComponent<Light2D>().pointLightOuterRadius = Random.Range(outerRaiuds[0], outerRaiuds[1]);
-        }
+        // 随机照亮范围
+        transform.GetChild(1).GetComponent<Light2D>().pointLightOuterRadius = Random.Range(outerRaiuds[0], outerRaiuds[1]);
+
     }
 
-    protected override void Die()
+    protected override void OnDestroy()
     {
-        base.Die();
-
-        // 删除粒子
-        Destroy(particle);
-    }
-
-    protected void OnDestroy()
-    {
-        if (particle != null)
-        {
-            // 删除粒子
-            Destroy(particle);
-        }
+		base.OnDestroy();
+		// 删除粒子
+		Destroy(particle);
     }
 
     public override bool IsLinkAvailable(int direction)

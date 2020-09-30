@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +15,7 @@ public class ResourceController : MonoBehaviour
     public GameObject[] backgroundObjects;
 
 	// 根据上面的生成的dictionary
-	public Dictionary<string, GameObject> unitDictionary;
+	public Dictionary<string, GameObject> gameObjDictionary;
 
     // Block连接时的粒子预设
     public GameObject particleLinkPrefab;
@@ -43,18 +44,10 @@ public class ResourceController : MonoBehaviour
 	protected void Start()
 	{
 		// 初始化unitDictionary
-		unitDictionary = new Dictionary<string, GameObject>();
-		foreach(GameObject obj in editorObjects)
-		{
-			unitDictionary.Add(obj.name, obj);
-		}
-		foreach (GameObject obj in blockObjects)
-		{
-			unitDictionary.Add(obj.name, obj);
-		}
-		foreach (GameObject obj in ballObjects)
-		{
-			unitDictionary.Add(obj.name, obj);
-		}
+		gameObjDictionary = new Dictionary<string, GameObject>();
+		Array.ForEach(editorObjects, obj => gameObjDictionary.Add(obj.name, obj));
+		Array.ForEach(blockObjects, obj => gameObjDictionary.Add(obj.name, obj));
+		Array.ForEach(ballObjects, obj => gameObjDictionary.Add(obj.name, obj));
+		Array.ForEach(backgroundObjects, obj => gameObjDictionary.Add(obj.name, obj));
 	}
 }

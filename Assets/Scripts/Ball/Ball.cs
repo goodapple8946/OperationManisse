@@ -35,7 +35,7 @@ public class Ball : Unit
 
         WeaponCoolDown();
 
-        if (IsAlive() && gameController.gamePhase == GamePhase.Playing)
+        if (gameController.gamePhase == GamePhase.Playing)
         {
             // 寻找敌人
             Unit target = FindEnemy();
@@ -53,21 +53,7 @@ public class Ball : Unit
             }
         }
         // 更新朝向，保证武器图像顶部朝上
-        UpdateToward();
-    }
-
-    // 检查目标是否合法
-    protected bool IsLegalTarget(Unit unit)
-    {
-        // 射程范围之内
-        bool unitInRange = (unit.transform.position - transform.position).magnitude <= findEnemyRange;
-
-        // 敌对正营
-        bool unitIsOpponent =
-            player == Player.Player && unit.player == Player.Enemy ||
-            player == Player.Enemy && unit.player == Player.Player;
-
-        return unit.IsAlive() && unitInRange && unitIsOpponent;
+        UpdateFlip();
     }
     
     // 索敌。返回最佳目标，如果没有则返回null
@@ -86,7 +72,7 @@ public class Ball : Unit
             // 目标合法
             if (IsLegalTarget(unit))
             {
-                float priority = GetTargetPriority(unit);
+                float priority = CalculatePriority(unit);
 
                 // 优先级更高的目标
                 if (priority > currentPriority + priorityTolerant)
@@ -99,8 +85,24 @@ public class Ball : Unit
         return currentTarget;
     }
 
-    // 索敌优先级
-    protected int GetTargetPriority(Unit unit)
+	/// <summary>
+	/// true: 目标存活在范围内且是敌对的
+	/// </summary>
+	protected bool IsLegalTarget(Unit unit)
+	{
+		// 射程范围之内
+		bool unitInRange = (unit.transform.position - transform.position).magnitude <= findEnemyRange;
+
+		// 敌对正营
+		bool unitIsOpponent =
+			player == Player.Player && unit.player == Player.Enemy ||
+			player == Player.Enemy && unit.player == Player.Player;
+
+		return unitInRange && unitIsOpponent;
+	}
+
+	// 索敌优先级
+	protected int CalculatePriority(Unit unit)
     {
         float distance = (unit.transform.position - transform.position).magnitude;
         int priority = 0;
@@ -172,40 +174,35 @@ public class Ball : Unit
         weaponCD -= Time.deltaTime;
     }
 
-    // 朝向检测
-    protected virtual void UpdateToward()
+    // 根据条件判断是否沿Y轴翻转
+    protected virtual void UpdateFlip()
     {
-        if (transform.localEulerAngles.z < 90f || transform.localEulerAngles.z > 270f)
-        {
-            transform.GetChild(1).localScale = new Vector3(1, 1, 1);
-        }
+		// 根据欧拉角设置图片翻转
+		if(transform.rotation.eulerAngles.z < 90f || transform.rotation.eulerAngles.z > 270f)
+		{
+			SetFlipY(false);
+		}
         else
         {
-            transform.GetChild(1).localScale = new Vector3(1, -1, 1);
-        }
-    }
+			SetFlipY(true);
+		}
+	}
 
     // 创建弹药
     protected virtual Missile CreateMissile()
     {
         // 创建弹药
         Missile missile = Instantiate(missilePrefab).GetComponent<Missile>();
-
         // 弹药玩家
         missile.player = player;
-
         // 弹药发射者
         missile.unit = this;
-
         // 弹药发射点
         missile.transform.position = transform.position + transform.right * weaponOffset;
-
         // 弹药朝向
         missile.transform.rotation = transform.rotation;
-
         // 弹药随机角度
         missile.transform.Rotate(0, 0, Random.Range(-weaponAngle, weaponAngle));
-
         // 弹药父物体
         missile.transform.parent = gameController.missileObjects.transform;
 
@@ -223,10 +220,23 @@ public class Ball : Unit
     }
 
 	/// <summary>
-	/// 一次转动两下
+	/// 转动两下
 	/// </summary>
 	public override void Rotate()
 	{
-		Rotate(2);
+		direction = (direction + 2) % 4;
+		transform.Rotate(0, 0, 180);
+	}
+
+	/// <summary>
+	/// 设置flipY,不改变欧拉角
+	/// </summary>
+	protected void SetFlipY(bool value)
+	{
+		SpriteRenderer[] renders = transform.GetComponentsInChildren<SpriteRenderer>();
+		foreach (SpriteRenderer render in renders)
+		{
+			render.flipY = value;
+		}
 	}
 }

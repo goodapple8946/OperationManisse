@@ -28,19 +28,15 @@ public class BlockPropeller : Block
     {
         base.FixedUpdate();
 
-        // 向朝向的方向施加力
-        if (IsAlive())
-        {
-            Vector2 forceAdded = Quaternion.AngleAxis(transform.localEulerAngles.z, Vector3.forward) * Vector2.right * force;
-            body.AddForce(forceAdded);
-        }
+		// 向朝向的方向施加力
+        Vector2 forceAdded = Quaternion.AngleAxis(transform.localEulerAngles.z, Vector3.forward) * Vector2.right * force;
+        body.AddForce(forceAdded);
     }
 
-    protected override void Die()
+    protected override void OnDestroy()
     {
-        // 删除粒子
-        Destroy(particle);
-
-        base.Die();
+		base.OnDestroy();
+		// 删除粒子
+		Destroy(particle);
     }
 }

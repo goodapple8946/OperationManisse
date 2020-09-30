@@ -31,29 +31,26 @@ public class BlockUmbrella : Block
     {
         base.FixedUpdate();
 
-        if (IsAlive())
-        {
-            // 向上施加力
-            body.AddForce(Vector2.up * force);
+		// 向上施加力
+		body.AddForce(Vector2.up * force);
 
-            // 朝向上方
-            if (transform.eulerAngles.z > 270f || transform.eulerAngles.z < 88f)
-            {
-                body.AddTorque(forceTorque);
-            }
-            else if (transform.eulerAngles.z > 92f && transform.eulerAngles.z <= 270f)
-            {
-                body.AddTorque(-forceTorque);
-            }
-        }
+		// 朝向上方
+		if (transform.eulerAngles.z > 270f || transform.eulerAngles.z < 88f)
+		{
+			body.AddTorque(forceTorque);
+		}
+		else if (transform.eulerAngles.z > 92f && transform.eulerAngles.z <= 270f)
+		{
+			body.AddTorque(-forceTorque);
+		}
     }
 
-    protected override void Die()
+    protected override void OnDestroy()
     {
-        // 删除粒子
-        Destroy(particle);
 
-        base.Die();
+		base.OnDestroy();
+		// 删除粒子
+		Destroy(particle);
     }
 
     public override bool IsLinkAvailable(int direction)
