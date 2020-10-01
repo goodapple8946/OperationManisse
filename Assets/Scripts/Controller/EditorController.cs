@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
+using UnityEngine.UI;
 using static Controller;
 
 public class EditorController : MonoBehaviour
@@ -34,8 +35,11 @@ public class EditorController : MonoBehaviour
 	// Editor面板：编辑者当前设置的全局光照
 	[HideInInspector] private float lightIntensity = 1.0f;
 
-	// 摄像机的四个边的世界位置
-	[HideInInspector] public float xMin;
+    // Editor面饭：背景尺寸
+    [HideInInspector] private float backgroundScale = 1f;
+
+    // 摄像机的四个边的世界位置
+    [HideInInspector] public float xMin;
 	[HideInInspector] public float xMax;
 	[HideInInspector] public float yMin;
 	[HideInInspector] public float yMax;
@@ -55,6 +59,9 @@ public class EditorController : MonoBehaviour
 
 	// 当前鼠标持有的Unit
 	[HideInInspector] public ClickableObject mouseObject;
+
+    // 当前鼠标持有的Unit 或 上一次鼠标持有的Unit
+    [HideInInspector] public ClickableObject mouseObjectLast;
 
     // 允许接收按住鼠标左键或右键
     // 只有EditorMode是Unit模式下，isClickHold才能为true
@@ -137,7 +144,6 @@ public class EditorController : MonoBehaviour
             editorContent.UpdateUIShowing();
         }
     }
-
 	public float LightIntensity
     {
         get => lightIntensity;
@@ -145,6 +151,23 @@ public class EditorController : MonoBehaviour
         {
             lightIntensity = value;
             GameObject.Find("Global Light").GetComponent<Light2D>().intensity = lightIntensity;
+            editorContent.UpdateUIShowing();
+        }
+    }
+    public float BackgroundScale
+    {
+        get => backgroundScale;
+        set
+        {
+            backgroundScale = value;
+
+            Background background = mouseObject is Background ? mouseObject as Background : mouseObjectLast is Background ? mouseObjectLast as Background : null;
+            if (background != null)
+            {
+                float scale = editorContent.GetComponentInChildren<EditorScale>().GetComponent<Slider>().value;
+                background.transform.localScale = new Vector2(scale, scale);
+            }
+
             editorContent.UpdateUIShowing();
         }
     }
@@ -173,6 +196,7 @@ public class EditorController : MonoBehaviour
     {
         Init();
         CreateGridSprites();
+        editorContent.UpdateUIShowing();
     }
 
     void Update()
@@ -305,12 +329,15 @@ public class EditorController : MonoBehaviour
         }
         unit.SetSpriteLayer("Pick");
         mouseObject = unit;
+        mouseObjectLast = unit;
     }
     // 拾起BackGround
     public void Pick(Background background)
     {
         background.SetSpriteLayer("Pick");
         mouseObject = background;
+        mouseObjectLast = background;
+        BackgroundScale = background.transform.localScale.x;
     }
     // 购买
     public void Buy(GameObject prefab)
@@ -694,6 +721,14 @@ public class EditorController : MonoBehaviour
             Destroy(mouseObject.gameObject);
         }
     }
+    // 清除Mouse Object Last
+    public void ClearMouseObjectLast()
+    {
+        if (mouseObjectLast != null)
+        {
+            Destroy(mouseObjectLast.gameObject);
+        }
+    }
 
     // 在网格中
     public bool IsInGrid(Unit unit)
@@ -784,18 +819,28 @@ public class EditorController : MonoBehaviour
         {
             // 鼠标物体跟随鼠标
             mouseObject.transform.position = MouseController.MouseWorldPosition();
+        }
 
-            if (mouseObject is Unit)
+        // 单位指令
+        {
+            Unit unit =
+                mouseObject is Unit ? mouseObject as Unit :
+                mouseObjectLast is Unit ? mouseObjectLast as Unit :
+                null;
+
+            if (unit == null)
             {
-                Unit unit = mouseObject as Unit;
-                // R键旋转
-                if (Input.GetKeyDown(KeyCode.R))
-                {
-                    unit.Rotate();
-                }
+                return;
+            }
+
+            // R键旋转
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                unit.Rotate();
             }
         }
     }
+    
 
 	/// <summary>
 	/// 将unit放入(x,y), 设置位置。添加到gameController管理
@@ -817,6 +862,7 @@ public class EditorController : MonoBehaviour
 	public void Put(Background background)
     {
         background.transform.position += new Vector3(0, 0, 1);
+        backgrounds.Add(background);
 
         Add2GameControllerAndSetLayer(background);
     }
@@ -863,6 +909,7 @@ public class EditorController : MonoBehaviour
         EditorMode = EditorMode.Unit;
 
         ClearMouseObject();
+        ClearMouseObjectLast();
     }
 
     // 进入Editor阶段
@@ -875,6 +922,7 @@ public class EditorController : MonoBehaviour
         editorController.ShowGrids(true);
 
         ClearMouseObject();
+        ClearMouseObjectLast();
     }
 
     // 清空背景

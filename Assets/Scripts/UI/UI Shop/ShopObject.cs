@@ -43,15 +43,22 @@ public class ShopObject : MonoBehaviour
         {
             // 商品图像为添加物体的图像
             GetComponent<Button>().image.sprite = gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
+            
+            // 商品使用默认图像尺寸
+            GetComponent<Button>().image.SetNativeSize();
         }
         else if (clickableObject is Background)
         {
             // 商品图像为添加物体的图像
             GetComponent<Button>().image.sprite = gameObject.GetComponent<SpriteRenderer>().sprite;
-        }
+            
+            // 商品使用默认图像尺寸
+            GetComponent<Button>().image.SetNativeSize();
 
-        // 商品使用默认图像尺寸
-        GetComponent<Button>().image.SetNativeSize();
+            // 强制尺寸修正
+            float fixedSize = 100f;
+            GetComponent<Button>().image.rectTransform.sizeDelta = new Vector2(fixedSize, fixedSize);
+        }
 
         // 商品点击事件：购买添加的物体
         GetComponent<Button>().onClick.AddListener(() => editorController.Buy(gameObject));

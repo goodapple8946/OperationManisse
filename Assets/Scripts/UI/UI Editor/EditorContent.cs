@@ -6,7 +6,7 @@ using static Controller;
 public class EditorContent : MonoBehaviour
 {
     private GameObject editorUnit;
-    private GameObject editorMap;
+    private GameObject editorBackground;
 
     void Awake()
     {
@@ -18,8 +18,8 @@ public class EditorContent : MonoBehaviour
                 case "Editor Unit":
                     editorUnit = obj;
                     break;
-                case "Editor Map":
-                    editorMap = obj;
+                case "Editor Background":
+                    editorBackground = obj;
                     break;
             }
         }
@@ -27,11 +27,13 @@ public class EditorContent : MonoBehaviour
 
     public void UpdateUIShowing()
     {
+        UpdateByEditorMode();
         BroadcastMessage("UpdateShowing");
     }
 
     public void UpdateByEditorMode()
     {
         editorUnit.SetActive(editorController.EditorMode == EditorMode.Unit);
+        editorBackground.SetActive(editorController.EditorMode == EditorMode.Background);
     }
 }
