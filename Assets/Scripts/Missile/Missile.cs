@@ -12,7 +12,7 @@ public class Missile : MonoBehaviour
     public float forceHit;
 
     // 伤害
-    public int damage;
+    public int damageAmount;
 
     // 飞行时间（飞行时间为0时，才判定为死亡）
     public float duration;
@@ -74,7 +74,8 @@ public class Missile : MonoBehaviour
 			Unit unit = other.gameObject.GetComponent<Unit>();
 			if (unit != null)
 			{
-				unit.TakeDamage(this.damage);
+				Damage damage = new Damage(this.damageAmount, this.GetType());
+				unit.TakeDamage(damage);
 				if (unit.body != null)
 				{
 					unit.body.AddForce(transform.right * forceHit);

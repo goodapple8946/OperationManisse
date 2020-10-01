@@ -10,8 +10,8 @@ public abstract class Unit : ClickableObject
     // 生命最大值
     public int healthMax;
 
-    // 生命值
-    public int health;
+	// 生命值
+	public int health;
 
     // 死亡持续时间
     protected float deathDuration = 3f;
@@ -84,7 +84,7 @@ public abstract class Unit : ClickableObject
 
     protected virtual void Update()
     {
-        DeathCheck();
+
 	}
 
     protected virtual void FixedUpdate()
@@ -150,32 +150,51 @@ public abstract class Unit : ClickableObject
 
                 if (velocity >= 0)
                 {
-                    float damage = velocity * damageCollision;
-
-                    unit.TakeDamage((int)damage);
+                    float damageAmount = velocity * damageCollision;
+					Damage damage = new Damage((int)damageAmount, unit.GetType());
+                    unit.TakeDamage(damage);
                 }
             }
         }
     }
 
 	// 受伤
-	public void TakeDamage(int damage)
+	public void TakeDamage(Damage damage)
 	{
         // 生命值减少
-        health -= damage;
+        health -= damage.Amount;
+
+		// 死亡检测
+		if (!IsAlive())
+		{
+			ProcessDeath(damage.DamageType);
+		}
 	}
 
-    // 死亡检测
-    protected virtual void DeathCheck()
-    {
-        if (!IsAlive())
-        {
-			Destroy(gameObject);
-			//创建一个尸体, deathDuration后删除
-			GameObject corpse = CreateDeathClone(gameObject);
-			Destroy(corpse, deathDuration);
+	/// <summary>
+	/// 根据伤害类型来进行死亡效果
+	/// </summary>
+	/// <param name="damageType"></param>
+	protected void ProcessDeath(System.Type damageType)
+	{
+		Destroy(gameObject);
+		//创建一个尸体, deathDuration后删除
+		GameObject corpse;
+		if(damageType == typeof(MissileFlamethrower))
+		{
+			corpse = CreateBurningClone(gameObject);
 		}
-    }
+		else if(damageType == typeof(Missile)
+			|| damageType.IsInstanceOfType(typeof(Missile))) // 射伤
+		{
+			corpse = CreateRotatedRigidClone(gameObject);
+		}
+		else // 撞击
+		{
+			corpse = CreateRigidClone(gameObject);
+		}
+		Destroy(corpse, deathDuration);
+	}
 	
 	protected virtual void OnDestroy()
 	{
@@ -183,29 +202,61 @@ public abstract class Unit : ClickableObject
 	}
 
 	/// <summary>
-	/// 根据origin, 创建一个保留renderer,旋转rigidbody,无script组件和碰撞体的克隆
+	/// 根据origin, 创建一个保留renderer,旋转rigidbody,烧黑的克隆
 	/// </summary>
-	protected GameObject CreateDeathClone(GameObject origin)
+	protected static GameObject CreateBurningClone(GameObject origin)
 	{
-		// 将origin整体复制
-		Transform transClone = Instantiate(origin.transform);
-		// 将tag改成Untagged就不会被findEnemy
-		transClone.tag = "Untagged";
+		GameObject clone = CreateRigidClone(origin);
+		SpriteRenderer[] renderers = clone.transform.GetComponentsInChildren<SpriteRenderer>();
+		System.Array.ForEach(renderers, 
+			renderer => renderer.color = new Color(0.1f, 0.1f, 0.1f));
 
-		// 移除所有脚本和碰撞体
-		MonoBehaviour[] scripts = transClone.GetComponents<MonoBehaviour>();
-		System.Array.ForEach(scripts, script => Destroy(script));
-		Collider2D[] colliders = transClone.GetComponents<Collider2D>();
-		System.Array.ForEach(colliders, collider => Destroy(collider));
+		return clone.gameObject;
+	}
 
-		// 取消刚体固定
-		Rigidbody2D cloneBody = transClone.GetComponent<Rigidbody2D>();
+	/// <summary>
+	/// 根据origin, 创建一个保留renderer, rigidbody,无script组件和碰撞体的克隆
+	/// </summary>
+	protected static GameObject CreateRigidClone(GameObject origin)
+	{
+		GameObject graphicClone = CreateGraphicClone(origin);
+
+		// 取消父物体上的刚体固定
+		Rigidbody2D cloneBody = graphicClone.GetComponent<Rigidbody2D>();
 		cloneBody.constraints = RigidbodyConstraints2D.None;
 		// 无阻力
 		cloneBody.drag = 0;
 		cloneBody.angularDrag = 0;
+
+		return graphicClone.gameObject;
+	}
+
+	protected static GameObject CreateRotatedRigidClone(GameObject origin)
+	{
+		GameObject rigidClone = CreateRigidClone(origin);
+
+		Rigidbody2D cloneBody = rigidClone.GetComponent<Rigidbody2D>();
 		// 死亡扭矩
 		cloneBody.AddTorque(torqueDeath);
+
+		return rigidClone.gameObject;
+	}
+
+	/// <summary>
+	/// 创建一个仅有图像的克隆
+	/// </summary>
+	protected static GameObject CreateGraphicClone(GameObject origin)
+	{
+		// 将origin整体复制
+		Transform transClone = Instantiate(origin.transform);
+		// 将tag改成Untagged就不会被FindEnemy
+		transClone.tag = "Untagged";
+
+		// 移除所有脚本和碰撞体组件
+		MonoBehaviour[] scripts = transClone.GetComponentsInChildren<MonoBehaviour>();
+		System.Array.ForEach(scripts, script => Destroy(script));
+		Collider2D[] colliders = transClone.GetComponentsInChildren<Collider2D>();
+		System.Array.ForEach(colliders, collider => Destroy(collider));
 
 		return transClone.gameObject;
 	}

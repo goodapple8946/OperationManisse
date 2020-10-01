@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2104334341
-  m_SortingLayer: 8
+  m_SortingLayer: 9
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 92a3f8d4c7fda994d8847b55586707b6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceLaunch: 20
   forceHit: 10
-  damage: 25
+  damageAmount: 25
   duration: 3
   durationHit: 0
   isAlive: 1
@@ -154,8 +154,8 @@ MonoBehaviour:
   particleFlyingPrefab: {fileID: 0}
   particleHitPrefab: {fileID: 8293551352877460187, guid: 5fce293de388b844f8c9712eaf109f0a,
     type: 3}
-  isMelee: 0
   player: 0
+  unit: {fileID: 0}
   audiosLaunch:
   - {fileID: 8300000, guid: d3b87262f8cc40e4ba1582e29c4974db, type: 3}
   - {fileID: 8300000, guid: 619cb36e93fa4714581cb63f147449a8, type: 3}
