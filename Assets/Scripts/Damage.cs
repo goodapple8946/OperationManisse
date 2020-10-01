@@ -7,8 +7,10 @@ using UnityEngine;
 
 public class Damage
 {
+	// 伤害量
 	public int Amount { get; }
 
+	// 攻击者的class类型
 	public Type DamageType { get; }
 
 	public Damage(int amount, Type damageType)
