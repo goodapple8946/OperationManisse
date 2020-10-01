@@ -7,6 +7,7 @@ public class BlockSpike : Block
     public override bool IsLinkAvailable(int direction)
     {
         // 只能连接反方向
-        return direction == (this.direction + 2) % 4;
+        return direction == GetDirectionNegative(this.direction)
+			&& joints[direction] == null;
     }
 }

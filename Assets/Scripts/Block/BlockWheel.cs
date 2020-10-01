@@ -11,6 +11,7 @@ public class BlockWheel : Block
 
 	public override bool IsLinkAvailable(int direction)
     { 
-        return this.direction == direction;
+		// 正向链接
+        return direction == this.direction && joints[direction] == null;
 	}
 }

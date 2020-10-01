@@ -568,7 +568,7 @@ public class EditorController : MonoBehaviour
             Block block = unit as Block;
             for (int direction = 0; direction < 4; direction++)
             {
-                if (block.blocksLinked[direction] == null && block.IsLinkAvailable(direction))
+                if (block.IsLinkAvailable(direction))
                 {
                     Block another = GetLinkableBlockByDirection(block, direction);
                     // 连接
@@ -598,9 +598,7 @@ public class EditorController : MonoBehaviour
                 // 所属同一名玩家
                 block.player == another.player &&
                 // Another的位置可以连接
-                another.IsLinkAvailable(directionNeg) == true &&
-                // Another的位置没有被占用
-                another.blocksLinked[directionNeg] == null)
+                another.IsLinkAvailable(directionNeg) == true)
             {
                 // Another的连接点
                 Vector2 absorptionPoint = LinkPoint(another, directionNeg);
@@ -657,11 +655,9 @@ public class EditorController : MonoBehaviour
         // Block的玩家的相同
         bool samePlayer = block.player == another.player;
         // Block的相应方向是可连接的
-        bool linkAvailable = block.IsLinkAvailable(direction) && another.IsLinkAvailable(directionNeg);
-        // Block的相应方向未连接
-        bool unlinked = block.blocksLinked[direction] == null && another.blocksLinked[directionNeg] == null;
+        bool linkAvailable = block.IsLinkAvailable(direction) && another.IsLinkAvailable(directionNeg);        // Block的相应方向未连接
 
-        return samePlayer && linkAvailable && unlinked;
+        return samePlayer && linkAvailable;
     }
 
     // 根据方向获取相邻的Block

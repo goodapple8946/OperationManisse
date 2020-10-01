@@ -11,30 +11,49 @@ public class Block : Unit
     public Joint2D[] joints = new Joint2D[4];
 
     // 断开扭矩
-    private float breakTorquePlayer = 75f;
-    private float breakTorque = 10f;
+    protected float breakTorquePlayer = 75f;
+	protected float breakTorque = 10f;
 
     // 与另一个Block连接
-    public void LinkTo(Block another, int direction)
+    public virtual void LinkTo(Block another, int direction)
     {
-        int directionNeg = GetDirectionNegative(direction);
+		blocksLinked[direction] = another;
 
-        FixedJoint2D  joint = gameObject.AddComponent<FixedJoint2D>();
-        if (player == Player.Player)
-        {
-            joint.breakTorque = breakTorquePlayer;
-        }
-        else
-        {
-            joint.breakTorque = breakTorque;
-        }
-        joint.connectedBody = another.body;
-        joints[direction] = joint;
-        blocksLinked[direction] = another;
+		// 铰链接
+		if(another is BlockIronChain)
+		{
+			BlockIronChain chain = (BlockIronChain)another;
+			HingeJoint2D joint = gameObject.AddComponent<HingeJoint2D>();
+			// 与铁链的头链接
+			if(GetDirectionNegative(direction) == chain.direction)
+			{
+				//joint.connectedBody = chain.Head.GetComponent<Rigidbody2D>();
+				//joints[direction] = joint;
+			}
+			else
+			{
+				joint.connectedBody = chain.Tail.GetComponent<Rigidbody2D>();
+				joints[direction] = joint;
+			}
+		}
+		else // 普通链接
+		{
+			FixedJoint2D joint = gameObject.AddComponent<FixedJoint2D>();
+			if (player == Player.Player)
+			{
+				joint.breakTorque = breakTorquePlayer;
+			}
+			else
+			{
+				joint.breakTorque = breakTorque;
+			}
+			joint.connectedBody = another.body;
+			joints[direction] = joint;
+		}
     }
 
-    // 与另一个Block解除连接
-    public void UnlinkTo(Block another, int direction)
+	// 与另一个Block解除连接
+	public void UnlinkTo(Block another, int direction)
     {
         int directionNeg = GetDirectionNegative(direction);
 
@@ -47,7 +66,7 @@ public class Block : Unit
 
 	public virtual bool IsLinkAvailable(int direction)
     {
-        return true;
+        return joints[direction] == null;
     }
 
     // 根据方向整数获取向量
@@ -84,7 +103,7 @@ public class Block : Unit
 		BreakLinks();
 	}
 
-	// 解除连接
+	// 解除所有自己的关节,和相连物体朝向自己方向的关节
 	protected void BreakLinks()
     {
         for (int direction = 0; direction < 4; direction++)

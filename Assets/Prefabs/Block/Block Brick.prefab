@@ -149,7 +149,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1115787969
-  m_SortingLayer: 7
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6b8e504d8ae13244bb6482c454e22216, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -260,9 +260,10 @@ MonoBehaviour:
   player: 0
   gridX: -1
   gridY: -1
-  price: 50
-  body: {fileID: 0}
   direction: 0
+  price: 50
+  isEditorCreated: 0
+  body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}
   - {fileID: 0}
