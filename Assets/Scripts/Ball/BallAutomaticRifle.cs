@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallAutomaticRifle : Ball
+public class BallAutomaticRifle : BallGeneral
 {
     // 三连发间隔
     private float timeOfShot = 0.075f;
@@ -23,7 +23,7 @@ public class BallAutomaticRifle : Ball
         while (countOfShot-- > 0)
         {
             // 创建弹药
-            Missile missile = CreateMissile();
+            Missile missile = CreateMissile(missilePrefab);
 
             // 发射弹药
             missile.Launch();

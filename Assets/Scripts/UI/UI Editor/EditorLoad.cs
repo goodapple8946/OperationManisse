@@ -64,18 +64,18 @@ public class EditorLoad : MonoBehaviour
 		GameObject objClone = Instantiate(objPrefab);
         objClone.name = objPrefab.name; // 默认复制名称是GameObject Name (Clone)
 		
-
 		// 设置位置,网格信息和旋转,以及所在layer, player
 		Unit unit = objClone.GetComponent<Unit>();
 		editorController.Put(xmlUnit.x, xmlUnit.y, unit);
+
 		// 计算存档与克隆出的方向之差,设置旋转角度
 		int dirDifference = (xmlUnit.direction - unit.direction) + 4;
 		unit.Rotate(dirDifference);
+
 		// prefab的layer是Default需要根据player信息创建
 		unit.gameObject.layer = xmlUnit.layer; 
-		// TODO: 更新血条？
-		unit.player = (Player)xmlUnit.player;
-		
+		unit.player = (Player)xmlUnit.player; // TODO: 更新血条？
+
 		// 设置成编辑器创建
 		unit.isEditorCreated = true;
 	}

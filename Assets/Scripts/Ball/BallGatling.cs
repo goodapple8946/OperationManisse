@@ -23,9 +23,26 @@ public class BallGatling : Ball
 		{
 			UpdatePreheat();
 			UpdateGatlingColor();
-			if (currPreheatTime >= preheatTime)
+
+			WeaponCoolDown();
+			// 寻找敌人
+			Unit target = FindEnemy();
+			// 已经有目标或索敌找到目标
+			if (target != null)
 			{
-				GatlingTrumble();
+				// 转向目标
+				RotateToward(target);
+				if (CalculateAngle(target) <= weaponAngle && weaponCD <= 0)
+				{
+					// 武器冷却重置
+					bool preheatOver = (currPreheatTime >= preheatTime);
+					if (preheatOver)
+					{
+						weaponCD = weaponCDMax;
+						RangedAttack();
+						GatlingTrumble();
+					}
+				}
 			}
 		}
 	}
@@ -39,19 +56,10 @@ public class BallGatling : Ball
 		}
     }
 
-	// 添加武器晃动效果
-	private void GatlingTrumble()
+	// 存在敌人且未预热到最大值，加热
+	// 不存在敌人且有预热，降温
+	private void UpdatePreheat()
 	{
-		Transform gatlingTrans = transform.Find("Weapon");
-		Vector2 bias = new Vector2(Random.Range(-0.015f, 0.015f), Random.Range(-0.015f, 0.015f));
-		Vector2 restoreVec = new Vector2(-gatlingTrans.localPosition.x, -gatlingTrans.localPosition.y);
-		gatlingTrans.Translate(restoreVec + bias);
-	}
-
-    // 存在敌人且未预热到最大值，加热
-    // 不存在敌人且有预热，降温
-    private void UpdatePreheat()
-    {
 		Unit target = FindEnemy();
 		if (target != null && currPreheatTime <= preheatTime)
 		{
@@ -62,6 +70,15 @@ public class BallGatling : Ball
 		{
 			currPreheatTime -= Time.deltaTime;
 		}
+	}
+
+	// 加特林抖动一下
+	private void GatlingTrumble()
+	{
+		Transform gatlingTrans = transform.Find("Weapon");
+		Vector2 bias = new Vector2(Random.Range(-0.015f, 0.015f), Random.Range(-0.015f, 0.015f));
+		Vector2 restoreVec = new Vector2(-gatlingTrans.localPosition.x, -gatlingTrans.localPosition.y);
+		gatlingTrans.Translate(restoreVec + bias);
 	}
 
     // 设置加特林颜色

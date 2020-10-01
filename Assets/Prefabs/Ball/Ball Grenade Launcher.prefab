@@ -91,8 +91,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2019012135359395257}
   - component: {fileID: 2019012135359395239}
-  - component: {fileID: -8187394210437053930}
   - component: {fileID: 9140202053914482392}
+  - component: {fileID: 8504885434444178439}
   m_Layer: 0
   m_Name: Ball Grenade Launcher
   m_TagString: Ball
@@ -132,37 +132,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.3
---- !u!114 &-8187394210437053930
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2019012135359395236}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff2e380ef4facc443ba646cd8db790ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthMax: 100
-  health: 100
-  priority: 1000
-  radius: 0.3
-  sprites: []
-  damageCollision: 10
-  player: 0
-  gridX: -1
-  gridY: -1
-  direction: 0
-  price: 300
-  isEditorCreated: 0
-  body: {fileID: 0}
-  weaponOffset: 0.6
-  weaponCDMax: 2
-  weaponAngle: 4
-  findEnemyRange: 10
-  missilePrefab: {fileID: 2913713073660487550, guid: 9e1ee207179dc8043a2386efa6fc7303,
-    type: 3}
 --- !u!50 &9140202053914482392
 Rigidbody2D:
   serializedVersion: 4
@@ -184,6 +153,37 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &8504885434444178439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2019012135359395236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d4f81beadb3ac74a8ec9f39665d26e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthMax: 100
+  health: 100
+  priority: 1000
+  radius: 0.3
+  sprites: []
+  damageCollision: 10
+  player: 0
+  gridX: -1
+  gridY: -1
+  direction: 0
+  price: 300
+  isEditorCreated: 0
+  body: {fileID: 0}
+  weaponOffset: 0.6
+  weaponCDMax: 2
+  weaponAngle: 4
+  findEnemyRange: 10
+  missilePrefab: {fileID: 2913713073660487550, guid: 9e1ee207179dc8043a2386efa6fc7303,
+    type: 3}
 --- !u!1 &8115106607027765696
 GameObject:
   m_ObjectHideFlags: 0

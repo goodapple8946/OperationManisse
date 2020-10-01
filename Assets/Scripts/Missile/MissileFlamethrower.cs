@@ -3,8 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MissleFlamethrower : Missile
+public class MissileFlamethrower : Missile
 {
+
+	private void Update()
+	{
+		transform.eulerAngles = unit.transform.eulerAngles;
+	}
+
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 		Unit unit = other.gameObject.GetComponent<Unit>();

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 482596519982492692}
   - component: {fileID: 1417459725220471961}
   - component: {fileID: 5529716295472161968}
-  - component: {fileID: 6296198997654118904}
+  - component: {fileID: 2055141126598404740}
   m_Layer: 0
   m_Name: Ball Shuriken
   m_TagString: Ball
@@ -72,7 +72,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &6296198997654118904
+--- !u!114 &2055141126598404740
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -81,7 +81,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 482596519982492694}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff2e380ef4facc443ba646cd8db790ef, type: 3}
+  m_Script: {fileID: 11500000, guid: 89367e7f8fe988345b9113e21f579901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   healthMax: 100
@@ -89,7 +89,7 @@ MonoBehaviour:
   priority: 1000
   radius: 0.3
   sprites: []
-  damageCollision: 10
+  damageCollision: 25
   player: 0
   gridX: -1
   gridY: -1
@@ -98,9 +98,9 @@ MonoBehaviour:
   isEditorCreated: 0
   body: {fileID: 0}
   weaponOffset: 0
-  weaponCDMax: 2
+  weaponCDMax: 1
   weaponAngle: 1
-  findEnemyRange: 8
+  findEnemyRange: 6
   missilePrefab: {fileID: 8711533381244419230, guid: f63e5a1873dfd7e4c845cab8efc74898,
     type: 3}
 --- !u!1 &1476460455147225718
