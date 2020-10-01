@@ -21,8 +21,8 @@ public class EditorSizeX : MonoBehaviour
         });
     }
 
-	public void ShowX(int x)
+	public void UpdateShowing()
 	{
-		inputField.text = x + "";
+		inputField.text = editorController.XNum + "";
 	}
 }

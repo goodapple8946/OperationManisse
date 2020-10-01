@@ -21,8 +21,8 @@ public class EditorMoney : MonoBehaviour
         });
     }
 
-	public void ShowMoney(int money)
+	public void UpadteShowing()
 	{
-		inputField.text = money + "";
+		inputField.text = editorController.PlayerMoneyOrigin + "";
 	}
 }

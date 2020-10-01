@@ -17,12 +17,13 @@ public class EditorEditorMode : MonoBehaviour
         dropdown.onValueChanged.AddListener(value =>
         {
             editorController.EditorMode = (EditorMode)value;
-            content.GetComponent<EditorContent>().UpdateActive();
+            UpdateShowing();
+            content.GetComponent<EditorContent>().UpdateByEditorMode();
         });
     }
 
-    public void ShowEditorMode(EditorMode mode)
+    public void UpdateShowing()
     {
-        dropdown.SetValueWithoutNotify((int)mode);
+        dropdown.SetValueWithoutNotify((int)editorController.EditorMode);
     }
 }

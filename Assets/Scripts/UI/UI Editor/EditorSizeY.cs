@@ -21,8 +21,8 @@ public class EditorSizeY : MonoBehaviour
         });
     }
 
-	public void ShowY(int y)
+	public void UpdateShowing()
 	{
-		inputField.text = y + "";
+		inputField.text = editorController.YNum + "";
 	}
 }

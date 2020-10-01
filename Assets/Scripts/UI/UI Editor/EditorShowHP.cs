@@ -13,12 +13,12 @@ public class EditorShowHP : MonoBehaviour
         toggle = GetComponent<Toggle>();
         toggle.onValueChanged.AddListener(value =>
         {
-            editorController.isShowingHP = value;
+            editorController.IsShowingHP = value;
         });
     }
 
-    public void Update()
+    public void UpdateShowing()
     {
-        toggle.transform.GetChild(1).GetComponent<Text>().text = editorController.isShowingHP ? "On" : "Off";
+        toggle.transform.GetChild(1).GetComponent<Text>().text = editorController.IsShowingHP ? "On" : "Off";
     }
 }

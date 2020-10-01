@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour
 	[HideInInspector] public GameObject unitObjects;
     [HideInInspector] public GameObject missileObjects;
     [HideInInspector] public GameObject hpBarObjects;
+    [HideInInspector] public GameObject backgroundObjects;
     private GameObject unitObjectsSaved;
     private GameObject unitObjectsOrigin;
 
@@ -185,6 +186,7 @@ public class GameController : MonoBehaviour
         unitObjects = new GameObject("Unit Objects");
         missileObjects = new GameObject("Missile Objects");
         hpBarObjects = new GameObject("HP Bar Objects");
+        backgroundObjects = new GameObject("Background Objects");
     }
 
     // 保存物体

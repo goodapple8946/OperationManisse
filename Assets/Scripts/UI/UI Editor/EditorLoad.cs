@@ -13,6 +13,9 @@ public class EditorLoad : MonoBehaviour
 		editorController.XNum = 0;
 		editorController.YNum = 0;
 
+		// 清空背景图片
+		editorController.ClearBackground();
+
 		// 根据文件生成Game
 		string filename = Path.Combine(Application.dataPath, "1.xml");
 		XMLGame game = Serializer.Deserialized(filename);
@@ -45,16 +48,19 @@ public class EditorLoad : MonoBehaviour
 		editorController.LightIntensity = map.lightIntensity;
 	}
 
-	private void Load(XMLBackground background)
+	private void Load(XMLBackground xmlBackground)
 	{
 		// 复制一份物体
-		GameObject objPrefab = resourceController.gameObjDictionary[background.name];
+		GameObject objPrefab = resourceController.gameObjDictionary[xmlBackground.name];
 		GameObject objClone = Instantiate(objPrefab);
 		objClone.name = objPrefab.name; // 默认复制名称是GameObject Name (Clone)
 
 		// 设置位置和大小
-		objClone.transform.position = background.position;
-		objClone.transform.localScale = background.localScale;
+		objClone.transform.position = xmlBackground.position;
+		objClone.transform.localScale = xmlBackground.localScale;
+
+		Background background = objClone.GetComponent<Background>();
+		editorController.Put(background);
 	}
 
 	private void Load(XMLUnit xmlUnit)

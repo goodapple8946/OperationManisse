@@ -17,8 +17,8 @@ public class EditorLight : MonoBehaviour
         });
     }
 
-	public void ShowLight(float light)
+	public void UpdateShowing()
 	{
-		slider.SetValueWithoutNotify(light);
+		slider.SetValueWithoutNotify(editorController.LightIntensity);
 	}
 }

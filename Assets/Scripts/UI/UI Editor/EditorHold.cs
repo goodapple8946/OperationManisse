@@ -13,13 +13,13 @@ public class EditorHold : MonoBehaviour
         toggle = GetComponent<Toggle>();
         toggle.onValueChanged.AddListener(value =>
         {
-            editorController.isClickHold = value;
-            ShowHold(value);
+            editorController.IsClickHold = value;
+            UpdateShowing();
         });
     }
 
-    public void ShowHold(bool hold)
+    public void UpdateShowing()
     {
-        toggle.transform.GetChild(1).GetComponent<Text>().text = hold ? "On" : "Off";
+        toggle.transform.GetChild(1).GetComponent<Text>().text = editorController.IsClickHold ? "On" : "Off";
     }
 }

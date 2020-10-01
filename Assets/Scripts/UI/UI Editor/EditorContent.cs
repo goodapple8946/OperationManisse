@@ -25,7 +25,12 @@ public class EditorContent : MonoBehaviour
         }
     }
 
-    public void UpdateActive()
+    public void UpdateUIShowing()
+    {
+        BroadcastMessage("UpdateShowing");
+    }
+
+    public void UpdateByEditorMode()
     {
         editorUnit.SetActive(editorController.EditorMode == EditorMode.Unit);
     }

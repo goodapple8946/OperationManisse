@@ -18,8 +18,8 @@ public class EditorOwner : MonoBehaviour
         });
     }
 
-	public void ShowOwner(Player player)
+	public void UpdateShowing()
 	{
-		dropdown.SetValueWithoutNotify((int)player);
+		dropdown.SetValueWithoutNotify((int)editorController.PlayerOwner);
 	}
 }

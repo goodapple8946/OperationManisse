@@ -17,4 +17,9 @@ public class EditorVictoryCondition : MonoBehaviour
             victoryController.victoryCondition = victoryCondition;
         });
     }
+
+    public void UpdateShowing()
+    {
+        dropdown.SetValueWithoutNotify((int)victoryController.victoryCondition);
+    }
 }
