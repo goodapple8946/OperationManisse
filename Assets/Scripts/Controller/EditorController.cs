@@ -889,7 +889,7 @@ public class EditorController : MonoBehaviour
         // 设置Unit显示层
         background.SetSpriteLayer("Background");
         // 设置Unit物理层
-        background.gameObject.layer = (int)Layer.Default;
+        background.gameObject.layer = (int)Layer.Background;
     }
 
     // 离开Editor阶段

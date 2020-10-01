@@ -12,7 +12,7 @@
       <position>
         <x>6.914021</x>
         <y>2.80220413</y>
-        <z>2</z>
+        <z>4</z>
       </position>
       <localScale>
         <x>1</x>
@@ -25,7 +25,7 @@
       <position>
         <x>10.2257652</x>
         <y>1.68699527</y>
-        <z>1</z>
+        <z>3</z>
       </position>
       <localScale>
         <x>0.638806343</x>
@@ -38,7 +38,7 @@
       <position>
         <x>1.46444964</x>
         <y>1.78553545</y>
-        <z>1</z>
+        <z>3</z>
       </position>
       <localScale>
         <x>0.531546652</x>
@@ -502,5 +502,6 @@
     <string>Block Brick</string>
     <string>Ball Pistol</string>
     <string>Ball Automatic Rifle</string>
+    <string>Ball Shuriken</string>
   </goodsVisable>
 </XMLGame>
