@@ -8,7 +8,7 @@ public class MissileFlamethrower : Missile
 
 	private void Update()
 	{
-		transform.eulerAngles = unit.transform.eulerAngles;
+		//transform.eulerAngles = unit.transform.eulerAngles;
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)
@@ -16,7 +16,7 @@ public class MissileFlamethrower : Missile
 		Unit unit = other.gameObject.GetComponent<Unit>();
 		if (unit != null && unit.player != player)
 		{
-			unit.TakeDamage(damage);
+			unit.TakeDamage(new Damage(damageAmount, this.GetType()));
 		}
 	}
 }

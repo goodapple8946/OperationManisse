@@ -79,7 +79,7 @@ public class MissileShuriken : Missile
 		Unit target = other.gameObject.GetComponent<Unit>();
 		if (target != null && this.player != target.player)
 		{
-			target.TakeDamage(this.damage);
+			target.TakeDamage(new Damage(damageAmount, this.GetType()));
 			if (target.body != null)
 			{
 				target.body.AddForce(transform.right * forceHit);
