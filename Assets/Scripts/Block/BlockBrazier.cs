@@ -44,7 +44,8 @@ public class BlockBrazier : Block
     public override bool IsLinkAvailable(int direction)
     {
         // 只能连接反方向
-        return direction == GetDirectionNegative(this.direction);
+        return direction == GetDirectionNegative(this.direction)
+			&& joints[direction] == null;
     }
 
 	// 不能旋转,只能朝上

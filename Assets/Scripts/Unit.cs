@@ -95,8 +95,11 @@ public abstract class Unit : ClickableObject
     // 游戏开始时调用
     public virtual void GameStart()
     {
-        // 设置刚体类型
+        // 设置自身和所有子物体的刚体类型
         body.bodyType = RigidbodyType2D.Dynamic;
+
+		Rigidbody2D[] childBodies = gameObject.GetComponentsInChildren<Rigidbody2D>();
+		System.Array.ForEach(childBodies, childBody => childBody.bodyType = RigidbodyType2D.Dynamic);
     }
 
     // 更新贴图变种

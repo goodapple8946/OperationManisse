@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <XMLGame xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <xmlMap>
-    <xNum>15</xNum>
+    <xNum>8</xNum>
     <yNum>8</yNum>
     <money>0</money>
     <lightIntensity>1</lightIntensity>
@@ -17,22 +17,6 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Ball Crossbow</name>
-      <player>1</player>
-      <x>0</x>
-      <y>1</y>
-      <direction>0</direction>
-      <layer>8</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Ball Crossbow</name>
-      <player>1</player>
-      <x>0</x>
-      <y>2</y>
-      <direction>0</direction>
-      <layer>8</layer>
-    </XMLUnit>
-    <XMLUnit>
       <name>Ground</name>
       <player>0</player>
       <x>1</x>
@@ -41,20 +25,44 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Ball Crossbow</name>
-      <player>1</player>
+      <name>Block Brick</name>
+      <player>0</player>
       <x>1</x>
       <y>1</y>
       <direction>0</direction>
-      <layer>8</layer>
+      <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Ball Crossbow</name>
-      <player>1</player>
+      <name>Block Brick</name>
+      <player>0</player>
       <x>1</x>
       <y>2</y>
       <direction>0</direction>
-      <layer>8</layer>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Brick</name>
+      <player>0</player>
+      <x>1</x>
+      <y>3</y>
+      <direction>0</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Brick</name>
+      <player>0</player>
+      <x>1</x>
+      <y>4</y>
+      <direction>0</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Brick</name>
+      <player>0</player>
+      <x>1</x>
+      <y>5</y>
+      <direction>0</direction>
+      <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
       <name>Ground</name>
@@ -65,20 +73,12 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Metal</name>
-      <player>1</player>
+      <name>Block Brick</name>
+      <player>0</player>
       <x>2</x>
-      <y>1</y>
+      <y>5</y>
       <direction>0</direction>
-      <layer>9</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Metal</name>
-      <player>1</player>
-      <x>2</x>
-      <y>2</y>
-      <direction>0</direction>
-      <layer>9</layer>
+      <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
       <name>Ground</name>
@@ -89,12 +89,36 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Wood</name>
-      <player>2</player>
+      <name>Block Wheel</name>
+      <player>0</player>
       <x>3</x>
       <y>1</y>
+      <direction>1</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Propeller</name>
+      <player>0</player>
+      <x>3</x>
+      <y>2</y>
       <direction>0</direction>
-      <layer>12</layer>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Chain</name>
+      <player>0</player>
+      <x>3</x>
+      <y>4</y>
+      <direction>1</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Brick</name>
+      <player>0</player>
+      <x>3</x>
+      <y>5</y>
+      <direction>0</direction>
+      <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
       <name>Ground</name>
@@ -105,20 +129,20 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Light</name>
-      <player>2</player>
-      <x>4</x>
-      <y>1</y>
-      <direction>0</direction>
-      <layer>12</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Wood</name>
-      <player>2</player>
+      <name>Block Chain</name>
+      <player>0</player>
       <x>4</x>
       <y>2</y>
       <direction>0</direction>
-      <layer>12</layer>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Brick</name>
+      <player>0</player>
+      <x>4</x>
+      <y>5</y>
+      <direction>0</direction>
+      <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
       <name>Ground</name>
@@ -129,81 +153,25 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Ball Gatling</name>
-      <player>2</player>
+      <name>Block Wheel</name>
+      <player>0</player>
       <x>5</x>
       <y>1</y>
-      <direction>2</direction>
-      <layer>12</layer>
+      <direction>1</direction>
+      <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Ground</name>
+      <name>Block Propeller</name>
       <player>0</player>
-      <x>6</x>
-      <y>0</y>
+      <x>5</x>
+      <y>2</y>
       <direction>0</direction>
-      <layer>15</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Ball Pistol</name>
-      <player>2</player>
-      <x>6</x>
-      <y>1</y>
-      <direction>2</direction>
-      <layer>11</layer>
+      <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
       <name>Ground</name>
       <player>0</player>
       <x>7</x>
-      <y>0</y>
-      <direction>0</direction>
-      <layer>15</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Ground</name>
-      <player>0</player>
-      <x>8</x>
-      <y>0</y>
-      <direction>0</direction>
-      <layer>15</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Ground</name>
-      <player>0</player>
-      <x>9</x>
-      <y>0</y>
-      <direction>0</direction>
-      <layer>15</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Ground</name>
-      <player>0</player>
-      <x>10</x>
-      <y>0</y>
-      <direction>0</direction>
-      <layer>15</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Ground</name>
-      <player>0</player>
-      <x>11</x>
-      <y>0</y>
-      <direction>0</direction>
-      <layer>15</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Ball Crossbow</name>
-      <player>2</player>
-      <x>11</x>
-      <y>1</y>
-      <direction>0</direction>
-      <layer>11</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Ground</name>
-      <player>0</player>
-      <x>12</x>
       <y>0</y>
       <direction>0</direction>
       <layer>15</layer>
