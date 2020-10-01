@@ -48,11 +48,11 @@ public class Missile : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
     }
 
-    protected virtual void Update()
+    protected virtual void FixedUpdate()
     {
         if (isAlive)
         {
-            ParticleTail();
+            CreateParticleTail();
             RotateToVelocity();
         }
 
@@ -96,7 +96,7 @@ public class Missile : MonoBehaviour
     }
 
     // 尾部粒子
-    protected virtual void ParticleTail()
+    protected virtual void CreateParticleTail()
     {
         if (particleFlyingPrefab != null)
         {
@@ -105,7 +105,7 @@ public class Missile : MonoBehaviour
         }
     }
 
-    // 发射
+    // 创建发射粒子,施加发射力,播放发射声音
     public virtual void Launch()
     {
         // 发射粒子
@@ -122,15 +122,20 @@ public class Missile : MonoBehaviour
         }
         body.AddForce(transform.right * forceLaunch);
 
-        if (audiosLaunch.Length > 0)
-        {
-            int rand = Random.Range(0, audiosLaunch.Length);
-            AudioSource.PlayClipAtPoint(audiosLaunch[rand], transform.position);
-        }
-    }
+		PlayAudioes();
+	}
 
-    // 更新飞行时间
-    protected void UpdateDuration()
+	protected void PlayAudioes()
+	{
+		if (audiosLaunch.Length > 0)
+		{
+			int rand = Random.Range(0, audiosLaunch.Length);
+			AudioSource.PlayClipAtPoint(audiosLaunch[rand], transform.position);
+		}
+	}
+
+// 更新飞行时间
+protected void UpdateDuration()
     {
         duration -= Time.deltaTime;
     }

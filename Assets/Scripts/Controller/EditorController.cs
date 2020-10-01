@@ -706,7 +706,7 @@ public class EditorController : MonoBehaviour
     {
         if (player == Player.Player)
         {
-            if (unit is Ball)
+            if (unit is BallGeneral)
             {
                 return Layer.PlayerBall;
             }
@@ -717,7 +717,7 @@ public class EditorController : MonoBehaviour
         }
         else if (player == Player.Enemy)
         {
-            if (unit is Ball)
+            if (unit is BallGeneral)
             {
                 return Layer.EnemyBall;
             }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6872813403385637930}
   - component: {fileID: 5366163776855680167}
   - component: {fileID: 1544411649836049550}
-  - component: {fileID: 5195159365275906624}
+  - component: {fileID: 451248711502470334}
   m_Layer: 0
   m_Name: Ball Flamethrower
   m_TagString: Ball
@@ -72,7 +72,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &5195159365275906624
+--- !u!114 &451248711502470334
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -81,7 +81,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6872813403385637928}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff2e380ef4facc443ba646cd8db790ef, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d4f81beadb3ac74a8ec9f39665d26e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   healthMax: 100
@@ -97,10 +97,10 @@ MonoBehaviour:
   price: 300
   isEditorCreated: 0
   body: {fileID: 0}
-  weaponOffset: 2
-  weaponCDMax: 0.125
-  weaponAngle: 1
-  findEnemyRange: 4.5
+  weaponOffset: 0.8
+  weaponCDMax: 0.3
+  weaponAngle: 4
+  findEnemyRange: 5
   missilePrefab: {fileID: 2625591034799234768, guid: c24df044ea12e224191b809a93441948,
     type: 3}
 --- !u!1 &6975489233847638300
