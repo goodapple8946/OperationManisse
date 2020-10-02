@@ -52,6 +52,8 @@ public abstract class Unit : ClickableObject
 	// 0: Right, 1: Top, 2: Left, 3: Bottom
 	/// <summary> 物体朝向的方向 </summary>
 	public int direction;
+	protected Vector2[] dirVector = {
+		new Vector2(1, 0), new Vector2(0, 1), new Vector2(-1, 0), new Vector2(0, -1) };
 	//public int Direction
 	//{
 	//	get => direction;

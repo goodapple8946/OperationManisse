@@ -20,23 +20,20 @@ public class Block : Unit
 		blocksLinked[direction] = another;
 
 		// 铰链接
-		if(another is BlockIronChain)
+		if(another is BlockChain)
 		{
-			BlockIronChain chain = (BlockIronChain)another;
-			HingeJoint2D joint = gameObject.AddComponent<HingeJoint2D>();
-			// 与铁链的头链接
-			if(GetDirectionNegative(direction) == chain.direction)
+			//// 与铁链的尾部链接，创建HingeJoint2D
+			BlockChain anotherChain = (BlockChain)another;
+			int chainLinkDir = GetDirectionNegative(direction);
+			if (chainLinkDir == GetDirectionNegative(anotherChain.direction))
 			{
-				//joint.connectedBody = chain.Head.GetComponent<Rigidbody2D>();
-				//joints[direction] = joint;
-			}
-			else
-			{
-				joint.connectedBody = chain.Tail.GetComponent<Rigidbody2D>();
+				HingeJoint2D joint = gameObject.AddComponent<HingeJoint2D>();
+				joint.connectedBody = anotherChain.Tail.GetComponent<Rigidbody2D>();
+				joint.anchor = radius * dirVector[direction];
 				joints[direction] = joint;
 			}
 		}
-		else // 普通链接
+		else // 普通链接，创建FixedJoint2D
 		{
 			FixedJoint2D joint = gameObject.AddComponent<FixedJoint2D>();
 			if (player == Player.Player)

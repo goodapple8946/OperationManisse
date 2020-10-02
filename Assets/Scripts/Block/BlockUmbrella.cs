@@ -56,6 +56,6 @@ public class BlockUmbrella : Block
     public override bool IsLinkAvailable(int direction)
     {
         return direction == GetDirectionNegative(this.direction) 
-			&& joints[direction] != null;
+			&& joints[direction] == null;
     }
 }

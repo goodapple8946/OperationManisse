@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Controller;
 
-public class BlockIronChain : Block
+public class BlockChain : Block
 {
 	public Transform Head;
 	public Transform Tail;
@@ -26,9 +26,9 @@ public class BlockIronChain : Block
 		if (direction == this.direction)
 		{
 			HingeJoint2D joint = Head.gameObject.AddComponent<HingeJoint2D>();
-			if(another is BlockIronChain)
+			if(another is BlockChain)
 			{
-				BlockIronChain anotherChain = (BlockIronChain)another;
+				BlockChain anotherChain = (BlockChain)another;
 				joint.connectedBody = anotherChain.Tail.GetComponent<Rigidbody2D>();
 			}
 			else
