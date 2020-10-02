@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2194669006221252476}
   - component: {fileID: 8925393188796482479}
   m_Layer: 0
-  m_Name: Umbrella
+  m_Name: Block Umbrella
   m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,10 +76,10 @@ MonoBehaviour:
   player: 0
   gridX: -1
   gridY: -1
+  direction: 0
   price: 100
   isEditorCreated: 0
   body: {fileID: 0}
-  direction: 0
   blocksLinked:
   - {fileID: 0}
   - {fileID: 0}

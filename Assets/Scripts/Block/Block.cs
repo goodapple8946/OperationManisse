@@ -19,37 +19,17 @@ public class Block : Unit
     {
 		blocksLinked[direction] = another;
 
-		// 铰链接
-		if(another is BlockIronChain)
+		FixedJoint2D joint = gameObject.AddComponent<FixedJoint2D>();
+		if (player == Player.Player)
 		{
-			BlockIronChain chain = (BlockIronChain)another;
-			HingeJoint2D joint = gameObject.AddComponent<HingeJoint2D>();
-			// 与铁链的头链接
-			if(GetDirectionNegative(direction) == chain.direction)
-			{
-				//joint.connectedBody = chain.Head.GetComponent<Rigidbody2D>();
-				//joints[direction] = joint;
-			}
-			else
-			{
-				joint.connectedBody = chain.Tail.GetComponent<Rigidbody2D>();
-				joints[direction] = joint;
-			}
+			joint.breakTorque = breakTorquePlayer;
 		}
-		else // 普通链接
+		else
 		{
-			FixedJoint2D joint = gameObject.AddComponent<FixedJoint2D>();
-			if (player == Player.Player)
-			{
-				joint.breakTorque = breakTorquePlayer;
-			}
-			else
-			{
-				joint.breakTorque = breakTorque;
-			}
-			joint.connectedBody = another.body;
-			joints[direction] = joint;
+			joint.breakTorque = breakTorque;
 		}
+		joint.connectedBody = another.body;
+		joints[direction] = joint;
     }
 
 	// 与另一个Block解除连接
