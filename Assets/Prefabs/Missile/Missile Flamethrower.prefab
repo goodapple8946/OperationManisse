@@ -72,7 +72,7 @@ MonoBehaviour:
   duration: 0.01
   durationHit: 0.01
   isAlive: 1
-  particleLaunchPerfab: {fileID: 2449818686913962674, guid: e369882e165dca8438d41b2529632311,
+  particleLaunchPerfab: {fileID: 2449818686913962674, guid: c791a9fcf0087054a9e4af1ff8a4aec7,
     type: 3}
   particleFlyingPrefab: {fileID: 0}
   particleHitPrefab: {fileID: 0}

@@ -5938,7 +5938,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1032820971}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.6743267
+  m_Size: 0.6743802
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10969,6 +10969,7 @@ MonoBehaviour:
   - {fileID: 5768820571617251058, guid: fa61511624b643244a2511a249df0aef, type: 3}
   - {fileID: 2194669006221252467, guid: 8e0cd27683b65624996b482424441a78, type: 3}
   - {fileID: 1324722634242064922, guid: 4785d9015ced0eb44b7f50002e0ff97b, type: 3}
+  - {fileID: 7289866309577761249, guid: 7db87e9bd18075542a01c22ed3b8389f, type: 3}
   ballObjects:
   - {fileID: 1218294590528101931, guid: 7083fda1e26696248b98db1cf3661fc9, type: 3}
   - {fileID: 252953478984088122, guid: 9768bb3adfb59fa4b93f3b382b9501e1, type: 3}

@@ -130,7 +130,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8711533381244419230}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40b6c1f5aa5c5fe48bbeb80314205c91, type: 3}
+  m_Script: {fileID: 11500000, guid: 3eb37cd8bb586a14e882e07ecec9604d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   forceLaunch: 10
@@ -144,8 +144,7 @@ MonoBehaviour:
   particleHitPrefab: {fileID: 0}
   player: 0
   unit: {fileID: 0}
-  audiosLaunch:
-  - {fileID: 8300000, guid: 16aa9f253cb3af74bb1f731f9133e9d4, type: 3}
+  audiosLaunch: []
   body: {fileID: 0}
   shurikenSpeed: 8
   shurikenRotateSpeed: 300
