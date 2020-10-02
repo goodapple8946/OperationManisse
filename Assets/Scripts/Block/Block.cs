@@ -22,16 +22,16 @@ public class Block : Unit
 		// 对方是铰链
 		if(another is BlockChain)
 		{
-			BlockChain anotherChain = (BlockChain)another;
-			int anotherLinkDir = GetDirectionNegative(direction);
-			// 与铁链的尾部链接，创建HingeJoint2D
-			if (anotherLinkDir == anotherChain.TailDir())
-			{
-				HingeJoint2D joint = gameObject.AddComponent<HingeJoint2D>();
-				joint.connectedBody = anotherChain.Tail.GetComponent<Rigidbody2D>();
-				joint.anchor = radius * dirVector[direction];
-				joints[direction] = joint;
-			}
+			//BlockChain anotherChain = (BlockChain)another;
+			//int anotherLinkDir = GetDirectionNegative(direction);
+			//// 与铁链的尾部链接，创建HingeJoint2D
+			//if (anotherLinkDir == anotherChain.TailDir())
+			//{
+			//	HingeJoint2D joint = gameObject.AddComponent<HingeJoint2D>();
+			//	joint.connectedBody = anotherChain.Tail.GetComponent<Rigidbody2D>();
+			//	joint.anchor = radius * dirVector[direction];
+			//	joints[direction] = joint;
+			//}
 		}
 		else // 普通链接，创建FixedJoint2D
 		{

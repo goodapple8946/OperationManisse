@@ -249,12 +249,60 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
+      <name>Block Brick</name>
+      <player>0</player>
+      <x>7</x>
+      <y>1</y>
+      <direction>0</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Brick</name>
+      <player>0</player>
+      <x>7</x>
+      <y>2</y>
+      <direction>0</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Brick</name>
+      <player>0</player>
+      <x>7</x>
+      <y>3</y>
+      <direction>0</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Brick</name>
+      <player>0</player>
+      <x>7</x>
+      <y>4</y>
+      <direction>0</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Brick</name>
+      <player>0</player>
+      <x>7</x>
+      <y>5</y>
+      <direction>0</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
       <name>Ground</name>
       <player>0</player>
       <x>8</x>
       <y>0</y>
       <direction>0</direction>
       <layer>15</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Brick</name>
+      <player>0</player>
+      <x>8</x>
+      <y>5</y>
+      <direction>0</direction>
+      <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
       <name>Ground</name>
@@ -265,12 +313,52 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
+      <name>Block Chain</name>
+      <player>0</player>
+      <x>9</x>
+      <y>2</y>
+      <direction>1</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Chain</name>
+      <player>0</player>
+      <x>9</x>
+      <y>3</y>
+      <direction>3</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Chain</name>
+      <player>0</player>
+      <x>9</x>
+      <y>4</y>
+      <direction>1</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Brick</name>
+      <player>0</player>
+      <x>9</x>
+      <y>5</y>
+      <direction>0</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
       <name>Ground</name>
       <player>0</player>
       <x>10</x>
       <y>0</y>
       <direction>0</direction>
       <layer>15</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Brick</name>
+      <player>0</player>
+      <x>10</x>
+      <y>5</y>
+      <direction>0</direction>
+      <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
       <name>Ground</name>
@@ -281,12 +369,28 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
+      <name>Block Chain</name>
+      <player>0</player>
+      <x>11</x>
+      <y>5</y>
+      <direction>0</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
       <name>Ground</name>
       <player>0</player>
       <x>12</x>
       <y>0</y>
       <direction>0</direction>
       <layer>15</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Chain</name>
+      <player>0</player>
+      <x>12</x>
+      <y>5</y>
+      <direction>2</direction>
+      <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
       <name>Ground</name>

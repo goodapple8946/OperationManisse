@@ -22,24 +22,48 @@ public class BlockChain : Block
 	{
 		blocksLinked[direction] = another;
 
-		// 如果是自己的头部才链接
-		if (direction == this.direction)
+		HingeJoint2D joint;
+		if (direction == HeadDir())
 		{
-			HingeJoint2D joint = Head.gameObject.AddComponent<HingeJoint2D>();
-			if(another is BlockChain)
-			{
-				// 如果另一个也是铰链
-				BlockChain anotherChain = (BlockChain)another;
-				joint.connectedBody = anotherChain.Tail.GetComponent<Rigidbody2D>();
-			}
-			else
-			{
-				joint.connectedBody = another.body;
-			}
-			joint.anchor = new Vector2(hookSize, 0);
-			joints[direction] = joint;
+			joint = Head.gameObject.AddComponent<HingeJoint2D>();
+			
 		}
-	}
+		else
+		{
+			joint = Tail.gameObject.AddComponent<HingeJoint2D>();
+		}
+
+		if(another is BlockChain)
+		{
+			// 如果另一个也是铰链
+			BlockChain anotherChain = (BlockChain)another;
+			int anotherLinkDir = GetDirectionNegative(direction);
+			joint.connectedBody = anotherChain.GetBody(anotherLinkDir);
+		}
+		else
+		{
+			joint.connectedBody = another.body;
+		}
+
+		joint.anchor = hookSize * dirVector[direction];
+		joints[direction] = joint;
+
+
+			//// 如果是自己的头部才链接
+			//if (direction == this.direction)
+			//{
+			//	HingeJoint2D joint = Head.gameObject.AddComponent<HingeJoint2D>();
+			//	if(another is BlockChain)
+			//	{
+			//		// 如果另一个也是铰链
+			//		BlockChain anotherChain = (BlockChain)another;
+			//		joint.connectedBody = anotherChain.Tail.GetComponent<Rigidbody2D>();
+			//	}
+			//	else
+			//	{
+			//		joint.connectedBody = another.body;
+			//	}
+		}
 
 	public override bool IsLinkAvailable(int direction)
 	{
@@ -57,6 +81,23 @@ public class BlockChain : Block
 	public int TailDir()
 	{
 		return GetDirectionNegative(direction);
+	}
+
+	public Rigidbody2D GetBody(int dir)
+	{
+		if(dir == HeadDir())
+		{
+
+			return Head.GetComponent<Rigidbody2D>();
+		}
+		else if(dir == TailDir())
+		{
+			return Tail.GetComponent<Rigidbody2D>();
+		}
+		else
+		{
+			return null;
+		}
 	}
 }
 
