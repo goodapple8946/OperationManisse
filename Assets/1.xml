@@ -2,7 +2,7 @@
 <XMLGame xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <xmlMap>
     <xNum>18</xNum>
-    <yNum>18</yNum>
+    <yNum>8</yNum>
     <money>0</money>
     <lightIntensity>1</lightIntensity>
   </xmlMap>
@@ -17,12 +17,60 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
+      <name>Block Metal</name>
+      <player>0</player>
+      <x>0</x>
+      <y>1</y>
+      <direction>0</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Metal</name>
+      <player>0</player>
+      <x>0</x>
+      <y>2</y>
+      <direction>0</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Metal</name>
+      <player>0</player>
+      <x>0</x>
+      <y>3</y>
+      <direction>0</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Metal</name>
+      <player>0</player>
+      <x>0</x>
+      <y>4</y>
+      <direction>0</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Metal</name>
+      <player>0</player>
+      <x>0</x>
+      <y>5</y>
+      <direction>0</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
       <name>Ground</name>
       <player>0</player>
       <x>1</x>
       <y>0</y>
       <direction>0</direction>
       <layer>15</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Metal</name>
+      <player>0</player>
+      <x>1</x>
+      <y>5</y>
+      <direction>0</direction>
+      <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
       <name>Ground</name>
@@ -33,6 +81,22 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
+      <name>Block Metal</name>
+      <player>0</player>
+      <x>2</x>
+      <y>5</y>
+      <direction>0</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Propeller</name>
+      <player>0</player>
+      <x>2</x>
+      <y>7</y>
+      <direction>1</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
       <name>Ground</name>
       <player>0</player>
       <x>3</x>
@@ -41,15 +105,15 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Propeller</name>
+      <name>Block Metal</name>
       <player>0</player>
       <x>3</x>
       <y>5</y>
-      <direction>1</direction>
+      <direction>0</direction>
       <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Propeller</name>
+      <name>Block Spring</name>
       <player>0</player>
       <x>3</x>
       <y>6</y>
@@ -65,30 +129,6 @@
       <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Propeller</name>
-      <player>0</player>
-      <x>3</x>
-      <y>8</y>
-      <direction>1</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Propeller</name>
-      <player>0</player>
-      <x>3</x>
-      <y>9</y>
-      <direction>1</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Propeller</name>
-      <player>0</player>
-      <x>3</x>
-      <y>10</y>
-      <direction>1</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
       <name>Ground</name>
       <player>0</player>
       <x>4</x>
@@ -100,48 +140,8 @@
       <name>Block Metal</name>
       <player>0</player>
       <x>4</x>
-      <y>1</y>
-      <direction>0</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Metal</name>
-      <player>0</player>
-      <x>4</x>
-      <y>2</y>
-      <direction>0</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Metal</name>
-      <player>0</player>
-      <x>4</x>
-      <y>3</y>
-      <direction>0</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Chain</name>
-      <player>0</player>
-      <x>4</x>
-      <y>4</y>
-      <direction>1</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Propeller</name>
-      <player>0</player>
-      <x>4</x>
       <y>5</y>
-      <direction>1</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Propeller</name>
-      <player>0</player>
-      <x>4</x>
-      <y>6</y>
-      <direction>1</direction>
+      <direction>0</direction>
       <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
@@ -149,30 +149,6 @@
       <player>0</player>
       <x>4</x>
       <y>7</y>
-      <direction>1</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Propeller</name>
-      <player>0</player>
-      <x>4</x>
-      <y>8</y>
-      <direction>1</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Propeller</name>
-      <player>0</player>
-      <x>4</x>
-      <y>9</y>
-      <direction>1</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Propeller</name>
-      <player>0</player>
-      <x>4</x>
-      <y>10</y>
       <direction>1</direction>
       <layer>0</layer>
     </XMLUnit>
@@ -185,51 +161,11 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Propeller</name>
+      <name>Block Metal</name>
       <player>0</player>
       <x>5</x>
       <y>5</y>
-      <direction>1</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Propeller</name>
-      <player>0</player>
-      <x>5</x>
-      <y>6</y>
-      <direction>1</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Propeller</name>
-      <player>0</player>
-      <x>5</x>
-      <y>7</y>
-      <direction>1</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Propeller</name>
-      <player>0</player>
-      <x>5</x>
-      <y>8</y>
-      <direction>1</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Propeller</name>
-      <player>0</player>
-      <x>5</x>
-      <y>9</y>
-      <direction>1</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Propeller</name>
-      <player>0</player>
-      <x>5</x>
-      <y>10</y>
-      <direction>1</direction>
+      <direction>0</direction>
       <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
@@ -241,47 +177,55 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Ground</name>
+      <name>Block Metal</name>
       <player>0</player>
-      <x>7</x>
-      <y>0</y>
-      <direction>0</direction>
-      <layer>15</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Brick</name>
-      <player>0</player>
-      <x>7</x>
+      <x>6</x>
       <y>1</y>
       <direction>0</direction>
       <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Brick</name>
+      <name>Block Metal</name>
       <player>0</player>
-      <x>7</x>
+      <x>6</x>
       <y>2</y>
       <direction>0</direction>
       <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Brick</name>
+      <name>Block Metal</name>
       <player>0</player>
-      <x>7</x>
+      <x>6</x>
       <y>3</y>
       <direction>0</direction>
       <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Brick</name>
+      <name>Block Metal</name>
       <player>0</player>
-      <x>7</x>
+      <x>6</x>
       <y>4</y>
       <direction>0</direction>
       <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Brick</name>
+      <name>Block Metal</name>
+      <player>0</player>
+      <x>6</x>
+      <y>5</y>
+      <direction>0</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Ground</name>
+      <player>0</player>
+      <x>7</x>
+      <y>0</y>
+      <direction>0</direction>
+      <layer>15</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Metal</name>
       <player>0</player>
       <x>7</x>
       <y>5</y>
@@ -297,7 +241,23 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Brick</name>
+      <name>Block Metal</name>
+      <player>0</player>
+      <x>8</x>
+      <y>3</y>
+      <direction>0</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Spring</name>
+      <player>0</player>
+      <x>8</x>
+      <y>4</y>
+      <direction>1</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Metal</name>
       <player>0</player>
       <x>8</x>
       <y>5</y>
@@ -313,63 +273,63 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Chain</name>
+      <name>Block Metal</name>
       <player>0</player>
       <x>9</x>
+      <y>5</y>
+      <direction>0</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Ground</name>
+      <player>0</player>
+      <x>10</x>
+      <y>0</y>
+      <direction>0</direction>
+      <layer>15</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Metal</name>
+      <player>0</player>
+      <x>10</x>
+      <y>5</y>
+      <direction>0</direction>
+      <layer>0</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Ground</name>
+      <player>0</player>
+      <x>11</x>
+      <y>0</y>
+      <direction>0</direction>
+      <layer>15</layer>
+    </XMLUnit>
+    <XMLUnit>
+      <name>Block Wheel</name>
+      <player>0</player>
+      <x>11</x>
       <y>2</y>
       <direction>1</direction>
       <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Chain</name>
+      <name>Block Spring</name>
       <player>0</player>
-      <x>9</x>
+      <x>11</x>
       <y>3</y>
-      <direction>3</direction>
+      <direction>1</direction>
       <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Chain</name>
+      <name>Block Spring</name>
       <player>0</player>
-      <x>9</x>
+      <x>11</x>
       <y>4</y>
       <direction>1</direction>
       <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Brick</name>
-      <player>0</player>
-      <x>9</x>
-      <y>5</y>
-      <direction>0</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Ground</name>
-      <player>0</player>
-      <x>10</x>
-      <y>0</y>
-      <direction>0</direction>
-      <layer>15</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Brick</name>
-      <player>0</player>
-      <x>10</x>
-      <y>5</y>
-      <direction>0</direction>
-      <layer>0</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Ground</name>
-      <player>0</player>
-      <x>11</x>
-      <y>0</y>
-      <direction>0</direction>
-      <layer>15</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Block Chain</name>
+      <name>Block Metal</name>
       <player>0</player>
       <x>11</x>
       <y>5</y>
@@ -385,52 +345,44 @@
       <layer>15</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Block Chain</name>
+      <name>Block Metal</name>
       <player>0</player>
       <x>12</x>
-      <y>5</y>
-      <direction>2</direction>
+      <y>1</y>
+      <direction>0</direction>
       <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Ground</name>
+      <name>Block Metal</name>
       <player>0</player>
-      <x>13</x>
-      <y>0</y>
+      <x>12</x>
+      <y>2</y>
       <direction>0</direction>
-      <layer>15</layer>
+      <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Ground</name>
+      <name>Block Metal</name>
       <player>0</player>
-      <x>14</x>
-      <y>0</y>
+      <x>12</x>
+      <y>3</y>
       <direction>0</direction>
-      <layer>15</layer>
+      <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Ground</name>
+      <name>Block Metal</name>
       <player>0</player>
-      <x>15</x>
-      <y>0</y>
+      <x>12</x>
+      <y>4</y>
       <direction>0</direction>
-      <layer>15</layer>
+      <layer>0</layer>
     </XMLUnit>
     <XMLUnit>
-      <name>Ground</name>
+      <name>Block Metal</name>
       <player>0</player>
-      <x>16</x>
-      <y>0</y>
+      <x>12</x>
+      <y>5</y>
       <direction>0</direction>
-      <layer>15</layer>
-    </XMLUnit>
-    <XMLUnit>
-      <name>Ground</name>
-      <player>0</player>
-      <x>17</x>
-      <y>0</y>
-      <direction>0</direction>
-      <layer>15</layer>
+      <layer>0</layer>
     </XMLUnit>
   </xmlUnits>
   <goodsVisable />

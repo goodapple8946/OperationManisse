@@ -15,6 +15,17 @@ public class BlockChain : Block
 	{
 		Head = transform.Find("Head");
 		Tail = transform.Find("Tail");
+
+		// 设置子物体的刚体属性
+		Rigidbody2D[] hookBodies = transform.GetComponentsInChildren<Rigidbody2D>();
+		foreach(Rigidbody2D body in hookBodies)
+		{
+			// mass的大小决定铁链受力伸长的长度
+			body.mass = 1;
+			// linearDrag和angularDrag使铁链不会无限spinning
+			body.drag  = 0.25f;
+			body.angularDrag = 0.25f;
+		}
 	}
 
 	// 与另一个Block连接
@@ -65,10 +76,10 @@ public class BlockChain : Block
 			//	}
 		}
 
+	// 两向可以链接
 	public override bool IsLinkAvailable(int direction)
 	{
 		int negDir = GetDirectionNegative(this.direction);
-		// 两向都可以链接
 		bool canLink = (direction == this.direction || direction == negDir);
 		return canLink && joints[direction] == null;
 	}

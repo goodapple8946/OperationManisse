@@ -19,34 +19,17 @@ public class Block : Unit
     {
 		blocksLinked[direction] = another;
 
-		// 对方是铰链
-		if(another is BlockChain)
+		FixedJoint2D joint = gameObject.AddComponent<FixedJoint2D>();
+		if (player == Player.Player)
 		{
-			//BlockChain anotherChain = (BlockChain)another;
-			//int anotherLinkDir = GetDirectionNegative(direction);
-			//// 与铁链的尾部链接，创建HingeJoint2D
-			//if (anotherLinkDir == anotherChain.TailDir())
-			//{
-			//	HingeJoint2D joint = gameObject.AddComponent<HingeJoint2D>();
-			//	joint.connectedBody = anotherChain.Tail.GetComponent<Rigidbody2D>();
-			//	joint.anchor = radius * dirVector[direction];
-			//	joints[direction] = joint;
-			//}
+			joint.breakTorque = breakTorquePlayer;
 		}
-		else // 普通链接，创建FixedJoint2D
+		else
 		{
-			FixedJoint2D joint = gameObject.AddComponent<FixedJoint2D>();
-			if (player == Player.Player)
-			{
-				joint.breakTorque = breakTorquePlayer;
-			}
-			else
-			{
-				joint.breakTorque = breakTorque;
-			}
-			joint.connectedBody = another.body;
-			joints[direction] = joint;
+			joint.breakTorque = breakTorque;
 		}
+		joint.connectedBody = another.body;
+		joints[direction] = joint;
     }
 
 	// 与另一个Block解除连接
