@@ -766,7 +766,7 @@ public class EditorController : MonoBehaviour
     }
 
     // 坐标是否合法
-    bool IsLegalCoord(int x, int y)
+    public bool IsLegalCoord(int x, int y)
     {
         return x >= 0 && x < XNum && y >= 0 && y < YNum;
     }

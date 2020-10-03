@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Serialization;
 using UnityEngine;
 using static Controller;
@@ -16,7 +17,7 @@ static class Serializer
 	/// <summary>
 	/// 根据参数构造Game并序列化
 	/// </summary>
-	public static void Serialize(
+	public static void SerializeGame(
 		EditorController editorController, List<Background> backgrounds, 
 		List<Unit> units, List<string> goodsVisable, string path)
 	{
@@ -42,23 +43,58 @@ static class Serializer
 	}
 
 	/// <summary>
-	/// 将xml文件转换成Game
+	/// 根据参数构造Module并序列化
 	/// </summary>
-	public static XMLGame Deserialized(string path)
+	public static void SerializeModule(
+		EditorController editorController, string path)
 	{
-		return Deserialized<XMLGame>(path);
+
+		XMLUnit[][] Grid = ToXMLUnitGrid(editorController.Grid);
+		XMLModule module = new XMLModule(editorController.XNum, editorController.YNum, Grid);
+		Serialize(module, path);
 	}
 
 	/// <summary>
-	/// 将xml文件转换成T类型的对象
+	/// 将xml文件转换成T类型的对象, 可能返回XmlException表示解析错误
 	/// </summary>
-	private static T Deserialized<T>(string path)
+	public static T Deserialized<T>(string path)
 	{
 		XmlSerializer serializer = new XmlSerializer(typeof(T));
 		StreamReader reader = new StreamReader(path);
 		T deserialized = (T)serializer.Deserialize(reader.BaseStream);
 		reader.Close();
 		return deserialized;
+	}
+
+	/// <summary>
+	/// 将obj的所有public字段xml化，添加到path文件
+	/// </summary>
+	private static void Serialize(System.Object obj, string path)
+	{
+		XmlSerializer serializer = new XmlSerializer(obj.GetType());
+		StreamWriter writer = new StreamWriter(path);
+		serializer.Serialize(writer.BaseStream, obj);
+		writer.Close();
+	}
+
+	// 将dimentional grid转换成jagged array
+	private static XMLUnit[][] ToXMLUnitGrid(Unit[,] Grid)
+	{
+		// 初始化
+		XMLUnit[][] xmlGrid = new XMLUnit[Grid.GetLength(0)][];
+		for (int i = 0; i < Grid.GetLength(1); i++)
+		{
+			xmlGrid[i] = new XMLUnit[Grid.GetLength(1)];
+		}
+		// 转换
+		for (int i = 0; i < Grid.GetLength(0); i++)
+		{
+			for (int j = 0; j < Grid.GetLength(1); j++)
+			{
+				xmlGrid[i][j] = Unit2XML(Grid[i, j]);
+			}
+		}
+		return xmlGrid;
 	}
 
 	private static XMLBackground Background2XML(Background background)
@@ -95,18 +131,12 @@ static class Serializer
 		return new XMLMap(xNum, yNUm, money, lightIntensity);
 	}
 
-	/// <summary>
-	/// 将item的所有public字段添加到path文件的尾部
-	/// </summary>
-	private static void Serialize(System.Object item, string path)
-	{
-		XmlSerializer serializer = new XmlSerializer(item.GetType());
-		StreamWriter writer = new StreamWriter(path);
-		serializer.Serialize(writer.BaseStream, item);
-		writer.Close();
-	}
+
 }
 
+/// <summary>
+/// XMLGame := xmlMap + xmlBackgrounds + xmlUnits + 可用商品名称数组 
+/// </summary>
 public class XMLGame
 {
 	public XMLMap xmlMap;
@@ -125,6 +155,31 @@ public class XMLGame
 		this.goodsVisable = goodsVisable;
 	}
 }
+
+/// <summary>
+/// XMLGame := 网格大小 + xmlUnits
+/// </summary>
+public class XMLModule
+{
+	public int xNum;
+	public int yNum;
+
+	//[XmlIgnore]
+	//private Unit[,] grid;
+
+	public XMLUnit[][] Grid;
+
+	// 默认无参构造函数
+	public XMLModule() { }
+
+	public XMLModule(int xNum, int yNum, XMLUnit[][] Grid)
+	{
+		this.xNum = xNum;
+		this.yNum = yNum;
+		this.Grid = Grid;
+	}
+}
+
 
 public class XMLBackground
 {

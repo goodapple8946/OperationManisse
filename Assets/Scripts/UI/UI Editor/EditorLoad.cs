@@ -1,24 +1,54 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using static Controller;
 
 public class EditorLoad : MonoBehaviour
 {
-	// 被点击是调用LoadFile方法
-	public void LoadFile()
+
+	private void Awake()
+	{
+		Button button = GetComponent<Button>();
+		button.onClick.AddListener(LoadGameFromFS);
+	}
+
+	/// <summary>
+	/// 从文件系统中加载保存的xml文件
+	/// </summary>
+	public static void LoadGameFromFS()
+	{
+		try
+		{
+			// 根据文件生成Game
+			string path = EditorUtility.OpenFilePanel(
+				"Choose a map", Application.dataPath, "xml");
+
+			// 玩家选择了文件,则加载游戏
+			if (path != "")
+			{
+				XMLGame game = Serializer.Deserialized<XMLGame>(path);
+				Load(game);
+			}
+		}
+		// xml文件错误,显示错误弹窗
+		catch (System.Exception e)
+		{
+			EditorUtility.DisplayDialog("", "Map File Error!", "ok");
+		}
+	}
+
+	// 加载XMLGame对象
+	private static void Load(XMLGame game)
 	{
 		// 清空当前网格
 		editorController.XNum = 0;
 		editorController.YNum = 0;
-
 		// 清空背景图片
 		editorController.ClearBackground();
-
-		// 根据文件生成Game
-		string filename = Path.Combine(Application.dataPath, "1.xml");
-		XMLGame game = Serializer.Deserialized(filename);
 
 		// 加载地图信息
 		XMLMap map = game.xmlMap;
@@ -40,7 +70,10 @@ public class EditorLoad : MonoBehaviour
 		// gameController.Run();
 	}
 
-	private void Load(XMLMap map)
+	/// <summary>
+	/// 读取map并修改editorController的设置
+	/// </summary>
+	private static void Load(XMLMap map)
 	{
 		editorController.XNum = map.xNum;
 		editorController.YNum = map.yNum;
@@ -48,7 +81,10 @@ public class EditorLoad : MonoBehaviour
 		editorController.LightIntensity = map.lightIntensity;
 	}
 
-	private void Load(XMLBackground xmlBackground)
+	/// <summary>
+	/// 读取xmlBackground并克隆,保存到editorController里
+	/// </summary>
+	private static void Load(XMLBackground xmlBackground)
 	{
 		// 复制一份物体
 		GameObject objPrefab = resourceController.gameObjDictionary[xmlBackground.name];
@@ -63,7 +99,10 @@ public class EditorLoad : MonoBehaviour
 		editorController.Put(background);
 	}
 
-	private void Load(XMLUnit xmlUnit)
+	/// <summary>
+	/// 读取xmlUnit并克隆,保存到editorController里
+	/// </summary>
+	public static void Load(XMLUnit xmlUnit)
 	{
 		// 复制一份物体
 		GameObject objPrefab = resourceController.gameObjDictionary[xmlUnit.name];
