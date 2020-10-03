@@ -17,7 +17,7 @@ public class EditorSave : MonoBehaviour
 	public void Awake()
 	{
 		inputField = GetComponent<InputField>();
-		inputField.onValueChanged.AddListener(filename => SaveFile2FS(filename));
+		inputField.onEndEdit.AddListener(filename => SaveFile2FS(filename));
 		// 初始文本
 		inputField.SetTextWithoutNotify("Save");
 	}
