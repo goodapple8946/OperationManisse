@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,20 +7,24 @@ using static Controller;
 
 public class EditorOwner : MonoBehaviour
 {
-    private Dropdown dropdown;
+    private Toggle toggle;
+    private string playerName;
 
     public void Awake()
     {
-        dropdown = GetComponent<Dropdown>();
-        dropdown.onValueChanged.AddListener(value =>
+        playerName = GetComponentInChildren<Text>().text;
+        toggle = GetComponent<Toggle>();
+        toggle.onValueChanged.AddListener(isOn =>
         {
-            Player player = (Player)value;
-            editorController.PlayerOwner = player;
+            if (isOn)
+            {
+                editorController.PlayerOwner = (Player)Enum.Parse(typeof(Player), playerName);
+            }
         });
     }
 
 	public void UpdateShowing()
 	{
-		dropdown.SetValueWithoutNotify((int)editorController.PlayerOwner);
+        toggle.SetIsOnWithoutNotify(editorController.PlayerOwner.ToString() == playerName);
 	}
 }

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Games/123.xml.meta
 guid: ec4537cba767ddc4bbe0f3b8688796eb
+=======
+guid: 54e6e9c5e9d6f5a47867027601930283
+>>>>>>> NeoRoll:Assets/1.xml.meta
 TextScriptImporter:
   externalObjects: {}
   userData: 

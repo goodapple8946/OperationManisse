@@ -103,8 +103,8 @@ public class GameController : MonoBehaviour
     void ToPhaseEditor()
     {
         gamePhase = GamePhase.Editor;
-        editorController.ToPhaseEditor();
         uiEditor.SetActive(true);
+        editorController.ToPhaseEditor();
         uiGame.SetActive(false);
         uiGame.GetComponent<UIGame>().UpdateActive();
         shopController.UpdateShop();

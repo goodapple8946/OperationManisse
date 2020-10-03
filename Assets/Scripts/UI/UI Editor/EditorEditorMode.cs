@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,24 +7,29 @@ using static Controller;
 
 public class EditorEditorMode : MonoBehaviour
 {
-    private Dropdown dropdown;
+    private Toggle toggle;
     private GameObject content;
+    private string modeName;
 
     public void Awake()
     {
         content = GameObject.Find("UI Canvas/UI Editor/Viewport/Content");
+        modeName = GetComponentInChildren<Text>().text;
 
-        dropdown = GetComponent<Dropdown>();
-        dropdown.onValueChanged.AddListener(value =>
+        toggle = GetComponent<Toggle>();
+        toggle.onValueChanged.AddListener(isOn =>
         {
-            editorController.EditorMode = (EditorMode)value;
-            UpdateShowing();
-            content.GetComponent<EditorContent>().UpdateByEditorMode();
+            if (isOn)
+            {
+                editorController.EditorMode = (EditorMode)Enum.Parse(typeof(EditorMode), modeName);
+                UpdateShowing();
+                content.GetComponent<EditorContent>().UpdateByEditorMode();
+            }
         });
     }
 
     public void UpdateShowing()
     {
-        dropdown.SetValueWithoutNotify((int)editorController.EditorMode);
+        toggle.SetIsOnWithoutNotify(editorController.EditorMode.ToString() == modeName);
     }
 }

@@ -128,14 +128,31 @@ public class EditorLoad : MonoBehaviour
 	/// </summary>
 	public static void Load(XMLUnit xmlUnit)
 	{
+<<<<<<< HEAD
 		// Unit unit = XML2Unit(xmlUnit);
 
+=======
+>>>>>>> NeoRoll
 		// 复制一份物体
 		GameObject objPrefab = resourceController.gameObjDictionary[xmlUnit.name];
 		GameObject objClone = Instantiate(objPrefab);
 		objClone.name = objPrefab.name; // 默认复制名称是GameObject Name (Clone)
 		Unit unit = objClone.GetComponent<Unit>();
 
+<<<<<<< HEAD
+=======
+		// 计算存档与克隆出的方向之差,设置旋转角度
+		int dirDifference = (xmlUnit.direction - unit.direction) + 4;
+		unit.Rotate(dirDifference);
+
+		// prefab的layer是Default，需要根据所属player信息创建
+		unit.gameObject.layer = xmlUnit.layer;
+		unit.player = (Player)xmlUnit.player; // TODO: 更新血条？
+
+		// 设置成编辑器创建
+		unit.isEditorCreated = true;
+
+>>>>>>> NeoRoll
 		// 设置unit的网格位置,和editorController网格信息
 		editorController.Put(xmlUnit.x, xmlUnit.y, unit);
 

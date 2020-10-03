@@ -150,12 +150,12 @@ public abstract class Unit : ClickableObject
                 // 造成伤害的有效相对速度
                 float velocity = collision.relativeVelocity.magnitude - velocityCollision;
 
-                if (velocity >= 0)
-                {
-                    float damageAmount = velocity * damageCollision;
-					Damage damage = new Damage((int)damageAmount, unit.GetType());
-                    unit.TakeDamage(damage);
-                }
+     //           if (velocity >= 0)
+     //           {
+     //               float damageAmount = velocity * damageCollision;
+					//Damage damage = new Damage((int)damageAmount, unit.GetType());
+     //               unit.TakeDamage(damage);
+     //           }
             }
         }
     }

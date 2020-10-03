@@ -1,7 +1,12 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Games.meta
 guid: 7d9724b6e9093a74ca4078f52b841931
 folderAsset: yes
 DefaultImporter:
+=======
+guid: fbe89d66cf365b3449c80b4e818a3575
+TextScriptImporter:
+>>>>>>> NeoRoll:Assets/100.xml.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
