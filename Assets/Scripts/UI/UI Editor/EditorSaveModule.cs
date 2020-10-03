@@ -18,40 +18,37 @@ public class EditorSaveModule : MonoBehaviour
 	public void Awake()
 	{
 		inputField = GetComponent<InputField>();
-		inputField.onValueChanged.AddListener(filename => SaveFile2FS(filename));
+		inputField.onEndEdit.AddListener(filename => SaveFile2FS(filename));
 		// 初始文本
-		inputField.SetTextWithoutNotify("Save As Module");
+		//inputField.SetTextWithoutNotify("Save As Module");
 	}
 
 	/// <summary>
 	/// 转换成xml, 保存filename到文件系统,如果重名让编辑者选择
 	/// </summary>
-	void SaveFile2FS(string filename)
+	private void SaveFile2FS(string filename)
 	{
-		// 如果不存在文件夹，就创建
-		string dirPath = Application.dataPath + "/Modules/";
-		if (!Directory.Exists(dirPath))
-		{
-			Directory.CreateDirectory(dirPath);
-		}
 
-		string path = System.IO.Path.Combine(dirPath, filename + ".xml");
+		string path = System.IO.Path.Combine(ResourceController.ModulePath, filename + ".xml");
 		// 文件系统存在重名文件
 		if (File.Exists(path))
 		{
 			bool ok = EditorUtility.DisplayDialog("",
 				"Are you sure you want to replace existing file?", "ok", "cancel");
+
 			if (ok)
 			{
 				SaveFile(path);
+				EditorUtility.DisplayDialog("", "Successfully Saved", "ok");
 			}
 		}
 		else
 		{
 			SaveFile(path);
+			EditorUtility.DisplayDialog("", "Successfully Saved", "ok");
 		}
 		// 更新输入区文本
-		inputField.SetTextWithoutNotify("Save As Module");
+		// inputField.SetTextWithoutNotify("Save As Module");
 	}
 
 	/// <summary>
@@ -70,8 +67,11 @@ public class EditorSaveModule : MonoBehaviour
 	{
 		foreach (Unit unit in Grid)
 		{
-			System.Diagnostics.Debug.Assert(
-				unit != null && unit.gameObject != null, "unit绑定的gameObject已被销毁");
+			if(unit != null)
+			{
+				System.Diagnostics.Debug.Assert(
+					unit.gameObject != null, "unit绑定的gameObject已被销毁");
+			}
 		}
 	}
 }

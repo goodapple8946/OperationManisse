@@ -17,9 +17,9 @@ public class EditorSave : MonoBehaviour
 	public void Awake()
 	{
 		inputField = GetComponent<InputField>();
-		inputField.onValueChanged.AddListener(filename => SaveFile2FS(filename));
+		inputField.onEndEdit.AddListener(filename => SaveFile2FS(filename));
 		// 初始文本
-		inputField.SetTextWithoutNotify("Save");
+		// inputField.SetTextWithoutNotify("Save");
 	}
 
 	/// <summary>
@@ -27,23 +27,26 @@ public class EditorSave : MonoBehaviour
 	/// </summary>
 	void SaveFile2FS(string filename)
 	{
-		string path = System.IO.Path.Combine(Application.dataPath, filename + ".xml");
+		string path = System.IO.Path.Combine(ResourceController.GamePath, filename + ".xml");
 		// 文件系统存在重名文件
 		if (File.Exists(path))
 		{
 			bool ok = EditorUtility.DisplayDialog("", 
 				"Are you sure you want to replace existing file?", "ok", "cancel");
+
 			if (ok)
 			{
 				SaveFile(path);
+				EditorUtility.DisplayDialog("", "Successfully Saved", "ok");
 			}
 		}
 		else
 		{
 			SaveFile(path);
+			EditorUtility.DisplayDialog("", "Successfully Saved", "ok");
 		}
 		// 更新输入区文本
-		inputField.SetTextWithoutNotify("Save");
+		// inputField.SetTextWithoutNotify("Save");
 	}
 
 	/// <summary>

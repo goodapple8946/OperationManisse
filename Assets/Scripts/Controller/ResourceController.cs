@@ -3,9 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Windows;
 
 public class ResourceController : MonoBehaviour
 {
+	public static string ModulePath { get; private set; }
+	public static string GamePath { get; private set; }
+
 	// 所有单位的Prefab
 	public GameObject[] editorObjects;
 	public GameObject[] blockObjects;
@@ -49,5 +53,19 @@ public class ResourceController : MonoBehaviour
 		Array.ForEach(blockObjects, obj => gameObjDictionary.Add(obj.name, obj));
 		Array.ForEach(ballObjects, obj => gameObjDictionary.Add(obj.name, obj));
 		Array.ForEach(backgroundObjects, obj => gameObjDictionary.Add(obj.name, obj));
+
+		// 初始化路径
+		ModulePath = Application.dataPath + "/Modules/";
+		GamePath = Application.dataPath + "/Games/";
+		// 如果不存在文件夹，就创建
+		if (!Directory.Exists(ModulePath))
+		{
+			Directory.CreateDirectory(ModulePath);
+		}
+		// 如果不存在文件夹，就创建
+		if (!Directory.Exists(GamePath))
+		{
+			Directory.CreateDirectory(GamePath);
+		}
 	}
 }

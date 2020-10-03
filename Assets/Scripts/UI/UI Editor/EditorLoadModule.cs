@@ -23,7 +23,7 @@ public class EditorLoadModule : MonoBehaviour
 		{
 			// 根据文件生成Game
 			string path = EditorUtility.OpenFilePanel(
-				"Choose a module", Application.dataPath, "xml");
+				"Choose a module", ResourceController.ModulePath, "xml");
 
 			// 玩家选择了文件,则加载游戏
 			if (path != "")
@@ -62,7 +62,7 @@ public class EditorLoadModule : MonoBehaviour
 				int worldX = worldStartX + moduleX;
 				int worldY = worldStartY + moduleY;
 				// 修改xmlUnit的坐标
-				XMLUnit xmlUnit = module.Grid[moduleX][moduleY];
+				XMLUnit xmlUnit = module.Grid[moduleX, moduleY];
 				xmlUnit.x = worldX;
 				xmlUnit.y = worldY;
 
@@ -87,7 +87,7 @@ public class EditorLoadModule : MonoBehaviour
 				int worldX = worldStartX + moduleX;
 				int worldY = worldStartY + moduleY;
 				// 修改xmlUnit的坐标
-				XMLUnit xmlUnit = module.Grid[moduleX][moduleY];
+				XMLUnit xmlUnit = module.Grid[moduleX, moduleY];
 				xmlUnit.x = worldX;
 				xmlUnit.y = worldY;
 				EditorLoad.Load(xmlUnit);
@@ -110,7 +110,7 @@ public class EditorLoadModule : MonoBehaviour
 				bool mappingGridInvalid = (!editorController.IsLegalCoord(worldX, worldY)
 						|| editorController.Grid[worldX, worldY] != null);
 				// 模组中的某格存在物品&世界坐标超出或者世界对应格中存在物品
-				if (module.Grid[moduleX][moduleY] != null && mappingGridInvalid)
+				if (module.Grid[moduleX, moduleY] != null && mappingGridInvalid)
 				{
 					return false;
 				}

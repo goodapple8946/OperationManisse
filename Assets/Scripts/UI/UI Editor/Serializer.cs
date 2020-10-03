@@ -48,9 +48,13 @@ static class Serializer
 	public static void SerializeModule(
 		EditorController editorController, string path)
 	{
-
-		XMLUnit[][] Grid = ToXMLUnitGrid(editorController.Grid);
-		XMLModule module = new XMLModule(editorController.XNum, editorController.YNum, Grid);
+		List<XMLUnit> xmlUnits = new List<XMLUnit>();
+		foreach (Unit unit in editorController.Grid)
+		{
+			XMLUnit xmlUnit = Unit2XML(unit);
+			xmlUnits.Add(xmlUnit);
+		}
+		XMLModule module = new XMLModule(editorController.XNum, editorController.YNum, xmlUnits);
 		Serialize(module, path);
 	}
 
@@ -78,24 +82,32 @@ static class Serializer
 	}
 
 	// 将dimentional grid转换成jagged array
-	private static XMLUnit[][] ToXMLUnitGrid(Unit[,] Grid)
-	{
-		// 初始化
-		XMLUnit[][] xmlGrid = new XMLUnit[Grid.GetLength(0)][];
-		for (int i = 0; i < Grid.GetLength(1); i++)
-		{
-			xmlGrid[i] = new XMLUnit[Grid.GetLength(1)];
-		}
-		// 转换
-		for (int i = 0; i < Grid.GetLength(0); i++)
-		{
-			for (int j = 0; j < Grid.GetLength(1); j++)
-			{
-				xmlGrid[i][j] = Unit2XML(Grid[i, j]);
-			}
-		}
-		return xmlGrid;
-	}
+	//private static XMLUnit[][] ToXMLUnitGrid(Unit[,] Grid)
+	//{
+	//	// 初始化
+	//	XMLUnit[][] xmlGrid = new XMLUnit[Grid.GetLength(0)][];
+	//	for (int i = 0; i < Grid.GetLength(1); i++)
+	//	{
+	//		xmlGrid[i] = new XMLUnit[Grid.GetLength(1)];
+	//	}
+	//	// 转换
+	//	for (int i = 0; i < Grid.GetLength(0); i++)
+	//	{
+	//		for (int j = 0; j < Grid.GetLength(1); j++)
+	//		{
+	//			if(Grid[i, j] != null)
+	//			{
+	//				xmlGrid[i][j] = Unit2XML(Grid[i, j]);
+	//			}
+	//			else
+	//			{
+	//				xmlGrid[i][j] = null;
+	//			}
+				
+	//		}
+	//	}
+	//	return xmlGrid;
+	//}
 
 	private static XMLBackground Background2XML(Background background)
 	{
@@ -164,19 +176,33 @@ public class XMLModule
 	public int xNum;
 	public int yNum;
 
-	//[XmlIgnore]
-	//private Unit[,] grid;
+	public List<XMLUnit> xmlUnits;
 
-	public XMLUnit[][] Grid;
+	[XmlIgnore]
+	public XMLUnit[,] Grid { get; private set; }
 
 	// 默认无参构造函数
-	public XMLModule() { }
+	public XMLModule()
+	{
+		InitGrid();
+	}
 
-	public XMLModule(int xNum, int yNum, XMLUnit[][] Grid)
+	public XMLModule(int xNum, int yNum, List<XMLUnit> xmlUnits)
 	{
 		this.xNum = xNum;
 		this.yNum = yNum;
-		this.Grid = Grid;
+		this.xmlUnits = xmlUnits;
+		InitGrid();
+	}
+
+	// 用List初始化Grid
+	private void InitGrid()
+	{
+		Grid = new XMLUnit[xNum, yNum];
+		foreach(XMLUnit unit in xmlUnits)
+		{
+			Grid[unit.x, unit.y] = unit;
+		}
 	}
 }
 
