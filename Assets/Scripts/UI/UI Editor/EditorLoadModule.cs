@@ -39,7 +39,8 @@ public class EditorLoadModule : MonoBehaviour
 				}
 				else
 				{
-					EditorUtility.DisplayDialog("", "Cannot Put in here!", "ok");
+					EditorUtility.DisplayDialog(
+						"", "Cannot Put in x:" + worldStartX + " y:" +worldStartY + "!", "ok");
 				}
 			}
 		}
