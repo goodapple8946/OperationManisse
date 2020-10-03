@@ -125,13 +125,11 @@ public class EditorLoad : MonoBehaviour
 
 	/// <summary>
 	/// 读取xmlUnit并克隆,保存到editorController里
-	/// 返回创建的unit
 	/// </summary>
-	public static Unit Load(XMLUnit xmlUnit)
+	public static void Load(XMLUnit xmlUnit)
 	{
 		Unit unit = XML2Unit(xmlUnit);
 		// 设置unit的网格位置,和editorController网格信息
 		editorController.Put(xmlUnit.x, xmlUnit.y, unit);
-		return unit;
 	}
 }
