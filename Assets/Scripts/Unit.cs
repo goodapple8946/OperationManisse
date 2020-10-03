@@ -28,9 +28,6 @@ public abstract class Unit : ClickableObject
     // 地面检测射线长度
     protected float groundCheckDistance = 0.05f;
 	
-    // 死亡时的效果力矩
-    protected static float torqueDeath = 1000f;
-
     // 可能的Sprite
     public Sprite[] sprites;
 
@@ -187,16 +184,16 @@ public abstract class Unit : ClickableObject
 		GameObject corpse;
 		if(damageType == typeof(MissileFlamethrower))
 		{
-			corpse = CreateBurningClone(gameObject);
+			corpse = CorpseFactory.CreateBurningClone(gameObject);
 		}
 		else if(damageType == typeof(Missile)
 			|| damageType.IsInstanceOfType(typeof(Missile))) // 射伤
 		{
-			corpse = CreateRotatedRigidClone(gameObject);
+			corpse = CorpseFactory.CreateRotatedRigidClone(gameObject);
 		}
 		else // 撞击
 		{
-			corpse = CreateRigidClone(gameObject);
+			corpse = CorpseFactory.CreateGraphicFixedRigidClone(gameObject);
 		}
 		Destroy(corpse, deathDuration);
 	}
@@ -204,66 +201,6 @@ public abstract class Unit : ClickableObject
 	protected virtual void OnDestroy()
 	{
 		
-	}
-
-	/// <summary>
-	/// 根据origin, 创建一个保留renderer,旋转rigidbody,烧黑的克隆
-	/// </summary>
-	protected static GameObject CreateBurningClone(GameObject origin)
-	{
-		GameObject clone = CreateRigidClone(origin);
-		SpriteRenderer[] renderers = clone.transform.GetComponentsInChildren<SpriteRenderer>();
-		System.Array.ForEach(renderers, 
-			renderer => renderer.color = new Color(0.1f, 0.1f, 0.1f));
-
-		return clone.gameObject;
-	}
-
-	/// <summary>
-	/// 根据origin, 创建一个保留renderer, rigidbody,无script组件和碰撞体的克隆
-	/// </summary>
-	protected static GameObject CreateRigidClone(GameObject origin)
-	{
-		GameObject graphicClone = CreateGraphicClone(origin);
-
-		// 取消父物体上的刚体固定
-		Rigidbody2D cloneBody = graphicClone.GetComponent<Rigidbody2D>();
-		cloneBody.constraints = RigidbodyConstraints2D.None;
-		// 无阻力
-		cloneBody.drag = 0;
-		cloneBody.angularDrag = 0;
-
-		return graphicClone.gameObject;
-	}
-
-	protected static GameObject CreateRotatedRigidClone(GameObject origin)
-	{
-		GameObject rigidClone = CreateRigidClone(origin);
-
-		Rigidbody2D cloneBody = rigidClone.GetComponent<Rigidbody2D>();
-		// 死亡扭矩
-		cloneBody.AddTorque(torqueDeath);
-
-		return rigidClone.gameObject;
-	}
-
-	/// <summary>
-	/// 创建一个仅有图像的克隆
-	/// </summary>
-	protected static GameObject CreateGraphicClone(GameObject origin)
-	{
-		// 将origin整体复制
-		Transform transClone = Instantiate(origin.transform);
-		// 将tag改成Untagged就不会被FindEnemy
-		transClone.tag = "Untagged";
-
-		// 移除所有脚本和碰撞体组件
-		MonoBehaviour[] scripts = transClone.GetComponentsInChildren<MonoBehaviour>();
-		System.Array.ForEach(scripts, script => Destroy(script));
-		Collider2D[] colliders = transClone.GetComponentsInChildren<Collider2D>();
-		System.Array.ForEach(colliders, collider => Destroy(collider));
-
-		return transClone.gameObject;
 	}
 
 	// 是否在地面上

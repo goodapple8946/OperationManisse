@@ -51,6 +51,30 @@ public class EditorLoadModule : MonoBehaviour
 		}
 	}
 
+	// 从(worldStartX, worldStartY)开始展示module 
+	public void DisplayModule(XMLModule module, int worldStartX, int worldStartY)
+	{
+		// 加载单位信息
+		for (int moduleX = 0; moduleX < module.xNum; moduleX++)
+		{
+			for (int moduleY = 0; moduleY < module.yNum; moduleY++)
+			{
+				int worldX = worldStartX + moduleX;
+				int worldY = worldStartY + moduleY;
+				// 修改xmlUnit的坐标
+				XMLUnit xmlUnit = module.Grid[moduleX][moduleY];
+				xmlUnit.x = worldX;
+				xmlUnit.y = worldY;
+
+				Unit unit = EditorLoad.XML2Unit(xmlUnit);
+				GameObject clone = CorpseFactory.CreateTransparentGraphicClone(unit.gameObject);
+				Destroy(unit.gameObject);
+				// 保留一会删除重绘制
+				Destroy(unit.gameObject, 0.5f);
+			}
+		}
+	}
+
 	// 加载module对象使其左下角在世界坐标(x,y)
 	// 将模组中每一个物品放到世界网格对应格中
 	private void Load(XMLModule module, int worldStartX, int worldStartY)
@@ -69,11 +93,10 @@ public class EditorLoadModule : MonoBehaviour
 				EditorLoad.Load(xmlUnit);
 			}
 		}
-
 	}
 
 	// 检测是否能放入,true:可以
-	bool CanPlace(XMLModule module, int worldStartX, int worldStartY)
+	private bool CanPlace(XMLModule module, int worldStartX, int worldStartY)
 	{
 	
 		// module内的相对坐标区域

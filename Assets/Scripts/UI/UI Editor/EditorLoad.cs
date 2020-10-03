@@ -100,28 +100,38 @@ public class EditorLoad : MonoBehaviour
 	}
 
 	/// <summary>
-	/// 读取xmlUnit并克隆,保存到editorController里
+	/// 根据xmlUnit创建一份unit
 	/// </summary>
-	public static void Load(XMLUnit xmlUnit)
+	public static Unit XML2Unit(XMLUnit xmlUnit)
 	{
 		// 复制一份物体
 		GameObject objPrefab = resourceController.gameObjDictionary[xmlUnit.name];
 		GameObject objClone = Instantiate(objPrefab);
-        objClone.name = objPrefab.name; // 默认复制名称是GameObject Name (Clone)
-		
-		// 设置位置,网格信息和旋转,以及所在layer, player
+		objClone.name = objPrefab.name; // 默认复制名称是GameObject Name (Clone)
 		Unit unit = objClone.GetComponent<Unit>();
-		editorController.Put(xmlUnit.x, xmlUnit.y, unit);
 
 		// 计算存档与克隆出的方向之差,设置旋转角度
 		int dirDifference = (xmlUnit.direction - unit.direction) + 4;
 		unit.Rotate(dirDifference);
 
-		// prefab的layer是Default需要根据player信息创建
-		unit.gameObject.layer = xmlUnit.layer; 
+		// prefab的layer是Default，需要根据所属player信息创建
+		unit.gameObject.layer = xmlUnit.layer;
 		unit.player = (Player)xmlUnit.player; // TODO: 更新血条？
 
 		// 设置成编辑器创建
 		unit.isEditorCreated = true;
+		return unit;
+	}
+
+	/// <summary>
+	/// 读取xmlUnit并克隆,保存到editorController里
+	/// 返回创建的unit
+	/// </summary>
+	public static Unit Load(XMLUnit xmlUnit)
+	{
+		Unit unit = XML2Unit(xmlUnit);
+		// 设置unit的网格位置,和editorController网格信息
+		editorController.Put(xmlUnit.x, xmlUnit.y, unit);
+		return unit;
 	}
 }
