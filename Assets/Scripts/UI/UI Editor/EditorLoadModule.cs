@@ -40,7 +40,7 @@ public class EditorLoadModule : MonoBehaviour
 				else
 				{
 					EditorUtility.DisplayDialog(
-						"", "Cannot Put in x:" + worldStartX + " y:" +worldStartY + "!", "ok");
+						"", "Cannot Put Moudle in x:" + worldStartX + " y:" +worldStartY + "!", "ok");
 				}
 			}
 		}
