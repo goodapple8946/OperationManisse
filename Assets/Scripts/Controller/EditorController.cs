@@ -381,6 +381,7 @@ public class EditorController : MonoBehaviour
                 }
 
                 Put(x, y, unit);
+                unit.player = playerOwner;
                 PlayPutIntoGridSound(unit);
             }
         }
@@ -873,8 +874,6 @@ public class EditorController : MonoBehaviour
 		{
 			// 设置Unit显示层
 			unit.SetSpriteLayer("Unit");
-			// 设置player
-			unit.player = PlayerOwner;
 			// 设置Unit物理层
 			unit.gameObject.layer = (int)GetUnitLayer(PlayerOwner, unit);
 		}

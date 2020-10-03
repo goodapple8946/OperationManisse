@@ -75,7 +75,7 @@ MonoBehaviour:
   healthMax: 2147483647
   health: 2147483647
   priority: 0
-  radius: 0
+  radius: 0.6
   sprites: []
   damageCollision: 10
   player: 0
