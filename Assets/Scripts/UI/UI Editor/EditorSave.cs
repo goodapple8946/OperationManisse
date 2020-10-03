@@ -1,6 +1,4 @@
-﻿#define DEBUG
-
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -19,7 +17,7 @@ public class EditorSave : MonoBehaviour
 		inputField = GetComponent<InputField>();
 		inputField.onEndEdit.AddListener(filename => SaveFile2FS(filename));
 		// 初始文本
-		// inputField.SetTextWithoutNotify("Save");
+		inputField.SetTextWithoutNotify("Save");
 	}
 
 	/// <summary>
@@ -46,7 +44,7 @@ public class EditorSave : MonoBehaviour
 			EditorUtility.DisplayDialog("", "Successfully Saved", "ok");
 		}
 		// 更新输入区文本
-		// inputField.SetTextWithoutNotify("Save");
+		inputField.SetTextWithoutNotify("Save");
 	}
 
 	/// <summary>

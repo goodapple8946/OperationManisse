@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿#define DEBUG
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

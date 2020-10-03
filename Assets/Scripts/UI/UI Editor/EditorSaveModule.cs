@@ -20,7 +20,7 @@ public class EditorSaveModule : MonoBehaviour
 		inputField = GetComponent<InputField>();
 		inputField.onEndEdit.AddListener(filename => SaveFile2FS(filename));
 		// 初始文本
-		//inputField.SetTextWithoutNotify("Save As Module");
+		inputField.SetTextWithoutNotify("Save As Module");
 	}
 
 	/// <summary>
@@ -48,7 +48,7 @@ public class EditorSaveModule : MonoBehaviour
 			EditorUtility.DisplayDialog("", "Successfully Saved", "ok");
 		}
 		// 更新输入区文本
-		// inputField.SetTextWithoutNotify("Save As Module");
+		inputField.SetTextWithoutNotify("Save As Module");
 	}
 
 	/// <summary>

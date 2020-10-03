@@ -65,9 +65,6 @@ public class EditorLoad : MonoBehaviour
 		// 加载可用商品
 		List<string> goodsVisible = game.goodsVisable;
 		shopController.SetShopObjectVisibility(goodsVisible);
-
-		// 开始游戏
-		// gameController.Run();
 	}
 
 	/// <summary>
@@ -100,7 +97,7 @@ public class EditorLoad : MonoBehaviour
 	}
 
 	/// <summary>
-	/// 根据xmlUnit创建一份unit
+	/// 根据xmlUnit创建一份unit拷贝, 并根据网格中的坐标设置世界坐标
 	/// </summary>
 	public static Unit XML2Unit(XMLUnit xmlUnit)
 	{
@@ -113,6 +110,8 @@ public class EditorLoad : MonoBehaviour
 		// 计算存档与克隆出的方向之差,设置旋转角度
 		int dirDifference = (xmlUnit.direction - unit.direction) + 4;
 		unit.Rotate(dirDifference);
+		// 计算网格中的位置
+		unit.transform.position = editorController.CoordToPosition(xmlUnit.x, xmlUnit.y);
 
 		// prefab的layer是Default，需要根据所属player信息创建
 		unit.gameObject.layer = xmlUnit.layer;
@@ -129,7 +128,7 @@ public class EditorLoad : MonoBehaviour
 	public static void Load(XMLUnit xmlUnit)
 	{
 		Unit unit = XML2Unit(xmlUnit);
-		// 设置unit的网格位置,和editorController网格信息
+		// 设置unit的网格位置,和坐标
 		editorController.Put(xmlUnit.x, xmlUnit.y, unit);
 	}
 }

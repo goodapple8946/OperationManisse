@@ -48,13 +48,19 @@ static class Serializer
 	public static void SerializeModule(
 		EditorController editorController, string path)
 	{
+
 		List<XMLUnit> xmlUnits = new List<XMLUnit>();
+		// 添加所有Grid的非空元素
 		foreach (Unit unit in editorController.Grid)
 		{
-			XMLUnit xmlUnit = Unit2XML(unit);
-			xmlUnits.Add(xmlUnit);
+			if(unit != null)
+			{
+				XMLUnit xmlUnit = Unit2XML(unit);
+				xmlUnits.Add(xmlUnit);
+			}
 		}
 		XMLModule module = new XMLModule(editorController.XNum, editorController.YNum, xmlUnits);
+
 		Serialize(module, path);
 	}
 
@@ -118,7 +124,7 @@ static class Serializer
 	}
 
 	/// <summary>
-	/// 将Unit映射成XMLUnit
+	/// 将Unit映射成XMLUnit, unit不能为Null
 	/// </summary>
 	private static XMLUnit Unit2XML(Unit unit)
 	{
@@ -178,14 +184,24 @@ public class XMLModule
 
 	public List<XMLUnit> xmlUnits;
 
+	// 不需要序列化
+	private XMLUnit[,] grid;
 	[XmlIgnore]
-	public XMLUnit[,] Grid { get; private set; }
+	public XMLUnit[,] Grid
+	{
+		get
+		{
+			// 从xml加载后, 没有用xmlUnits初始化Grid则初始化
+			if (grid == null)
+			{
+				InitGrid();
+			}
+			return grid;
+		}
+	}
 
 	// 默认无参构造函数
-	public XMLModule()
-	{
-		InitGrid();
-	}
+	public XMLModule() { }
 
 	public XMLModule(int xNum, int yNum, List<XMLUnit> xmlUnits)
 	{
@@ -198,8 +214,8 @@ public class XMLModule
 	// 用List初始化Grid
 	private void InitGrid()
 	{
-		Grid = new XMLUnit[xNum, yNum];
-		foreach(XMLUnit unit in xmlUnits)
+		grid = new XMLUnit[xNum, yNum];
+		foreach (XMLUnit unit in xmlUnits)
 		{
 			Grid[unit.x, unit.y] = unit;
 		}

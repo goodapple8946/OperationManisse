@@ -699,7 +699,7 @@ public class EditorController : MonoBehaviour
     }
 
     // 根据Grid[x][y]获取中心坐标
-    Vector2 CoordToPosition(int x, int y)
+    public Vector2 CoordToPosition(int x, int y)
     {
         Vector2 ret = new Vector2(gridSize * (x + 0.5f), gridSize * (y + 0.5f));
         return ret + origin;

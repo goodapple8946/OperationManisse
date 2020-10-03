@@ -28,13 +28,14 @@ public class EditorLoadModule : MonoBehaviour
 			// 玩家选择了文件,则加载游戏
 			if (path != "")
 			{
-				int worldStartX = 0;
-				int worldStartY = 0;
+				int worldStartX = 2;
+				int worldStartY = 2;
 				XMLModule module = Serializer.Deserialized<XMLModule>(path);
 				bool canPlace = CanPlace(module, worldStartX, worldStartY);
 				// 如果能防止就放置, 否则报错
 				if (canPlace)
 				{
+					DisplayModule(module, 0, 0);
 					Load(module, worldStartX, worldStartY);
 				}
 				else
@@ -59,18 +60,21 @@ public class EditorLoadModule : MonoBehaviour
 		{
 			for (int moduleY = 0; moduleY < module.yNum; moduleY++)
 			{
-				int worldX = worldStartX + moduleX;
-				int worldY = worldStartY + moduleY;
-				// 修改xmlUnit的坐标
 				XMLUnit xmlUnit = module.Grid[moduleX, moduleY];
-				xmlUnit.x = worldX;
-				xmlUnit.y = worldY;
+				if(xmlUnit != null)
+				{
+					int worldX = worldStartX + moduleX;
+					int worldY = worldStartY + moduleY;
+					// 修改xmlUnit的坐标
+					xmlUnit.x = worldX;
+					xmlUnit.y = worldY;
 
-				Unit unit = EditorLoad.XML2Unit(xmlUnit);
-				GameObject clone = CorpseFactory.CreateTransparentGraphicClone(unit.gameObject);
-				Destroy(unit.gameObject);
-				// 保留一会删除重绘制
-				Destroy(unit.gameObject, 0.5f);
+					Unit unit = EditorLoad.XML2Unit(xmlUnit);
+					GameObject clone = CorpseFactory.CreateTransparentGraphicClone(unit.gameObject);
+					Destroy(unit.gameObject);
+					// 保留一会删除重绘制
+					Destroy(clone, 4f);
+				}
 			}
 		}
 	}
@@ -84,13 +88,17 @@ public class EditorLoadModule : MonoBehaviour
 		{
 			for (int moduleY = 0; moduleY < module.yNum; moduleY++)
 			{
-				int worldX = worldStartX + moduleX;
-				int worldY = worldStartY + moduleY;
-				// 修改xmlUnit的坐标
+				// 如果xmlUnit存在
 				XMLUnit xmlUnit = module.Grid[moduleX, moduleY];
-				xmlUnit.x = worldX;
-				xmlUnit.y = worldY;
-				EditorLoad.Load(xmlUnit);
+				if (xmlUnit != null)
+				{
+					int worldX = worldStartX + moduleX;
+					int worldY = worldStartY + moduleY;
+					// 修改xmlUnit的坐标到Editor坐标网并加载
+					xmlUnit.x = worldX;
+					xmlUnit.y = worldY;
+					EditorLoad.Load(xmlUnit);
+				}
 			}
 		}
 	}
@@ -98,7 +106,6 @@ public class EditorLoadModule : MonoBehaviour
 	// 检测是否能放入,true:可以
 	private bool CanPlace(XMLModule module, int worldStartX, int worldStartY)
 	{
-	
 		// module内的相对坐标区域
 		for (int moduleX = 0; moduleX < module.xNum; moduleX++)
 		{
@@ -106,10 +113,10 @@ public class EditorLoadModule : MonoBehaviour
 			{
 				int worldX = worldStartX + moduleX;
 				int worldY = worldStartY + moduleY;
-				
+
+				// 模组中的某格存在物品 && 世界坐标对应格超出或存在物品
 				bool mappingGridInvalid = (!editorController.IsLegalCoord(worldX, worldY)
 						|| editorController.Grid[worldX, worldY] != null);
-				// 模组中的某格存在物品&世界坐标超出或者世界对应格中存在物品
 				if (module.Grid[moduleX, moduleY] != null && mappingGridInvalid)
 				{
 					return false;
