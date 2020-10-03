@@ -42,7 +42,7 @@ public class EditorSave : MonoBehaviour
 		{
 			SaveFile(path);
 		}
-		// 更新文本
+		// 更新输入区文本
 		inputField.SetTextWithoutNotify("Save");
 	}
 
