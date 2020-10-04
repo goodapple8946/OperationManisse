@@ -7,8 +7,12 @@ using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.UI;
 using static Controller;
 
+// 类型定义
+using Coord = System.Tuple<int, int>;
+
 public class EditorController : MonoBehaviour
 {
+	
 	// 当前编辑模式
 	[HideInInspector] private EditorMode editorMode;
 
@@ -142,8 +146,8 @@ public class EditorController : MonoBehaviour
     {
         set
         {
-            mouseModule = value;
-            EditorMode = EditorMode.Module;
+			EditorMode = EditorMode.Module;
+			mouseModule = value;
         }
     }
     public bool IsClickHold
@@ -730,6 +734,7 @@ public class EditorController : MonoBehaviour
         }
         mouseModule = null;
     }
+
     // 清除Mouse Object Last
     public void ClearMouseObjectLast()
     {
@@ -861,30 +866,28 @@ public class EditorController : MonoBehaviour
         }
         else if (editorMode == EditorMode.Module)
         {
-            int[] mouseCoord = GetMouseCoord();
-            if (mouseCoord != null && mouseModule != null)
+			Coord mouseCoord = GetMouseCoord();
+			if (mouseCoord.Item1 != -1 && mouseCoord.Item2 != -1 && mouseModule != null)
             {
-                Vector2 center = mouseModule.GetCenter();
-                int worldStartX = mouseCoord[0] - (int)center.x;
-                int worldStartY = mouseCoord[1] - (int)center.y;
-                bool canPlace = EditorLoadModule.CanPlace(mouseModule, worldStartX, worldStartY);
-
-                if (canPlace)
+				// 清空之前的绘制
+				bool canPlace = EditorLoadModule.CanPlaceModuleCenter(mouseModule, mouseCoord);
+				if (canPlace)
                 {
+					// 鼠标产生了偏移
                     if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
                     {
-                        EditorLoadModule.DisplayModule(mouseModule, worldStartX, worldStartY);
+						// 清除上一帧的绘制
+						EditorLoadModule.ClearLastDisplay();
+						EditorLoadModule.DisplayModuleCenter(mouseModule, mouseCoord);
                     }
-
+					// 鼠标点击
                     if (Input.GetMouseButtonDown(0))
                     {
-                        EditorLoadModule.Load(mouseModule, worldStartX, worldStartY);
+						// 清除之前的最后一帧
+						EditorLoadModule.ClearLastDisplay();
+						EditorLoadModule.LoadModuleCenter(mouseModule, mouseCoord);
                     }
-                }
-                else
-                {
-                    EditorLoadModule.ClearDisplayModule();
-                }
+				}
             }
         }
     }
@@ -981,28 +984,36 @@ public class EditorController : MonoBehaviour
     }
 
     /// <summary>
-    /// 获得鼠标所在网格坐标，如果不在网格中返回null
+    /// 获得鼠标所在网格坐标，如果不在网格中返回-1, -1
     /// </summary>
-    public int[] GetMouseCoord()
+    public Coord GetMouseCoord()
     {
         int x = (int)(MouseController.MouseWorldPosition().x / gridSize);
         int y = (int)(MouseController.MouseWorldPosition().y / gridSize);
 
         if (IsLegalCoord(x, y))
         {
-            return new int[2] { x, y };
+            return new Coord(x, y);
         }
         else
         {
-            return null;
-        }
+			return new Coord(-1, -1);
+		}
     }
+
+	/// <summary>
+	/// 坐标减法
+	/// </summary>
+	public static Coord Minus(Coord a, Coord b)
+	{
+		return new Coord(a.Item1 - b.Item1, a.Item2 - b.Item2);
+	}
 
     void MyDebug()
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            Debug.Log(GetMouseCoord()[0] + " " + GetMouseCoord()[1]);
+            Debug.Log(GetMouseCoord().Item1 + " " + GetMouseCoord().Item2);
         }
     }
 }
