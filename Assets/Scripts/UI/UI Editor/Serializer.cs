@@ -211,6 +211,11 @@ public class XMLModule
 		InitGrid();
 	}
 
+	public int[] GetCenter()
+	{
+		return new int[] { xNum/2, yNum/2};
+	}
+
 	// 用List初始化Grid
 	private void InitGrid()
 	{

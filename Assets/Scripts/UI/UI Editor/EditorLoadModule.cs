@@ -71,7 +71,7 @@ public class EditorLoadModule : MonoBehaviour
 					GameObject clone = CorpseFactory.CreateTransparentGraphicClone(unit.gameObject);
 					Destroy(unit.gameObject);
 					// 保留一会删除重绘制
-					Destroy(clone, 4f);
+					Destroy(clone, 0.2f);
 				}
 			}
 		}
