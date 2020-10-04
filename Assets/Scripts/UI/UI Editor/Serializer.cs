@@ -9,6 +9,9 @@ using System.Xml.Serialization;
 using UnityEngine;
 using static Controller;
 
+// 坐标
+using Coord = System.Tuple<int, int>;
+
 /// <summary>
 /// 辅助save和load的工具类
 /// </summary>
@@ -45,22 +48,8 @@ static class Serializer
 	/// <summary>
 	/// 根据参数构造Module并序列化
 	/// </summary>
-	public static void SerializeModule(
-		EditorController editorController, string path)
+	public static void SerializeModule(XMLModule module, string path)
 	{
-
-		List<XMLUnit> xmlUnits = new List<XMLUnit>();
-		// 添加所有Grid的非空元素
-		foreach (Unit unit in editorController.Grid)
-		{
-			if(unit != null)
-			{
-				XMLUnit xmlUnit = Unit2XML(unit);
-				xmlUnits.Add(xmlUnit);
-			}
-		}
-		XMLModule module = new XMLModule(editorController.XNum, editorController.YNum, xmlUnits);
-
 		Serialize(module, path);
 	}
 
@@ -86,37 +75,10 @@ static class Serializer
 		serializer.Serialize(writer.BaseStream, obj);
 		writer.Close();
 	}
-
-	// 将dimentional grid转换成jagged array
-	//private static XMLUnit[][] ToXMLUnitGrid(Unit[,] Grid)
-	//{
-	//	// 初始化
-	//	XMLUnit[][] xmlGrid = new XMLUnit[Grid.GetLength(0)][];
-	//	for (int i = 0; i < Grid.GetLength(1); i++)
-	//	{
-	//		xmlGrid[i] = new XMLUnit[Grid.GetLength(1)];
-	//	}
-	//	// 转换
-	//	for (int i = 0; i < Grid.GetLength(0); i++)
-	//	{
-	//		for (int j = 0; j < Grid.GetLength(1); j++)
-	//		{
-	//			if(Grid[i, j] != null)
-	//			{
-	//				xmlGrid[i][j] = Unit2XML(Grid[i, j]);
-	//			}
-	//			else
-	//			{
-	//				xmlGrid[i][j] = null;
-	//			}
-				
-	//		}
-	//	}
-	//	return xmlGrid;
-	//}
-
-	private static XMLBackground Background2XML(Background background)
+	
+	public static XMLBackground Background2XML(Background background)
 	{
+		Debug.Assert(background != null);
 		string name = background.gameObject.name;
 		Vector3 position = background.transform.position;
 		Vector3 localScale = background.transform.localScale;
@@ -126,8 +88,9 @@ static class Serializer
 	/// <summary>
 	/// 将Unit映射成XMLUnit, unit不能为Null
 	/// </summary>
-	private static XMLUnit Unit2XML(Unit unit)
+	public static XMLUnit Unit2XML(Unit unit)
 	{
+		Debug.Assert(unit != null);
 		String name = unit.gameObject.name;
 		int player = (int)unit.player;
 		int x = unit.gridX;
@@ -140,8 +103,9 @@ static class Serializer
 	/// <summary>
 	/// 将EditorController映射成XMLMap
 	/// </summary>
-	private static XMLMap EditorController2XML(EditorController editorController)
+	public static XMLMap EditorController2XML(EditorController editorController)
 	{
+		Debug.Assert(editorController != null);
 		int xNum = editorController.XNum;
 		int yNUm = editorController.YNum;
 		int money = editorController.PlayerMoneyOrigin;
@@ -211,9 +175,9 @@ public class XMLModule
 		InitGrid();
 	}
 
-	public Vector2 GetCenter()
+	public Coord GetCenter()
     {
-		return new Vector2(xNum / 2, yNum / 2);
+		return new Coord(xNum / 2, yNum / 2);
     }
 
 	// 用List初始化Grid

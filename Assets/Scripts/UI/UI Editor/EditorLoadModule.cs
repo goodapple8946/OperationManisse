@@ -3,31 +3,37 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-
 using static Controller;
+
+// 类型定义
+using Coord = System.Tuple<int, int>;
 
 public class EditorLoadModule : MonoBehaviour
 {
-	private static List<GameObject> clonesLast = new List<GameObject>();
+	private static List<GameObject> lastClones = new List<GameObject>();
 
 	private void Awake()
 	{
 		Button button = GetComponent<Button>();
 		Toggle toggle = GetComponent<Toggle>();
+
+		// 如果是下面的Button
 		if (button != null)
 		{
 			button.onClick.AddListener(LoadModuleFromFS);
 		}
+
+		// 如果是上面的Toggle
 		if (toggle != null)
-        {
+		{
 			toggle.onValueChanged.AddListener(isOn =>
 			{
 				if (isOn)
-                {
+				{
 					LoadModuleFromFS();
 				}
 			});
-        }
+		}
 	}
 
 	/// <summary>
@@ -43,8 +49,7 @@ public class EditorLoadModule : MonoBehaviour
 			// 玩家选择了文件,则加载游戏
 			if (path != "")
 			{
-				XMLModule module = Serializer.Deserialized<XMLModule>(path);
-
+				XMLModule module = Serializer.Deserialized<XMLModule>(path);		
 				// EditorController进入Module模式，并且设置Module
 				editorController.MouseModule = module;
 			}
@@ -56,20 +61,58 @@ public class EditorLoadModule : MonoBehaviour
 		}
 	}
 
-	public static void ClearDisplayModule()
-    {
-		foreach (GameObject clone in clonesLast)
+	// 清除上一次绘制的物体
+	public static void ClearLastDisplay()
+	{
+		foreach (GameObject clone in lastClones)
 		{
 			Destroy(clone);
 		}
-		clonesLast.Clear();
+		lastClones.Clear();
 	}
 
-	// 从(worldStartX, worldStartY)开始展示module 
-	public static void DisplayModule(XMLModule module, int worldStartX, int worldStartY)
+	/// <summary>
+	// 检测是否能把中心放入,true:可以
+	/// </summary>
+	public static bool CanPlaceModuleCenter(XMLModule module, Coord worldCoord)
 	{
-		ClearDisplayModule();
+		Coord center = module.GetCenter();
+		Coord worldStart = EditorController.Minus(worldCoord, center);
 
+		return CanPlace(module, worldStart);
+	}
+	
+	/// <summary>
+	///	将module的中心点放置在绘制(worldX, worldY), 如果coord不合法报错
+	/// </summary>
+	public static void DisplayModuleCenter(XMLModule module, Coord worldCoord)
+	{
+		Debug.Assert(CanPlaceModuleCenter(module, worldCoord), "Error worldCoord");
+
+		Coord center = module.GetCenter();
+		Coord worldStart = EditorController.Minus(worldCoord, center);
+		
+		DisplayModule(module, worldStart);
+	}
+
+	/// <summary>
+	/// 加载module对象使其左下角在世界坐标(x,y)
+	///	将模组中每一个物品放到世界网格对应格中
+	/// 如果coord不合法报错
+	/// </summary>
+	public static void LoadModuleCenter(XMLModule module, Coord worldCoord)
+	{
+		Debug.Assert(CanPlaceModuleCenter(module, worldCoord), "Error worldCoord");
+
+		Coord center = module.GetCenter();
+		Coord worldStart = EditorController.Minus(worldCoord, center);
+
+		Load(module, worldStart);
+	}
+
+	// 将module的左下角放置在绘制(worldStartX, worldStartY)
+	private static void DisplayModule(XMLModule module, Coord worldCoord)
+	{
 		// 加载单位信息
 		for (int moduleX = 0; moduleX < module.xNum; moduleX++)
 		{
@@ -78,51 +121,25 @@ public class EditorLoadModule : MonoBehaviour
 				XMLUnit xmlUnit = module.Grid[moduleX, moduleY];
 				if (xmlUnit != null)
 				{
-					int worldX = worldStartX + moduleX;
-					int worldY = worldStartY + moduleY;
+					int worldX = worldCoord.Item1 + moduleX;
+					int worldY = worldCoord.Item2 + moduleY;
 					// 修改xmlUnit的坐标
 					xmlUnit.x = worldX;
 					xmlUnit.y = worldY;
 
 					Unit unit = EditorLoad.XML2Unit(xmlUnit);
 					GameObject clone = CorpseFactory.CreateTransparentGraphicClone(unit.gameObject);
-					clonesLast.Add(clone);
+
+					lastClones.Add(clone);
 					Destroy(unit.gameObject);
 				}
 			}
 		}
 	}
 
-	//// 从(worldStartX, worldStartY)开始展示module 
-	//public static void DisplayModule(XMLModule module, int worldStartX, int worldStartY)
-	//{
-	//	// 加载单位信息
-	//	for (int moduleX = 0; moduleX < module.xNum; moduleX++)
-	//	{
-	//		for (int moduleY = 0; moduleY < module.yNum; moduleY++)
-	//		{
-	//			XMLUnit xmlUnit = module.Grid[moduleX, moduleY];
-	//			if(xmlUnit != null)
-	//			{
-	//				int worldX = worldStartX + moduleX;
-	//				int worldY = worldStartY + moduleY;
-	//				// 修改xmlUnit的坐标
-	//				xmlUnit.x = worldX;
-	//				xmlUnit.y = worldY;
-
-	//				Unit unit = EditorLoad.XML2Unit(xmlUnit);
-	//				GameObject clone = CorpseFactory.CreateTransparentGraphicClone(unit.gameObject);
-	//				Destroy(unit.gameObject);
-	//				// 保留一会删除重绘制
-	//				Destroy(clone, 0.05f);
-	//			}
-	//		}
-	//	}
-	//}
-
 	// 加载module对象使其左下角在世界坐标(x,y)
 	// 将模组中每一个物品放到世界网格对应格中
-	public static void Load(XMLModule module, int worldStartX, int worldStartY)
+	private static void Load(XMLModule module, Coord worldCoord)
 	{
 		// 加载单位信息
 		for (int moduleX = 0; moduleX < module.xNum; moduleX++)
@@ -133,8 +150,8 @@ public class EditorLoadModule : MonoBehaviour
 				XMLUnit xmlUnit = module.Grid[moduleX, moduleY];
 				if (xmlUnit != null)
 				{
-					int worldX = worldStartX + moduleX;
-					int worldY = worldStartY + moduleY;
+					int worldX = worldCoord.Item1 + moduleX;
+					int worldY = worldCoord.Item2 + moduleY;
 					// 修改xmlUnit的坐标到Editor坐标网并加载
 					xmlUnit.x = worldX;
 					xmlUnit.y = worldY;
@@ -145,15 +162,15 @@ public class EditorLoadModule : MonoBehaviour
 	}
 
 	// 检测是否能放入,true:可以
-	public static bool CanPlace(XMLModule module, int worldStartX, int worldStartY)
+	private static bool CanPlace(XMLModule module, Coord worldCoord)
 	{
 		// module内的相对坐标区域
 		for (int moduleX = 0; moduleX < module.xNum; moduleX++)
 		{
 			for (int moduleY = 0; moduleY < module.yNum; moduleY++)
 			{
-				int worldX = worldStartX + moduleX;
-				int worldY = worldStartY + moduleY;
+				int worldX = worldCoord.Item1 + moduleX;
+				int worldY = worldCoord.Item2 + moduleY;
 
 				// 模组中的某格存在物品 && 世界坐标对应格超出或存在物品
 				bool mappingGridInvalid = (!editorController.IsLegalCoord(worldX, worldY)
