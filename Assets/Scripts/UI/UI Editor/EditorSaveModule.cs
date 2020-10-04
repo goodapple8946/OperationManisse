@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Windows;
 
 using static Controller;
 
@@ -33,19 +33,17 @@ public class EditorSaveModule : MonoBehaviour
 		// 文件系统存在重名文件
 		if (File.Exists(path))
 		{
-			bool ok = EditorUtility.DisplayDialog("",
-				"Are you sure you want to replace existing file?", "ok", "cancel");
-
+			bool ok = ResourceController.DisplayDialog("", "Are you sure you want to replace existing file?", "ok", "cancel");
 			if (ok)
 			{
 				SaveFile(path);
-				EditorUtility.DisplayDialog("", "Successfully Saved", "ok");
+				ResourceController.DisplayDialog("", "Successfully Saved", "ok");
 			}
 		}
 		else
 		{
 			SaveFile(path);
-			EditorUtility.DisplayDialog("", "Successfully Saved", "ok");
+			ResourceController.DisplayDialog("", "Successfully Saved", "ok");
 		}
 		// 更新输入区文本
 		inputField.SetTextWithoutNotify("Save As Module");

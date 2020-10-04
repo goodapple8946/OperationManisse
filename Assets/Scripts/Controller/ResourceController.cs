@@ -1,9 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Windows;
 
 public class ResourceController : MonoBehaviour
 {
@@ -54,18 +54,56 @@ public class ResourceController : MonoBehaviour
 		Array.ForEach(ballObjects, obj => gameObjDictionary.Add(obj.name, obj));
 		Array.ForEach(backgroundObjects, obj => gameObjDictionary.Add(obj.name, obj));
 
+		ModulePath = Application.persistentDataPath + "/Modules/";
+		CheckAndCreatePath(ModulePath);
+		GamePath = Application.persistentDataPath + "/Games/";
+		CheckAndCreatePath(GamePath);
+	}
+	
+	/// <summary>
+	/// 如果不存在文件路径，就创建 
+	/// </summary>
+	private void CheckAndCreatePath(string path)
+	{
 		// 初始化路径
-		ModulePath = Application.dataPath + "/Modules/";
-		GamePath = Application.dataPath + "/Games/";
-		// 如果不存在文件夹，就创建
-		if (!Directory.Exists(ModulePath))
+		if (!Directory.Exists(path))
 		{
-			Directory.CreateDirectory(ModulePath);
+			Directory.CreateDirectory(path);
 		}
-		// 如果不存在文件夹，就创建
-		if (!Directory.Exists(GamePath))
-		{
-			Directory.CreateDirectory(GamePath);
-		}
+	}
+
+	// -------------- 文件弹窗 -------------//
+
+	/// <summary>
+	/// 返回选择的文件路径，没有选择返回""
+	/// </summary>
+	public static string OpenFilePanel(string title, string directory, string extension)
+	{
+		// SetDefaultFilter设置展示文件后缀名例如.xml
+		//FileBrowser.SetDefaultFilter("."+ extension);
+
+		// 获取onSuccess的参数filePath, onSuccess作为delegate用参数返回值
+		// FileBrowser.ShowLoadDialog(null, null, false, false, directory, title, "Open");
+
+		//return FileBrowser.Result[0];
+
+		return UnityEditor.EditorUtility.OpenFilePanel(title, directory, extension); 
+	}
+
+	/// <summary>
+	/// 展示一个只有ok的dialog
+	/// </summary>
+	public static bool DisplayDialog(string title, string message, string ok)
+	{
+		return UnityEditor.EditorUtility.DisplayDialog(title, message, ok);
+	}
+
+	/// <summary>
+	/// 展示一个有ok和cancel的dialog,true:点击ok
+	/// </summary>
+	public static bool DisplayDialog(string title, string message, string ok, string cancel)
+	{
+		
+		return UnityEditor.EditorUtility.DisplayDialog(title, message, ok, cancel);
 	}
 }
