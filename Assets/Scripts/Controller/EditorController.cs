@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
@@ -82,7 +83,10 @@ public class EditorController : MonoBehaviour
 	// 显示HP
 	[HideInInspector] private bool isShowingHP;
 
-	[SerializeField] private GameObject square;
+    // 当前选中的文件
+    [SerializeField] private string fileSelected = "";
+
+	[SerializeField] public GameObject square;
 
     #region Property Function
     public int XNum
@@ -189,6 +193,14 @@ public class EditorController : MonoBehaviour
         {
             isShowingHP = value;
             editorContent.UpdateUIShowing();
+        }
+    }
+    public string FileSelected
+    {
+        get => fileSelected;
+        set
+        {
+            fileSelected = value;
         }
     }
     #endregion
@@ -996,6 +1008,12 @@ public class EditorController : MonoBehaviour
         {
             return null;
         }
+    }
+
+    // 更新显示的文件
+    public void UpdateFiles()
+    {
+        GameObject.Find("Files").GetComponent<EditorFiles>().UpdateFiles();
     }
 
     void MyDebug()

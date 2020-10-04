@@ -10,14 +10,20 @@ using static Controller;
 
 public class EditorSave : MonoBehaviour
 {
-	InputField inputField;
+	Button button;
 
 	public void Awake()
 	{
-		inputField = GetComponent<InputField>();
-		inputField.onEndEdit.AddListener(filename => SaveFile2FS(filename));
-		// 初始文本
-		inputField.SetTextWithoutNotify("Save");
+		button = GetComponent<Button>();
+		button.onClick.AddListener(() =>
+		{
+			if (editorController.FileSelected != "")
+			{
+				SaveFile2FS(editorController.FileSelected);
+				editorController.UpdateFiles();
+				editorController.FileSelected = "";
+			}
+		});
 	}
 
 	/// <summary>
@@ -41,8 +47,6 @@ public class EditorSave : MonoBehaviour
 			SaveFile(path);
 			ResourceController.DisplayDialog("", "Successfully Saved", "ok");
 		}
-		// 更新输入区文本
-		inputField.SetTextWithoutNotify("Save");
 	}
 
 	/// <summary>
