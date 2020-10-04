@@ -22,8 +22,9 @@ public class EditorLoadModule : MonoBehaviour
 		try
 		{
 			// 根据文件生成Game
-			string path = ResourceController.OpenFilePanel(
+			string path = EditorUtility.OpenFilePanel(
 				"Choose a module", ResourceController.ModulePath, "xml");
+
 			// 玩家选择了文件,则加载游戏
 			if (path != "")
 			{
@@ -39,14 +40,15 @@ public class EditorLoadModule : MonoBehaviour
 				}
 				else
 				{
-					ResourceController.DisplayDialog("", "Cannot Put Moudle in x:" + worldStartX + " y:" +worldStartY + "!", "ok");
+					EditorUtility.DisplayDialog(
+						"", "Cannot Put Moudle in x:" + worldStartX + " y:" +worldStartY + "!", "ok");
 				}
 			}
 		}
 		// xml文件错误,显示错误弹窗
 		catch (System.Exception e)
 		{
-			ResourceController.DisplayDialog("", "Module File Error!", "ok");
+			EditorUtility.DisplayDialog("", "Module File Error!", "ok");
 		}
 	}
 
