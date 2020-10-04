@@ -13,7 +13,21 @@ public class EditorLoadModule : MonoBehaviour
 	private void Awake()
 	{
 		Button button = GetComponent<Button>();
-		button.onClick.AddListener(LoadModuleFromFS);
+		Toggle toggle = GetComponent<Toggle>();
+		if (button != null)
+		{
+			button.onClick.AddListener(LoadModuleFromFS);
+		}
+		if (toggle != null)
+        {
+			toggle.onValueChanged.AddListener(isOn =>
+			{
+				if (isOn)
+                {
+					LoadModuleFromFS();
+				}
+			});
+        }
 	}
 
 	/// <summary>

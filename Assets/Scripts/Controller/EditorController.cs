@@ -728,6 +728,7 @@ public class EditorController : MonoBehaviour
         {
             Destroy(mouseObject.gameObject);
         }
+        mouseModule = null;
     }
     // 清除Mouse Object Last
     public void ClearMouseObjectLast()
@@ -861,7 +862,7 @@ public class EditorController : MonoBehaviour
         else if (editorMode == EditorMode.Module)
         {
             int[] mouseCoord = GetMouseCoord();
-            if (mouseCoord != null)
+            if (mouseCoord != null && mouseModule != null)
             {
                 Vector2 center = mouseModule.GetCenter();
                 int worldStartX = mouseCoord[0] - (int)center.x;
