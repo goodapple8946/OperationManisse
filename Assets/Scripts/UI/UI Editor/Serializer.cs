@@ -211,10 +211,10 @@ public class XMLModule
 		InitGrid();
 	}
 
-	public int[] GetCenter()
-	{
-		return new int[] { xNum/2, yNum/2};
-	}
+	public Vector2 GetCenter()
+    {
+		return new Vector2(xNum / 2, yNum / 2);
+    }
 
 	// 用List初始化Grid
 	private void InitGrid()

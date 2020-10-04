@@ -63,6 +63,9 @@ public class EditorController : MonoBehaviour
     // 当前鼠标持有的Unit 或 上一次鼠标持有的Unit
     [HideInInspector] public ClickableObject mouseObjectLast;
 
+    // 当前鼠标持有的Module
+    [HideInInspector] private XMLModule mouseModule;
+
     // 允许接收按住鼠标左键或右键
     // 只有EditorMode是Unit模式下，isClickHold才能为true
     [HideInInspector] private bool isClickHold;
@@ -135,6 +138,14 @@ public class EditorController : MonoBehaviour
             ClearMouseObject();
         }
     }
+    public XMLModule MouseModule
+    {
+        set
+        {
+            mouseModule = value;
+            EditorMode = EditorMode.Module;
+        }
+    }
     public bool IsClickHold
     {
         get => isClickHold;
@@ -144,7 +155,7 @@ public class EditorController : MonoBehaviour
             editorContent.UpdateUIShowing();
         }
     }
-	public float LightIntensity
+    public float LightIntensity
     {
         get => lightIntensity;
         set
@@ -812,33 +823,71 @@ public class EditorController : MonoBehaviour
     // 指令
     void Order()
     {
-        if (mouseObject != null)
+        if (editorMode == EditorMode.Unit)
         {
-            // 鼠标物体跟随鼠标
-            mouseObject.transform.position = MouseController.MouseWorldPosition();
-        }
-
-        // 单位指令
-        {
-            Unit unit =
-                mouseObject is Unit ? mouseObject as Unit :
-                mouseObjectLast is Unit ? mouseObjectLast as Unit :
-                null;
-
-            if (unit == null)
+            if (mouseObject != null)
             {
-                return;
+                // 鼠标物体跟随鼠标
+                mouseObject.transform.position = MouseController.MouseWorldPosition();
             }
 
-            // R键旋转
-            if (Input.GetKeyDown(KeyCode.R))
+            // 单位指令
             {
-                unit.Rotate();
+                Unit unit =
+                    mouseObject is Unit ? mouseObject as Unit :
+                    mouseObjectLast is Unit ? mouseObjectLast as Unit :
+                    null;
+
+                if (unit == null)
+                {
+                    return;
+                }
+
+                // R键旋转
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    unit.Rotate();
+                }
+            }
+        }
+        else if (editorMode == EditorMode.Background)
+        {
+            if (mouseObject != null)
+            {
+                // 鼠标物体跟随鼠标
+                mouseObject.transform.position = MouseController.MouseWorldPosition();
+            }
+        }
+        else if (editorMode == EditorMode.Module)
+        {
+            int[] mouseCoord = GetMouseCoord();
+            if (mouseCoord != null)
+            {
+                Vector2 center = mouseModule.GetCenter();
+                int worldStartX = mouseCoord[0] - (int)center.x;
+                int worldStartY = mouseCoord[1] - (int)center.y;
+                bool canPlace = EditorLoadModule.CanPlace(mouseModule, worldStartX, worldStartY);
+
+                if (canPlace)
+                {
+                    if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
+                    {
+                        EditorLoadModule.DisplayModule(mouseModule, worldStartX, worldStartY);
+                    }
+
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        EditorLoadModule.Load(mouseModule, worldStartX, worldStartY);
+                    }
+                }
+                else
+                {
+                    EditorLoadModule.ClearDisplayModule();
+                }
             }
         }
     }
     
-
 	/// <summary>
 	/// 将unit放入(x,y), 设置位置。添加到gameController管理
 	/// </summary>
@@ -930,11 +979,29 @@ public class EditorController : MonoBehaviour
         backgrounds.Clear();
     }
 
+    /// <summary>
+    /// 获得鼠标所在网格坐标，如果不在网格中返回null
+    /// </summary>
+    public int[] GetMouseCoord()
+    {
+        int x = (int)(MouseController.MouseWorldPosition().x / gridSize);
+        int y = (int)(MouseController.MouseWorldPosition().y / gridSize);
+
+        if (IsLegalCoord(x, y))
+        {
+            return new int[2] { x, y };
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     void MyDebug()
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            Debug.Log(backgrounds.Count);
+            Debug.Log(GetMouseCoord()[0] + " " + GetMouseCoord()[1]);
         }
     }
 }
