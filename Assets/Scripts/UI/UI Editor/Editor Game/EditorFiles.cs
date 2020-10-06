@@ -42,7 +42,12 @@ public class EditorFiles : MonoBehaviour
         GetComponent<RectTransform>().sizeDelta = new Vector2(widthRow, height);
 
         // 更新父物体（File）高度
-        transform.parent.GetComponentInParent<RectTransform>().sizeDelta = new Vector2(0, height + 150);
+        Transform fileTf = transform.parent;
+        fileTf.GetComponentInParent<RectTransform>().sizeDelta = new Vector2(0, height + 150);
+
+        // 更新爷物体（Editor Game）高度
+        Transform editorGameTf = fileTf.parent;
+        editorGameTf.GetComponentInParent<RectTransform>().sizeDelta = new Vector2(0, height + 650);
 
         // 更新Content高度
         GetComponentInParent<EditorContent>().UpdateHeight();
