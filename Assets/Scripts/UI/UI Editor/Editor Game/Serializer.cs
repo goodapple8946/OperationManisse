@@ -20,28 +20,8 @@ static class Serializer
 	/// <summary>
 	/// 根据参数构造Game并序列化
 	/// </summary>
-	public static void SerializeGame(
-		EditorController editorController, List<Background> backgrounds, 
-		List<Unit> units, List<string> goodsVisable, string path)
+	public static void SerializeGame(XMLGame game, string path)
 	{
-		XMLMap map = EditorController2XML(editorController);
-
-		
-		List<XMLBackground> xmlBackgrounds = new List<XMLBackground>();
-		foreach (Background background in backgrounds)
-		{
-			XMLBackground xmlBackground = Background2XML(background);
-			xmlBackgrounds.Add(xmlBackground);
-		}
-
-		List<XMLUnit> xmlUnits = new List<XMLUnit>();
-		foreach (Unit unit in units)
-		{
-			XMLUnit xmlUnit = Unit2XML(unit);
-			xmlUnits.Add(xmlUnit);
-		}
-
-		XMLGame game = new XMLGame(map, xmlBackgrounds, xmlUnits, goodsVisable);
 		Serialize(game, path);
 	}
 

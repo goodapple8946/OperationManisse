@@ -124,23 +124,11 @@ public class ResourceController : MonoBehaviour
 	}
 
 	/// <summary>
-	/// 获取某路径下所有文件名称字符串数组，参数为"Game"或"Module"
+	/// 获取某路径下所有XML文件
+	/// 返回名称数组
 	/// </summary>
-	public static string[] GetFilesInDirectory(string type)
+	public static string[] GetFilesInDirectory(string path)
     {
-		string path;
-		if (type == "Game")
-        {
-			path = GamePath;
-        }
-		else if (type == "Module")
-        {
-			path = ModulePath;
-        }
-        else
-        {
-			throw new Exception("Unknown file type to load.");
-		}
 		string[] files = Directory.GetFiles(path);
 		List<string> arr = new List<string>();
 		foreach (string file in files) 

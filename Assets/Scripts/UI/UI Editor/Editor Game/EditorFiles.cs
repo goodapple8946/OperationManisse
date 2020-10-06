@@ -16,7 +16,7 @@ public class EditorFiles : MonoBehaviour
     // 更新展示的游戏文件
     public void UpdateFiles()
     {
-        string[] files = ResourceController.GetFilesInDirectory("Game");
+        string[] files = ResourceController.GetFilesInDirectory(ResourceController.GamePath);
 
         // 清除当前显示的文件
         for (int i = 0; i < transform.childCount; i++)

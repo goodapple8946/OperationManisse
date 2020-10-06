@@ -16,7 +16,7 @@ public class EditorModules : MonoBehaviour
     // 更新展示的游戏文件
     public void UpdateModules()
     {
-        string[] modules = ResourceController.GetFilesInDirectory("Module");
+        string[] modules = ResourceController.GetFilesInDirectory(ResourceController.ModulePath);
 
         // 清除当前显示的文件
         for (int i = 0; i < transform.childCount; i++)

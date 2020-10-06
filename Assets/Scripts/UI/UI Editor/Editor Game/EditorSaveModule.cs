@@ -80,111 +80,110 @@ public class EditorSaveModule : MonoBehaviour
 		}
 	}
 
-    // 除去空行，对单位坐标变换后保存
-    public static XMLModule SerializeModule(EditorController editorController)
-    {
-        int left = editorController.GetGridCoordNonEmpty("Left");
-        int right = editorController.GetGridCoordNonEmpty("Right");
-        int bottom = editorController.GetGridCoordNonEmpty("Bottom");
-        int top = editorController.GetGridCoordNonEmpty("Top");
-        int width = Mathf.Max(right - left + 1, 0);
-        int height = Mathf.Max(top - bottom + 1, 0);
+	// 除去空行，对单位坐标变换后保存
+	public static XMLModule SerializeModule(EditorController editorController)
+	{
+		Coord lbCoord = GetLeftBottom();
+		Coord rtCoord = GetRightTop();
+		List<XMLUnit> xmlUnits = new List<XMLUnit>();
+		for (int i = lbCoord.Item1; i < rtCoord.Item1; i++)
+		{
+			for (int j = lbCoord.Item2; j < rtCoord.Item2; j++)
+			{
+				// 添加所有Grid的非空元素
+				Unit unit = editorController.Grid[i, j];
+				if (unit != null)
+				{
+					XMLUnit xmlUnit = Serializer.Unit2XML(unit);
+					// 转换成新的local坐标
+					xmlUnit.x -= lbCoord.Item1;
+					xmlUnit.y -= lbCoord.Item2;
+					xmlUnits.Add(xmlUnit);
+				}
+			}
+		}
 
-        List<XMLUnit> xmlUnits = new List<XMLUnit>();
-        foreach(Unit unit in editorController.Grid)
-        {
-            if (unit != null)
-            {
-                XMLUnit xmlUnit = Serializer.Unit2XML(unit);
-                // 转换成新的local坐标
-                xmlUnit.x -= left;
-                xmlUnit.y -= bottom;
-                xmlUnits.Add(xmlUnit);
-            }
-        }
-        XMLModule module = new XMLModule(width, height, xmlUnits);
-        return module;
-    }
+		XMLModule module = new XMLModule(
+			rtCoord.Item1 - lbCoord.Item1, rtCoord.Item2 - lbCoord.Item2, xmlUnits);
+		return module;
+	}
 
-    //// 除去空行，对单位坐标变换后保存
-    //public static XMLModule SerializeModule(EditorController editorController)
-    //{
-    //	Coord lbCoord = GetLeftBottom();
-    //	Coord rtCoord = GetRightTop();
+	//--------- 对EditController的操作 ---------//
+	// 闭区间
+	// 返回[0,0] -> [xnum, ynum]之间
+	private static Coord GetLeftBottom()
+	{
+		int x;
+		int y;
+		for (x = 0; (x < editorController.XNum) && (ColumnEmpty(x)); x++) { }
+		for (y = 0; (y < editorController.YNum) && (RowEmpty(y)); y++) { }
+		return new Coord(x, y);
+	}
 
-    //	List<XMLUnit> xmlUnits = new List<XMLUnit>();
-    //	for(int i = lbCoord.Item1; i < rtCoord.Item1; i++)
-    //	{
-    //		for(int j = lbCoord.Item2; j < rtCoord.Item2; j++)
-    //		{
-    //			// 添加所有Grid的非空元素
-    //			Unit unit = editorController.Grid[i, j];
-    //			if (unit != null)
-    //			{
-    //				XMLUnit xmlUnit = Serializer.Unit2XML(unit);
-    //				// 转换成新的local坐标
-    //				xmlUnit.x -= lbCoord.Item1;
-    //				xmlUnit.y -= lbCoord.Item2;
-    //				xmlUnits.Add(xmlUnit);
-    //			}
-    //		}
-    //	}
+	// 网格右上角的格子，不在网格上
+	// 开区间[left,bottom]到[top,right]为左闭右开区间
+	// 返回[left,bottom] -> [xnum, ynum]之间
+	private static Coord GetRightTop()
+	{
+		Coord lbCoord = GetLeftBottom();
+		int x;
+		int y;
+		for (x = editorController.XNum; (x > lbCoord.Item1) && (ColumnEmpty(x - 1)); x--) { }
+		for (y = editorController.YNum; (y > lbCoord.Item2) && (RowEmpty(y - 1)); y--) { }
+		return new Coord(x, y);
+	}
 
-    //	XMLModule module = new XMLModule(
-    //		rtCoord.Item1 - lbCoord.Item1, rtCoord.Item2 - lbCoord.Item2, xmlUnits);
-    //	return module;
-    //}
+	private static bool RowEmpty(int fixedY)
+	{
+		for (int i = 0; i < editorController.XNum; i++)
+		{
+			Unit unit = editorController.Grid[i, fixedY];
+			if (unit != null)
+			{
+				return false;
+			}
+		}
+		return true;
+		
+	}
 
-    ////--------- 对EditController的操作 ---------//
-    //// 闭区间
-    //// 返回[0,0] -> [xnum, ynum]之间
-    //private static Coord GetLeftBottom()
-    //{
-    //	int x;
-    //	int y;
-    //	for (x = 0; (x < editorController.XNum) && (ColumnEmpty(x)); x++) { }
-    //	for (y = 0; (y < editorController.YNum) && (ColumnEmpty(y)); y++) { }
-    //	return new Coord(x, y);
-    //}
+	private static bool ColumnEmpty(int fixedX)
+	{
+		for (int j = 0; j < editorController.YNum; j++)
+		{
+			Unit unit = editorController.Grid[fixedX, j];
+			if (unit != null)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 
-    //// 网格右上角的格子，不在网格上
-    //// 开区间[left,bottom]到[top,right]为左闭右开区间
-    //// 返回[left,bottom] -> [xnum, ynum]之间
-    //private static Coord GetRightTop()
-    //{
-    //	Coord lbCoord = GetLeftBottom();
-    //	int x;
-    //	int y;
-    //	for (x = editorController.XNum; (x > lbCoord.Item1 ) && (ColumnEmpty(x-1)); x--) { }
-    //	for (y = editorController.YNum; (y > lbCoord.Item2) && (ColumnEmpty(y-1)); y--) { }
-    //	return new Coord(x, y);
-    //}
+	// namespace::wzf
+	// 除去空行，对单位坐标变换后保存
+	//public static XMLModule SerializeModule(EditorController editorController)
+	//{
+	//    int left = editorController.GetGridCoordNonEmpty("Left");
+	//    int right = editorController.GetGridCoordNonEmpty("Right");
+	//    int bottom = editorController.GetGridCoordNonEmpty("Bottom");
+	//    int top = editorController.GetGridCoordNonEmpty("Top");
+	//    int width = Mathf.Max(right - left + 1, 0);
+	//    int height = Mathf.Max(top - bottom + 1, 0);
 
-    //private static bool RowEmpty(int row)
-    //{
-    //	int i = row;
-    //	for (int j = 0; j < editorController.YNum; j++)
-    //	{
-    //		Unit unit = editorController.Grid[i, j];
-    //		if (unit != null)
-    //		{
-    //			return false;
-    //		}
-    //	}
-    //	return true;
-    //}
-
-    //private static bool ColumnEmpty(int column)
-    //{
-    //	int j = column;
-    //	for (int i = 0; i < editorController.XNum; i++)
-    //	{
-    //		Unit unit = editorController.Grid[i, j];
-    //		if (unit != null)
-    //		{
-    //			return false;
-    //		}
-    //	}
-    //	return true;
-    //}
+	//    List<XMLUnit> xmlUnits = new List<XMLUnit>();
+	//    foreach(Unit unit in editorController.Grid)
+	//    {
+	//        if (unit != null)
+	//        {
+	//            XMLUnit xmlUnit = Serializer.Unit2XML(unit);
+	//            // 转换成新的local坐标
+	//            xmlUnit.x -= left;
+	//            xmlUnit.y -= bottom;
+	//            xmlUnits.Add(xmlUnit);
+	//        }
+	//    }
+	//    XMLModule module = new XMLModule(width, height, xmlUnits);
+	//    return module;
+	//}
 }
