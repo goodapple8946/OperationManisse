@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorSelectFile : MonoBehaviour
+public class EditorNewModule : MonoBehaviour
 {
     private Button button;
     private void Awake()
@@ -12,8 +12,7 @@ public class EditorSelectFile : MonoBehaviour
         button = GetComponent<Button>();
         button.onClick.AddListener(() =>
         {
-            string fileName = GetComponentInChildren<Text>().text;
-            editorController.FileSelected = fileName;
+            editorController.moduleSelected = (GetComponentInParent<EditorModules>().Count + 1).ToString();
         });
     }
 }

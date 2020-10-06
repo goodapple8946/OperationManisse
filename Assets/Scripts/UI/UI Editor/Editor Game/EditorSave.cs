@@ -7,7 +7,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-
 public class EditorSave : MonoBehaviour
 {
 	Button button;
@@ -17,11 +16,10 @@ public class EditorSave : MonoBehaviour
 		button = GetComponent<Button>();
 		button.onClick.AddListener(() =>
 		{
-			if (editorController.FileSelected != "")
+			if (editorController.fileSelected != "")
 			{
-				SaveFile2FS(editorController.FileSelected);
+				SaveFile2FS(editorController.fileSelected);
 				editorController.UpdateFiles();
-				editorController.FileSelected = "";
 			}
 		});
 	}

@@ -37,6 +37,9 @@ public class ResourceController : MonoBehaviour
     // 胜利时的音效
     public AudioClip audioVictory;
 
+	// 发生错误时的音效
+	public AudioClip audioError;
+
     // 静音图片
     public Sprite mute;
 
@@ -46,11 +49,17 @@ public class ResourceController : MonoBehaviour
     // 生命值Prefab
     public GameObject hpBarPrefab;
 
-	// 新建文件Prefab
+	// 新建文件（File）Prefab
 	public GameObject newFilePrefab;
 
-	// 文件Prefab
+	// 文件（File）Prefab
 	public GameObject filePrefab;
+
+	// 新建模块（Module）Prefab
+	public GameObject newModulePrefab;
+
+	// 模块（Module）Prefab
+	public GameObject modulePrefab;
 
 	protected void Awake()
 	{

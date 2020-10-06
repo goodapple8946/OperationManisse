@@ -17,7 +17,7 @@ public class UIMoney : MonoBehaviour
     void FixedUpdate()
     {
         int textMoney = int.Parse(text.text);
-        int playerMoney = editorController.playerMoney;
+        int playerMoney = editorController.PlayerMoney;
         int difference = Mathf.Abs(playerMoney - textMoney);
 
         // 每次变化值

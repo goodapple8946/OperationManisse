@@ -33,7 +33,7 @@ public static class CorpseFactory
 	{
 		GameObject clone = CreateGraphicFixedRigidClone(origin);
 		Remove<Rigidbody2D>(clone);
-		ChangeColor(clone, new Color(1, 1, 1, 0.3f));
+		ChangeColor(clone, new Color(1, 1, 1, 0.5f));
 		return clone;
 	}
 

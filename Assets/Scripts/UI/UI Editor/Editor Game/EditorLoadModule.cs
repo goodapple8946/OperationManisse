@@ -11,51 +11,39 @@ using Coord = System.Tuple<int, int>;
 public class EditorLoadModule : MonoBehaviour
 {
 	private static List<GameObject> lastClones = new List<GameObject>();
+	private Button button;
 
 	private void Awake()
 	{
-		Button button = GetComponent<Button>();
-		Toggle toggle = GetComponent<Toggle>();
-
-		// 如果是下面的Button
-		if (button != null)
+		button = GetComponent<Button>();
+		button.onClick.AddListener(() =>
 		{
-			button.onClick.AddListener(LoadModuleFromFS);
-		}
-
-		// 如果是上面的Toggle
-		if (toggle != null)
-		{
-			toggle.onValueChanged.AddListener(isOn =>
+			if (editorController.moduleSelected != "")
 			{
-				if (isOn)
-				{
-					LoadModuleFromFS();
-				}
-			});
-		}
+				string path = ResourceController.ModulePath + editorController.moduleSelected + ".xml";
+				LoadModuleFromFS(path);
+				editorController.moduleSelected = "";
+			}
+		});
 	}
 
 	/// <summary>
 	/// 从文件系统中加载保存的xml文件
 	/// </summary>
-	public static void LoadModuleFromFS()
+	public static void LoadModuleFromFS(string path)
 	{
 		try
 		{
-			// 根据文件生成Game
-			string path = ResourceController.OpenFilePanel(
-				"Choose a module", ResourceController.ModulePath, "xml");
 			// 玩家选择了文件,则加载游戏
 			if (path != "")
 			{
-				XMLModule module = Serializer.Deserialized<XMLModule>(path);		
+				XMLModule module = Serializer.Deserialized<XMLModule>(path);
 				// EditorController进入Module模式，并且设置Module
 				editorController.MouseModule = module;
 			}
 		}
 		// xml文件错误,显示错误弹窗
-		catch (System.Exception e)
+		catch
 		{
 			ResourceController.DisplayDialog("", "Module File Error!", "ok");
 		}

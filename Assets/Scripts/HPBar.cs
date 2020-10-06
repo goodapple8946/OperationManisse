@@ -44,7 +44,7 @@ public class HPBar : MonoBehaviour
         else
         {
             if ((unit.health != unit.healthMax || editorController.IsShowingHP) &&
-                unit != editorController.mouseObject as Unit)
+                unit != editorController.MouseObject as Unit)
             {
                 if (gameController.gamePhase == GamePhase.Editor || !init)
                 {

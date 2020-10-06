@@ -33,9 +33,13 @@ public class EditorFiles : MonoBehaviour
         }
         Instantiate(resourceController.newFilePrefab, transform);
 
+        float fileHeight = 70f;
+        int fileNumOfRow = 5;
+        float widthRow = 350f;
+
         // 调整显示区域高度
-        float height = (files.Length / 3 + 1) * 100;
-        GetComponent<RectTransform>().sizeDelta = new Vector2(350, height);
+        float height = (files.Length / fileNumOfRow + 1) * fileHeight;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(widthRow, height);
 
         // 更新父物体（File）高度
         transform.parent.GetComponentInParent<RectTransform>().sizeDelta = new Vector2(0, height + 150);
