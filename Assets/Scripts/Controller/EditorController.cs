@@ -1049,13 +1049,13 @@ public class EditorController : MonoBehaviour
     // 更新显示的文件
     public void UpdateFiles()
     {
-        GameObject.Find("Files").GetComponent<EditorFiles>().UpdateFiles();
+        GameObject.Find("Files Scroll View").GetComponentInChildren<EditorFiles>().UpdateFiles();
     }
 
     // 更新显示的模型
     public void UpdateModules()
     {
-        GameObject.Find("Modules").GetComponent<EditorModules>().UpdateModules();
+        GameObject.Find("Modules Scroll View").GetComponentInChildren<EditorModules>().UpdateModules();
     }
 
     /// <summary>

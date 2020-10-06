@@ -6,13 +6,13 @@ using static Controller;
 
 public class EditorNewModule : MonoBehaviour
 {
-    private Button button;
+    private InputField inputField;
     private void Awake()
     {
-        button = GetComponent<Button>();
-        button.onClick.AddListener(() =>
+        inputField = GetComponent<InputField>();
+        inputField.onEndEdit.AddListener(str =>
         {
-            editorController.moduleSelected = (GetComponentInParent<EditorModules>().Count + 1).ToString();
+            editorController.moduleSelected = str;
         });
     }
 }

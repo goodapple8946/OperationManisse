@@ -14,11 +14,10 @@ public class EditorDelete : MonoBehaviour
 		button = GetComponent<Button>();
 		button.onClick.AddListener(() =>
 		{
+			string path = ResourceController.GamePath + editorController.fileSelected + ".xml";
 			try
 			{
-				string path = ResourceController.GamePath + editorController.fileSelected + ".xml";
 				File.Delete(path);
-				editorController.UpdateFiles();
 				resourceController.playAudio("Success");
 			}
 			catch (Exception e)
@@ -26,6 +25,7 @@ public class EditorDelete : MonoBehaviour
 				Debug.Log(e.Message);
 				resourceController.playAudio("Error");
 			}
+			editorController.UpdateFiles();
 		});
 	}
 }
