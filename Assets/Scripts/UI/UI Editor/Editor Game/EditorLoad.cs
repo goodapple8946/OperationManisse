@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
@@ -12,38 +14,20 @@ public class EditorLoad : MonoBehaviour
 		button = GetComponent<Button>();
 		button.onClick.AddListener(() => 
 		{
-			if (editorController.fileSelected != "")
+            try
             {
 				string path = ResourceController.GamePath + editorController.fileSelected + ".xml";
 				XMLGame game = Serializer.Deserialized<XMLGame>(path);
 				Load(game);
+				resourceController.playAudio("Success");
 			}
+            catch (Exception e)
+			{
+				Debug.Log(e.Message);
+				resourceController.playAudio("Error");
+            }
 		});
 	}
-
-	/// <summary>
-	/// 从文件系统中加载保存的xml文件
-	/// </summary>
-	public static void LoadGameFromFS()
-	{
-        try
-        {
-            // 根据文件生成Game
-            string path = ResourceController.OpenFilePanel(
-				"Choose a map", ResourceController.GamePath, "xml");
-			// 玩家选择了文件,则加载游戏
-			if (path != "")
-			{
-				XMLGame game = Serializer.Deserialized<XMLGame>(path);
-				Load(game);
-			}
-        }
-        // xml文件错误,显示错误弹窗
-        catch
-        {
-            ResourceController.DisplayDialog("", "Map File Error!", "ok");
-        }
-    }
 
 	// 加载XMLGame对象
 	private static void Load(XMLGame game)

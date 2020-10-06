@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
 
 public class ResourceController : MonoBehaviour
 {
@@ -36,6 +35,9 @@ public class ResourceController : MonoBehaviour
 
     // 胜利时的音效
     public AudioClip audioVictory;
+
+	// 操作成功时的音效
+	public AudioClip audioSuccess;
 
 	// 发生错误时的音效
 	public AudioClip audioError;
@@ -88,59 +90,11 @@ public class ResourceController : MonoBehaviour
 		}
 	}
 
-	// -------------- 文件弹窗 -------------//
-
-	/// <summary>
-	/// 返回选择的文件路径，没有选择返回""
-	/// </summary>
-	public static string OpenFilePanel(string title, string directory, string extension)
-	{
-		// SetDefaultFilter设置展示文件后缀名例如.xml
-		//FileBrowser.SetDefaultFilter("."+ extension);
-
-		// 获取onSuccess的参数filePath, onSuccess作为delegate用参数返回值
-		// FileBrowser.ShowLoadDialog(null, null, false, false, directory, title, "Open");
-
-		//return FileBrowser.Result[0];
-
-		return UnityEditor.EditorUtility.OpenFilePanel(title, directory, extension); 
-	}
-
-	/// <summary>
-	/// 展示一个只有ok的dialog
-	/// </summary>
-	public static bool DisplayDialog(string title, string message, string ok)
-	{
-		return UnityEditor.EditorUtility.DisplayDialog(title, message, ok);
-	}
-
-	/// <summary>
-	/// 展示一个有ok和cancel的dialog,true:点击ok
-	/// </summary>
-	public static bool DisplayDialog(string title, string message, string ok, string cancel)
-	{
-		
-		return UnityEditor.EditorUtility.DisplayDialog(title, message, ok, cancel);
-	}
-
 	/// <summary>
 	/// 获取某路径下所有文件名称字符串数组，参数为"Game"或"Module"
 	/// </summary>
-	public static string[] GetFilesInDirectory(string type)
+	public static string[] GetFilesInDirectory(string path)
     {
-		string path;
-		if (type == "Game")
-        {
-			path = GamePath;
-        }
-		else if (type == "Module")
-        {
-			path = ModulePath;
-        }
-        else
-        {
-			throw new Exception("Unknown file type to load.");
-		}
 		string[] files = Directory.GetFiles(path);
 		List<string> arr = new List<string>();
 		foreach (string file in files) 
@@ -152,4 +106,23 @@ public class ResourceController : MonoBehaviour
         }
 		return arr.ToArray();
 	}
+
+	// 播放音效
+	public void playAudio(string str)
+    {
+		AudioClip audioClip = null;
+		switch (str)
+        {
+			case "Success":
+				audioClip = audioSuccess;
+				break;
+			case "Error":
+				audioClip = audioError;
+				break;
+		}
+		if (audioClip != null)
+		{
+			AudioSource.PlayClipAtPoint(audioClip, Camera.main.transform.position);
+		}
+    }
 }
