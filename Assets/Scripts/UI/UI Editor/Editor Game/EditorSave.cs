@@ -54,7 +54,35 @@ public class EditorSave : MonoBehaviour
 		List<Background> backgrounds = editorController.Backgrounds.ToList<Background>();
 		List<Unit> units = editorController.Grid.OfType<Unit>().ToList();
 		List<string> goodsVisible = shopController.GetShopObjectVisibility();
-		Serializer.SerializeGame(editorController, backgrounds, units, goodsVisible, path);
+		XMLGame game = GetXMLGame(editorController, backgrounds, units, goodsVisible);
+		Serializer.SerializeGame(game, path);
+	}
+
+	/// <summary>
+	/// 根据参数构造Game并序列化
+	/// </summary>
+	private static XMLGame GetXMLGame(
+		EditorController editorController, List<Background> backgrounds,
+		List<Unit> units, List<string> goodsVisable)
+	{
+		XMLMap map = Serializer.EditorController2XML(editorController);
+
+		List<XMLBackground> xmlBackgrounds = new List<XMLBackground>();
+		foreach (Background background in backgrounds)
+		{
+			XMLBackground xmlBackground = Serializer.Background2XML(background);
+			xmlBackgrounds.Add(xmlBackground);
+		}
+
+		List<XMLUnit> xmlUnits = new List<XMLUnit>();
+		foreach (Unit unit in units)
+		{
+			XMLUnit xmlUnit = Serializer.Unit2XML(unit);
+			xmlUnits.Add(xmlUnit);
+		}
+
+		XMLGame game = new XMLGame(map, xmlBackgrounds, xmlUnits, goodsVisable);
+		return game;
 	}
 
 	// 编辑结果的检测

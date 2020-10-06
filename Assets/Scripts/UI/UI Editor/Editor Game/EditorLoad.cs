@@ -101,7 +101,7 @@ public class EditorLoad : MonoBehaviour
 		unit.transform.position = editorController.CoordToPosition(xmlUnit.x, xmlUnit.y);
 
 		// prefab的layer是Default，需要根据所属player信息创建
-		unit.gameObject.layer = xmlUnit.layer;
+		unit.gameObject.layer = (int)xmlUnit.layer;
 		unit.player = (Player)xmlUnit.player; // TODO: 更新血条？
 
 		// 设置成编辑器创建

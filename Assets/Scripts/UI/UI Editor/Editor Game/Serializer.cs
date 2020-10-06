@@ -20,28 +20,8 @@ static class Serializer
 	/// <summary>
 	/// 根据参数构造Game并序列化
 	/// </summary>
-	public static void SerializeGame(
-		EditorController editorController, List<Background> backgrounds, 
-		List<Unit> units, List<string> goodsVisable, string path)
+	public static void SerializeGame(XMLGame game, string path)
 	{
-		XMLMap map = EditorController2XML(editorController);
-
-		
-		List<XMLBackground> xmlBackgrounds = new List<XMLBackground>();
-		foreach (Background background in backgrounds)
-		{
-			XMLBackground xmlBackground = Background2XML(background);
-			xmlBackgrounds.Add(xmlBackground);
-		}
-
-		List<XMLUnit> xmlUnits = new List<XMLUnit>();
-		foreach (Unit unit in units)
-		{
-			XMLUnit xmlUnit = Unit2XML(unit);
-			xmlUnits.Add(xmlUnit);
-		}
-
-		XMLGame game = new XMLGame(map, xmlBackgrounds, xmlUnits, goodsVisable);
 		Serialize(game, path);
 	}
 
@@ -96,7 +76,7 @@ static class Serializer
 		int x = unit.gridX;
 		int y = unit.gridY;
 		int direction = unit.direction;
-		int layer = unit.gameObject.layer;
+		Layer layer = (Layer)unit.gameObject.layer;
 		return new XMLUnit(name, player, x, y, direction, layer);
 	}
 
@@ -217,12 +197,12 @@ public class XMLUnit
 	public int x;
 	public int y;
 	public int direction;
-	public int layer;
+	public Layer layer; 
 
 	// 默认无参构造函数
 	public XMLUnit() { }
 
-	public XMLUnit(string name, int player, int x, int y, int direction, int layer)
+	public XMLUnit(string name, int player, int x, int y, int direction, Layer layer)
 	{
 		this.name = name;
 		this.player = player;
