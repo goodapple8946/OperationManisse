@@ -6,8 +6,6 @@ using static Controller;
 
 public class EditorFiles : MonoBehaviour
 {
-    public int Count { get; set; }
-
     private void Start()
     {
         UpdateFiles();
@@ -24,35 +22,16 @@ public class EditorFiles : MonoBehaviour
             Destroy(transform.GetChild(i).gameObject);
         }
 
+        float height = 70f;
         // 重新创建要显示的文件的Prefab
-        foreach(string file in files)
+        Instantiate(resourceController.newFilePrefab, transform);
+        foreach (string file in files)
         {
             GameObject fileObj = Instantiate(resourceController.filePrefab, transform);
             string[] str = file.Split('/', '.');
             fileObj.GetComponentInChildren<Text>().text = str[str.Length - 2];
+            height += 70f;
         }
-        Instantiate(resourceController.newFilePrefab, transform);
-
-        float fileHeight = 70f;
-        int fileNumOfRow = 5;
-        float widthRow = 350f;
-
-        // 调整显示区域高度
-        float height = (files.Length / fileNumOfRow + 1) * fileHeight;
-        GetComponent<RectTransform>().sizeDelta = new Vector2(widthRow, height);
-
-        // 更新父物体（File）高度
-        Transform fileTf = transform.parent;
-        fileTf.GetComponentInParent<RectTransform>().sizeDelta = new Vector2(0, height + 150);
-
-        // 更新爷物体（Editor Game）高度
-        Transform editorGameTf = fileTf.parent;
-        editorGameTf.GetComponentInParent<RectTransform>().sizeDelta = new Vector2(0, height + 650);
-
-        // 更新Content高度
-        GetComponentInParent<EditorContent>().UpdateHeight();
-
-        // 文件计数（不包括新建文件）
-        Count = files.Length;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(0, height);
     }
 }

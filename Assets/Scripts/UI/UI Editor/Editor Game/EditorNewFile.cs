@@ -6,13 +6,13 @@ using static Controller;
 
 public class EditorNewFile : MonoBehaviour
 {
-    private Button button;
+    private InputField inputField;
     private void Awake()
     {
-        button = GetComponent<Button>();
-        button.onClick.AddListener(() =>
+        inputField = GetComponent<InputField>();
+        inputField.onEndEdit.AddListener(str =>
         {
-            editorController.fileSelected = (GetComponentInParent<EditorFiles>().Count + 1).ToString();
+            editorController.fileSelected = str;
         });
     }
 }
