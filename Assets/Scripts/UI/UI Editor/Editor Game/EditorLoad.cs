@@ -70,6 +70,22 @@ public class EditorLoad : MonoBehaviour
 	/// </summary>
 	private static void Load(XMLBackground xmlBackground)
 	{
+		Background background = XML2Background(xmlBackground);
+		editorController.Put(background);
+	}
+
+	/// <summary>
+	/// 读取xmlUnit并克隆,保存到editorController里
+	/// </summary>
+	public static void Load(XMLUnit xmlUnit)
+	{
+		Unit unit = XML2Unit(xmlUnit);
+		// 设置unit的网格位置,和坐标
+		editorController.Put(xmlUnit.x, xmlUnit.y, unit);
+	}
+
+	private static Background XML2Background(XMLBackground xmlBackground)
+	{
 		// 复制一份物体
 		GameObject objPrefab = resourceController.gameObjDictionary[xmlBackground.name];
 		GameObject objClone = Instantiate(objPrefab);
@@ -80,7 +96,7 @@ public class EditorLoad : MonoBehaviour
 		objClone.transform.localScale = xmlBackground.localScale;
 
 		Background background = objClone.GetComponent<Background>();
-		editorController.Put(background);
+		return background;
 	}
 
 	/// <summary>
@@ -107,15 +123,5 @@ public class EditorLoad : MonoBehaviour
 		// 设置成编辑器创建
 		unit.isEditorCreated = true;
 		return unit;
-	}
-
-	/// <summary>
-	/// 读取xmlUnit并克隆,保存到editorController里
-	/// </summary>
-	public static void Load(XMLUnit xmlUnit)
-	{
-		Unit unit = XML2Unit(xmlUnit);
-		// 设置unit的网格位置,和坐标
-		editorController.Put(xmlUnit.x, xmlUnit.y, unit);
 	}
 }
