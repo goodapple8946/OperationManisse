@@ -164,26 +164,26 @@ public class EditorSaveModule : MonoBehaviour
 	// 除去空行，对单位坐标变换后保存
 	//public static XMLModule SerializeModule(EditorController editorController)
 	//{
-	//    int left = editorController.GetGridCoordNonEmpty("Left");
-	//    int right = editorController.GetGridCoordNonEmpty("Right");
-	//    int bottom = editorController.GetGridCoordNonEmpty("Bottom");
-	//    int top = editorController.GetGridCoordNonEmpty("Top");
-	//    int width = Mathf.Max(right - left + 1, 0);
-	//    int height = Mathf.Max(top - bottom + 1, 0);
+	//	int left = editorController.GetGridCoordNonEmpty("Left");
+	//	int right = editorController.GetGridCoordNonEmpty("Right");
+	//	int bottom = editorController.GetGridCoordNonEmpty("Bottom");
+	//	int top = editorController.GetGridCoordNonEmpty("Top");
+	//	int width = Mathf.Max(right - left + 1, 0);
+	//	int height = Mathf.Max(top - bottom + 1, 0);
 
-	//    List<XMLUnit> xmlUnits = new List<XMLUnit>();
-	//    foreach(Unit unit in editorController.Grid)
-	//    {
-	//        if (unit != null)
-	//        {
-	//            XMLUnit xmlUnit = Serializer.Unit2XML(unit);
-	//            // 转换成新的local坐标
-	//            xmlUnit.x -= left;
-	//            xmlUnit.y -= bottom;
-	//            xmlUnits.Add(xmlUnit);
-	//        }
-	//    }
-	//    XMLModule module = new XMLModule(width, height, xmlUnits);
-	//    return module;
+	//	List<XMLUnit> xmlUnits = new List<XMLUnit>();
+	//	foreach (Unit unit in editorController.Grid)
+	//	{
+	//		if (unit != null)
+	//		{
+	//			XMLUnit xmlUnit = Serializer.Unit2XML(unit);
+	//			// 转换成新的local坐标
+	//			xmlUnit.x -= left;
+	//			xmlUnit.y -= bottom;
+	//			xmlUnits.Add(xmlUnit);
+	//		}
+	//	}
+	//	XMLModule module = new XMLModule(width, height, xmlUnits);
+	//	return module;
 	//}
 }
