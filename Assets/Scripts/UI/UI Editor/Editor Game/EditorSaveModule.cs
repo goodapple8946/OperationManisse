@@ -57,7 +57,7 @@ public class EditorSaveModule : MonoBehaviour
 	{
 		CheckEditorResult(editorController.Grid);
 		
-		XMLModule module = SerializeModule(editorController);
+		XMLModule module = ObtainModule(editorController);
 		Serializer.SerializeModule(module, path);
 	}
 
@@ -76,7 +76,7 @@ public class EditorSaveModule : MonoBehaviour
 	}
 
 	// 除去空行，对单位坐标变换后保存
-	public static XMLModule SerializeModule(EditorController editorController)
+	public static XMLModule ObtainModule(EditorController editorController)
 	{
 		Coord lbCoord = GetLeftBottom();
 		Coord rtCoord = GetRightTop();

@@ -76,7 +76,7 @@ static class Serializer
 		int x = unit.gridX;
 		int y = unit.gridY;
 		int direction = unit.direction;
-		int layer = unit.gameObject.layer;
+		Layer layer = (Layer)unit.gameObject.layer;
 		return new XMLUnit(name, player, x, y, direction, layer);
 	}
 
@@ -197,12 +197,12 @@ public class XMLUnit
 	public int x;
 	public int y;
 	public int direction;
-	public int layer;
+	public Layer layer; 
 
 	// 默认无参构造函数
 	public XMLUnit() { }
 
-	public XMLUnit(string name, int player, int x, int y, int direction, int layer)
+	public XMLUnit(string name, int player, int x, int y, int direction, Layer layer)
 	{
 		this.name = name;
 		this.player = player;
