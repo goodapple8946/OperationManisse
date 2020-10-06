@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -40,12 +41,14 @@ public class EditorLoadModule : MonoBehaviour
 				XMLModule module = Serializer.Deserialized<XMLModule>(path);
 				// EditorController进入Module模式，并且设置Module
 				editorController.MouseModule = module;
+				resourceController.playAudio("Success");
 			}
 		}
 		// xml文件错误,显示错误弹窗
-		catch
+		catch (Exception e)
 		{
-			ResourceController.DisplayDialog("", "Module File Error!", "ok");
+			Debug.Log(e.Message);
+			resourceController.playAudio("Error");
 		}
 	}
 

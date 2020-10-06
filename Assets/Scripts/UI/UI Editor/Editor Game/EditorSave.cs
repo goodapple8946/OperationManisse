@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
@@ -29,21 +30,16 @@ public class EditorSave : MonoBehaviour
 	/// </summary>
 	void SaveFile2FS(string filename)
 	{
-		string path = System.IO.Path.Combine(ResourceController.GamePath, filename + ".xml");
-		// 文件系统存在重名文件
-		if (File.Exists(path))
+        try
 		{
-			bool ok = ResourceController.DisplayDialog("", "Are you sure you want to replace existing file?", "ok", "cancel");
-			if (ok)
-			{
-				SaveFile(path);
-				ResourceController.DisplayDialog("", "Successfully Saved", "ok");
-			}
-		}
-		else
-		{
+			string path = System.IO.Path.Combine(ResourceController.GamePath, filename + ".xml");
 			SaveFile(path);
-			ResourceController.DisplayDialog("", "Successfully Saved", "ok");
+			resourceController.playAudio("Success");
+		}
+		catch (Exception e)
+		{
+			Debug.Log(e.Message);
+			resourceController.playAudio("Error");
 		}
 	}
 
