@@ -5,11 +5,21 @@ using static Controller;
 
 public class EditorLoad : MonoBehaviour
 {
+	Button button;
 
 	private void Awake()
 	{
-		Button button = GetComponent<Button>();
-		button.onClick.AddListener(LoadGameFromFS);
+		button = GetComponent<Button>();
+		button.onClick.AddListener(() => 
+		{
+			if (editorController.FileSelected != "")
+            {
+				string path = ResourceController.GamePath + editorController.FileSelected + ".xml";
+				XMLGame game = Serializer.Deserialized<XMLGame>(path);
+				Load(game);
+				editorController.FileSelected = "";
+			}
+		});
 	}
 
 	/// <summary>

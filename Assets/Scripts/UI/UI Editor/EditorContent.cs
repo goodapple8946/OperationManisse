@@ -35,5 +35,20 @@ public class EditorContent : MonoBehaviour
     {
         editorUnit.SetActive(editorController.EditorMode == EditorMode.Unit);
         editorBackground.SetActive(editorController.EditorMode == EditorMode.Background);
+
+        UpdateHeight();
+    }
+
+    public void UpdateHeight()
+    {
+        float height = 0;
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).gameObject.activeSelf)
+            {
+                height += transform.GetChild(i).GetComponent<RectTransform>().sizeDelta.y;
+            }
+        }
+        GetComponent<RectTransform>().sizeDelta = new Vector2(0, height);
     }
 }

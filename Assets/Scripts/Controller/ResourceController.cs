@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 
 public class ResourceController : MonoBehaviour
 {
@@ -45,7 +46,13 @@ public class ResourceController : MonoBehaviour
     // 生命值Prefab
     public GameObject hpBarPrefab;
 
-	protected void Start()
+	// 新建文件Prefab
+	public GameObject newFilePrefab;
+
+	// 文件Prefab
+	public GameObject filePrefab;
+
+	protected void Awake()
 	{
 		// 初始化unitDictionary
 		gameObjDictionary = new Dictionary<string, GameObject>();
@@ -105,5 +112,35 @@ public class ResourceController : MonoBehaviour
 	{
 		
 		return UnityEditor.EditorUtility.DisplayDialog(title, message, ok, cancel);
+	}
+
+	/// <summary>
+	/// 获取某路径下所有文件名称字符串数组，参数为"Game"或"Module"
+	/// </summary>
+	public static string[] GetFilesInDirectory(string type)
+    {
+		string path;
+		if (type == "Game")
+        {
+			path = GamePath;
+        }
+		else if (type == "Module")
+        {
+			path = ModulePath;
+        }
+        else
+        {
+			throw new Exception("Unknown file type to load.");
+		}
+		string[] files = Directory.GetFiles(path);
+		List<string> arr = new List<string>();
+		foreach (string file in files) 
+        {
+			if (file.Substring(file.Length - 4) == ".xml")
+            {
+				arr.Add(file);
+            }
+        }
+		return arr.ToArray();
 	}
 }
