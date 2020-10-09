@@ -21,21 +21,16 @@ public class EditorSaveModule : MonoBehaviour
 	public void Awake()
 	{
 		button = GetComponent<Button>();
-		button.onClick.AddListener(() =>
+		button.onClick.AddListener((UnityEngine.Events.UnityAction)(() =>
 		{
-			if (editorController.moduleSelected != "")
-			{
-				SaveFile2FS(editorController.moduleSelected);
-				editorController.UpdateModules();
-				editorController.moduleSelected = "";
-			}
-		});
+			FileViewer.ViewerState = FileViewer.State.SaveModule;
+		}));
 	}
 
 	/// <summary>
 	/// 转换成xml, 保存filename到文件系统,如果重名让编辑者选择
 	/// </summary>
-	private void SaveFile2FS(string filename)
+	public static void SaveFile2FS(string filename)
 	{
         try
         {
@@ -53,7 +48,7 @@ public class EditorSaveModule : MonoBehaviour
 	/// <summary>
 	/// 转换成xml保存至文件中
 	/// </summary>
-	private void SaveFile(string path)
+	private static void SaveFile(string path)
 	{
 		CheckEditorResult(editorController.Grid);
 		
@@ -63,7 +58,7 @@ public class EditorSaveModule : MonoBehaviour
 
 	// 编辑结果的检测
 	[System.Diagnostics.Conditional("DEBUG")]
-	private void CheckEditorResult(Unit[,] Grid)
+	private static void CheckEditorResult(Unit[,] Grid)
 	{
 		foreach (Unit unit in Grid)
 		{

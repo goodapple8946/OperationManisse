@@ -12,7 +12,7 @@ public class EditorNewFile : MonoBehaviour
         inputField = GetComponent<InputField>();
         inputField.onEndEdit.AddListener(str =>
         {
-            editorController.fileSelected = str;
+            FileViewer.fileSelected = str;
         });
     }
 }

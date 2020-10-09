@@ -195,12 +195,6 @@ public class EditorController : MonoBehaviour
     [HideInInspector] public float yMin;
     [HideInInspector] public float yMax;
 
-    // 当前选中的文件
-    [HideInInspector] public string fileSelected = "";
-
-    // 当前选中的模型
-    [HideInInspector] public string moduleSelected = "";
-
     // 网格背景物体
     public GameObject square;
 
@@ -1031,18 +1025,6 @@ public class EditorController : MonoBehaviour
         {
             return new Coord(-1, -1);
         }
-    }
-
-    // 更新显示的文件
-    public void UpdateFiles()
-    {
-        GameObject.Find("Files Scroll View").GetComponentInChildren<EditorFiles>().UpdateFiles();
-    }
-
-    // 更新显示的模型
-    public void UpdateModules()
-    {
-        GameObject.Find("Modules Scroll View").GetComponentInChildren<EditorModules>().UpdateModules();
     }
 
     /// <summary>

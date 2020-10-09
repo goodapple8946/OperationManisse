@@ -98,17 +98,17 @@ public class ResourceController : MonoBehaviour
 
 	/// <summary>
 	/// 获取某路径下所有XML文件
-	/// 返回名称数组
+	/// 返回filename数组
 	/// </summary>
 	public static string[] GetFilesInDirectory(string path)
     {
-		string[] files = Directory.GetFiles(path);
+		string[] filenames = Directory.GetFiles(path);
 		List<string> arr = new List<string>();
-		foreach (string file in files) 
+		foreach (string filename in filenames) 
         {
-			if (file.Substring(file.Length - 4) == ".xml")
+			if (filename.Substring(filename.Length - 4) == ".xml")
             {
-				arr.Add(file);
+				arr.Add(filename);
             }
         }
 		return arr.ToArray();

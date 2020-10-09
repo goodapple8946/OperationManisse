@@ -5,28 +5,32 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorLoad : MonoBehaviour
+public class EditorLoadGame : MonoBehaviour
 {
 	Button button;
 
 	private void Awake()
 	{
 		button = GetComponent<Button>();
-		button.onClick.AddListener(() => 
+		button.onClick.AddListener((UnityEngine.Events.UnityAction)(() =>
 		{
-            try
-            {
-				string path = ResourceController.GamePath + editorController.fileSelected + ".xml";
-				XMLGame game = Serializer.Deserialized<XMLGame>(path);
-				Load(game);
-				resourceController.playAudio("Success");
-			}
-            catch (Exception e)
-			{
-				Debug.Log(e.Message);
-				resourceController.playAudio("Error");
-            }
-		});
+			FileViewer.ViewerState = FileViewer.State.LoadGame;
+		}));
+	}
+
+	public static void LoadModuleFromFS(String path)
+	{
+		try
+		{
+			XMLGame game = Serializer.Deserialized<XMLGame>(path);
+			Load(game);
+			resourceController.playAudio("Success");
+		}
+		catch (Exception e)
+		{
+			Debug.Log(e.Message);
+			resourceController.playAudio("Error");
+		}
 	}
 
 	// 加载XMLGame对象

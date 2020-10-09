@@ -8,32 +8,28 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorSave : MonoBehaviour
+public class EditorSaveGame : MonoBehaviour
 {
 	Button button;
 
 	public void Awake()
 	{
 		button = GetComponent<Button>();
-		button.onClick.AddListener(() =>
+		button.onClick.AddListener((UnityEngine.Events.UnityAction)(() =>
 		{
-			if (editorController.fileSelected != "")
-			{
-				SaveFile2FS(editorController.fileSelected);
-				editorController.UpdateFiles();
-			}
-		});
+			FileViewer.ViewerState = FileViewer.State.SaveGame;
+		}));
 	}
 
 	/// <summary>
 	/// 转换成xml,保存filename到文件系统,如果重名让编辑者选择
 	/// </summary>
-	void SaveFile2FS(string filename)
+	public static void SaveFile2FS(string filename)
 	{
         try
 		{
 			string path = System.IO.Path.Combine(ResourceController.GamePath, filename + ".xml");
-			SaveFile(path);
+			SaveGame(path);
 			resourceController.playAudio("Success");
 		}
 		catch (Exception e)
@@ -46,7 +42,7 @@ public class EditorSave : MonoBehaviour
 	/// <summary>
 	/// 转换成xml,保存至文件中
 	/// </summary>
-	private static void SaveFile(string path)
+	private static void SaveGame(string path)
 	{
 		CheckEditorResult(editorController.Backgrounds,
 			editorController.Grid, shopController.GetShopObjectVisibility());
@@ -54,14 +50,14 @@ public class EditorSave : MonoBehaviour
 		List<Background> backgrounds = editorController.Backgrounds.ToList<Background>();
 		List<Unit> units = editorController.Grid.OfType<Unit>().ToList();
 		List<string> goodsVisible = shopController.GetShopObjectVisibility();
-		XMLGame game = GetXMLGame(editorController, backgrounds, units, goodsVisible);
+		XMLGame game = ObtainXMLGame(editorController, backgrounds, units, goodsVisible);
 		Serializer.SerializeGame(game, path);
 	}
 
 	/// <summary>
 	/// 根据参数构造Game并序列化
 	/// </summary>
-	private static XMLGame GetXMLGame(
+	private static XMLGame ObtainXMLGame(
 		EditorController editorController, List<Background> backgrounds,
 		List<Unit> units, List<string> goodsVisable)
 	{

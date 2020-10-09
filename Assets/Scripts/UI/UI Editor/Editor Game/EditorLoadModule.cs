@@ -9,6 +9,7 @@ using static Controller;
 // 类型定义
 using Coord = System.Tuple<int, int>;
 
+
 public class EditorLoadModule : MonoBehaviour
 {
 	private static List<GameObject> lastClones = new List<GameObject>();
@@ -17,15 +18,10 @@ public class EditorLoadModule : MonoBehaviour
 	private void Awake()
 	{
 		button = GetComponent<Button>();
-		button.onClick.AddListener(() =>
+		button.onClick.AddListener((UnityEngine.Events.UnityAction)(() =>
 		{
-			if (editorController.moduleSelected != "")
-			{
-				string path = ResourceController.ModulePath + editorController.moduleSelected + ".xml";
-				LoadModuleFromFS(path);
-				editorController.moduleSelected = "";
-			}
-		});
+			FileViewer.ViewerState = FileViewer.State.LoadModule;
+		}));
 	}
 
 	/// <summary>
@@ -35,16 +31,11 @@ public class EditorLoadModule : MonoBehaviour
 	{
 		try
 		{
-			// 玩家选择了文件,则加载游戏
-			if (path != "")
-			{
-				XMLModule module = Serializer.Deserialized<XMLModule>(path);
-				// EditorController进入Module模式，并且设置Module
-				editorController.MouseModule = module;
-				resourceController.playAudio("Success");
-			}
+			XMLModule module = Serializer.Deserialized<XMLModule>(path);
+			// EditorController进入Module模式，并且设置Module
+			editorController.MouseModule = module;
+			resourceController.playAudio("Success");
 		}
-		// xml文件错误,显示错误弹窗
 		catch (Exception e)
 		{
 			Debug.Log(e.Message);
@@ -118,7 +109,7 @@ public class EditorLoadModule : MonoBehaviour
 					xmlUnit.x = worldX;
 					xmlUnit.y = worldY;
 
-					Unit unit = EditorLoad.XML2Unit(xmlUnit);
+					Unit unit = EditorLoadGame.XML2Unit(xmlUnit);
 					GameObject clone = CorpseFactory.CreateTransparentGraphicClone(unit.gameObject);
 
 					lastClones.Add(clone);
@@ -146,7 +137,7 @@ public class EditorLoadModule : MonoBehaviour
 					// 修改xmlUnit的坐标到Editor坐标网并加载
 					xmlUnit.x = worldX;
 					xmlUnit.y = worldY;
-					EditorLoad.Load(xmlUnit);
+					EditorLoadGame.Load(xmlUnit);
 				}
 			}
 		}

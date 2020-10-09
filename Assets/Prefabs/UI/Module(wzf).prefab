@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 6405528794728811779}
   - component: {fileID: 1312110164242938587}
   m_Layer: 5
-  m_Name: Module
+  m_Name: Module(wzf)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

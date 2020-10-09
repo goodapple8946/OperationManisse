@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorDeleteModule : MonoBehaviour
+public class EditorDeleteGame : MonoBehaviour
 {
 	Button button;
 
@@ -14,7 +14,7 @@ public class EditorDeleteModule : MonoBehaviour
 		button = GetComponent<Button>();
 		button.onClick.AddListener((UnityEngine.Events.UnityAction)(() =>
 		{
-			FileViewer.ViewerState = FileViewer.State.DeleteModule;
+			FileViewer.ViewerState = FileViewer.State.DeleteGame;
 		}));
 	}
 }
