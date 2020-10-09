@@ -422,8 +422,18 @@ public class EditorController : MonoBehaviour
                     Buy(unit.gameObject);
                 }
 
-                Put(x, y, unit);
                 unit.player = PlayerOwner;
+                // 如果单位不是地面,则设置所有单位的显示层为Unit
+                // 如果单位是地面, 默认拥有者是中立,显示物理层不变
+                if (unit.gameObject.layer != (int)Layer.Ground)
+                {
+                    // 设置Unit显示层
+                    unit.SetSpriteLayer("Unit");
+                    // 设置Unit物理层
+                    unit.gameObject.layer = (int)GetUnitLayer(PlayerOwner, unit);
+                }
+                Put(x, y, unit);
+
                 PlayPutIntoGridSound(unit);
             }
         }
@@ -432,6 +442,7 @@ public class EditorController : MonoBehaviour
     public void Place(Background background)
     {
         background.SetSpriteLayer("Background");
+        background.gameObject.layer = (int)Layer.Background;
         Backgrounds.Add(background);
         MouseObject = null;
         Put(background);
@@ -924,8 +935,8 @@ public class EditorController : MonoBehaviour
         unit.gridX = x;
         unit.gridY = y;
         unit.transform.position = CoordToPosition(x, y);
-
-        Add2GameControllerAndSetLayer(unit);
+        unit.transform.parent = gameController.unitObjects.transform;
+        unit.isEditorCreated = (gameController.gamePhase == GamePhase.Editor);
     }
 
     /// <summary>
@@ -935,31 +946,7 @@ public class EditorController : MonoBehaviour
     {
         background.transform.position += new Vector3(0, 0, 1);
         Backgrounds.Add(background);
-
-        Add2GameControllerAndSetLayer(background);
-    }
-
-    private void Add2GameControllerAndSetLayer(Unit unit)
-    {
-        unit.transform.parent = gameController.unitObjects.transform;
-        unit.isEditorCreated = (gameController.gamePhase == GamePhase.Editor);
-        // 如果单位不是地面,则设置所有单位的显示层为Unit
-        // 如果单位是地面, 默认拥有者是中立,显示物理层不变
-        if (unit.gameObject.layer != (int)Layer.Ground)
-        {
-            // 设置Unit显示层
-            unit.SetSpriteLayer("Unit");
-            // 设置Unit物理层
-            unit.gameObject.layer = (int)GetUnitLayer(PlayerOwner, unit);
-        }
-    }
-    private void Add2GameControllerAndSetLayer(Background background)
-    {
         background.transform.parent = gameController.backgroundObjects.transform;
-        // 设置Unit显示层
-        background.SetSpriteLayer("Background");
-        // 设置Unit物理层
-        background.gameObject.layer = (int)Layer.Background;
     }
 
     // 离开Editor阶段

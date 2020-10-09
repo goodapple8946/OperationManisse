@@ -63,10 +63,18 @@ public class CameraController : MonoBehaviour
         if (!EventSystem.current.IsPointerOverGameObject())
         {
             float zoomSize = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
+            // 此时摄像机尺寸将 += -zoomSize
             if (zoomSize != 0)
             {
-                // 摄像机尺寸不能为负
-                if (camera.orthographicSize - zoomSize > 0)
+                // 摄像机最大尺寸
+                float sizeMax = Mathf.Min((editorController.xMax - editorController.xMin) / 2, (editorController.yMax - editorController.yMin) / 2);
+                // 摄像机尺寸不能过小（画面内图像过大，内容过少）
+                if (-zoomSize < 0 && camera.orthographicSize - zoomSize > 0)
+                {
+                    camera.orthographicSize -= zoomSize;
+                }
+                // 摄像机尺寸不能过大（画面内图像过小，内容过多）
+                else if (-zoomSize > 0 && camera.orthographicSize - zoomSize < sizeMax)
                 {
                     camera.orthographicSize -= zoomSize;
                 }
@@ -120,21 +128,27 @@ public class CameraController : MonoBehaviour
     // 将摄像头限制在游戏地图内
     private void FixBound()
     {
-        if (transform.position.x > editorController.xMax)
+        // 屏幕中心不能超出放置区
+        float left = editorController.xMin;
+        float right = editorController.xMax;
+        float bottom = editorController.yMin;
+        float top = editorController.yMax;
+
+        if (transform.position.x > right)
         {
-            transform.position = new Vector3(editorController.xMax, transform.position.y, cameraZ);
+            transform.position = new Vector3(right, transform.position.y, cameraZ);
         }
-        else if (transform.position.x < editorController.xMin)
+        else if (transform.position.x < left)
         {
-            transform.position = new Vector3(editorController.xMin, transform.position.y, cameraZ);
+            transform.position = new Vector3(left, transform.position.y, cameraZ);
         }
-        if (transform.position.y > editorController.yMax)
+        if (transform.position.y > top)
         {
-            transform.position = new Vector3(transform.position.x, editorController.yMax, cameraZ);
+            transform.position = new Vector3(transform.position.x, top, cameraZ);
         }
-        else if (transform.position.y < editorController.yMin)
+        else if (transform.position.y < bottom)
         {
-            transform.position = new Vector3(transform.position.x, editorController.yMin, cameraZ);
+            transform.position = new Vector3(transform.position.x, bottom, cameraZ);
         }
     }
 }
