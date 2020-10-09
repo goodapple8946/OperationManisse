@@ -63,6 +63,12 @@ public class ResourceController : MonoBehaviour
 	// 模块（Module）Prefab
 	public GameObject modulePrefab;
 
+	// UI的文件面板
+	public GameObject FileScrollView;
+
+	// UI的模组文件面板
+	public GameObject ModuleScrollView;
+
 	protected void Awake()
 	{
 		// 初始化unitDictionary
