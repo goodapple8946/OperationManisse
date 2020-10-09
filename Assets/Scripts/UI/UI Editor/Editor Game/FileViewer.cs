@@ -20,6 +20,7 @@ public class FileViewer : MonoBehaviour
 			state = value;
 			// 设置active
 			instance.gameObject.SetActive(state == State.None ? false : true);
+
 			// 设置内容
 			switch (state)
 			{
@@ -41,17 +42,18 @@ public class FileViewer : MonoBehaviour
 				case State.DeleteModule:
 					RedrawScrollView(ResourceController.ModulePath);
 					break;
+				case State.None:
+					// 清空处理的文件名
+					fileSelected = "";
+					break;
 			}
 		}
 	}
 
-	// 当前选中的文件
-	[HideInInspector] public static string fileSelected = "";
+	// 当前选中的文件无后缀名称
+	[HideInInspector] public static string fileSelected;
 
-	// 当前选中的模型
-	[HideInInspector] public static string moduleSelected = "";
-
-	// TODO:是否有必要？唯一的实例
+	// 唯一的实例
 	[HideInInspector] public static FileViewer instance;
 
 	private void Awake()
@@ -60,69 +62,47 @@ public class FileViewer : MonoBehaviour
 			GameObject.Find("UI Editor").GetComponentInChildren<FileViewer>();
 		Debug.Assert(instance != null);
 
+		fileSelected = "";
 		ViewerState = State.None;
 	}
 
 	private void Update()
-	{
-		//if (fileSelected == "" && moduleSelected == "")
-		//{
-		//	return;
-		//}
-
-		//switch (ViewerState)
-		//{
-		//	case State.SaveGame:
-		//		break;
-		//	case State.SaveModule:
-		//		break;
-		//	case State.LoadGame:
-		//		break;
-		//	case State.LoadModule:
-		//		break;
-		//	case State.DeleteGame:
-		//		break;
-		//	case State.DeleteModule:
-		//		break;
-		//}
+	{	
+		// 没有要处理的文件
+		if(fileSelected == "")
+		{
+			return;
+		}
 		
 		switch (ViewerState)
 		{
 			case State.SaveGame:
-				RedrawScrollView(transform, ResourceController.GamePath);
 				EditorSaveGame.SaveFile2FS(fileSelected);
-				fileSelected = "";
-
 				break;
 			case State.SaveModule:
-				RedrawScrollView(transform, ResourceController.ModulePath);
-				EditorSaveModule.SaveFile2FS(moduleSelected);
-				moduleSelected = "";
+				EditorSaveModule.SaveFile2FS(fileSelected);
 				break;
 			case State.LoadGame:
-				RedrawScrollView(transform, ResourceController.GamePath);
 				string path = ResourceController.GamePath + FileViewer.fileSelected + ".xml";
-				EditorLoadGame.LoadModuleFromFS(path);
-				FileViewer.fileSelected = "";
+				EditorLoadGame.LoadGameFromFS(path);
 				break;
 			case State.LoadModule:
-				RedrawScrollView(transform, ResourceController.ModulePath);
-				string modulePath = ResourceController.ModulePath + FileViewer.moduleSelected + ".xml";
+				string modulePath = ResourceController.ModulePath + FileViewer.fileSelected + ".xml";
 				EditorLoadModule.LoadModuleFromFS(modulePath);
-				moduleSelected = "";
 				break;
 			case State.DeleteGame:
-				RedrawScrollView(transform, ResourceController.GamePath);
-				string deletePath = ResourceController.GamePath
-					+ fileSelected + ".xml";
+				string deletePath = ResourceController.GamePath + fileSelected + ".xml";
 				DeleteFileOnFS(deletePath);
+				RedrawScrollView(ResourceController.GamePath);
 				break;
 			case State.DeleteModule:
-				RedrawScrollView(transform, ResourceController.ModulePath);
-				string deleteModulePath = ResourceController.ModulePath + FileViewer.moduleSelected + ".xml";
+				string deleteModulePath = ResourceController.ModulePath + FileViewer.fileSelected + ".xml";
 				DeleteFileOnFS(deleteModulePath);
+				RedrawScrollView(ResourceController.ModulePath);
 				break;
 		}
+		// 清空当前处理的文件
+		fileSelected = "";
 	}
 
 	private static void DeleteFileOnFS(string path)
@@ -139,61 +119,64 @@ public class FileViewer : MonoBehaviour
 		}
 	}
 
-	// 在instance的子物体content上,重新绘制path路径下的文件夹
-	private static void RedrawScrollView(string path)
-	{
-		RedrawScrollView(instance.transform, path);
-	}
-
-	// 在transform的子物体content上,重新绘制path路径下的文件夹
-	private static void RedrawScrollView(Transform transform, string path)
-	{
-		Transform viewport = transform.Find("Viewport");
-		Transform content = viewport.Find("Content");
-
-		string[] filenames = ResourceController.GetFilesInDirectory(path);
-		RedrawScrollView(content, filenames);
-	}
-
-	// 在scrollView的content上重新绘制files
-	private static void RedrawScrollView(Transform content, string[] filenames)
-	{
-		// 清除当前显示的文件
-		for (int i = 0; i < content.childCount; i++)
-		{
-			Destroy(content.GetChild(i).gameObject);
-		}
-
-		float height = 70f;
-		// 重新创建要显示的文件的Prefab
-		Instantiate(resourceController.newFilePrefab, content);
-		foreach (string filename in filenames)
-		{
-			GameObject fileObj = Instantiate(resourceController.filePrefab, content);
-			string[] str = filename.Split('/', '.');
-			fileObj.GetComponentInChildren<Text>().text = str[str.Length - 2];
-			height += 70f;
-		}
-		content.GetComponent<RectTransform>().sizeDelta = new Vector2(0, height);
-	}
-
 	// 在scrollView的content上重新绘制files
 	private static void RedrawSaveScrollView()
 	{
+		List<GameObject> objs = new List<GameObject>();
+		objs.Add(Instantiate(resourceController.newFilePrefab));
+		objs.Add(Instantiate(resourceController.newFilePrefab));
+		objs.Add(Instantiate(resourceController.newFilePrefab));
+		objs.Add(Instantiate(resourceController.newFilePrefab));
+
+		RedrawScrollView(objs);
+	}
+
+	// 重新绘制某路径下
+	private static void RedrawScrollView(string path)
+	{
+		string[] filenames = ResourceController.GetFilesInDirectory(path);
+
+		List<GameObject> objs = new List<GameObject>();
+		foreach (string filename in filenames)
+		{
+			GameObject fileObj = Instantiate(resourceController.filePrefab);
+			string[] str = filename.Split('/', '.');
+			fileObj.GetComponentInChildren<Text>().text = str[str.Length - 2];
+			objs.Add(fileObj);
+		}
+
+		RedrawScrollView(objs);
+	}
+
+	// 在instance的子物体content上,重新绘制
+	private static void RedrawScrollView(List<GameObject> objs)
+	{
 		Transform viewport = instance.transform.Find("Viewport");
 		Transform content = viewport.Find("Content");
+		objs.Add(Instantiate(resourceController.backPrefab));
+		RedrawScrollView(content, objs);
+	}
 
+	// 在scrollView的content上重新绘制
+	private static void RedrawScrollView(Transform content, List<GameObject> objs)
+	{
 		// 清除当前显示的文件
 		for (int i = 0; i < content.childCount; i++)
 		{
 			Destroy(content.GetChild(i).gameObject);
 		}
 
-		// 重新创建要显示的文件的Prefab
-		Instantiate(resourceController.newFilePrefab, content);
-		Instantiate(resourceController.newFilePrefab, content);
-		Instantiate(resourceController.newFilePrefab, content);
-		Instantiate(resourceController.newFilePrefab, content);
+		// 设置新的高度
+		float height = 70f;
+		content.GetComponent<RectTransform>().sizeDelta
+			= new Vector2(0, height * objs.Count);
+		// 添加gameobject
+		objs.ForEach(obj =>
+		{
+			obj.transform.SetParent(content);
+			obj.transform.localScale = Vector3.one; // 添加进去后scale更改了
+		});
+		
 	}
 
 }

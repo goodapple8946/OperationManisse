@@ -57,17 +57,8 @@ public class ResourceController : MonoBehaviour
 	// 文件（File）Prefab
 	public GameObject filePrefab;
 
-	// 新建模块（Module）Prefab
-	public GameObject newModulePrefab;
-
-	// 模块（Module）Prefab
-	public GameObject modulePrefab;
-
-	// UI的文件面板
-	public GameObject FileScrollView;
-
-	// UI的模组文件面板
-	public GameObject ModuleScrollView;
+	// 文件（File）Prefab
+	public GameObject backPrefab;
 
 	protected void Awake()
 	{

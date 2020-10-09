@@ -18,7 +18,7 @@ public class EditorLoadGame : MonoBehaviour
 		}));
 	}
 
-	public static void LoadModuleFromFS(String path)
+	public static void LoadGameFromFS(String path)
 	{
 		try
 		{

@@ -3662,7 +3662,7 @@ PrefabInstance:
     - target: {fileID: 3690012851469872564, guid: 83be15af3eedd0c47bd35297bcdeb8e1,
         type: 3}
       propertyPath: m_Name
-      value: Modules Scroll View
+      value: Files Scroll View
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83be15af3eedd0c47bd35297bcdeb8e1, type: 3}
@@ -4585,12 +4585,6 @@ MonoBehaviour:
     type: 3}
   filePrefab: {fileID: 8491296962842051870, guid: ad98cbf2b63eebf4dad51f1900971970,
     type: 3}
-  newModulePrefab: {fileID: 8978978173917202838, guid: a2f6841edc0b0ae4e94a7e01816b8440,
-    type: 3}
-  modulePrefab: {fileID: 1902731111334702819, guid: 00da50386d9ea1f44a8997cf5ef7bc9a,
-    type: 3}
-  FileScrollView: {fileID: 0}
-  ModuleScrollView: {fileID: 0}
 --- !u!1 &5194580539087032907
 GameObject:
   m_ObjectHideFlags: 0

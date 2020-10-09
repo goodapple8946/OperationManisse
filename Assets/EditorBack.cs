@@ -1,12 +1,11 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
-using static Controller;
 
-public class EditorDeleteGame : MonoBehaviour
+public class EditorBack : MonoBehaviour
 {
+
 	Button button;
 
 	private void Awake()
@@ -14,7 +13,8 @@ public class EditorDeleteGame : MonoBehaviour
 		button = GetComponent<Button>();
 		button.onClick.AddListener(() =>
 		{
-			FileViewer.ViewerState = FileViewer.State.DeleteGame;
+			FileViewer.ViewerState = FileViewer.State.None;
 		});
 	}
+
 }
