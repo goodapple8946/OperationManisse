@@ -40,9 +40,9 @@ public abstract class Unit : ClickableObject
     // 玩家
     [HideInInspector] public Player player;
 
-	// 在网格中的位置（-1代表未在网格中）
-	/*[HideInInspector] */public int gridX = -1;
-	/*[HideInInspector] */public int gridY = -1;
+    // 在网格中的位置（-1代表未在网格中）
+    [HideInInspector] public int gridX = -1;
+    [HideInInspector] public int gridY = -1;
 
 
 	// Link Direction:
