@@ -9,7 +9,7 @@ using static Controller;
 /// <summary>
 /// 文件被选中后，将text名称发给editorController
 /// </summary>
-public class EditorSelectFile : MonoBehaviour
+public class EditorSelectedFile : MonoBehaviour
 {
     private Button button;
 

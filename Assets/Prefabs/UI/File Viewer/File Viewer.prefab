@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4854833966296462400}
   - component: {fileID: 1162056648752965207}
   m_Layer: 5
-  m_Name: Files Scroll View
+  m_Name: File Viewer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -119,6 +119,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 589e332b4c42ebe4eb3b54f28292fb5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  newFilePrefab: {fileID: 5128816522622747494, guid: a85422b22e6996a42802622f39537c48,
+    type: 3}
+  filePrefab: {fileID: 8491296962842051870, guid: ad98cbf2b63eebf4dad51f1900971970,
+    type: 3}
+  backPrefab: {fileID: 3301962589053609950, guid: 135b8ce4bfcb68043a030983cdac0417,
+    type: 3}
+  scrollViewText: {fileID: 5182710268213943647, guid: 32f498ddc63a05f4a807539af28f6968,
+    type: 3}
 --- !u!1 &3914582350219665186
 GameObject:
   m_ObjectHideFlags: 0

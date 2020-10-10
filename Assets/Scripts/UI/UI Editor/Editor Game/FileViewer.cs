@@ -132,13 +132,15 @@ public class FileViewer : MonoBehaviour
 		GameObject titleObj = Instantiate(instance.scrollViewText);
 		titleObj.GetComponent<Text>().text = title;
 		objs.Add(titleObj);
+		// 添加NewFile
 		if (title == "Save")
 		{
 			objs.Add(Instantiate(instance.newFilePrefab));
 		}
-
+		// 添加文件obj
 		objs.AddRange(GetFileObjectsByPath(path));
-		objs.Add(instance.backPrefab);
+		// 添加Back Button
+		objs.Add(Instantiate(instance.backPrefab));
 		RedrawScrollView(objs);
 	}
 
