@@ -51,15 +51,6 @@ public class ResourceController : MonoBehaviour
     // 生命值Prefab
     public GameObject hpBarPrefab;
 
-	// 新建文件（File）Prefab
-	public GameObject newFilePrefab;
-
-	// 文件（File）Prefab
-	public GameObject filePrefab;
-
-	// 文件（File）Prefab
-	public GameObject backPrefab;
-
 	protected void Awake()
 	{
 		// 初始化unitDictionary

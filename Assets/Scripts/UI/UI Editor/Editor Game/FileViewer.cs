@@ -11,6 +11,19 @@ public class FileViewer : MonoBehaviour
 	public enum State { None, SaveGame, LoadGame, SaveModule, LoadModule, DeleteGame, DeleteModule }
 
 	private static State state;
+
+	// 新建文件（File）Prefab
+	[SerializeField] private GameObject newFilePrefab;
+
+	// 文件（File）Prefab
+	[SerializeField] private GameObject filePrefab;
+
+	// Back按钮 Prefab
+	[SerializeField] private GameObject backPrefab;
+
+	// 顶部文字 Prefab
+	[SerializeField] private GameObject scrollViewText;
+
 	[HideInInspector] public static State ViewerState
 	{
 		private get => state;
@@ -25,22 +38,22 @@ public class FileViewer : MonoBehaviour
 			switch (state)
 			{
 				case State.SaveGame:
-					RedrawSaveScrollView(ResourceController.GamePath);
+					RedrawScrollView(ResourceController.GamePath, "Save");
 					break;
 				case State.SaveModule:
-					RedrawSaveScrollView(ResourceController.ModulePath);
+					RedrawScrollView(ResourceController.ModulePath, "Save");
 					break;
 				case State.LoadGame:
-					RedrawScrollView(ResourceController.GamePath);
+					RedrawScrollView(ResourceController.GamePath, "Load");
 					break;
 				case State.LoadModule:
-					RedrawScrollView(ResourceController.ModulePath);
+					RedrawScrollView(ResourceController.ModulePath, "Load");
 					break;
 				case State.DeleteGame:
-					RedrawScrollView(ResourceController.GamePath);
+					RedrawScrollView(ResourceController.GamePath, "Delete");
 					break;
 				case State.DeleteModule:
-					RedrawScrollView(ResourceController.ModulePath);
+					RedrawScrollView(ResourceController.ModulePath, "Delete");
 					break;
 				case State.None:
 					// 清空处理的文件名
@@ -81,11 +94,11 @@ public class FileViewer : MonoBehaviour
 		{
 			case State.SaveGame:
 				EditorSaveGame.SaveFile2FS(fileSelected);
-				RedrawSaveScrollView(ResourceController.GamePath);
+				RedrawScrollView(ResourceController.GamePath, "Save");
 				break;
 			case State.SaveModule:
 				EditorSaveModule.SaveFile2FS(fileSelected);
-				RedrawSaveScrollView(ResourceController.ModulePath);
+				RedrawScrollView(ResourceController.ModulePath, "Save");
 				break;
 			case State.LoadGame:
 				EditorLoadGame.LoadGameFromFS(fileGamePath);
@@ -95,11 +108,11 @@ public class FileViewer : MonoBehaviour
 				break;
 			case State.DeleteGame:
 				DeleteFileOnFS(fileGamePath);
-				RedrawScrollView(ResourceController.GamePath);
+				RedrawScrollView(ResourceController.GamePath, "Delete");
 				break;
 			case State.DeleteModule:
 				DeleteFileOnFS(fileModulePath);
-				RedrawScrollView(ResourceController.ModulePath);
+				RedrawScrollView(ResourceController.ModulePath, "Delete");
 				break;
 		}
 		// 清空当前处理的文件
@@ -120,19 +133,22 @@ public class FileViewer : MonoBehaviour
 		}
 	}
 
-	// 在scrollView的content上重新绘制files
-	private static void RedrawSaveScrollView(string path)
-	{
-		List<GameObject> objs = GetFileObjectsByPath(path);
-		objs.Add(Instantiate(resourceController.newFilePrefab));
-
-		RedrawScrollView(objs);
-	}
-
 	// 重新绘制某路径下
-	private static void RedrawScrollView(string path)
+	private static void RedrawScrollView(string path, string title)
 	{
-		List<GameObject> objs = GetFileObjectsByPath(path);
+		List<GameObject> objs = new List<GameObject>();
+
+		// 添加文字标题
+		GameObject titleObj = Instantiate(instance.scrollViewText);
+		titleObj.GetComponent<Text>().text = title;
+		objs.Add(titleObj);
+
+		if (title == "Save")
+		{
+			objs.Add(Instantiate(instance.newFilePrefab));
+		}
+
+		objs.AddRange(GetFileObjectsByPath(path));
 
 		RedrawScrollView(objs);
 	}
@@ -145,7 +161,7 @@ public class FileViewer : MonoBehaviour
 		List<GameObject> objs = new List<GameObject>();
 		foreach (string filename in filenames)
 		{
-			GameObject fileObj = Instantiate(resourceController.filePrefab);
+			GameObject fileObj = Instantiate(instance.filePrefab);
 			string[] str = filename.Split('/', '.');
 			fileObj.GetComponentInChildren<Text>().text = str[str.Length - 2];
 			objs.Add(fileObj);
@@ -158,7 +174,7 @@ public class FileViewer : MonoBehaviour
 	{
 		Transform viewport = instance.transform.Find("Viewport");
 		Transform content = viewport.Find("Content");
-		objs.Add(Instantiate(resourceController.backPrefab));
+		objs.Add(Instantiate(instance.backPrefab));
 		RedrawScrollView(content, objs);
 	}
 
@@ -172,13 +188,14 @@ public class FileViewer : MonoBehaviour
 		}
 
 		// 设置新的高度
-		float height = 50f;
-		content.GetComponent<RectTransform>().sizeDelta
-			= new Vector2(0, height * objs.Count);
+		float height = 0f;
 		// 添加gameobject
 		objs.ForEach(obj =>
 		{
 			obj.transform.SetParent(content, false);
+			height += obj.GetComponent<RectTransform>().sizeDelta.y;
 		});
+		content.GetComponent<RectTransform>().sizeDelta
+			= new Vector2(0, height);
 	}
 }

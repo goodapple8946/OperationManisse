@@ -3521,6 +3521,30 @@ PrefabInstance:
       propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1162056648752965207, guid: 83be15af3eedd0c47bd35297bcdeb8e1,
+        type: 3}
+      propertyPath: newFilePrefab
+      value: 
+      objectReference: {fileID: 5128816522622747494, guid: a85422b22e6996a42802622f39537c48,
+        type: 3}
+    - target: {fileID: 1162056648752965207, guid: 83be15af3eedd0c47bd35297bcdeb8e1,
+        type: 3}
+      propertyPath: filePrefab
+      value: 
+      objectReference: {fileID: 8491296962842051870, guid: ad98cbf2b63eebf4dad51f1900971970,
+        type: 3}
+    - target: {fileID: 1162056648752965207, guid: 83be15af3eedd0c47bd35297bcdeb8e1,
+        type: 3}
+      propertyPath: backPrefab
+      value: 
+      objectReference: {fileID: 3301962589053609950, guid: 135b8ce4bfcb68043a030983cdac0417,
+        type: 3}
+    - target: {fileID: 1162056648752965207, guid: 83be15af3eedd0c47bd35297bcdeb8e1,
+        type: 3}
+      propertyPath: scrollViewText
+      value: 
+      objectReference: {fileID: 5182710268213943647, guid: 32f498ddc63a05f4a807539af28f6968,
+        type: 3}
     - target: {fileID: 1340789849451848614, guid: 83be15af3eedd0c47bd35297bcdeb8e1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4603,12 +4627,6 @@ MonoBehaviour:
   mute: {fileID: 21300000, guid: 6b5f010a4365aae4ca0a570b1fdd0da2, type: 3}
   unmute: {fileID: 21300000, guid: 901fee87f1056ce4ba79f176e1e427ea, type: 3}
   hpBarPrefab: {fileID: 5438377093910908434, guid: 9a25f6745485b9448aa585e5e7ab546f,
-    type: 3}
-  newFilePrefab: {fileID: 5128816522622747494, guid: a85422b22e6996a42802622f39537c48,
-    type: 3}
-  filePrefab: {fileID: 8491296962842051870, guid: ad98cbf2b63eebf4dad51f1900971970,
-    type: 3}
-  backPrefab: {fileID: 3301962589053609950, guid: 135b8ce4bfcb68043a030983cdac0417,
     type: 3}
 --- !u!1 &5194580539087032907
 GameObject:
