@@ -6,27 +6,63 @@ using static Controller;
 
 public class BlockChain : Block
 {
-	[HideInInspector] public Transform Head;
-	[HideInInspector] public Transform Tail;
-	public static float hookSize = 0.04f;
-	public float hookMass = 0.05f;
-	public float hookDrag = 0.25f;
-	public float hookAngularDrag = 0.25f;
+	private Transform Head;
+	private Transform Tail;
+
+	// 质量越大，铁链越难被拉长
+	private static float HookMass = 0.1f;
+	// drag越大，铁链可承受的拉力越大,越难被拉长 (还使铁链钟摆运动幅度减小)
+	private static float HookAngularDrag = 1000.0f;
+
+	// 每个环的铰链连接点距离自己中心的距离
+	private static float AnchorDistance = 0.08f;
+	// 铁链最长伸展距离，超过距离会断掉与两边的连接
+	private static float MaxDistance = 12 * AnchorDistance;
 
 	protected override void Start()
 	{
+		base.Start();
+
 		Head = transform.Find("Head");
 		Tail = transform.Find("Tail");
 
-		// 设置子物体的刚体属性
+		// 设置铰链环的刚体属性
 		Rigidbody2D[] hookBodies = transform.GetComponentsInChildren<Rigidbody2D>();
-		foreach(Rigidbody2D body in hookBodies)
+		foreach (Rigidbody2D body in hookBodies)
 		{
-			// mass的大小决定铁链受力伸长的长度
-			body.mass = hookMass;
-			// linearDrag和angularDrag使铁链不会无限spinning
-			body.drag  = hookDrag;
-			body.angularDrag = hookAngularDrag;
+			body.mass = HookMass;
+			//body.drag = HookDrag;
+			body.angularDrag = HookAngularDrag;
+		}
+
+		// 从尾遍历到第二个,建立内部铰链
+		for (int i = 0; i < transform.childCount - 1; i++)
+		{
+			GameObject child = transform.GetChild(i).gameObject;
+			// 与后一个连接, 如果在此处创建instantiate时会创建多个铰链
+			HingeJoint2D joint = child.GetComponent<HingeJoint2D>();
+			joint.connectedBody =
+				transform.GetChild(i + 1).GetComponent<Rigidbody2D>();
+			// 根据铁链的方向设置锚点
+			joint.anchor = AnchorDistance * dirVector[direction];
+		}
+	}
+
+	public override void GameStart()
+	{
+		base.GameStart();
+		// 开始游戏后取消为鼠标服务的BoxCollider2D
+		GetComponent<BoxCollider2D>().enabled = false;
+	}
+
+	protected override void Update()
+	{
+		base.Update();
+
+		// 超过距离断开连接
+		if (Vector2.Distance(Head.position, Tail.position) >= MaxDistance)
+		{
+			BreakLinks();
 		}
 	}
 
@@ -43,7 +79,6 @@ public class BlockChain : Block
 		{
 			joint = Tail.gameObject.AddComponent<HingeJoint2D>();
 		}
-
 		// 如果另一个也是铰链
 		if (another is BlockChain)
 		{
@@ -56,7 +91,7 @@ public class BlockChain : Block
 		{
 			joint.connectedBody = another.body;
 		}
-		joint.anchor = hookSize * dirVector[direction];
+		joint.anchor = AnchorDistance * dirVector[direction];
 
 		joints[direction] = joint;
 		blocksLinked[direction] = another;

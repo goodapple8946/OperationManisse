@@ -2589,7 +2589,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1032820972}
   m_HandleRect: {fileID: 1032820971}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3661,6 +3661,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Files Scroll View
       objectReference: {fileID: 0}
+    - target: {fileID: 3914582350219665186, guid: 83be15af3eedd0c47bd35297bcdeb8e1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4906915335121124864, guid: 83be15af3eedd0c47bd35297bcdeb8e1,
         type: 3}
       propertyPath: m_ChildAlignment
@@ -3950,7 +3955,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3428022056894261383}
   m_HandleRect: {fileID: 3428022056894261384}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

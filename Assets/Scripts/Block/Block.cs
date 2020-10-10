@@ -83,7 +83,9 @@ public class Block : Unit
 		BreakLinks();
 	}
 
-	// 解除所有自己的关节,和相连物体朝向自己方向的关节
+	/// <summary>
+	/// 解除所有自己的关节,和相连物体朝向自己方向的关节
+	/// </summary>
 	protected void BreakLinks()
     {
         for (int direction = 0; direction < 4; direction++)
