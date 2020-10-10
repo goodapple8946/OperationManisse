@@ -43,15 +43,10 @@ public class FileViewer : MonoBehaviour
 					RedrawScrollView(ResourceController.ModulePath);
 					break;
 				case State.None:
-					// 初始化ViewerState,清空处理的文件名
-					fileSelected = "";
 					break;
 			}
 		}
 	}
-
-	// 当前选中的文件无后缀名称
-	[HideInInspector] public static string fileSelected;
 
 	// 唯一的实例
 	[HideInInspector] public static FileViewer instance;
@@ -66,45 +61,41 @@ public class FileViewer : MonoBehaviour
 		ViewerState = State.None;
 	}
 
-	private void Update()
-	{	
-		// 没有要处理的文件
-		if (fileSelected == "")
-		{
-			return;
-		}
+	/// <summary>
+	/// 根据当前状态处理传入的文件
+	/// </summary>
+	public static void DealFile(string filename)
+	{
+		Debug.Assert(filename != null && filename != "");
 
-		string fileGamePath = ResourceController.GamePath + fileSelected + ".xml";
-		string fileModulePath = ResourceController.ModulePath + fileSelected + ".xml";
-
+		filename = filename + ".xml";
 		switch (ViewerState)
 		{
 			case State.SaveGame:
-				EditorSaveGame.SaveFile2FS(fileSelected);
+				EditorSaveGame.SaveFile2FS(filename);
 				RedrawSaveScrollView(ResourceController.GamePath);
 				break;
 			case State.SaveModule:
-				EditorSaveModule.SaveFile2FS(fileSelected);
+				EditorSaveModule.SaveFile2FS(filename);
 				RedrawSaveScrollView(ResourceController.ModulePath);
 				break;
 			case State.LoadGame:
-				EditorLoadGame.LoadGameFromFS(fileGamePath);
+				EditorLoadGame.LoadGameFromFS(ResourceController.GamePath + filename);
 				break;
 			case State.LoadModule:
-				EditorLoadModule.LoadModuleFromFS(fileModulePath);
+				EditorLoadModule.LoadModuleFromFS(ResourceController.ModulePath + filename);
 				break;
 			case State.DeleteGame:
-				DeleteFileOnFS(fileGamePath);
+				DeleteFileOnFS(ResourceController.GamePath + filename);
 				RedrawScrollView(ResourceController.GamePath);
 				break;
 			case State.DeleteModule:
-				DeleteFileOnFS(fileModulePath);
+				DeleteFileOnFS(ResourceController.ModulePath + filename);
 				RedrawScrollView(ResourceController.ModulePath);
 				break;
 		}
-		// 清空当前处理的文件
-		fileSelected = "";
 	}
+
 
 	private static void DeleteFileOnFS(string path)
 	{
@@ -125,6 +116,7 @@ public class FileViewer : MonoBehaviour
 	{
 		List<GameObject> objs = GetFileObjectsByPath(path);
 		objs.Add(Instantiate(resourceController.newFilePrefab));
+		objs.Add(Instantiate(resourceController.backPrefab));
 
 		RedrawScrollView(objs);
 	}
@@ -133,6 +125,7 @@ public class FileViewer : MonoBehaviour
 	private static void RedrawScrollView(string path)
 	{
 		List<GameObject> objs = GetFileObjectsByPath(path);
+		objs.Add(Instantiate(resourceController.backPrefab));
 
 		RedrawScrollView(objs);
 	}
@@ -158,7 +151,6 @@ public class FileViewer : MonoBehaviour
 	{
 		Transform viewport = instance.transform.Find("Viewport");
 		Transform content = viewport.Find("Content");
-		objs.Add(Instantiate(resourceController.backPrefab));
 		RedrawScrollView(content, objs);
 	}
 

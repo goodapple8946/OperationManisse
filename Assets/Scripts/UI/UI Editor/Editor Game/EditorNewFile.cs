@@ -10,9 +10,9 @@ public class EditorNewFile : MonoBehaviour
     private void Awake()
     {
         inputField = GetComponent<InputField>();
-        inputField.onEndEdit.AddListener(value =>
+        inputField.onEndEdit.AddListener(filename =>
         {
-            FileViewer.fileSelected = value;
+            FileViewer.DealFile(filename);
         });
     }
 }

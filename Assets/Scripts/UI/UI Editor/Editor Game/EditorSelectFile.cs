@@ -19,7 +19,7 @@ public class EditorSelectFile : MonoBehaviour
         button.onClick.AddListener(() =>
         {
             string filename = GetComponentInChildren<Text>().text;
-			FileViewer.fileSelected = filename;
+			FileViewer.DealFile(filename);
         });
     }
 }

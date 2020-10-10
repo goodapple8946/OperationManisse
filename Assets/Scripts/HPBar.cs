@@ -40,54 +40,53 @@ public class HPBar : MonoBehaviour
         if (unit == null)
         {
             Destroy(gameObject);
+			return;
+        }
+
+        if ((unit.health != unit.healthMax || editorController.IsShowingHP) &&
+            unit != editorController.MouseObject as Unit)
+        {
+            if (gameController.gamePhase == GamePhase.Editor || !init)
+            {
+                switch (unit.player)
+                {
+                    case Player.Neutral:
+                        renderer.sprite = frontNeutral;
+                        break;
+                    case Player.Player:
+                        renderer.sprite = frontPlayer;
+                        break;
+                    case Player.Enemy:
+                        renderer.sprite = frontEnemy;
+                        break;
+                }
+                init = true;
+            }
+
+            transform.localScale = Vector2.one;
+
+            value = unit.health;
+            if (valueBack < value)
+            {
+                valueBack = value;
+            }
+            else if (valueBack > value)
+            {
+                valueBack -= valueSpeed * valueMax * Time.deltaTime;
+            }
+            transform.position = (Vector2)unit.transform.position + offset;
+
+            float frontScale = value / valueMax;
+            transform.GetChild(1).localScale = new Vector3(frontScale, 1, 1);
+            transform.GetChild(1).transform.position = transform.position + new Vector3(((frontScale - 1) / 2) * 0.64f, 0, 0);
+
+            float backScale = valueBack / valueMax;
+            transform.GetChild(2).localScale = new Vector3(backScale, 1, 1);
+            transform.GetChild(2).transform.position = transform.position + new Vector3(((backScale - 1) / 2) * 0.64f, 0, 0);
         }
         else
         {
-            if ((unit.health != unit.healthMax || editorController.IsShowingHP) &&
-                unit != editorController.MouseObject as Unit)
-            {
-                if (gameController.gamePhase == GamePhase.Editor || !init)
-                {
-                    switch (unit.player)
-                    {
-                        case Player.Neutral:
-                            renderer.sprite = frontNeutral;
-                            break;
-                        case Player.Player:
-                            renderer.sprite = frontPlayer;
-                            break;
-                        case Player.Enemy:
-                            renderer.sprite = frontEnemy;
-                            break;
-                    }
-                    init = true;
-                }
-
-                transform.localScale = Vector2.one;
-
-                value = unit.health;
-                if (valueBack < value)
-                {
-                    valueBack = value;
-                }
-                else if (valueBack > value)
-                {
-                    valueBack -= valueSpeed * valueMax * Time.deltaTime;
-                }
-                transform.position = (Vector2)unit.transform.position + offset;
-
-                float frontScale = value / valueMax;
-                transform.GetChild(1).localScale = new Vector3(frontScale, 1, 1);
-                transform.GetChild(1).transform.position = transform.position + new Vector3(((frontScale - 1) / 2) * 0.64f, 0, 0);
-
-                float backScale = valueBack / valueMax;
-                transform.GetChild(2).localScale = new Vector3(backScale, 1, 1);
-                transform.GetChild(2).transform.position = transform.position + new Vector3(((backScale - 1) / 2) * 0.64f, 0, 0);
-            }
-            else
-            {
-                transform.localScale = Vector2.zero;
-            }
+            transform.localScale = Vector2.zero;
         }
     }
 }

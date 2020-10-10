@@ -26,17 +26,17 @@ public class EditorSaveGame : MonoBehaviour
 	/// </summary>
 	public static void SaveFile2FS(string filename)
 	{
-		//try
-		//{
+		try
+		{
 			string path = System.IO.Path.Combine(ResourceController.GamePath, filename + ".xml");
 			SaveGame(path);
 			resourceController.playAudio("Success");
-		//}
-		//catch (Exception e)
-		//{
-		//	Debug.Log(e.Message);
-		//	resourceController.playAudio("Error");
-		//}
+		}
+		catch (Exception e)
+		{
+			Debug.Log(e.Message);
+			resourceController.playAudio("Error");
+		}
 	}
 
 	/// <summary>
