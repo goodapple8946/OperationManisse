@@ -983,9 +983,9 @@ public class EditorController : MonoBehaviour
     {
         if (MouseObject != null)
         {
-            Destroy(MouseObject);
+            Destroy(MouseObject.gameObject);
         }
-    }
+	}
 
     // 清空网格
     public void ClearGrid()

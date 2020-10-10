@@ -24,7 +24,7 @@ public class BlockSpring : Block
 		base.Update();
 		if(drawStartObj != null && drawEndObj != null)
 		{
-			ReDraw(drawStartObj, drawEndObj);
+			Redraw(drawStartObj, drawEndObj);
 			CheckMaxDistance();
 		}
 	}
@@ -69,7 +69,7 @@ public class BlockSpring : Block
 	}
 
 	// 从from向to按比例伸长弹簧图像，使弹簧两端在from,to的中心点
-	private void ReDraw(GameObject from, GameObject to)
+	private void Redraw(GameObject from, GameObject to)
 	{
 		Vector2 pos1 = from.transform.position;
 		Vector2 pos2 = to.transform.position;

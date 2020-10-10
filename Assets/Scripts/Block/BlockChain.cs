@@ -6,10 +6,12 @@ using static Controller;
 
 public class BlockChain : Block
 {
-	public Transform Head;
-	public Transform Tail;
-	public static float hookSize = 0.05f;
-
+	[HideInInspector] public Transform Head;
+	[HideInInspector] public Transform Tail;
+	public static float hookSize = 0.04f;
+	public float hookMass = 0.05f;
+	public float hookDrag = 0.25f;
+	public float hookAngularDrag = 0.25f;
 
 	protected override void Start()
 	{
@@ -21,32 +23,31 @@ public class BlockChain : Block
 		foreach(Rigidbody2D body in hookBodies)
 		{
 			// mass的大小决定铁链受力伸长的长度
-			body.mass = 1;
+			body.mass = hookMass;
 			// linearDrag和angularDrag使铁链不会无限spinning
-			body.drag  = 0.25f;
-			body.angularDrag = 0.25f;
+			body.drag  = hookDrag;
+			body.angularDrag = hookAngularDrag;
 		}
 	}
 
 	// 与另一个Block连接
 	public override void LinkTo(Block another, int direction)
 	{
-		blocksLinked[direction] = another;
-
 		HingeJoint2D joint;
+		// 根据自己的连接方向在头或尾创建铰链
 		if (direction == HeadDir())
 		{
 			joint = Head.gameObject.AddComponent<HingeJoint2D>();
-			
 		}
 		else
 		{
 			joint = Tail.gameObject.AddComponent<HingeJoint2D>();
 		}
 
-		if(another is BlockChain)
+		// 如果另一个也是铰链
+		if (another is BlockChain)
 		{
-			// 如果另一个也是铰链
+			// 获取对方的头或尾部刚体
 			BlockChain anotherChain = (BlockChain)another;
 			int anotherLinkDir = GetDirectionNegative(direction);
 			joint.connectedBody = anotherChain.GetBody(anotherLinkDir);
@@ -55,26 +56,11 @@ public class BlockChain : Block
 		{
 			joint.connectedBody = another.body;
 		}
-
 		joint.anchor = hookSize * dirVector[direction];
+
 		joints[direction] = joint;
-
-
-			//// 如果是自己的头部才链接
-			//if (direction == this.direction)
-			//{
-			//	HingeJoint2D joint = Head.gameObject.AddComponent<HingeJoint2D>();
-			//	if(another is BlockChain)
-			//	{
-			//		// 如果另一个也是铰链
-			//		BlockChain anotherChain = (BlockChain)another;
-			//		joint.connectedBody = anotherChain.Tail.GetComponent<Rigidbody2D>();
-			//	}
-			//	else
-			//	{
-			//		joint.connectedBody = another.body;
-			//	}
-		}
+		blocksLinked[direction] = another;
+	}
 
 	// 两向可以链接
 	public override bool IsLinkAvailable(int direction)
@@ -98,7 +84,6 @@ public class BlockChain : Block
 	{
 		if(dir == HeadDir())
 		{
-
 			return Head.GetComponent<Rigidbody2D>();
 		}
 		else if(dir == TailDir())

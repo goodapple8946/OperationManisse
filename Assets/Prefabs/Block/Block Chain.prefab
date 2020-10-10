@@ -119,16 +119,16 @@ HingeJoint2D:
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: 0.07, y: 0}
-  m_ConnectedAnchor: {x: -0.012999982, y: 0}
+  m_Anchor: {x: 0.04, y: 0}
+  m_ConnectedAnchor: {x: -0.042999983, y: 0}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
     m_MaximumMotorForce: 10000
   m_UseLimits: 0
   m_AngleLimits:
-    m_LowerAngle: -45
-    m_UpperAngle: 45
+    m_LowerAngle: 0
+    m_UpperAngle: 359
 --- !u!58 &339812072496963318
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -264,16 +264,16 @@ HingeJoint2D:
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: 0.07, y: 0}
-  m_ConnectedAnchor: {x: -0.014000006, y: 0}
+  m_Anchor: {x: 0.04, y: 0}
+  m_ConnectedAnchor: {x: -0.044000015, y: 0}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
     m_MaximumMotorForce: 10000
   m_UseLimits: 0
   m_AngleLimits:
-    m_LowerAngle: -45
-    m_UpperAngle: 45
+    m_LowerAngle: 0
+    m_UpperAngle: 359
 --- !u!58 &7163648735604363025
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -409,16 +409,16 @@ HingeJoint2D:
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: 0.07, y: 0}
-  m_ConnectedAnchor: {x: -0.013999999, y: 0}
+  m_Anchor: {x: 0.04, y: 0}
+  m_ConnectedAnchor: {x: -0.044, y: 0}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
     m_MaximumMotorForce: 10000
   m_UseLimits: 0
   m_AngleLimits:
-    m_LowerAngle: -45
-    m_UpperAngle: 45
+    m_LowerAngle: 0
+    m_UpperAngle: 359
 --- !u!58 &7085322773580882145
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -674,16 +674,16 @@ HingeJoint2D:
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: 0.07, y: 0}
-  m_ConnectedAnchor: {x: -0.020999998, y: 0}
+  m_Anchor: {x: 0.04, y: 0}
+  m_ConnectedAnchor: {x: -0.051, y: 0}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
     m_MaximumMotorForce: 10000
   m_UseLimits: 0
   m_AngleLimits:
-    m_LowerAngle: -45
-    m_UpperAngle: 45
+    m_LowerAngle: 0
+    m_UpperAngle: 359
 --- !u!58 &1297049298878655947
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -824,6 +824,9 @@ MonoBehaviour:
   - {fileID: 0}
   Head: {fileID: 0}
   Tail: {fileID: 0}
+  hookMass: 0.05
+  hookDrag: 0.25
+  hookAngularDrag: 0.25
 --- !u!1 &7797348153483675781
 GameObject:
   m_ObjectHideFlags: 0
@@ -943,16 +946,16 @@ HingeJoint2D:
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: 0.07, y: 0}
-  m_ConnectedAnchor: {x: -0.027999999, y: 0}
+  m_Anchor: {x: 0.04, y: 0}
+  m_ConnectedAnchor: {x: -0.058, y: 0}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
     m_MaximumMotorForce: 10000
   m_UseLimits: 0
   m_AngleLimits:
-    m_LowerAngle: -45
-    m_UpperAngle: 45
+    m_LowerAngle: 0
+    m_UpperAngle: 359
 --- !u!58 &6290246929696049639
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1088,16 +1091,16 @@ HingeJoint2D:
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: 0.07, y: 0}
-  m_ConnectedAnchor: {x: -0.017000005, y: 0}
+  m_Anchor: {x: 0.04, y: 0}
+  m_ConnectedAnchor: {x: -0.047000006, y: 0}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
     m_MaximumMotorForce: 10000
   m_UseLimits: 0
   m_AngleLimits:
-    m_LowerAngle: -45
-    m_UpperAngle: 45
+    m_LowerAngle: 0
+    m_UpperAngle: 359
 --- !u!58 &5502586214895701404
 CircleCollider2D:
   m_ObjectHideFlags: 0
