@@ -35,7 +35,7 @@ public class Block : Unit
 	// 与另一个Block解除连接
 	public void UnlinkTo(Block another, int direction)
     {
-        int directionNeg = GetDirectionNegative(direction);
+        int directionNeg = Negative(direction);
 
         if (joints[direction] != null)
         {
@@ -49,8 +49,44 @@ public class Block : Unit
         return joints[direction] == null;
     }
 
-    // 根据方向整数获取向量
-    protected Vector2 GetVectorByDirection(int direction)
+	/// <summary>
+	/// 根据方向, 返回游戏开始后该方向的方向向量
+	/// </summary>
+	public Vector2 GetLinkedDir(int dir)
+	{
+		// 当自己旋转后, this.direction不为0，取相对方向
+		dir = (dir + 4 - this.direction) % 4;
+		Vector2 dirVec;
+		if (dir == 0)
+		{
+			dirVec = transform.right;
+		}
+		else if (dir == 1)
+		{
+			dirVec = transform.up;
+		}
+		else if (dir == 2)
+		{
+			dirVec = -transform.right;
+		}
+		else
+		{
+			dirVec = -transform.up;
+		}
+		return dirVec;
+	}
+
+	/// <summary>
+	/// 根据方向, 返回该方向链接点(边的中点)的世界坐标
+	/// </summary>
+	public Vector2 GetLinkedPoint(int dir)
+	{
+		Vector2 center = transform.position;
+		return center + GetLinkedDir(dir) * radius;
+	}
+
+	// 根据方向整数获取向量
+	protected Vector2 GetVectorByDirection(int direction)
     {
         Vector2 vector = Vector2.zero;
         switch (direction)
@@ -90,7 +126,7 @@ public class Block : Unit
     {
         for (int direction = 0; direction < 4; direction++)
         {
-            int directionNeg = GetDirectionNegative(direction);
+            int directionNeg = Negative(direction);
 
             Block another = blocksLinked[direction];
             if (another != null)
@@ -101,7 +137,7 @@ public class Block : Unit
         }
     }
 
-    protected int GetDirectionNegative(int direction)
+    protected int Negative(int direction)
     {
         return (direction + 2) % 4;
     }

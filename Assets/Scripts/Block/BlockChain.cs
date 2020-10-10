@@ -84,7 +84,7 @@ public class BlockChain : Block
 		{
 			// 获取对方的头或尾部刚体
 			BlockChain anotherChain = (BlockChain)another;
-			int anotherLinkDir = GetDirectionNegative(direction);
+			int anotherLinkDir = Negative(direction);
 			joint.connectedBody = anotherChain.GetBody(anotherLinkDir);
 		}
 		else
@@ -100,7 +100,7 @@ public class BlockChain : Block
 	// 两向可以链接
 	public override bool IsLinkAvailable(int direction)
 	{
-		int negDir = GetDirectionNegative(this.direction);
+		int negDir = Negative(this.direction);
 		bool canLink = (direction == this.direction || direction == negDir);
 		return canLink && joints[direction] == null;
 	}
@@ -112,7 +112,7 @@ public class BlockChain : Block
 
 	public int TailDir()
 	{
-		return GetDirectionNegative(direction);
+		return Negative(direction);
 	}
 
 	public Rigidbody2D GetBody(int dir)
