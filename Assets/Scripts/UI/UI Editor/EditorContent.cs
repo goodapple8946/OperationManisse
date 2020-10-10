@@ -10,27 +10,18 @@ public class EditorContent : MonoBehaviour
 
     void Awake()
     {
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            GameObject obj = transform.GetChild(i).gameObject;
-            switch (obj.name)
-            {
-                case "Editor Unit":
-                    editorUnit = obj;
-                    break;
-                case "Editor Background":
-                    editorBackground = obj;
-                    break;
-            }
-        }
+        editorUnit = transform.Find("Editor Unit").gameObject;
+        editorBackground = transform.Find("Editor Background").gameObject;
     }
 
+    // 更新Content内所有显示的数据
     public void UpdateUIShowing()
     {
         UpdateByEditorMode();
         BroadcastMessage("UpdateShowing");
     }
 
+    // 根据Editor Mode，对Content内的各功能部分显示或隐藏
     public void UpdateByEditorMode()
     {
         editorUnit.SetActive(editorController.EditorMode == EditorMode.Unit);
@@ -39,6 +30,7 @@ public class EditorContent : MonoBehaviour
         UpdateHeight();
     }
 
+    // 更新Content高度
     public void UpdateHeight()
     {
         float height = 0;
@@ -51,4 +43,4 @@ public class EditorContent : MonoBehaviour
         }
         GetComponent<RectTransform>().sizeDelta = new Vector2(0, height);
     }
-}
+}       
