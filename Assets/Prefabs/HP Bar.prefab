@@ -68,7 +68,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1139956789
-  m_SortingLayer: 10
+  m_SortingLayer: 11
   m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: 91a67a4fbc1ce7a4f846e174b8da066c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -127,14 +127,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb6163e9eba964742be69fd5dd025046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unit: {fileID: 0}
   value: 0
-  valueMax: 0
   valueBack: 0
+  valueMax: 0
   frontNeutral: {fileID: 21300000, guid: 196924f826f311d4380b5b3974e2f47e, type: 3}
   frontPlayer: {fileID: 21300000, guid: e0ce41ae3547e184199bf9286719a0ca, type: 3}
   frontEnemy: {fileID: 21300000, guid: b943056273b0f0947a76cf8dabfdbfe0, type: 3}
   back: {fileID: 21300000, guid: 91a67a4fbc1ce7a4f846e174b8da066c, type: 3}
+  unit: {fileID: 0}
 --- !u!1 &5912747347943562249
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,9 +203,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1139956789
-  m_SortingLayer: 10
+  m_SortingLayer: 11
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: e0ce41ae3547e184199bf9286719a0ca, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 196924f826f311d4380b5b3974e2f47e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -284,7 +284,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1139956789
-  m_SortingLayer: 10
+  m_SortingLayer: 11
   m_SortingOrder: -3
   m_Sprite: {fileID: 21300000, guid: acd39d80bcddd684b95dbd64ed9edef8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
