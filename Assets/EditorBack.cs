@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static Controller;
 
 public class EditorBack : MonoBehaviour
 {
-
 	Button button;
 
 	private void Awake()
@@ -16,5 +16,4 @@ public class EditorBack : MonoBehaviour
 			FileViewer.ViewerState = FileViewer.State.None;
 		});
 	}
-
 }

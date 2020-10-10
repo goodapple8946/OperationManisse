@@ -983,7 +983,7 @@ public class EditorController : MonoBehaviour
     {
         if (MouseObject != null)
         {
-            Destroy(MouseObject);
+            Destroy(MouseObject.gameObject);
         }
     }
 

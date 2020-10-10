@@ -20,7 +20,7 @@ public class Ball: Unit
 	public GameObject missilePrefab;
 
 	// 小球旋转速率
-	protected float rotationSpeed = 2f;
+	protected float rotationSpeed = 3f;
 
 	// 当前武器冷却
 	protected float weaponCD = 0;

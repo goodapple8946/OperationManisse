@@ -25,10 +25,10 @@ public class FileViewer : MonoBehaviour
 			switch (state)
 			{
 				case State.SaveGame:
-					RedrawSaveScrollView();
+					RedrawSaveScrollView(ResourceController.GamePath);
 					break;
 				case State.SaveModule:
-					RedrawSaveScrollView();
+					RedrawSaveScrollView(ResourceController.ModulePath);
 					break;
 				case State.LoadGame:
 					RedrawScrollView(ResourceController.GamePath);
@@ -69,35 +69,36 @@ public class FileViewer : MonoBehaviour
 	private void Update()
 	{	
 		// 没有要处理的文件
-		if(fileSelected == "")
+		if (fileSelected == "")
 		{
 			return;
 		}
-		
+
+		string fileGamePath = ResourceController.GamePath + fileSelected + ".xml";
+		string fileModulePath = ResourceController.ModulePath + fileSelected + ".xml";
+
 		switch (ViewerState)
 		{
 			case State.SaveGame:
 				EditorSaveGame.SaveFile2FS(fileSelected);
+				RedrawSaveScrollView(ResourceController.GamePath);
 				break;
 			case State.SaveModule:
 				EditorSaveModule.SaveFile2FS(fileSelected);
+				RedrawSaveScrollView(ResourceController.ModulePath);
 				break;
 			case State.LoadGame:
-				string path = ResourceController.GamePath + FileViewer.fileSelected + ".xml";
-				EditorLoadGame.LoadGameFromFS(path);
+				EditorLoadGame.LoadGameFromFS(fileGamePath);
 				break;
 			case State.LoadModule:
-				string modulePath = ResourceController.ModulePath + FileViewer.fileSelected + ".xml";
-				EditorLoadModule.LoadModuleFromFS(modulePath);
+				EditorLoadModule.LoadModuleFromFS(fileModulePath);
 				break;
 			case State.DeleteGame:
-				string deletePath = ResourceController.GamePath + fileSelected + ".xml";
-				DeleteFileOnFS(deletePath);
+				DeleteFileOnFS(fileGamePath);
 				RedrawScrollView(ResourceController.GamePath);
 				break;
 			case State.DeleteModule:
-				string deleteModulePath = ResourceController.ModulePath + FileViewer.fileSelected + ".xml";
-				DeleteFileOnFS(deleteModulePath);
+				DeleteFileOnFS(fileModulePath);
 				RedrawScrollView(ResourceController.ModulePath);
 				break;
 		}
@@ -120,12 +121,9 @@ public class FileViewer : MonoBehaviour
 	}
 
 	// 在scrollView的content上重新绘制files
-	private static void RedrawSaveScrollView()
+	private static void RedrawSaveScrollView(string path)
 	{
-		List<GameObject> objs = new List<GameObject>();
-		objs.Add(Instantiate(resourceController.newFilePrefab));
-		objs.Add(Instantiate(resourceController.newFilePrefab));
-		objs.Add(Instantiate(resourceController.newFilePrefab));
+		List<GameObject> objs = GetFileObjectsByPath(path);
 		objs.Add(Instantiate(resourceController.newFilePrefab));
 
 		RedrawScrollView(objs);
@@ -133,6 +131,14 @@ public class FileViewer : MonoBehaviour
 
 	// 重新绘制某路径下
 	private static void RedrawScrollView(string path)
+	{
+		List<GameObject> objs = GetFileObjectsByPath(path);
+
+		RedrawScrollView(objs);
+	}
+
+	// 获取某路径下所有文件fileObj
+	private static List<GameObject> GetFileObjectsByPath(string path)
 	{
 		string[] filenames = ResourceController.GetFilesInDirectory(path);
 
@@ -144,8 +150,7 @@ public class FileViewer : MonoBehaviour
 			fileObj.GetComponentInChildren<Text>().text = str[str.Length - 2];
 			objs.Add(fileObj);
 		}
-
-		RedrawScrollView(objs);
+		return objs;
 	}
 
 	// 在instance的子物体content上,重新绘制
@@ -167,16 +172,13 @@ public class FileViewer : MonoBehaviour
 		}
 
 		// 设置新的高度
-		float height = 70f;
+		float height = 50f;
 		content.GetComponent<RectTransform>().sizeDelta
 			= new Vector2(0, height * objs.Count);
 		// 添加gameobject
 		objs.ForEach(obj =>
 		{
-			obj.transform.SetParent(content);
-			obj.transform.localScale = Vector3.one; // 添加进去后scale更改了
+			obj.transform.SetParent(content, false);
 		});
-		
 	}
-
 }
