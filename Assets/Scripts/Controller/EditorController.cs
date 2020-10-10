@@ -142,7 +142,7 @@ public class EditorController : MonoBehaviour
             editorContent.UpdateUIShowing();
         }
     }
-    private bool isShowingHP;
+    private bool isShowingHP = true;
 
     // Editor面饭：玩家钱数
     public int PlayerMoney { get => playerMoney; set => playerMoney = value; }

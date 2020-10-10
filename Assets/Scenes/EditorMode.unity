@@ -1144,6 +1144,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7542483308770129364, guid: fe29d17e5e3dc8e4c96918f20a1b3fb6,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 820
+      objectReference: {fileID: 0}
     - target: {fileID: 7542483308831081959, guid: fe29d17e5e3dc8e4c96918f20a1b3fb6,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -3664,6 +3669,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Files Scroll View
       objectReference: {fileID: 0}
+    - target: {fileID: 3914582350219665186, guid: 83be15af3eedd0c47bd35297bcdeb8e1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4906915335121124864, guid: 83be15af3eedd0c47bd35297bcdeb8e1,
+        type: 3}
+      propertyPath: m_ChildForceExpandWidth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4906915335121124864, guid: 83be15af3eedd0c47bd35297bcdeb8e1,
+        type: 3}
+      propertyPath: m_ChildControlWidth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4906915335121124864, guid: 83be15af3eedd0c47bd35297bcdeb8e1,
+        type: 3}
+      propertyPath: m_ChildControlHeight
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83be15af3eedd0c47bd35297bcdeb8e1, type: 3}
 --- !u!222 &2532204023405198777
@@ -4584,6 +4609,8 @@ MonoBehaviour:
   newFilePrefab: {fileID: 5128816522622747494, guid: a85422b22e6996a42802622f39537c48,
     type: 3}
   filePrefab: {fileID: 8491296962842051870, guid: ad98cbf2b63eebf4dad51f1900971970,
+    type: 3}
+  backPrefab: {fileID: 3301962589053609950, guid: 135b8ce4bfcb68043a030983cdac0417,
     type: 3}
 --- !u!1 &5194580539087032907
 GameObject:

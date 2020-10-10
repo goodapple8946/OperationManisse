@@ -43,7 +43,7 @@ public class FileViewer : MonoBehaviour
 					RedrawScrollView(ResourceController.ModulePath);
 					break;
 				case State.None:
-					// 清空处理的文件名
+					// 初始化ViewerState,清空处理的文件名
 					fileSelected = "";
 					break;
 			}
@@ -62,7 +62,7 @@ public class FileViewer : MonoBehaviour
 			GameObject.Find("UI Editor").GetComponentInChildren<FileViewer>();
 		Debug.Assert(instance != null);
 
-		fileSelected = "";
+		// 初始化ViewerState
 		ViewerState = State.None;
 	}
 
