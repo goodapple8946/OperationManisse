@@ -18,8 +18,9 @@ public class EditorSelectFile : MonoBehaviour
         button = GetComponent<Button>();
         button.onClick.AddListener(() =>
         {
-            string filename = GetComponentInChildren<Text>().text;
-			FileViewer.DealFile(filename);
+			// 添加后缀
+            string name = GetComponentInChildren<Text>().text;
+			FileViewer.DealFile(name + ".xml");
         });
     }
 }

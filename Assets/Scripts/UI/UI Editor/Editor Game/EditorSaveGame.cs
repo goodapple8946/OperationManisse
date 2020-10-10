@@ -24,11 +24,11 @@ public class EditorSaveGame : MonoBehaviour
 	/// <summary>
 	/// 转换成xml,保存filename到文件系统,如果重名让编辑者选择
 	/// </summary>
-	public static void SaveFile2FS(string filename)
+	public static void SaveGame2FS(string filename)
 	{
 		try
 		{
-			string path = System.IO.Path.Combine(ResourceController.GamePath, filename + ".xml");
+			string path = System.IO.Path.Combine(ResourceController.GamePath, filename);
 			SaveGame(path);
 			resourceController.playAudio("Success");
 		}

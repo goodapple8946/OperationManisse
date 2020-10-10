@@ -27,10 +27,11 @@ public class EditorLoadModule : MonoBehaviour
 	/// <summary>
 	/// 从文件系统中加载保存的xml文件
 	/// </summary>
-	public static void LoadModuleFromFS(string path)
+	public static void LoadModuleFromFS(string filename)
 	{
 		try
 		{
+			string path = System.IO.Path.Combine(ResourceController.ModulePath, filename);
 			XMLModule module = Serializer.Deserialized<XMLModule>(path);
 			// EditorController进入Module模式，并且设置Module
 			editorController.MouseModule = module;

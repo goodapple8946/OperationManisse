@@ -18,10 +18,11 @@ public class EditorLoadGame : MonoBehaviour
 		}));
 	}
 
-	public static void LoadGameFromFS(String path)
+	public static void LoadGameFromFS(String filename)
 	{
 		try
 		{
+			string path = System.IO.Path.Combine(ResourceController.GamePath, filename);
 			XMLGame game = Serializer.Deserialized<XMLGame>(path);
 			Load(game);
 			resourceController.playAudio("Success");

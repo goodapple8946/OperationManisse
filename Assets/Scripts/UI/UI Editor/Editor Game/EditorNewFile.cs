@@ -10,9 +10,10 @@ public class EditorNewFile : MonoBehaviour
     private void Awake()
     {
         inputField = GetComponent<InputField>();
-        inputField.onEndEdit.AddListener(filename =>
+        inputField.onEndEdit.AddListener(name =>
         {
-            FileViewer.DealFile(filename);
+			// 添加后缀
+            FileViewer.DealFile(name + ".xml");
         });
     }
 }

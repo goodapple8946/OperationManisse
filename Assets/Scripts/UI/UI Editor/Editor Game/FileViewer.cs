@@ -63,27 +63,27 @@ public class FileViewer : MonoBehaviour
 
 	/// <summary>
 	/// 根据当前状态处理传入的文件
+	/// filename 包含了文件全名后缀
 	/// </summary>
 	public static void DealFile(string filename)
 	{
 		Debug.Assert(filename != null && filename != "");
-
-		filename = filename + ".xml";
+		
 		switch (ViewerState)
 		{
 			case State.SaveGame:
-				EditorSaveGame.SaveFile2FS(filename);
+				EditorSaveGame.SaveGame2FS(filename);
 				RedrawSaveScrollView(ResourceController.GamePath);
 				break;
 			case State.SaveModule:
-				EditorSaveModule.SaveFile2FS(filename);
+				EditorSaveModule.SaveModule2FS(filename);
 				RedrawSaveScrollView(ResourceController.ModulePath);
 				break;
 			case State.LoadGame:
-				EditorLoadGame.LoadGameFromFS(ResourceController.GamePath + filename);
+				EditorLoadGame.LoadGameFromFS(filename);
 				break;
 			case State.LoadModule:
-				EditorLoadModule.LoadModuleFromFS(ResourceController.ModulePath + filename);
+				EditorLoadModule.LoadModuleFromFS(filename);
 				break;
 			case State.DeleteGame:
 				DeleteFileOnFS(ResourceController.GamePath + filename);
@@ -139,6 +139,7 @@ public class FileViewer : MonoBehaviour
 		foreach (string filename in filenames)
 		{
 			GameObject fileObj = Instantiate(resourceController.filePrefab);
+			// 去除最后的.xml
 			string[] str = filename.Split('/', '.');
 			fileObj.GetComponentInChildren<Text>().text = str[str.Length - 2];
 			objs.Add(fileObj);

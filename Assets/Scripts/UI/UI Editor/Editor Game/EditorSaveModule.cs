@@ -30,11 +30,11 @@ public class EditorSaveModule : MonoBehaviour
 	/// <summary>
 	/// 转换成xml, 保存filename到文件系统,如果重名让编辑者选择
 	/// </summary>
-	public static void SaveFile2FS(string filename)
+	public static void SaveModule2FS(string filename)
 	{
         try
         {
-            string path = System.IO.Path.Combine(ResourceController.ModulePath, filename + ".xml");
+            string path = System.IO.Path.Combine(ResourceController.ModulePath, filename);
             SaveFile(path);
             resourceController.playAudio("Success");
         }
