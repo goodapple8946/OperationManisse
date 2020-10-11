@@ -44,7 +44,7 @@ public class GameController : MonoBehaviour
     {
         if (gamePhase == GamePhase.Playing && victoryController.isVictory)
         {
-            ToVictory();
+            EnterVictory();
         }
         DebugGame();
     }
@@ -61,8 +61,8 @@ public class GameController : MonoBehaviour
     // Editor阶段，按下UI的Run键
     public void Run()
     {
-        FromPhaseEditor();
-        ToPhasePreparation();
+        LeavePhaseEditor();
+        EnterPhasePreparation();
     }
 
     // Preparation阶段，按下UI的Reset键
@@ -74,25 +74,25 @@ public class GameController : MonoBehaviour
     // Preparation阶段，按下UI的Start键
     public void StartGame()
     {
-        ToPhasePlaying();
+        EnterPhasePlaying();
     }
 
     // Playing阶段，按下UI的Stop键
     public void StopGame()
     {
-        ToPhasePreparation();
+        EnterPhasePreparation();
     }
 
     // 任意阶段，按下UI的Menu键
     public void Menu()
     {
-        ToMenu();
+        EnterMenu();
     }
 
     // 任意阶段，按下UI的EditorMode键
     public void EditorMode()
     {
-        ToPhaseEditor();
+        EnterPhaseEditor();
     }
 
     /**
@@ -100,11 +100,11 @@ public class GameController : MonoBehaviour
      */
 
     // 进入Editor阶段
-    void ToPhaseEditor()
+    void EnterPhaseEditor()
     {
         gamePhase = GamePhase.Editor;
         uiEditor.SetActive(true);
-        editorController.ToPhaseEditor();
+        editorController.EnterPhaseEditor();
         uiGame.SetActive(false);
         uiGame.GetComponent<UIGame>().UpdateActive();
         shopController.UpdateShop();
@@ -113,9 +113,9 @@ public class GameController : MonoBehaviour
     }
 
     // 离开Editor阶段
-    void FromPhaseEditor()
+    void LeavePhaseEditor()
     {
-        editorController.FromPhaseEditor();
+        editorController.LeavePhaseEditor();
         uiEditor.SetActive(false);
         uiGame.SetActive(true);
         SaveUnitsOrigin();
@@ -123,7 +123,7 @@ public class GameController : MonoBehaviour
     }
 
     // 进入Preparation阶段
-    void ToPhasePreparation()
+    void EnterPhasePreparation()
     {
         gamePhase = GamePhase.Preparation;
         editorController.ShowGrids(true);
@@ -135,7 +135,7 @@ public class GameController : MonoBehaviour
     }
 
     // 进入Playing阶段
-    void ToPhasePlaying()
+    void EnterPhasePlaying()
     {
         gamePhase = GamePhase.Playing;
         editorController.ShowGrids(false);
@@ -150,7 +150,7 @@ public class GameController : MonoBehaviour
     }
 
     // 进入Victory阶段
-    void ToVictory()
+    void EnterVictory()
     {
         gamePhase = GamePhase.Victory;
         uiGame.GetComponent<UIGame>().UpdateActive();
@@ -159,7 +159,7 @@ public class GameController : MonoBehaviour
     }
 
     // 返回主菜单
-    void ToMenu()
+    void EnterMenu()
     {
         SceneManager.LoadScene("Level Panel");
     }
@@ -225,9 +225,8 @@ public class GameController : MonoBehaviour
         unitObjects.name = "Unit Objects";
         unitObjects.SetActive(true);
 
-		editorController.Grid = new Unit[editorController.XNum, editorController.YNum];
-		Unit[] units = gameController.GetUnits();
-		editorController.UpdateGridWithAllUnits(units);
+		editorController.Grid 
+			= editorController.CreateGrid(editorController.XNum, editorController.YNum);
     }
 
 	// 载入最初的物体
@@ -248,13 +247,12 @@ public class GameController : MonoBehaviour
         SaveUnits();
         editorController.InitPlayerMoney();
 
-		editorController.Grid = new Unit[editorController.XNum, editorController.YNum];
-		Unit[] units = gameController.GetUnits();
-		editorController.UpdateGridWithAllUnits(units);
-    }
+		editorController.Grid
+			= editorController.CreateGrid(editorController.XNum, editorController.YNum);
+	}
 
-    // 清除投掷物
-    void ClearMissile()
+	// 清除投掷物
+	void ClearMissile()
     {
         if (missileObjects != null)
         {

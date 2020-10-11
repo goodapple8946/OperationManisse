@@ -56,7 +56,7 @@ public class EditorController : MonoBehaviour
 			// 更新UI
 			editorContent.UpdateUIShowing<EditorSizeX>();
 			// 更新网格信息
-			UpdateGridAfterResize();
+			Grid = CreateGrid(xNum, yNum);
 		}
 	}
     private int xNum = 8;
@@ -71,7 +71,7 @@ public class EditorController : MonoBehaviour
             // 更新UI
             editorContent.UpdateUIShowing<EditorSizeY>();
             // 更新网格信息
-            UpdateGridAfterResize();
+            Grid = CreateGrid(xNum, yNum);
         }
     }
     private int yNum = 8;
@@ -231,9 +231,7 @@ public class EditorController : MonoBehaviour
 
     void Start()
     {
-        Init();
-		Grid = new Unit[XNum, YNum];
-		CreateGridSprites(XNum, YNum);
+		Grid = CreateEmptyGrid(XNum, YNum);
         editorContent.UpdateUIShowingAll();
     }
 
@@ -247,6 +245,7 @@ public class EditorController : MonoBehaviour
 
     void Init()
     {
+		// 清空网格背景图片
         if (gridObjects != null)
         {
             Destroy(gridObjects);
@@ -254,37 +253,11 @@ public class EditorController : MonoBehaviour
         // 初始化网格
         gridObjects = new GameObject("Grid Objects");
 
-        // 初始化四个边坐标
+        // 摄像机视角的初始化四个边坐标
         xMin = 0;
         yMin = 0;
         xMax = gridSize * XNum;
         yMax = gridSize * YNum;
-    }
-	
-	/// <summary>
-	/// 从原点绘制xCount, yCount个格子
-	/// </summary>
-    void CreateGridSprites(int xCount, int yCount)
-    {
-        // 创建网格
-        for (int x = 0; x < xCount; x++)
-        {
-            for (int y = 0; y < yCount; y++)
-            {
-                GameObject squareObj = Instantiate(square, gridObjects.transform);
-                squareObj.transform.position = CoordToPosition(x, y);
-                squareObj.GetComponent<SpriteRenderer>().sortingLayerName = "Area";
-
-                if ((x + y) % 2 == 0)
-                {
-                    squareObj.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, colorAlpha / 2);
-                }
-                else
-                {
-                    squareObj.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, colorAlpha);
-                }
-            }
-        }
     }
 
     // 鼠标左键点击
@@ -551,7 +524,7 @@ public class EditorController : MonoBehaviour
                 PlayerMoney += unit.price;
             }
             // 设置unit所在格子为null
-            if (IsInGrid(unit))
+            if (IsInGrid(Grid, unit))
             {
                 Grid[unit.gridX, unit.gridY] = null;
             }
@@ -574,14 +547,12 @@ public class EditorController : MonoBehaviour
     }
 
     // 根据载入的Unit的坐标，与网格建立联系
-    public void UpdateGridWithAllUnits(Unit[] units)
+    public void FillGrid(Unit[,] theGrid, Unit[] units)
     {   
         foreach (Unit unit in units)
         {
-            if (IsInGrid(unit))
-            {
-				Grid[unit.gridX, unit.gridY] = unit;
-            }
+			Debug.Assert(IsInGrid(theGrid, unit));
+			theGrid[unit.gridX, unit.gridY] = unit;
         }
     }
 
@@ -763,9 +734,11 @@ public class EditorController : MonoBehaviour
     }
 
     // 在网格中
-    public bool IsInGrid(Unit unit)
+    public bool IsInGrid(Unit[,] theGrid, Unit unit)
     {
-        return unit.gridX >= 0 && unit.gridY >= 0 && unit.gridX < XNum && unit.gridY < YNum;
+        return unit.gridX >= 0 && unit.gridY >= 0 
+			&& unit.gridX < theGrid.GetLength(0) 
+			&& unit.gridY < theGrid.GetLength(1);
     }
 
     /// <summary>
@@ -825,30 +798,70 @@ public class EditorController : MonoBehaviour
         PlayerMoney = PlayerMoneyOrigin;
     }
 
-    // xNum与yNum变更后更新网格
-    private void UpdateGridAfterResize()
-    {
-        // 删除网格之外的物体
-        Unit[] units = gameController.GetUnits();
-        foreach (Unit unit in units)
-        {
-            if (!IsInGrid(unit))
-            {
-                Destroy(unit.gameObject);
-            }
-        }
-
-        // 重建
-        Init();
-		Grid = new Unit[XNum, YNum];
-		Grid = new Unit[XNum, YNum];
+	/// <summary>
+	/// 创建新的网格
+	/// 并向其中gameController的units
+	/// </summary>
+	public Unit[,] CreateGrid(int xCount, int yCount)
+	{
 		Unit[] units = gameController.GetUnits();
-		UpdateGridWithAllUnits(units);
-        CreateGridSprites(XNum, YNum);
+		return CreateGrid(xCount, yCount, units);
+	}
+
+	/// <summary>
+	/// 创建新的网格
+	/// 并向其中填充units
+	/// </summary>
+	private Unit[,] CreateGrid(int xCount, int yCount, Unit[] units)
+    {
+		Unit[,] theGrid = CreateEmptyGrid(xCount, yCount);
+		foreach (Unit unit in units)
+		{
+			if(IsInGrid(theGrid, unit))
+			{
+				theGrid[unit.gridX, unit.gridY] = unit;
+			}
+			else
+			{
+				Destroy(unit.gameObject);
+			}
+		}
+		return theGrid;
     }
 
-    // 指令
-    void Order()
+	/// <summary>
+	/// 从原点绘制xCount, yCount个格子
+	/// 返回创建的二维数组
+	/// </summary>
+	Unit[,] CreateEmptyGrid(int xCount, int yCount)
+	{
+		// 重建 TODO:修改Init
+		Init();
+
+		// 绘制网格
+		for (int x = 0; x < xCount; x++)
+		{
+			for (int y = 0; y < yCount; y++)
+			{
+				GameObject squareObj = Instantiate(square, gridObjects.transform);
+				squareObj.transform.position = CoordToPosition(x, y);
+				squareObj.GetComponent<SpriteRenderer>().sortingLayerName = "Area";
+
+				if ((x + y) % 2 == 0)
+				{
+					squareObj.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, colorAlpha / 2);
+				}
+				else
+				{
+					squareObj.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, colorAlpha);
+				}
+			}
+		}
+		return new Unit[xCount, yCount];
+	}
+
+	// 指令
+	void Order()
     {
         // 编辑模式：Unit
         if (EditorMode == EditorMode.Unit)
@@ -952,7 +965,7 @@ public class EditorController : MonoBehaviour
     }
 
     // 离开Editor阶段
-    public void FromPhaseEditor()
+    public void LeavePhaseEditor()
     {
         InitPlayerMoney();
 
@@ -973,7 +986,7 @@ public class EditorController : MonoBehaviour
     }
 
     // 进入Editor阶段
-    public void ToPhaseEditor()
+    public void EnterPhaseEditor()
     {
         // 放置物体所有者切换至中立
         PlayerOwner = Player.Neutral;
