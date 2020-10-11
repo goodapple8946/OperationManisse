@@ -18,21 +18,10 @@ public class EditorContent : MonoBehaviour
     public void UpdateUIShowing<T>()
     {
         //BroadcastMessage("UpdateShowing");
-        T editorUI = GetComponentInChildren<T>();
-        if (editorUI != null)
+        T[] editorUIs = GetComponentsInChildren<T>();
+        foreach (T editorUI in editorUIs)
         {
             (editorUI as EditorUI).UpdateShowing();
-        }
-    }
-
-    // 更新所有Content内所有显示的数据
-    public void UpdateUIShowingAll()
-    {
-        //BroadcastMessage("UpdateShowing");
-        EditorUI[] editorUIs = GetComponentsInChildren<EditorUI>();
-        foreach (EditorUI editorUI in editorUIs)
-        {
-            editorUI.UpdateShowing();
         }
     }
 

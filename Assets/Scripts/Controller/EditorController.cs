@@ -233,7 +233,7 @@ public class EditorController : MonoBehaviour
     {
         Init();
         CreateGridSprites();
-        editorContent.UpdateUIShowingAll();
+        editorContent.UpdateByEditorMode();
     }
 
     void Update()
@@ -854,6 +854,7 @@ public class EditorController : MonoBehaviour
 
             // 单位指令
             {
+                // 接受指令的单位
                 Unit unit =
                     MouseObject is Unit ? MouseObject as Unit :
                     MouseObjectLast is Unit ? MouseObjectLast as Unit :
@@ -971,8 +972,13 @@ public class EditorController : MonoBehaviour
         // 放置物体所有者切换至中立
         PlayerOwner = Player.Neutral;
 
+        // 显示HP
+        IsShowingHP = true;
+
         // 显示网格
         editorController.ShowGrids(true);
+
+        EditorMode = EditorMode.Unit;
 
         DestroyMouseObject();
         MouseObjectLast = null;
@@ -1101,7 +1107,7 @@ public class EditorController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            Debug.Log(GetMouseCoord().Item1 + " " + GetMouseCoord().Item2);
+            EditorMode = EditorMode.Module;
         }
     }
 }

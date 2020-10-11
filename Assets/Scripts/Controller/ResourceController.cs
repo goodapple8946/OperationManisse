@@ -14,6 +14,7 @@ public class ResourceController : MonoBehaviour
 	public GameObject[] editorObjects;
 	public GameObject[] blockObjects;
 	public GameObject[] ballObjects;
+	public GameObject[] terrainObjects;
 
     // 背景的Prefab
     public GameObject[] backgroundObjects;

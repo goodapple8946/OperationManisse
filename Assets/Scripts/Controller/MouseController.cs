@@ -19,15 +19,15 @@ public class MouseController : MonoBehaviour
 
     void Update()
     {
-        // 鼠标左键按下
-        if (Input.GetMouseButtonDown(0))
+        // 鼠标键按下
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
         {
             startPositionWorld = MouseWorldPosition();
             startPositionScreen = Input.mousePosition;
         }
 
-        // 鼠标左键按住
-        if (Input.GetMouseButton(0))
+        // 鼠标键按住
+        if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
             endPositionWorld = MouseWorldPosition();
             endPositionScreen = Input.mousePosition;
@@ -43,12 +43,6 @@ public class MouseController : MonoBehaviour
         else
         {
             leftHoldTime = 0;
-        }
-
-        // 鼠标左键抬起
-        if (Input.GetMouseButtonUp(0))
-        {
-
         }
     }
 

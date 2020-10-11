@@ -7,7 +7,7 @@ using static Controller;
 
 public class EditorDeleteGame : EditorUI
 {
-	Button button;
+	private Button button;
 
 	private void Awake()
 	{

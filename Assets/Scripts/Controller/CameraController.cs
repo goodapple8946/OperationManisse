@@ -43,13 +43,20 @@ public class CameraController : MonoBehaviour
 
         if (!follow)
         {
-            if (gameController.gamePhase == GamePhase.Playing)
+            // 在Editor阶段不能滚动屏幕
+            if (gameController.gamePhase != GamePhase.Editor)
             {
                 // 滚动
                 Scroll();
             }
-            // 拖动
-            Drag();
+
+            // 鼠标右键按下
+            if (Input.GetMouseButton(1))
+            {
+                // 拖动
+                Drag();
+            }
+
             // 修正滚动和拖动
             FixBound();
         }

@@ -12,7 +12,7 @@ public class ShopController : MonoBehaviour
     private GameObject content;
 
 	// prefab
-    public GameObject[] gameObjects;
+    [HideInInspector] public GameObject[] gameObjects;
 
     public GameObject shopObjectPrefab;
 
