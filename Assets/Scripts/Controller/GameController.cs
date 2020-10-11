@@ -143,7 +143,7 @@ public class GameController : MonoBehaviour
         SaveUnits();
 
         // 连接所有Block
-        editorController.LinkAllBlocksInGrid();
+        editorController.LinkBlocks(editorController.Grid);
 
         // 向所有物体发送GameStart信号
         unitObjects.BroadcastMessage("GameStart");
@@ -213,8 +213,9 @@ public class GameController : MonoBehaviour
         unitObjectsOrigin.SetActive(false);
     }
 
-    // 载入物体
-    void LoadUnits()
+	// 载入物体
+	// 在playing阶段中止时，读取preparation阶段的物体
+	void LoadUnits()
     {
         if (unitObjects != null)
         {
@@ -223,11 +224,15 @@ public class GameController : MonoBehaviour
         unitObjects = Instantiate(unitObjectsSaved);
         unitObjects.name = "Unit Objects";
         unitObjects.SetActive(true);
-        editorController.UpdateGridWithAllUnits();
+
+		editorController.Grid = new Unit[editorController.XNum, editorController.YNum];
+		Unit[] units = gameController.GetUnits();
+		editorController.UpdateGridWithAllUnits(units);
     }
 
-    // 载入最初的物体
-    void LoadUnitsOrigin()
+	// 载入最初的物体
+	// 在playing阶段中止时，读取editor阶段的物体
+	void LoadUnitsOrigin()
     {
         if (unitObjects != null)
         {
@@ -242,7 +247,10 @@ public class GameController : MonoBehaviour
         unitObjects.SetActive(true);
         SaveUnits();
         editorController.InitPlayerMoney();
-        editorController.UpdateGridWithAllUnits();
+
+		editorController.Grid = new Unit[editorController.XNum, editorController.YNum];
+		Unit[] units = gameController.GetUnits();
+		editorController.UpdateGridWithAllUnits(units);
     }
 
     // 清除投掷物

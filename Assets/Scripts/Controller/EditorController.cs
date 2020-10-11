@@ -50,15 +50,15 @@ public class EditorController : MonoBehaviour
     public int XNum
     {
         get => xNum;
-        set
-        {
-            xNum = value;
-            // 更新UI
-            editorContent.UpdateUIShowing<EditorSizeX>();
-            // 更新网格信息
-            UpdateGridAfterResize();
-        }
-    }
+		set
+		{
+			xNum = value;
+			// 更新UI
+			editorContent.UpdateUIShowing<EditorSizeX>();
+			// 更新网格信息
+			UpdateGridAfterResize();
+		}
+	}
     private int xNum = 8;
 
     // Editor面板：网格尺寸y
@@ -232,7 +232,8 @@ public class EditorController : MonoBehaviour
     void Start()
     {
         Init();
-        CreateGridSprites();
+		Grid = new Unit[XNum, YNum];
+		CreateGridSprites(XNum, YNum);
         editorContent.UpdateUIShowingAll();
     }
 
@@ -252,7 +253,6 @@ public class EditorController : MonoBehaviour
         }
         // 初始化网格
         gridObjects = new GameObject("Grid Objects");
-        Grid = new Unit[XNum, YNum];
 
         // 初始化四个边坐标
         xMin = 0;
@@ -260,13 +260,16 @@ public class EditorController : MonoBehaviour
         xMax = gridSize * XNum;
         yMax = gridSize * YNum;
     }
-
-    void CreateGridSprites()
+	
+	/// <summary>
+	/// 从原点绘制xCount, yCount个格子
+	/// </summary>
+    void CreateGridSprites(int xCount, int yCount)
     {
         // 创建网格
-        for (int x = 0; x < XNum; x++)
+        for (int x = 0; x < xCount; x++)
         {
-            for (int y = 0; y < YNum; y++)
+            for (int y = 0; y < yCount; y++)
             {
                 GameObject squareObj = Instantiate(square, gridObjects.transform);
                 squareObj.transform.position = CoordToPosition(x, y);
@@ -571,27 +574,28 @@ public class EditorController : MonoBehaviour
     }
 
     // 根据载入的Unit的坐标，与网格建立联系
-    public void UpdateGridWithAllUnits()
-    {
-        Grid = new Unit[XNum, YNum];
-        Unit[] units = gameController.GetUnits();
+    public void UpdateGridWithAllUnits(Unit[] units)
+    {   
         foreach (Unit unit in units)
         {
             if (IsInGrid(unit))
             {
-                Grid[unit.gridX, unit.gridY] = unit;
+				Grid[unit.gridX, unit.gridY] = unit;
             }
         }
     }
 
-    // 连接所有网格中的Block
-    public void LinkAllBlocksInGrid()
+	/// <summary>
+	///	连接grids中的所有Block 
+	/// </summary>
+	public void LinkBlocks(Unit[,] grids)
     {
         for (int x = 0; x < XNum; x++)
         {
             for (int y = 0; y < YNum; y++)
             {
-                Block block = Grid[x, y] as Block;
+                Block block = grids[x, y] as Block;
+				// 是block
                 if (block != null)
                 {
                     for (int direction = 0; direction < 4; direction++)
@@ -836,8 +840,11 @@ public class EditorController : MonoBehaviour
 
         // 重建
         Init();
-        UpdateGridWithAllUnits();
-        CreateGridSprites();
+		Grid = new Unit[XNum, YNum];
+		Grid = new Unit[XNum, YNum];
+		Unit[] units = gameController.GetUnits();
+		UpdateGridWithAllUnits(units);
+        CreateGridSprites(XNum, YNum);
     }
 
     // 指令
