@@ -14,9 +14,6 @@ public class Grid
 	// 每个网格的大小
 	public static readonly float GRID_SIZE = 0.6f;
 
-	// 放置位置背景颜色深度
-	private static readonly float COLOR_ALPHA = 0.2f;
-
 	// 原点位置
 	private Vector2 originPos;
 
@@ -27,7 +24,7 @@ public class Grid
 
 	/// <summary>
 	/// 创建新的网格
-	/// 并向其中填充units
+	/// 并向其中填充坐标在其内的units
 	/// </summary>
 	public Grid(int xCount, int yCount, Vector2 originPos, Unit[] units)
 		: this(xCount, yCount, originPos)
@@ -67,6 +64,8 @@ public class Grid
 				squareObj.transform.position = Coord2WorldPos(new Coord(x, y));
 				squareObj.GetComponent<SpriteRenderer>().sortingLayerName = "Area";
 				// 根据所在网格设置alpha
+				// 放置位置背景颜色深度
+				const float COLOR_ALPHA = 0.2f;
 				Color color = Color.white;
 				color.a = ((x + y) % 2 == 0) ? (COLOR_ALPHA / 2) : COLOR_ALPHA;
 				squareObj.GetComponent<SpriteRenderer>().color = color;
@@ -283,6 +282,11 @@ public struct Coord
 	{
 		this.x = x;
 		this.y = y;
+	}
+
+	public static Coord operator +(Coord c1, Coord c2)
+	{
+		return new Coord(c1.x + c2.x, c1.y + c2.y);
 	}
 
 	public static Coord operator -(Coord c1, Coord c2)
