@@ -24,11 +24,11 @@ public class ShopController : MonoBehaviour
         content = GameObject.Find("UI Canvas/UI Shop/Viewport/Content");
 
         // 将editorObjects、blockObjects、ballObjects合并为gameObjects，因此在商店中排序为editor、block、ball
-        gameObjects = new GameObject[resourceController.editorObjects.Length + resourceController.blockObjects.Length + resourceController.ballObjects.Length + resourceController.backgroundObjects.Length];
-        resourceController.editorObjects.CopyTo(gameObjects, 0);
-        resourceController.blockObjects.CopyTo(gameObjects, resourceController.editorObjects.Length);
-        resourceController.ballObjects.CopyTo(gameObjects, resourceController.editorObjects.Length + resourceController.blockObjects.Length);
-        resourceController.backgroundObjects.CopyTo(gameObjects, resourceController.editorObjects.Length + resourceController.blockObjects.Length + resourceController.ballObjects.Length);
+        gameObjects = new GameObject[resourceController.terrainObjects.Length + resourceController.blockObjects.Length + resourceController.ballObjects.Length + resourceController.backgroundObjects.Length];
+        resourceController.terrainObjects.CopyTo(gameObjects, 0);
+        resourceController.blockObjects.CopyTo(gameObjects, resourceController.terrainObjects.Length);
+        resourceController.ballObjects.CopyTo(gameObjects, resourceController.terrainObjects.Length + resourceController.blockObjects.Length);
+        resourceController.backgroundObjects.CopyTo(gameObjects, resourceController.terrainObjects.Length + resourceController.blockObjects.Length + resourceController.ballObjects.Length);
     }
 
     void Start()
@@ -64,6 +64,7 @@ public class ShopController : MonoBehaviour
             {
                 active |= editorController.EditorMode == EditorMode.Unit && shopObject.clickableObject is Unit;
                 active |= editorController.EditorMode == EditorMode.Background && shopObject.clickableObject is Background;
+                active |= editorController.EditorMode == EditorMode.Terrain && shopObject.clickableObject is TerrainA;
             }
             else if (gameController.gamePhase == GamePhase.Preparation)
             {

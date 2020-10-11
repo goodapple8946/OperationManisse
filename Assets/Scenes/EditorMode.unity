@@ -4521,7 +4521,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 165282189f16d5a4ab287ddf7d438bf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorObjects: []
+  terrainObjects:
+  - {fileID: 5429984933498175296, guid: 4bde861c317876f41ab4a8e94223053c, type: 3}
   blockObjects:
   - {fileID: 9102851139242749904, guid: a256f40d52ebb0841b1775aed40f2b67, type: 3}
   - {fileID: 5472045338137121768, guid: fe92d42538472904c847571d9c2da20a, type: 3}
@@ -4544,7 +4545,6 @@ MonoBehaviour:
   - {fileID: 2019012135359395236, guid: 5ee0b73e13c849549bd62bba078b181d, type: 3}
   - {fileID: 482596519982492694, guid: 2be91bedcdbaa7648ba207bbbfea4382, type: 3}
   - {fileID: 6872813403385637928, guid: 03ea9a0d910199f489c7b3e7753866bf, type: 3}
-  terrainObjects: []
   backgroundObjects:
   - {fileID: 6815047320346587142, guid: 0c1da59ccf1d7f644b4df6e44b175baf, type: 3}
   - {fileID: 7918424988228628574, guid: 085d93b63c8be7549825686b4cdac3e5, type: 3}

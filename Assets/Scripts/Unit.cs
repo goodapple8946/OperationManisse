@@ -145,7 +145,7 @@ public abstract class Unit : ClickableObject
 			// 与之碰撞的另一个Unit
 			Unit unit = collision.gameObject.GetComponent<Unit>();
 
-			if (unit != null && unit.gameObject.layer != (int)Layer.Ground)
+			if (unit != null && unit.gameObject.layer != (int)Layer.Terrain)
 			{
 				// 造成伤害的有效相对速度
 				float velocity = collision.relativeVelocity.magnitude - velocityCollision;

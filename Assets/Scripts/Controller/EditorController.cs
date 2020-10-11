@@ -46,6 +46,10 @@ public class EditorController : MonoBehaviour
     public HashSet<Background> Backgrounds => backgrounds;
     private readonly HashSet<Background> backgrounds = new HashSet<Background>();
 
+    // 编辑者放置的地形
+    public HashSet<TerrainA> Terrains => terrains;
+    private readonly HashSet<TerrainA> terrains = new HashSet<TerrainA>();
+
     // Editor面板：网格尺寸x
     public int XNum
     {
@@ -304,6 +308,12 @@ public class EditorController : MonoBehaviour
             Background background = clickableObject as Background;
             LeftClick(background);
         }
+        // Terrain模式下点击Terrain，此时mouseObject一定是Terrain或null
+        else if (clickableObject is TerrainA && EditorMode == EditorMode.Terrain)
+        {
+            TerrainA terrain = clickableObject as TerrainA;
+            LeftClick(terrain);
+        }
     }
     // 鼠标左键点击Unit
     public void LeftClick(Unit unit)
@@ -354,6 +364,28 @@ public class EditorController : MonoBehaviour
             }
         }
     }
+    // 鼠标左键点击Terrain
+    public void LeftClick(TerrainA terrain)
+    {
+        // 必须是编辑阶段
+        if (gameController.gamePhase == GamePhase.Editor)
+        {
+            if (MouseObject != null)
+            {
+                if (MouseObject as TerrainA == terrain)
+                {
+                    // 安放鼠标上的地形到地形集合
+                    Place(terrain);
+                }
+            }
+            else
+            {
+                // 移动地形集合中的地形
+                buyContinuous = false;
+                Pick(terrain);
+            }
+        }
+    }
     // 拾起Unit
     public void Pick(Unit unit)
     {
@@ -376,25 +408,13 @@ public class EditorController : MonoBehaviour
         MouseObjectLast = background;
         BackgroundScale = background.transform.localScale.x;
     }
-    // 购买
-    public void Buy(GameObject prefab)
+    // 拾起Terrain
+    public void Pick(TerrainA terrain)
     {
-        buyContinuous = true;
-
-        ClickableObject clickableObject = prefab.GetComponent<ClickableObject>();
-
-        // 购买Unit，此时mouseObject一定是Unit或null
-        if (clickableObject is Unit && EditorMode == EditorMode.Unit)
-        {
-            Unit unit = clickableObject as Unit;
-            Buy(unit);
-        }
-        // 购买Background，此时mouseObject一定是Background或null
-        else if (clickableObject is Background && EditorMode == EditorMode.Background)
-        {
-            Background background = clickableObject as Background;
-            Buy(background);
-        }
+        terrain.SetSpriteLayer("Pick");
+        MouseObject = terrain;
+        MouseObjectLast = terrain;
+        // TODO
     }
 
     // 安放，吸附到最近的网格,如果可以再次购买,就再次购买
@@ -416,17 +436,13 @@ public class EditorController : MonoBehaviour
                 {
                     Buy(unit.gameObject);
                 }
-
+                // 设置Unit所有者
                 unit.player = PlayerOwner;
-                // 如果单位不是地面,则设置所有单位的显示层为Unit
-                // 如果单位是地面, 默认拥有者是中立,显示物理层不变
-                if (unit.gameObject.layer != (int)Layer.Ground)
-                {
-                    // 设置Unit显示层
-                    unit.SetSpriteLayer("Unit");
-                    // 设置Unit物理层
-                    unit.gameObject.layer = (int)GetUnitLayer(PlayerOwner, unit);
-                }
+                // 设置Unit显示层
+                unit.SetSpriteLayer("Unit");
+                // 设置Unit物理层
+                unit.gameObject.layer = (int)GetUnitLayer(PlayerOwner, unit);
+
                 Put(x, y, unit);
 
                 PlayPutIntoGridSound(unit);
@@ -441,6 +457,42 @@ public class EditorController : MonoBehaviour
         Backgrounds.Add(background);
         MouseObject = null;
         Put(background);
+    }
+    // 安放，放入地形集合
+    public void Place(TerrainA terrain)
+    {
+        terrain.SetSpriteLayer("Background");
+        terrain.gameObject.layer = (int)Layer.Terrain;
+        Terrains.Add(terrain);
+        MouseObject = null;
+        Put(terrain);
+    }
+
+    // 购买
+    public void Buy(GameObject prefab)
+    {
+        buyContinuous = true;
+
+        ClickableObject clickableObject = prefab.GetComponent<ClickableObject>();
+
+        // 购买Unit，此时mouseObject一定是Unit或null
+        if (clickableObject is Unit && EditorMode == EditorMode.Unit)
+        {
+            Unit unit = clickableObject as Unit;
+            Buy(unit);
+        }
+        // 购买Background，此时mouseObject一定是Background或null
+        else if (clickableObject is Background && EditorMode == EditorMode.Background)
+        {
+            Background background = clickableObject as Background;
+            Buy(background);
+        }
+        // 购买Terrain，此时mouseObject一定是Terrain或null
+        else if (clickableObject is TerrainA && EditorMode == EditorMode.Terrain)
+        {
+            TerrainA terrain = clickableObject as TerrainA;
+            Buy(terrain);
+        }
     }
     // 购买Unit
     void Buy(Unit unit)
@@ -507,6 +559,27 @@ public class EditorController : MonoBehaviour
             Pick(backgroundBought);
         }
     }
+    // 购买Terrain
+    void Buy(TerrainA terrain)
+    {
+        if (MouseObject == null)
+        {
+            TerrainA terrainBought = Instantiate(terrain.gameObject).GetComponent<TerrainA>();
+            terrainBought.name = terrain.gameObject.name;
+
+            Pick(terrainBought);
+        }
+        else
+        {
+            TerrainA mouseTerrain = MouseObject as TerrainA;
+            Destroy(mouseTerrain.gameObject);
+
+            TerrainA terrainBought = Instantiate(terrain.gameObject).GetComponent<TerrainA>();
+            terrainBought.name = terrain.gameObject.name;
+
+            Pick(terrainBought);
+        }
+    }
     // 钱不够
     void MoneyNotEnough()
     {
@@ -534,6 +607,11 @@ public class EditorController : MonoBehaviour
         {
             Background background = clickableObject as Background;
             Sell(background);
+        }
+        else if (clickableObject is TerrainA && EditorMode == EditorMode.Terrain)
+        {
+            TerrainA terrain = clickableObject as TerrainA;
+            Sell(terrain);
         }
     }
     // 出售Unit
@@ -563,6 +641,12 @@ public class EditorController : MonoBehaviour
     {
         Backgrounds.Remove(background);
         Destroy(background.gameObject);
+    }
+    // 出售Terrain
+    public void Sell(TerrainA terrain)
+    {
+        Terrains.Remove(terrain);
+        Destroy(terrain.gameObject);
     }
     private void PlayPutIntoGridSound(Unit unit)
     {
@@ -803,12 +887,6 @@ public class EditorController : MonoBehaviour
         return x >= 0 && x < XNum && y >= 0 && y < YNum;
     }
 
-    // 这一格合法且是地面
-    bool IsBlockGround(int x, int y)
-    {
-        return IsLegalCoord(x, y) && Grid[x, y] != null && Grid[x, y].gameObject.layer == (int)Layer.Ground;
-    }
-
     // 显示或隐藏网格图像
     public void ShowGrids(bool show)
     {
@@ -881,6 +959,15 @@ public class EditorController : MonoBehaviour
                 MouseObject.transform.position = MouseController.MouseWorldPosition();
             }
         }
+        // 编辑模式：Terrain
+        else if (EditorMode == EditorMode.Terrain)
+        {
+            if (MouseObject != null)
+            {
+                // 鼠标物体跟随鼠标
+                MouseObject.transform.position = MouseController.MouseWorldPosition();
+            }
+        }
         // 编辑模式：Module
         else if (EditorMode == EditorMode.Module)
         {
@@ -922,7 +1009,7 @@ public class EditorController : MonoBehaviour
     }
 
     /// <summary>
-    /// 将unit放入(x,y), 设置位置。添加到gameController管理
+    /// 将Unit放入(x,y), 设置位置。添加到gameController管理
     /// </summary>
     public void Put(int x, int y, Unit unit)
     {
@@ -936,13 +1023,23 @@ public class EditorController : MonoBehaviour
     }
 
     /// <summary>
-	/// 将background添加到gameController管理
+	/// 将Background添加到gameController管理
 	/// </summary>
 	public void Put(Background background)
     {
         background.transform.position += new Vector3(0, 0, 1);
         Backgrounds.Add(background);
         background.transform.parent = gameController.backgroundObjects.transform;
+    }
+
+    /// <summary>
+	/// 将Terrain添加到gameController管理
+	/// </summary>
+	public void Put(TerrainA terrain)
+    {
+        terrain.transform.position += new Vector3(0, 0, 1);
+        Terrains.Add(terrain);
+        terrain.transform.parent = gameController.backgroundObjects.transform;
     }
 
     // 离开Editor阶段
@@ -1014,6 +1111,16 @@ public class EditorController : MonoBehaviour
             Destroy(background.gameObject);
         }
         Backgrounds.Clear();
+    }
+
+    // 清空地形
+    public void ClearTerrain()
+    {
+        foreach (TerrainA terrain in terrains)
+        {
+            Destroy(terrain.gameObject);
+        }
+        Terrains.Clear();
     }
 
     /// <summary>
