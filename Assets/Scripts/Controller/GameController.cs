@@ -138,7 +138,7 @@ public class GameController : MonoBehaviour
     // 进入Preparation阶段
     void EnterPhasePreparation()
     {
-        editorController.ShowGrids(true);
+        editorController.MainGrid.SetShow(true);
         uiGame.GetComponent<UIGame>().UpdateActive();
         shopController.UpdateShop();
         LoadUnits();
@@ -154,12 +154,12 @@ public class GameController : MonoBehaviour
 	// 进入Playing阶段
 	void EnterPhasePlaying()
 	{
-		editorController.ShowGrids(false);
+		editorController.MainGrid.SetShow(false);
 		uiGame.GetComponent<UIGame>().UpdateActive();
 		SaveUnits();
 
 		// 连接所有Block
-		editorController.LinkBlocks(editorController.Grid);
+		editorController.MainGrid.LinkBlocks();
 
 		// 向所有物体发送GameStart信号
 		unitObjects.BroadcastMessage("GameStart");
@@ -231,18 +231,25 @@ public class GameController : MonoBehaviour
 	// 载入物体
 	// 在playing阶段中止时，读取preparation阶段的物体
 	void LoadUnits()
-    {
-        if (unitObjects != null)
-        {
-            Destroy(unitObjects);
-        }
-        unitObjects = Instantiate(unitObjectsSaved);
-        unitObjects.name = "Unit Objects";
-        unitObjects.SetActive(true);
+	{
+		if (unitObjects != null)
+		{
+			Destroy(unitObjects);
+		}
+		unitObjects = Instantiate(unitObjectsSaved);
+		unitObjects.name = "Unit Objects";
+		unitObjects.SetActive(true);
 
-		editorController.Grid 
-			= editorController.CreateGrid(editorController.XNum, editorController.YNum);
-    }
+		editorController.MainGrid = new Grid(
+			editorController.XNum, editorController.YNum,
+			EditorController.MAINGRID_POS, GetUnits());
+		// TODO:
+		// 摄像机视角的初始化四个边坐标
+		editorController.xMin = EditorController.MAINGRID_POS.x;
+		editorController.yMin = EditorController.MAINGRID_POS.y;
+		editorController.xMax = Grid.GRID_SIZE * editorController.XNum;
+		editorController.yMax = Grid.GRID_SIZE * editorController.YNum;
+	}
 
 	// 载入最初的物体
 	// 在playing阶段中止时，读取editor阶段的物体
@@ -262,8 +269,15 @@ public class GameController : MonoBehaviour
         SaveUnits();
         editorController.InitPlayerMoney();
 
-		editorController.Grid
-			= editorController.CreateGrid(editorController.XNum, editorController.YNum);
+		editorController.MainGrid= new Grid(
+			editorController.XNum, editorController.YNum,
+			EditorController.MAINGRID_POS, GetUnits());
+		// TODO:
+		// 摄像机视角的初始化四个边坐标
+		editorController.xMin = EditorController.MAINGRID_POS.x;
+		editorController.yMin = EditorController.MAINGRID_POS.y;
+		editorController.xMax = Grid.GRID_SIZE * editorController.XNum;
+		editorController.yMax = Grid.GRID_SIZE * editorController.YNum;
 	}
 
 	// 清除投掷物

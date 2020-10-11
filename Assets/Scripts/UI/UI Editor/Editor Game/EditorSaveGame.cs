@@ -45,11 +45,13 @@ public class EditorSaveGame : EditorUI
 	private static void SaveGame(string path)
 	{
 		CheckEditorResult(editorController.Backgrounds,
-			editorController.Grid, shopController.GetShopObjectVisibility());
+			editorController.MainGrid.GetUnits(), 
+			shopController.GetShopObjectVisibility());
 
 		List<Background> backgrounds = editorController.Backgrounds.ToList<Background>();
-		List<Unit> units = editorController.Grid.OfType<Unit>().ToList();
+		List<Unit> units = editorController.MainGrid.GetUnits();
 		List<string> goodsVisible = shopController.GetShopObjectVisibility();
+
 		XMLGame game = ObtainXMLGame(editorController, backgrounds, units, goodsVisible);
 		Serializer.SerializeGame(game, path);
 	}
@@ -83,12 +85,12 @@ public class EditorSaveGame : EditorUI
 
 	// 编辑结果的检测
 	[System.Diagnostics.Conditional("DEBUG")]
-	private static void CheckEditorResult(HashSet<Background> Backgrounds, Unit[,] Grid, List<string> goodsVisible)
+	private static void CheckEditorResult(HashSet<Background> Backgrounds, List<Unit> units, List<string> goodsVisible)
 	{
 		System.Diagnostics.Debug.Assert(
 			editorController.Backgrounds != null, "Backgrounds 数组为空");
 
-		foreach (Unit unit in Grid)
+		foreach (Unit unit in units)
 		{
 			System.Diagnostics.Debug.Assert(
 				unit != null && unit.gameObject != null, "unit绑定的gameObject已被销毁");

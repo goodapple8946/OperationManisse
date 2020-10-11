@@ -51,6 +51,9 @@ public class ResourceController : MonoBehaviour
     // 生命值Prefab
     public GameObject hpBarPrefab;
 
+	// 网格
+	public GameObject square;
+
 	protected void Awake()
 	{
 		// 初始化unitDictionary

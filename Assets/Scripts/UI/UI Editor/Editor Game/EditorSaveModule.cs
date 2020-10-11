@@ -8,8 +8,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-// 类型定义
-using Coord = System.Tuple<int, int>;
 
 /// <summary>
 /// 与EditorSave相比只改变了SaveFile()方法
@@ -50,24 +48,10 @@ public class EditorSaveModule : EditorUI
 	/// </summary>
 	private static void SaveFile(string path)
 	{
-		CheckEditorResult(editorController.Grid);
+		CheckEditorResult(editorController.MainGrid);
 		
 		XMLModule module = ObtainModule(editorController);
 		Serializer.SerializeModule(module, path);
-	}
-
-	// 编辑结果的检测
-	[System.Diagnostics.Conditional("DEBUG")]
-	private static void CheckEditorResult(Unit[,] Grid)
-	{
-		foreach (Unit unit in Grid)
-		{
-			if(unit != null)
-			{
-				System.Diagnostics.Debug.Assert(
-					unit.gameObject != null, "unit绑定的gameObject已被销毁");
-			}
-		}
 	}
 
 	// 除去空行，对单位坐标变换后保存
@@ -76,25 +60,25 @@ public class EditorSaveModule : EditorUI
 		Coord lbCoord = GetLeftBottom();
 		Coord rtCoord = GetRightTop();
 		List<XMLUnit> xmlUnits = new List<XMLUnit>();
-		for (int i = lbCoord.Item1; i < rtCoord.Item1; i++)
+		for (int i = lbCoord.x; i < rtCoord.x; i++)
 		{
-			for (int j = lbCoord.Item2; j < rtCoord.Item2; j++)
+			for (int j = lbCoord.y; j < rtCoord.y; j++)
 			{
 				// 添加所有Grid的非空元素
-				Unit unit = editorController.Grid[i, j];
+				Unit unit = editorController.MainGrid.Get(new Coord(i, j));
 				if (unit != null)
 				{
 					XMLUnit xmlUnit = Serializer.Unit2XML(unit);
 					// 转换成新的local坐标
-					xmlUnit.x -= lbCoord.Item1;
-					xmlUnit.y -= lbCoord.Item2;
+					xmlUnit.x -= lbCoord.x;
+					xmlUnit.y -= lbCoord.y;
 					xmlUnits.Add(xmlUnit);
 				}
 			}
 		}
 
 		XMLModule module = new XMLModule(
-			rtCoord.Item1 - lbCoord.Item1, rtCoord.Item2 - lbCoord.Item2, xmlUnits);
+			rtCoord.x - lbCoord.x, rtCoord.y - lbCoord.y, xmlUnits);
 		return module;
 	}
 
@@ -118,30 +102,37 @@ public class EditorSaveModule : EditorUI
 		Coord lbCoord = GetLeftBottom();
 		int x;
 		int y;
-		for (x = editorController.XNum; (x > lbCoord.Item1) && (ColumnEmpty(x - 1)); x--) { }
-		for (y = editorController.YNum; (y > lbCoord.Item2) && (RowEmpty(y - 1)); y--) { }
+		for (x = editorController.XNum; (x > lbCoord.x) && (ColumnEmpty(x - 1)); x--) { }
+		for (y = editorController.YNum; (y > lbCoord.y) && (RowEmpty(y - 1)); y--) { }
 		return new Coord(x, y);
 	}
 
-	private static bool RowEmpty(int fixedY)
+	/// <summary>
+	/// Y所在行为空
+	/// </summary>
+	private static bool RowEmpty(int Y)
 	{
 		for (int i = 0; i < editorController.XNum; i++)
 		{
-			Unit unit = editorController.Grid[i, fixedY];
+			Coord coord = new Coord(i, Y);
+			Unit unit = editorController.MainGrid.Get(coord);
 			if (unit != null)
 			{
 				return false;
 			}
 		}
 		return true;
-		
 	}
 
-	private static bool ColumnEmpty(int fixedX)
+	/// <summary>
+	/// X所在列为空
+	/// </summary>
+	private static bool ColumnEmpty(int X)
 	{
 		for (int j = 0; j < editorController.YNum; j++)
 		{
-			Unit unit = editorController.Grid[fixedX, j];
+			Coord coord = new Coord(X, j);
+			Unit unit = editorController.MainGrid.Get(coord);
 			if (unit != null)
 			{
 				return false;
@@ -150,30 +141,16 @@ public class EditorSaveModule : EditorUI
 		return true;
 	}
 
-	// namespace::wzf
-	// 除去空行，对单位坐标变换后保存
-	//public static XMLModule SerializeModule(EditorController editorController)
-	//{
-	//	int left = editorController.GetGridCoordNonEmpty("Left");
-	//	int right = editorController.GetGridCoordNonEmpty("Right");
-	//	int bottom = editorController.GetGridCoordNonEmpty("Bottom");
-	//	int top = editorController.GetGridCoordNonEmpty("Top");
-	//	int width = Mathf.Max(right - left + 1, 0);
-	//	int height = Mathf.Max(top - bottom + 1, 0);
-
-	//	List<XMLUnit> xmlUnits = new List<XMLUnit>();
-	//	foreach (Unit unit in editorController.Grid)
-	//	{
-	//		if (unit != null)
-	//		{
-	//			XMLUnit xmlUnit = Serializer.Unit2XML(unit);
-	//			// 转换成新的local坐标
-	//			xmlUnit.x -= left;
-	//			xmlUnit.y -= bottom;
-	//			xmlUnits.Add(xmlUnit);
-	//		}
-	//	}
-	//	XMLModule module = new XMLModule(width, height, xmlUnits);
-	//	return module;
-	//}
+	// 编辑结果的检测
+	[System.Diagnostics.Conditional("DEBUG")]
+	private static void CheckEditorResult(Grid grid)
+	{
+		foreach (Unit unit in grid.GetUnits())
+		{
+			if (unit != null)
+			{
+				Debug.Assert(unit.gameObject != null);
+			}
+		}
+	}
 }

@@ -6,9 +6,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-// 类型定义
-using Coord = System.Tuple<int, int>;
-
 
 public class EditorLoadModule : EditorUI
 {
@@ -60,7 +57,7 @@ public class EditorLoadModule : EditorUI
 	public static bool CanPlaceModuleCenter(XMLModule module, Coord worldCoord)
 	{
 		Coord center = module.GetCenter();
-		Coord worldStart = EditorController.Minus(worldCoord, center);
+		Coord worldStart = worldCoord - center;
 
 		return CanPlace(module, worldStart);
 	}
@@ -73,8 +70,8 @@ public class EditorLoadModule : EditorUI
 		Debug.Assert(CanPlaceModuleCenter(module, worldCoord), "Error worldCoord");
 
 		Coord center = module.GetCenter();
-		Coord worldStart = EditorController.Minus(worldCoord, center);
-		
+		Coord worldStart = worldCoord - center;
+
 		DisplayModule(module, worldStart);
 	}
 
@@ -88,24 +85,24 @@ public class EditorLoadModule : EditorUI
 		Debug.Assert(CanPlaceModuleCenter(module, worldCoord), "Error worldCoord");
 
 		Coord center = module.GetCenter();
-		Coord worldStart = EditorController.Minus(worldCoord, center);
+		Coord worldStart = worldCoord - center;
 
 		Load(module, worldStart);
 	}
 
 	// 将module的左下角放置在绘制(worldStartX, worldStartY)
-	private static void DisplayModule(XMLModule module, Coord worldCoord)
+	private static void DisplayModule(XMLModule module, Coord originCoord)
 	{
 		// 加载单位信息
-		for (int moduleX = 0; moduleX < module.xNum; moduleX++)
+		for (int localX = 0; localX < module.xNum; localX++)
 		{
-			for (int moduleY = 0; moduleY < module.yNum; moduleY++)
+			for (int localY = 0; localY < module.yNum; localY++)
 			{
-				XMLUnit xmlUnit = module.Grid[moduleX, moduleY];
+				XMLUnit xmlUnit = module.Grid[localX, localY];
 				if (xmlUnit != null)
 				{
-					int worldX = worldCoord.Item1 + moduleX;
-					int worldY = worldCoord.Item2 + moduleY;
+					int worldX = originCoord.x + localX;
+					int worldY = originCoord.y + localY;
 					// 修改xmlUnit的坐标
 					xmlUnit.x = worldX;
 					xmlUnit.y = worldY;
@@ -122,19 +119,19 @@ public class EditorLoadModule : EditorUI
 
 	// 加载module对象使其左下角在世界坐标(x,y)
 	// 将模组中每一个物品放到世界网格对应格中
-	private static void Load(XMLModule module, Coord worldCoord)
+	private static void Load(XMLModule module, Coord originCoord)
 	{
 		// 加载单位信息
-		for (int moduleX = 0; moduleX < module.xNum; moduleX++)
+		for (int localX = 0; localX < module.xNum; localX++)
 		{
-			for (int moduleY = 0; moduleY < module.yNum; moduleY++)
+			for (int localY = 0; localY < module.yNum; localY++)
 			{
 				// 如果xmlUnit存在
-				XMLUnit xmlUnit = module.Grid[moduleX, moduleY];
+				XMLUnit xmlUnit = module.Grid[localX, localY];
 				if (xmlUnit != null)
 				{
-					int worldX = worldCoord.Item1 + moduleX;
-					int worldY = worldCoord.Item2 + moduleY;
+					int worldX = originCoord.x + localX;
+					int worldY = originCoord.y + localY;
 					// 修改xmlUnit的坐标到Editor坐标网并加载
 					xmlUnit.x = worldX;
 					xmlUnit.y = worldY;
@@ -144,21 +141,20 @@ public class EditorLoadModule : EditorUI
 		}
 	}
 
-	// 检测是否能放入,true:可以
-	private static bool CanPlace(XMLModule module, Coord worldCoord)
+	// 检测是否能放入原点,true:可以
+	private static bool CanPlace(XMLModule module, Coord originCoord)
 	{
 		// module内的相对坐标区域
-		for (int moduleX = 0; moduleX < module.xNum; moduleX++)
+		for (int localX = 0; localX < module.xNum; localX++)
 		{
-			for (int moduleY = 0; moduleY < module.yNum; moduleY++)
+			for (int localY = 0; localY < module.yNum; localY++)
 			{
-				int worldX = worldCoord.Item1 + moduleX;
-				int worldY = worldCoord.Item2 + moduleY;
-
+				Coord coord = new Coord(originCoord.x + localX, originCoord.y + localY);
 				// 模组中的某格存在物品 && 世界坐标对应格超出或存在物品
-				bool mappingGridInvalid = (!editorController.IsLegalCoord(worldX, worldY)
-						|| editorController.Grid[worldX, worldY] != null);
-				if (module.Grid[moduleX, moduleY] != null && mappingGridInvalid)
+				bool mappingGridInvalid = 
+					(!editorController.MainGrid.InGrid(coord)
+					|| editorController.MainGrid.Get(coord) != null);
+				if (module.Grid[localX, localY] != null && mappingGridInvalid)
 				{
 					return false;
 				}

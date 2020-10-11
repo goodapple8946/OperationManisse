@@ -38,7 +38,7 @@ public class EditorLoadGame : EditorUI
 	private static void Load(XMLGame game)
 	{
 		// 清空当前网格
-		editorController.ClearGrid();
+		editorController.MainGrid.ClearGrid();
 		// 清空背景图片
 		editorController.ClearBackground();
 
@@ -86,7 +86,7 @@ public class EditorLoadGame : EditorUI
 	{
 		Unit unit = XML2Unit(xmlUnit);
 		// 设置unit的网格位置,和坐标
-		editorController.Put(xmlUnit.x, xmlUnit.y, unit);
+		editorController.Put(new Coord(xmlUnit.x, xmlUnit.y), unit);
 	}
 
 	private static Background XML2Background(XMLBackground xmlBackground)
@@ -119,7 +119,7 @@ public class EditorLoadGame : EditorUI
 		int dirDifference = (xmlUnit.direction - unit.direction) + 4;
 		unit.Rotate(dirDifference);
 		// 计算网格中的位置
-		unit.transform.position = editorController.CoordToPosition(xmlUnit.x, xmlUnit.y);
+		unit.transform.position = editorController.MainGrid.Coord2WorldPos(new Coord(xmlUnit.x, xmlUnit.y));
 
 		// prefab的layer是Default，需要根据所属player信息创建
 		unit.gameObject.layer = (int)xmlUnit.layer;

@@ -13,7 +13,7 @@ public class EditorClearMap : EditorUI
 		button = GetComponent<Button>();
 		button.onClick.AddListener(() =>
 		{
-			editorController.ClearGrid();
+			editorController.MainGrid.ClearGrid();
 		});
 	}
 

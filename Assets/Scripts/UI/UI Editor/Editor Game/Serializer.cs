@@ -9,9 +9,6 @@ using System.Xml.Serialization;
 using UnityEngine;
 using static Controller;
 
-// 坐标
-using Coord = System.Tuple<int, int>;
-
 /// <summary>
 /// 辅助save和load的工具类
 /// </summary>
@@ -73,8 +70,8 @@ static class Serializer
 		Debug.Assert(unit != null);
 		String name = unit.gameObject.name;
 		int player = (int)unit.player;
-		int x = unit.gridX;
-		int y = unit.gridY;
+		int x = unit.coord.x;
+		int y = unit.coord.y;
 		int direction = unit.direction;
 		Layer layer = (Layer)unit.gameObject.layer;
 		return new XMLUnit(name, player, x, y, direction, layer);

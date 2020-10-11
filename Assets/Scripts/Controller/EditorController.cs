@@ -8,8 +8,6 @@ using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.UI;
 using static Controller;
 
-// 类型定义
-using Coord = System.Tuple<int, int>;
 
 public class EditorController : MonoBehaviour
 {
@@ -38,16 +36,19 @@ public class EditorController : MonoBehaviour
     }
     private EditorMode editorMode;
 
-    // 放置物体的网格
-    public Unit[,] Grid { get => grid; set => grid = value; }
-    private Unit[,] grid;
+	// 放置物体的网格
+	public Grid MainGrid { get => mainGrid; set => mainGrid = value; }
+    private Grid mainGrid;
 
     // 编辑者放置的背景
     public HashSet<Background> Backgrounds => backgrounds;
     private readonly HashSet<Background> backgrounds = new HashSet<Background>();
 
-    // Editor面板：网格尺寸x
-    public int XNum
+	// MainGrid的起始世界位置
+	public static readonly Vector2 MAINGRID_POS = Vector2.zero;
+
+	// Editor面板：网格尺寸x
+	public int XNum
     {
         get => xNum;
 		set
@@ -56,7 +57,13 @@ public class EditorController : MonoBehaviour
 			// 更新UI
 			editorContent.UpdateUIShowing<EditorSizeX>();
 			// 更新网格信息
-			Grid = CreateGrid(xNum, yNum);
+			MainGrid = new Grid(xNum, yNum, MAINGRID_POS);
+			// TODO:
+			// 摄像机视角的初始化四个边坐标
+			xMin = MAINGRID_POS.x;
+			yMin = MAINGRID_POS.y;
+			xMax = Grid.GRID_SIZE * XNum;
+			yMax = Grid.GRID_SIZE * YNum;
 		}
 	}
     private int xNum = 8;
@@ -71,8 +78,14 @@ public class EditorController : MonoBehaviour
             // 更新UI
             editorContent.UpdateUIShowing<EditorSizeY>();
             // 更新网格信息
-            Grid = CreateGrid(xNum, yNum);
-        }
+            MainGrid = new Grid(XNum, YNum, MAINGRID_POS);
+			// TODO:
+			// 摄像机视角的初始化四个边坐标
+			xMin = MAINGRID_POS.x;
+			yMin = MAINGRID_POS.y;
+			xMax = Grid.GRID_SIZE * XNum;
+			yMax = Grid.GRID_SIZE * YNum;
+		}
     }
     private int yNum = 8;
 
@@ -196,27 +209,8 @@ public class EditorController : MonoBehaviour
     [HideInInspector] public float yMin;
     [HideInInspector] public float yMax;
 
-    // 网格背景物体
-    public GameObject square;
-
-    // 每个网格的大小
-    private float gridSize = 0.6f;
-
-    // 整个网格的左下角的坐标
-    private Vector2 origin = Vector2.zero;
-
-    // 根据方向获取坐标偏移
-    private int[,] dir4 = { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };
-    private int[,] dir8 = { { 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 }, { -1, -1 }, { 0, -1 }, { 1, -1 } };
-
-    // Unit吸附的最大范围
-    private float distanceAbsorption = 0.6f;
-
     // 连续购买（是购买并安放的，而非移动网格中现有的）
     private bool buyContinuous = false;
-
-    // 放置位置背景颜色深度
-    private float colorAlpha = 0.2f;
 
     // 显示Editor内容的物体
     private EditorContent editorContent;
@@ -231,8 +225,15 @@ public class EditorController : MonoBehaviour
 
     void Start()
     {
-		Grid = CreateEmptyGrid(XNum, YNum);
-        editorContent.UpdateUIShowingAll();
+		MainGrid = new Grid(XNum, YNum, MAINGRID_POS);
+		// TODO:
+		// 摄像机视角的初始化四个边坐标
+		xMin = MAINGRID_POS.x;
+		yMin = MAINGRID_POS.y;
+		xMax = Grid.GRID_SIZE * XNum;
+		yMax = Grid.GRID_SIZE * YNum;
+
+		editorContent.UpdateUIShowingAll();
     }
 
     void Update()
@@ -241,23 +242,6 @@ public class EditorController : MonoBehaviour
         Order();
 
         MyDebug();
-    }
-
-    void Init()
-    {
-		// 清空网格背景图片
-        if (gridObjects != null)
-        {
-            Destroy(gridObjects);
-        }
-        // 初始化网格
-        gridObjects = new GameObject("Grid Objects");
-
-        // 摄像机视角的初始化四个边坐标
-        xMin = 0;
-        yMin = 0;
-        xMax = gridSize * XNum;
-        yMax = gridSize * YNum;
     }
 
     // 鼠标左键点击
@@ -330,20 +314,20 @@ public class EditorController : MonoBehaviour
             }
         }
     }
+
     // 拾起Unit
     public void Pick(Unit unit)
     {
-        int x = unit.gridX;
-        int y = unit.gridY;
-        if (x != -1 && y != -1)
+        if (unit.coord != Coord.OUTSIDE)
         {
-            Grid[x, y] = null;
-            unit.gridX = unit.gridY = -1;
-        }
+            MainGrid.Set(unit.coord, null);
+			unit.coord = Coord.OUTSIDE;
+		}
         unit.SetSpriteLayer("Pick");
         MouseObject = unit;
         MouseObjectLast = unit;
     }
+
     // 拾起BackGround
     public void Pick(Background background)
     {
@@ -352,6 +336,7 @@ public class EditorController : MonoBehaviour
         MouseObjectLast = background;
         BackgroundScale = background.transform.localScale.x;
     }
+
     // 购买
     public void Buy(GameObject prefab)
     {
@@ -377,13 +362,10 @@ public class EditorController : MonoBehaviour
     public void Place(Unit unit)
     {
         Vector2 pos = unit.transform.position;
-        int[] coord = PositionToClosestCoord(pos);
-        if (coord != null)
+        Coord coord = MainGrid.GetClosestCoord(pos);
+        if (coord != Coord.OUTSIDE)
         {
-            int x = coord[0];
-            int y = coord[1];
-
-            if (Grid[x, y] == null)
+            if (MainGrid.Get(coord) == null)
             {
                 MouseObject = null;
 
@@ -403,14 +385,15 @@ public class EditorController : MonoBehaviour
                     // 设置Unit物理层
                     unit.gameObject.layer = (int)GetUnitLayer(PlayerOwner, unit);
                 }
-                Put(x, y, unit);
+                Put(coord, unit);
 
                 PlayPutIntoGridSound(unit);
             }
         }
     }
-    // 安放，放入背景集合
-    public void Place(Background background)
+
+	// 安放，放入背景集合
+	public void Place(Background background)
     {
         background.SetSpriteLayer("Background");
         background.gameObject.layer = (int)Layer.Background;
@@ -418,6 +401,7 @@ public class EditorController : MonoBehaviour
         MouseObject = null;
         Put(background);
     }
+
     // 购买Unit
     void Buy(Unit unit)
     {
@@ -483,11 +467,13 @@ public class EditorController : MonoBehaviour
             Pick(backgroundBought);
         }
     }
+
     // 钱不够
     void MoneyNotEnough()
     {
 
     }
+
     // 鼠标右键点击
     public void RightClick(ClickableObject clickableObject, bool hold = false)
     {
@@ -498,6 +484,7 @@ public class EditorController : MonoBehaviour
         }
         Sell(clickableObject);
     }
+
     // 出售
     public void Sell(ClickableObject clickableObject)
     {
@@ -512,6 +499,7 @@ public class EditorController : MonoBehaviour
             Sell(background);
         }
     }
+
     // 出售Unit
     public void Sell(Unit unit)
     {
@@ -524,9 +512,9 @@ public class EditorController : MonoBehaviour
                 PlayerMoney += unit.price;
             }
             // 设置unit所在格子为null
-            if (IsInGrid(Grid, unit))
+            if (MainGrid.InGrid(unit))
             {
-                Grid[unit.gridX, unit.gridY] = null;
+                MainGrid.Set(unit.coord, null);
             }
             Destroy(unit.gameObject);
 
@@ -547,198 +535,13 @@ public class EditorController : MonoBehaviour
     }
 
     // 根据载入的Unit的坐标，与网格建立联系
-    public void FillGrid(Unit[,] theGrid, Unit[] units)
+    public void FillGrid(Grid grid, Unit[] units)
     {   
         foreach (Unit unit in units)
         {
-			Debug.Assert(IsInGrid(theGrid, unit));
-			theGrid[unit.gridX, unit.gridY] = unit;
+			Debug.Assert(grid.InGrid(unit));
+			grid.Set(unit.coord, unit);
         }
-    }
-
-	/// <summary>
-	///	连接grids中的所有Block 
-	/// </summary>
-	public void LinkBlocks(Unit[,] grids)
-    {
-        for (int x = 0; x < XNum; x++)
-        {
-            for (int y = 0; y < YNum; y++)
-            {
-                Block block = grids[x, y] as Block;
-				// 是block
-                if (block != null)
-                {
-                    for (int direction = 0; direction < 4; direction++)
-                    {
-                        Block another = GetNeighborBlock(x, y, direction);
-                        if (another != null && CanLink(block, another, direction))
-                        {
-                            Link(block, another, direction);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // 连接所有Block
-    [Obsolete("All blocks are in the grid now. Use LinkAllBlocksInGrid() instead.")]
-    public void LinkAllBlocks()
-    {
-        Unit[] units = gameController.GetUnits("Block");
-        foreach (Unit unit in units)
-        {
-            Block block = unit as Block;
-            for (int direction = 0; direction < 4; direction++)
-            {
-                if (block.IsLinkAvailable(direction))
-                {
-                    Block another = GetLinkableBlockByDirection(block, direction);
-                    // 连接
-                    if (another != null)
-                    {
-                        Link(block, another, direction);
-                    }
-                }
-            }
-        }
-    }
-
-    // 检测该方向范围内是否有可连接的Block
-    Block GetLinkableBlockByDirection(Block block, int direction)
-    {
-        // 检测连接距离
-        float distanceCheck = 0.3f;
-
-        int directionNeg = GetDirectionNegative(direction);
-
-        Unit[] units = gameController.GetUnits("Block");
-        foreach (Unit unit in units)
-        {
-            Block another = unit as Block;
-
-            if (another != block &&
-                // 所属同一名玩家
-                block.player == another.player &&
-                // Another的位置可以连接
-                another.IsLinkAvailable(directionNeg) == true)
-            {
-                // Another的连接点
-                Vector2 absorptionPoint = LinkPoint(another, directionNeg);
-
-                // Block与连接点的距离
-                float distance = ((Vector2)block.transform.position - absorptionPoint).magnitude;
-
-                // 满足吸附距离
-                if (distance <= distanceCheck)
-                {
-                    // 返回满足的Another
-                    return another;
-                }
-            }
-        }
-        return null;
-    }
-
-    // 按照方向返回Block的连接点
-    public Vector2 LinkPoint(Block block, int direction)
-    {
-        Vector2 point = block.transform.position;
-        switch (direction)
-        {
-            case 0:
-                point += Vector2.right * 2 * block.radius;
-                break;
-            case 1:
-                point += Vector2.up * 2 * block.radius;
-                break;
-            case 2:
-                point += Vector2.left * 2 * block.radius;
-                break;
-            case 3:
-                point += Vector2.down * 2 * block.radius;
-                break;
-        }
-        return point;
-    }
-
-    // 连接两Block
-    void Link(Block block, Block another, int direction)
-    {
-        int directionNeg = GetDirectionNegative(direction);
-
-        block.LinkTo(another, direction);
-        another.LinkTo(block, directionNeg);
-    }
-
-    // 检测两Block是否能连接
-    bool CanLink(Block block, Block another, int direction)
-    {
-        int directionNeg = GetDirectionNegative(direction);
-        // Block的玩家的相同
-        bool samePlayer = block.player == another.player;
-        // Block的相应方向是可连接的
-        bool linkAvailable = block.IsLinkAvailable(direction) && another.IsLinkAvailable(directionNeg);        // Block的相应方向未连接
-
-        return samePlayer && linkAvailable;
-    }
-
-    // 根据方向获取相邻的Block
-    Block GetNeighborBlock(int x, int y, int direction)
-    {
-        // 超出边界
-        if (direction == 0 && x == XNum - 1 || direction == 1 && y == YNum - 1 || direction == 2 && x == 0 || direction == 3 && y == 0)
-        {
-            return null;
-        }
-        else
-        {
-            int anotherX = x + dir4[direction, 0];
-            int anotherY = y + dir4[direction, 1];
-            return Grid[anotherX, anotherY] as Block;
-        }
-    }
-
-    // 离Position最近的网格的(x, y)
-    int[] PositionToClosestCoord(Vector2 position)
-    {
-        int[] ret = null;
-        float distanceClosest = distanceAbsorption;
-        for (int x = 0; x < XNum; x++)
-        {
-            for (int y = 0; y < YNum; y++)
-            {
-                float distance = (CoordToPosition(x, y) - position).magnitude;
-                if (distance < distanceClosest)
-                {
-                    distanceClosest = distance;
-                    ret = new int[] { x, y };
-                }
-            }
-
-        }
-        return ret;
-    }
-
-    // 根据Grid[x][y]获取中心坐标
-    public Vector2 CoordToPosition(int x, int y)
-    {
-        Vector2 ret = new Vector2(gridSize * (x + 0.5f), gridSize * (y + 0.5f));
-        return ret + origin;
-    }
-
-    protected int GetDirectionNegative(int direction)
-    {
-        return (direction + 2) % 4;
-    }
-
-    // 在网格中
-    public bool IsInGrid(Unit[,] theGrid, Unit unit)
-    {
-        return unit.gridX >= 0 && unit.gridY >= 0 
-			&& unit.gridX < theGrid.GetLength(0) 
-			&& unit.gridY < theGrid.GetLength(1);
     }
 
     /// <summary>
@@ -774,91 +577,11 @@ public class EditorController : MonoBehaviour
         }
     }
 
-    // 坐标是否合法
-    public bool IsLegalCoord(int x, int y)
-    {
-        return x >= 0 && x < XNum && y >= 0 && y < YNum;
-    }
-
-    // 这一格合法且是地面
-    bool IsBlockGround(int x, int y)
-    {
-        return IsLegalCoord(x, y) && Grid[x, y] != null && Grid[x, y].gameObject.layer == (int)Layer.Ground;
-    }
-
-    // 显示或隐藏网格图像
-    public void ShowGrids(bool show)
-    {
-        gridObjects.SetActive(show);
-    }
-
-    // 初始化玩家钱数
-    public void InitPlayerMoney()
+	// 初始化玩家钱数
+	public void InitPlayerMoney()
     {
         PlayerMoney = PlayerMoneyOrigin;
     }
-
-	/// <summary>
-	/// 创建新的网格
-	/// 并向其中gameController的units
-	/// </summary>
-	public Unit[,] CreateGrid(int xCount, int yCount)
-	{
-		Unit[] units = gameController.GetUnits();
-		return CreateGrid(xCount, yCount, units);
-	}
-
-	/// <summary>
-	/// 创建新的网格
-	/// 并向其中填充units
-	/// </summary>
-	private Unit[,] CreateGrid(int xCount, int yCount, Unit[] units)
-    {
-		Unit[,] theGrid = CreateEmptyGrid(xCount, yCount);
-		foreach (Unit unit in units)
-		{
-			if(IsInGrid(theGrid, unit))
-			{
-				theGrid[unit.gridX, unit.gridY] = unit;
-			}
-			else
-			{
-				Destroy(unit.gameObject);
-			}
-		}
-		return theGrid;
-    }
-
-	/// <summary>
-	/// 从原点绘制xCount, yCount个格子
-	/// 返回创建的二维数组
-	/// </summary>
-	Unit[,] CreateEmptyGrid(int xCount, int yCount)
-	{
-		// 重建 TODO:修改Init
-		Init();
-
-		// 绘制网格
-		for (int x = 0; x < xCount; x++)
-		{
-			for (int y = 0; y < yCount; y++)
-			{
-				GameObject squareObj = Instantiate(square, gridObjects.transform);
-				squareObj.transform.position = CoordToPosition(x, y);
-				squareObj.GetComponent<SpriteRenderer>().sortingLayerName = "Area";
-
-				if ((x + y) % 2 == 0)
-				{
-					squareObj.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, colorAlpha / 2);
-				}
-				else
-				{
-					squareObj.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, colorAlpha);
-				}
-			}
-		}
-		return new Unit[xCount, yCount];
-	}
 
 	// 指令
 	void Order()
@@ -904,7 +627,7 @@ public class EditorController : MonoBehaviour
         else if (EditorMode == EditorMode.Module)
         {
             Coord mouseCoord = GetMouseCoord();
-            if (mouseCoord.Item1 != -1 && mouseCoord.Item2 != -1 && MouseModule != null)
+            if (mouseCoord != null && MouseModule != null)
             {
                 // 清空之前的绘制
                 bool canPlace = EditorLoadModule.CanPlaceModuleCenter(MouseModule, mouseCoord);
@@ -943,14 +666,15 @@ public class EditorController : MonoBehaviour
     /// <summary>
     /// 将unit放入(x,y), 设置位置。添加到gameController管理
     /// </summary>
-    public void Put(int x, int y, Unit unit)
+    public void Put(Coord coord, Unit unit)
     {
+		Debug.Assert(coord != Coord.OUTSIDE && unit != null);
         // 安放
-        Grid[x, y] = unit;
-        unit.gridX = x;
-        unit.gridY = y;
-        unit.transform.position = CoordToPosition(x, y);
+        MainGrid.Set(coord, unit);
+		unit.coord = coord;
+        unit.transform.position = MainGrid.Coord2WorldPos(coord);
         unit.transform.parent = gameController.unitObjects.transform;
+		// TODO:
         unit.isEditorCreated = (gameController.GamePhase == GamePhase.Editor);
     }
 
@@ -992,7 +716,7 @@ public class EditorController : MonoBehaviour
         PlayerOwner = Player.Neutral;
 
         // 显示网格
-        editorController.ShowGrids(true);
+        MainGrid.SetShow(true);
 
         DestroyMouseObject();
         MouseObjectLast = null;
@@ -1008,18 +732,6 @@ public class EditorController : MonoBehaviour
         }
 	}
 
-    // 清空网格
-    public void ClearGrid()
-    {
-        foreach(Unit unit in Grid)
-        {
-            if (unit != null)
-            {
-                Destroy(unit.gameObject);
-            }
-        }
-    }
-
     // 清空背景
     public void ClearBackground()
     {
@@ -1030,98 +742,89 @@ public class EditorController : MonoBehaviour
         Backgrounds.Clear();
     }
 
-    /// <summary>
-    /// 获得鼠标所在网格坐标，如果不在网格中返回-1, -1
-    /// </summary>
-    public Coord GetMouseCoord()
+	/// <summary>
+	/// 返回鼠标所在网格坐标
+	/// 返回null: 如果不在网格中
+	/// </summary>
+	public Coord GetMouseCoord()
     {
-        int x = (int)(MouseController.MouseWorldPosition().x / gridSize);
-        int y = (int)(MouseController.MouseWorldPosition().y / gridSize);
-
-        if (IsLegalCoord(x, y))
-        {
-            return new Coord(x, y);
-        }
-        else
-        {
-            return new Coord(-1, -1);
-        }
-    }
-
-    /// <summary>
-    /// 坐标减法
-    /// </summary>
-    public static Coord Minus(Coord a, Coord b)
-    {
-        return new Coord(a.Item1 - b.Item1, a.Item2 - b.Item2);
-    }
-
-    ///  <summary>
-    ///  获取第一列（行）有非空格子的横（纵）坐标，
-    /// 参数：Left：从左向右数，Right：从右向左数，Bottom：从下向上数，Top：从上向下数，
-    /// 如果网格为空返回-1
-    /// </summary>
-    public int GetGridCoordNonEmpty(string dir)
-    {
-        switch (dir)
-        {
-            case "Left":
-                for (int x = 0; x < XNum; x++)
-                {
-                    for (int y = 0; y < YNum; y++)
-                    {
-                        if (Grid[x, y] != null)
-                        {
-                            return x;
-                        }
-                    }
-                }
-                break;
-            case "Right":
-                for(int x = XNum - 1; x >= 0; x--)
-                {
-                    for (int y = 0; y < YNum; y++)
-                    {
-                        if (Grid[x, y] != null)
-                        {
-                            return x;
-                        }
-                    }
-                }
-                break;
-            case "Bottom":
-                for (int y = 0; y < YNum; y++)
-                {
-                    for (int x = 0; x < XNum; x++)
-                    {
-                        if (Grid[x, y] != null)
-                        {
-                            return y;
-                        }
-                    }
-                }
-                break;
-            case "Top":
-                for (int y = YNum - 1; y >= 0; y--)
-                {
-                    for (int x = 0; x < XNum; x++)
-                    {
-                        if (Grid[x, y] != null)
-                        {
-                            return y;
-                        }
-                    }
-                }
-                break;
-        }
-        return -1;
+		float mouseX = MouseController.MouseWorldPosition().x;
+		float mouseY = MouseController.MouseWorldPosition().y;
+		return MainGrid.GetClosestCoord(new Vector2(mouseX, mouseY));
     }
 
     void MyDebug()
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            Debug.Log(GetMouseCoord().Item1 + " " + GetMouseCoord().Item2);
+            Debug.Log(GetMouseCoord().x + " " + GetMouseCoord().y);
         }
     }
+
+	#region Obselete
+	// 这一格合法且是地面
+	//bool IsBlockGround(int x, int y)
+	//{
+	//    return IsLegalCoord(x, y) && MainGrid[x, y] != null && MainGrid[x, y].gameObject.layer == (int)Layer.Ground;
+	//}
+
+	// 连接所有Block
+	//[Obsolete("All blocks are in the grid now. Use LinkAllBlocksInGrid() instead.")]
+	//public void LinkAllBlocks()
+	//{
+	//    Unit[] units = gameController.GetUnits("Block");
+	//    foreach (Unit unit in units)
+	//    {
+	//        Block block = unit as Block;
+	//        for (int direction = 0; direction < 4; direction++)
+	//        {
+	//            if (block.IsLinkAvailable(direction))
+	//            {
+	//                Block another = GetLinkableBlockByDirection(block, direction);
+	//                // 连接
+	//                if (another != null)
+	//                {
+	//                    Link(block, another, direction);
+	//                }
+	//            }
+	//        }
+	//    }
+	//}
+
+	// 检测该方向范围内是否有可连接的Block
+	//Block GetLinkableBlockByDirection(Block block, int direction)
+	//{
+	//    // 检测连接距离
+	//    float distanceCheck = 0.3f;
+
+	//    int directionNeg = Negative(direction);
+
+	//    Unit[] units = gameController.GetUnits("Block");
+	//    foreach (Unit unit in units)
+	//    {
+	//        Block another = unit as Block;
+
+	//        if (another != block &&
+	//            // 所属同一名玩家
+	//            block.player == another.player &&
+	//            // Another的位置可以连接
+	//            another.IsLinkAvailable(directionNeg) == true)
+	//        {
+	//            // Another的连接点
+	//            Vector2 absorptionPoint = LinkPoint(another, directionNeg);
+
+	//            // Block与连接点的距离
+	//            float distance = ((Vector2)block.transform.position - absorptionPoint).magnitude;
+
+	//            // 满足吸附距离
+	//            if (distance <= distanceCheck)
+	//            {
+	//                // 返回满足的Another
+	//                return another;
+	//            }
+	//        }
+	//    }
+	//    return null;
+	//}
+	#endregion
 }

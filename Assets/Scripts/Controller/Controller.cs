@@ -19,7 +19,11 @@ public class Controller: MonoBehaviour
     public enum VictoryCondition { None, KillAll, KillTarget, EnterLocation, HoldOn }
     public enum EditorMode       { Unit, Background, Module }
 
-    void Awake()
+	// 根据方向获取坐标偏移
+	public static readonly int[,] DIR4 = { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };
+	public static readonly int[,] DIR8 = { { 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 }, { -1, -1 }, { 0, -1 }, { 1, -1 } };
+
+	void Awake()
     {
         gameController     = GameObject.Find("Controller/Game Controller").    GetComponent<GameController>();
         editorController   = GameObject.Find("Controller/Editor Controller").  GetComponent<EditorController>();
