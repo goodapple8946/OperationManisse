@@ -9,7 +9,7 @@ public class BallGeneral : Ball
 	{
 		base.Update();
 
-		if (gameController.gamePhase == GamePhase.Playing)
+		if (gameController.GamePhase == GamePhase.Playing)
 		{
 			WeaponCoolDown();
 

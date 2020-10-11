@@ -23,7 +23,7 @@ public class UIGame : MonoBehaviour
 
     public void UpdateActive()
     {
-        switch (gameController.gamePhase)
+        switch (gameController.GamePhase)
         {
             case GamePhase.Preparation:
                 ButtonReset.interactable = true;

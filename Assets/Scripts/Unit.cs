@@ -140,7 +140,7 @@ public abstract class Unit : ClickableObject
 	// 碰撞
 	protected virtual void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (gameController.gamePhase == GamePhase.Playing)
+		if (gameController.GamePhase == GamePhase.Playing)
 		{
 			// 与之碰撞的另一个Unit
 			Unit unit = collision.gameObject.GetComponent<Unit>();

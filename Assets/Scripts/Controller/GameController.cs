@@ -7,8 +7,72 @@ using static Controller;
 
 public class GameController : MonoBehaviour
 {
-    // 场景阶段
-    public GamePhase gamePhase;
+	// 场景阶段
+	private GamePhase gamePhase = GamePhase.Editor;
+	// 切换状态
+    public GamePhase GamePhase
+	{
+		get => gamePhase;
+		set
+		{
+			// 新设置的状态
+			GamePhase newPhase = value;
+			// 原始状态
+			switch (gamePhase)
+			{
+				case GamePhase.Editor:
+					if(newPhase == GamePhase.Preparation)
+					{
+						LeavePhaseEditor();
+						EnterPhasePreparation();
+					}
+					else if (newPhase == GamePhase.Preparation)
+					{
+						LeavePhaseEditor();
+						EnterPhasePlaying();
+					}
+					break;
+
+				case GamePhase.Preparation:
+					if (newPhase == GamePhase.Editor)
+					{
+						EnterPhaseEditor();
+					}
+					else if (newPhase == GamePhase.Preparation)
+					{
+						LoadUnitsOrigin();
+					}
+					else if (newPhase == GamePhase.Playing)
+					{
+						EnterPhasePlaying();
+					}
+					break;
+
+				case GamePhase.Playing:
+					if (newPhase == GamePhase.Editor)
+					{
+						LeavePhasePlaying();
+						EnterPhaseEditor();
+					}
+					else if (newPhase == GamePhase.Preparation)
+					{
+						LeavePhasePlaying();
+						EnterPhasePreparation();
+					}
+					else if (newPhase == GamePhase.Victory)
+					{
+						EnterVictory();
+					}
+					break;
+
+				case GamePhase.Victory:
+					
+					break;
+			}
+			// 更新状态
+			gamePhase = newPhase;
+		}
+	}
 
 	// 所有物体的根节点
 	/// <summary>preparation和playing阶段,场景中所有Unit</summary>
@@ -42,10 +106,6 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-        if (gamePhase == GamePhase.Playing && victoryController.isVictory)
-        {
-            EnterVictory();
-        }
         DebugGame();
     }
 
@@ -54,68 +114,21 @@ public class GameController : MonoBehaviour
 
     }
 
-    /**
-     * UI按键响应
-     */ 
-
-    // Editor阶段，按下UI的Run键
-    public void Run()
-    {
-        LeavePhaseEditor();
-        EnterPhasePreparation();
-    }
-
-    // Preparation阶段，按下UI的Reset键
-    public void Reset()
-    {
-        LoadUnitsOrigin();
-    }
-
-    // Preparation阶段，按下UI的Start键
-    public void StartGame()
-    {
-        EnterPhasePlaying();
-    }
-
-    // Playing阶段，按下UI的Stop键
-    public void StopGame()
-    {
-        EnterPhasePreparation();
-    }
-
-    // 任意阶段，按下UI的Menu键
-    public void Menu()
-    {
-        EnterMenu();
-    }
-
-    // 任意阶段，按下UI的EditorMode键
-    public void EditorMode()
-    {
-        EnterPhaseEditor();
-    }
-
-    /**
-     * 游戏阶段切换
-     */
-
     // 进入Editor阶段
     void EnterPhaseEditor()
     {
-        gamePhase = GamePhase.Editor;
+		// 右侧的Editor面板
         uiEditor.SetActive(true);
-        editorController.EnterPhaseEditor();
+		// 上方的Button
         uiGame.SetActive(false);
-        uiGame.GetComponent<UIGame>().UpdateActive();
-        shopController.UpdateShop();
-        ClearMissile();
+		editorController.EnterPhaseEditor();
+		shopController.UpdateShop();
         LoadUnitsOrigin();
     }
 
     // 离开Editor阶段
     void LeavePhaseEditor()
     {
-        editorController.LeavePhaseEditor();
         uiEditor.SetActive(false);
         uiGame.SetActive(true);
         SaveUnitsOrigin();
@@ -125,34 +138,36 @@ public class GameController : MonoBehaviour
     // 进入Preparation阶段
     void EnterPhasePreparation()
     {
-        gamePhase = GamePhase.Preparation;
         editorController.ShowGrids(true);
         uiGame.GetComponent<UIGame>().UpdateActive();
         shopController.UpdateShop();
-        ClearMissile();
         LoadUnits();
         victoryController.Init();
     }
 
-    // 进入Playing阶段
-    void EnterPhasePlaying()
-    {
-        gamePhase = GamePhase.Playing;
-        editorController.ShowGrids(false);
-        uiGame.GetComponent<UIGame>().UpdateActive();
-        SaveUnits();
+	// 进入Playing阶段
+	void LeavePhasePlaying()
+	{
+		ClearMissile();
+	}
 
-        // 连接所有Block
-        editorController.LinkBlocks(editorController.Grid);
+	// 进入Playing阶段
+	void EnterPhasePlaying()
+	{
+		editorController.ShowGrids(false);
+		uiGame.GetComponent<UIGame>().UpdateActive();
+		SaveUnits();
 
-        // 向所有物体发送GameStart信号
-        unitObjects.BroadcastMessage("GameStart");
-    }
+		// 连接所有Block
+		editorController.LinkBlocks(editorController.Grid);
+
+		// 向所有物体发送GameStart信号
+		unitObjects.BroadcastMessage("GameStart");
+	}
 
     // 进入Victory阶段
     void EnterVictory()
     {
-        gamePhase = GamePhase.Victory;
         uiGame.GetComponent<UIGame>().UpdateActive();
 
         AudioSource.PlayClipAtPoint(resourceController.audioVictory, Camera.main.transform.position);

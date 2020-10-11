@@ -43,7 +43,7 @@ public class CameraController : MonoBehaviour
 
         if (!follow)
         {
-            if (gameController.gamePhase == GamePhase.Playing)
+            if (gameController.GamePhase == GamePhase.Playing)
             {
                 // 滚动
                 Scroll();

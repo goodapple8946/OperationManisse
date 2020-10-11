@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorRun : EditorUI
+public class UIStart : EditorUI
 {
     private Button button;
 
@@ -13,7 +13,7 @@ public class EditorRun : EditorUI
         button = GetComponent<Button>();
         button.onClick.AddListener(()=>
         {
-            gameController.Run();
+			gameController.GamePhase = GamePhase.Playing;
         });
     }
 }

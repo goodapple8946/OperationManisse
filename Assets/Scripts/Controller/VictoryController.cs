@@ -45,7 +45,7 @@ public class VictoryController : MonoBehaviour
 
     void Update()
     {
-        if (gameController.gamePhase == GamePhase.Playing)
+        if (gameController.GamePhase == GamePhase.Playing)
         {
             switch (victoryCondition)
             {

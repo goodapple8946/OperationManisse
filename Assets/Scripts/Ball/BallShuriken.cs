@@ -11,7 +11,7 @@ public class BallShuriken : Ball
 	protected override void FixedUpdate()
 	{
 		base.Update();
-		if (gameController.gamePhase == GamePhase.Playing)
+		if (gameController.GamePhase == GamePhase.Playing)
 		{
 			if (holdShuriken)
 			{

@@ -82,7 +82,7 @@ public class ShopObject : MonoBehaviour
     {
         if (clickableObject is Unit)
         {
-            toggleObject.SetActive(gameController.gamePhase == GamePhase.Editor);
+            toggleObject.SetActive(gameController.GamePhase == GamePhase.Editor);
         }
         else
         {

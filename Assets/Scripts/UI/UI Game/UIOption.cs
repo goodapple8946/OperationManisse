@@ -12,7 +12,7 @@ public class UIOption : MonoBehaviour
         button = GetComponent<Button>();
         button.onClick.AddListener(()=>
         {
-            GameObject objDropdown = transform.GetChild(0).gameObject;
+            GameObject objDropdown = transform.Find("DropDown").gameObject;
             objDropdown.SetActive(!objDropdown.activeSelf);
         });
     }

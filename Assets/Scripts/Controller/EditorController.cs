@@ -298,9 +298,9 @@ public class EditorController : MonoBehaviour
             // 移动网格中的Unit
             if (
                 // 编辑阶段可以任意移动
-                gameController.gamePhase == GamePhase.Editor ||
+                gameController.GamePhase == GamePhase.Editor ||
                 // 准备阶段：不能移动其他玩家的Unit、不能移动编辑器创建的Unit
-                (gameController.gamePhase == GamePhase.Preparation && unit.player == Player.Player && !unit.isEditorCreated))
+                (gameController.GamePhase == GamePhase.Preparation && unit.player == Player.Player && !unit.isEditorCreated))
             {
                 buyContinuous = false;
                 PlayerOwner = unit.player;
@@ -312,7 +312,7 @@ public class EditorController : MonoBehaviour
     public void LeftClick(Background background)
     {
         // 必须是编辑阶段
-        if (gameController.gamePhase == GamePhase.Editor)
+        if (gameController.GamePhase == GamePhase.Editor)
         {
             if (MouseObject != null)
             {
@@ -423,9 +423,9 @@ public class EditorController : MonoBehaviour
     {
         if (MouseObject == null)
         {
-            if (PlayerMoney >= unit.price || gameController.gamePhase == GamePhase.Editor)
+            if (PlayerMoney >= unit.price || gameController.GamePhase == GamePhase.Editor)
             {
-                if (gameController.gamePhase == GamePhase.Preparation)
+                if (gameController.GamePhase == GamePhase.Preparation)
                 {
                     PlayerMoney -= unit.price;
                 }
@@ -443,9 +443,9 @@ public class EditorController : MonoBehaviour
         else
         {
             Unit mouseUnit = MouseObject as Unit;
-            if (PlayerMoney + mouseUnit.price >= unit.price || gameController.gamePhase == GamePhase.Editor)
+            if (PlayerMoney + mouseUnit.price >= unit.price || gameController.GamePhase == GamePhase.Editor)
             {
-                if (gameController.gamePhase == GamePhase.Preparation)
+                if (gameController.GamePhase == GamePhase.Preparation)
                 {
                     PlayerMoney += mouseUnit.price - unit.price;
                 }
@@ -516,10 +516,10 @@ public class EditorController : MonoBehaviour
     public void Sell(Unit unit)
     {
         // 满足出售条件
-        if (gameController.gamePhase == GamePhase.Editor ||
-            gameController.gamePhase == GamePhase.Preparation && !unit.isEditorCreated)
+        if (gameController.GamePhase == GamePhase.Editor ||
+            gameController.GamePhase == GamePhase.Preparation && !unit.isEditorCreated)
         {
-            if (gameController.gamePhase == GamePhase.Preparation)
+            if (gameController.GamePhase == GamePhase.Preparation)
             {
                 PlayerMoney += unit.price;
             }
@@ -951,7 +951,7 @@ public class EditorController : MonoBehaviour
         unit.gridY = y;
         unit.transform.position = CoordToPosition(x, y);
         unit.transform.parent = gameController.unitObjects.transform;
-        unit.isEditorCreated = (gameController.gamePhase == GamePhase.Editor);
+        unit.isEditorCreated = (gameController.GamePhase == GamePhase.Editor);
     }
 
     /// <summary>

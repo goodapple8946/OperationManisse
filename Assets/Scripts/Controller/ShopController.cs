@@ -60,12 +60,12 @@ public class ShopController : MonoBehaviour
         {
             // 应用商品是否显示
             bool active = false;
-            if (gameController.gamePhase == GamePhase.Editor)
+            if (gameController.GamePhase == GamePhase.Editor)
             {
                 active |= editorController.EditorMode == EditorMode.Unit && shopObject.clickableObject is Unit;
                 active |= editorController.EditorMode == EditorMode.Background && shopObject.clickableObject is Background;
             }
-            else if (gameController.gamePhase == GamePhase.Preparation)
+            else if (gameController.GamePhase == GamePhase.Preparation)
             {
                 active |= shopObject.clickableObject is Unit && shopObject.IsVisible;
             }
