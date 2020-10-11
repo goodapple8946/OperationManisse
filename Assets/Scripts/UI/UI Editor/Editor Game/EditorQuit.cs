@@ -4,16 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorRun : MonoBehaviour
+public class EditorQuit : MonoBehaviour
 {
     private Button button;
 
     public void Awake()
     {
         button = GetComponent<Button>();
-        button.onClick.AddListener(()=>
+        button.onClick.AddListener(() =>
         {
-            gameController.Run();
+            Application.Quit();
         });
     }
 }

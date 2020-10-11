@@ -38,22 +38,22 @@ public class FileViewer : MonoBehaviour
 			switch (state)
 			{
 				case State.SaveGame:
-					RedrawScrollView(ResourceController.GamePath, "Save");
+					RedrawScrollView(ResourceController.GamePath, "Save File");
 					break;
 				case State.SaveModule:
-					RedrawScrollView(ResourceController.ModulePath, "Save");
+					RedrawScrollView(ResourceController.ModulePath, "Save Module");
 					break;
 				case State.LoadGame:
-					RedrawScrollView(ResourceController.GamePath, "Load");
+					RedrawScrollView(ResourceController.GamePath, "Load File");
 					break;
 				case State.LoadModule:
-					RedrawScrollView(ResourceController.ModulePath, "Load");
+					RedrawScrollView(ResourceController.ModulePath, "Load Module");
 					break;
 				case State.DeleteGame:
-					RedrawScrollView(ResourceController.GamePath, "Delete");
+					RedrawScrollView(ResourceController.GamePath, "Delete File");
 					break;
 				case State.DeleteModule:
-					RedrawScrollView(ResourceController.ModulePath, "Delete");
+					RedrawScrollView(ResourceController.ModulePath, "Delete Module");
 					break;
 				case State.None:
 					break;
@@ -86,11 +86,11 @@ public class FileViewer : MonoBehaviour
 		{
 			case State.SaveGame:
 				EditorSaveGame.SaveGame2FS(filename);
-				RedrawScrollView(ResourceController.GamePath, "Save");
+				RedrawScrollView(ResourceController.GamePath, "Save File");
 				break;
 			case State.SaveModule:
 				EditorSaveModule.SaveModule2FS(filename);
-				RedrawScrollView(ResourceController.ModulePath, "Save");
+				RedrawScrollView(ResourceController.ModulePath, "Save Module");
 				break;
 			case State.LoadGame:
 				EditorLoadGame.LoadGameFromFS(filename);
@@ -100,11 +100,11 @@ public class FileViewer : MonoBehaviour
 				break;
 			case State.DeleteGame:
 				DeleteFileOnFS(ResourceController.GamePath + filename);
-				RedrawScrollView(ResourceController.GamePath, "Delete");
+				RedrawScrollView(ResourceController.GamePath, "Delete File");
 				break;
 			case State.DeleteModule:
 				DeleteFileOnFS(ResourceController.ModulePath + filename);
-				RedrawScrollView(ResourceController.ModulePath, "Delete");
+				RedrawScrollView(ResourceController.ModulePath, "Delete Module");
 				break;
 		}
 	}
@@ -133,7 +133,7 @@ public class FileViewer : MonoBehaviour
 		titleObj.GetComponent<Text>().text = title;
 		objs.Add(titleObj);
 		// 添加NewFile
-		if (title == "Save")
+		if (title == "Save File" || title == "Save Module")
 		{
 			objs.Add(Instantiate(instance.newFilePrefab));
 		}

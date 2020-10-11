@@ -19,6 +19,9 @@ public class EditorController : MonoBehaviour
         get => editorMode;
         set
         {
+            Debug.Log(editorMode);
+            Debug.Log(value);
+
             editorMode = value;
             // 当编辑模式发生改变时：
             // 清除鼠标上的Unit、Background

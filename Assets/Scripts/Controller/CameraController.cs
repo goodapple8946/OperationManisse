@@ -36,9 +36,23 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
+        // 缩放
         Zoom();
-        Scroll();
-        FixBound();
+        // 修正缩放
+        FixZoom();
+
+        if (!follow)
+        {
+            if (gameController.gamePhase == GamePhase.Playing)
+            {
+                // 滚动
+                Scroll();
+            }
+            // 拖动
+            Drag();
+            // 修正滚动和拖动
+            FixBound();
+        }
     }
 
     // 初始化
@@ -57,28 +71,54 @@ public class CameraController : MonoBehaviour
     // 缩放
     private void Zoom()
     {
-        Camera camera = GetComponent<Camera>();
-
-        // 鼠标不在UI上
-        if (!EventSystem.current.IsPointerOverGameObject())
+        // 鼠标不能在UI上
+        if (EventSystem.current.IsPointerOverGameObject())
         {
-            float zoomSize = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
-            // 此时摄像机尺寸将 += -zoomSize
-            if (zoomSize != 0)
-            {
-                // 摄像机最大尺寸
-                float sizeMax = Mathf.Min((editorController.xMax - editorController.xMin) / 2, (editorController.yMax - editorController.yMin) / 2);
-                // 摄像机尺寸不能过小（画面内图像过大，内容过少）
-                if (-zoomSize < 0 && camera.orthographicSize - zoomSize > 0)
-                {
-                    camera.orthographicSize -= zoomSize;
-                }
-                // 摄像机尺寸不能过大（画面内图像过小，内容过多）
-                else if (-zoomSize > 0 && camera.orthographicSize - zoomSize < sizeMax)
-                {
-                    camera.orthographicSize -= zoomSize;
-                }
-            }
+            return;
+        }
+
+        float zoomSize = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
+        // 此时摄像机尺寸将 += -zoomSize
+        if (zoomSize != 0)
+        {
+            GetComponent<Camera>().orthographicSize -= zoomSize;
+        }
+    }
+
+    // 修正摄像机缩放
+    private void FixZoom()
+    {
+        Camera camera = GetComponent<Camera>();
+        float sizeMin = 0.1f;
+        float sizeMax = Mathf.Min((editorController.xMax - editorController.xMin) / 2, (editorController.yMax - editorController.yMin) / 2);
+
+        if (camera.orthographicSize < sizeMin)
+        {
+            camera.orthographicSize = sizeMin;
+        }
+        else if (camera.orthographicSize > sizeMax)
+        {
+            camera.orthographicSize = sizeMax;
+        }
+    }
+
+    // 拖动
+    private void Drag()
+    {
+        // 鼠标不能在UI上
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
+        // 至少按住左键holdTime秒，才可以开始拖动
+        float holdTime = 0.08f;
+        // 拖动速度
+        float speed = GetComponent<Camera>().orthographicSize * 0.0025f;
+
+        if (MouseController.leftHoldTime >= holdTime)
+        {
+            transform.position -= (Vector3)MouseController.offsetScreen * speed;
         }
     }
 
@@ -119,12 +159,6 @@ public class CameraController : MonoBehaviour
         return dir;
     }
 
-    // 变化Follow
-    public void ToggleFollow()
-    {
-        follow = !follow;
-    }
-
     // 将摄像头限制在游戏地图内
     private void FixBound()
     {
@@ -150,5 +184,11 @@ public class CameraController : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, bottom, cameraZ);
         }
+    }
+
+    // 变化Follow
+    public void ToggleFollow()
+    {
+        follow = !follow;
     }
 }

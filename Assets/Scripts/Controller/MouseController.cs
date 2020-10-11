@@ -4,25 +4,45 @@ using UnityEngine;
 
 public class MouseController : MonoBehaviour
 {
-    // 鼠标起点、终点、偏移量
-    public static Vector2 startPosition;
-    public static Vector2 endPosition;
-    public static Vector2 offset;
+    // 鼠标在世界中的位置：起点、终点、偏移量
+    public static Vector2 startPositionWorld;
+    public static Vector2 endPositionWorld;
+    public static Vector2 offsetWorld;
+
+    // 鼠标在屏幕中的位置：起点、终点、偏移量
+    public static Vector2 startPositionScreen;
+    public static Vector2 endPositionScreen;
+    public static Vector2 offsetScreen;
+
+    // 鼠标左键按住的时间
+    public static float leftHoldTime = 0;
 
     void Update()
     {
         // 鼠标左键按下
         if (Input.GetMouseButtonDown(0))
         {
-            startPosition = MouseWorldPosition();
+            startPositionWorld = MouseWorldPosition();
+            startPositionScreen = Input.mousePosition;
         }
 
         // 鼠标左键按住
         if (Input.GetMouseButton(0))
         {
-            endPosition = MouseWorldPosition();
-            offset = endPosition - startPosition;
-            startPosition = endPosition;
+            endPositionWorld = MouseWorldPosition();
+            endPositionScreen = Input.mousePosition;
+
+            offsetWorld = endPositionWorld - startPositionWorld;
+            offsetScreen = endPositionScreen - startPositionScreen;
+
+            startPositionWorld = endPositionWorld;
+            startPositionScreen = endPositionScreen;
+
+            leftHoldTime += Time.deltaTime;
+        }
+        else
+        {
+            leftHoldTime = 0;
         }
 
         // 鼠标左键抬起

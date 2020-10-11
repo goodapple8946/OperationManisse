@@ -21,7 +21,7 @@ public class EditorEditorMode : MonoBehaviour
         {
             if (isOn)
             {
-                editorController.EditorMode = (EditorMode)Enum.Parse(typeof(EditorMode), modeName);
+                editorController.EditorMode = StringToEditorMode(modeName);
                 UpdateShowing();
                 content.GetComponent<EditorContent>().UpdateByEditorMode();
             }
@@ -31,5 +31,21 @@ public class EditorEditorMode : MonoBehaviour
     public void UpdateShowing()
     {
         toggle.SetIsOnWithoutNotify(editorController.EditorMode.ToString() == modeName);
+    }
+
+    // 按钮上的text转化为编辑模式
+    private EditorMode StringToEditorMode(string mode)
+    {
+        switch (mode[0])
+        {
+            case 'U':
+                return EditorMode.Unit;
+            case 'B':
+                return EditorMode.Background;
+            case 'M':
+                return EditorMode.Module;
+            default:
+                throw new Exception("Unknown editor mode selected.");
+        }
     }
 }

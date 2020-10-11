@@ -17,7 +17,7 @@ public class ShopController : MonoBehaviour
     public GameObject shopObjectPrefab;
 
 	// 所有的商店中的物品
-    private ShopObject[] shopObjects;
+    private ShopObject[] shopObjects = new ShopObject[0];
 
     void Awake()
     {

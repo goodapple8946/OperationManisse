@@ -56,7 +56,7 @@ public class ShopObject : MonoBehaviour
             GetComponent<Button>().image.SetNativeSize();
 
             // 强制尺寸修正
-            float fixedSize = 100f;
+            float fixedSize = 64f;
             GetComponent<Button>().image.rectTransform.sizeDelta = new Vector2(fixedSize, fixedSize);
         }
 

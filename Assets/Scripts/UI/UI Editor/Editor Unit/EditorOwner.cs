@@ -18,7 +18,7 @@ public class EditorOwner : MonoBehaviour
         {
             if (isOn)
             {
-                editorController.PlayerOwner = (Player)Enum.Parse(typeof(Player), playerName);
+                editorController.PlayerOwner = StringToPlayer(playerName);
             }
         });
     }
@@ -27,4 +27,20 @@ public class EditorOwner : MonoBehaviour
 	{
         toggle.SetIsOnWithoutNotify(editorController.PlayerOwner.ToString() == playerName);
 	}
+
+    // 按钮上的text转化为所有者
+    private Player StringToPlayer(string player)
+    {
+        switch (player[0])
+        {
+            case 'N':
+                return Player.Neutral;
+            case 'P':
+                return Player.Player;
+            case 'E':
+                return Player.Enemy;
+            default:
+                throw new Exception("Unknown player selected.");
+        }
+    }
 }
