@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorSaveGame : MonoBehaviour
+public class EditorSaveGame : EditorUI
 {
 	Button button;
 

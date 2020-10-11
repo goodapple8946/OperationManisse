@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorMoney : MonoBehaviour
+public class EditorMoney : EditorUI
 {
     InputField inputField;
 
@@ -21,7 +21,7 @@ public class EditorMoney : MonoBehaviour
         });
     }
 
-	public void UpadteShowing()
+	public override void UpdateShowing()
 	{
 		inputField.text = editorController.PlayerMoneyOrigin + "";
 	}

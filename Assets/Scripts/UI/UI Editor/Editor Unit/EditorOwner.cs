@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorOwner : MonoBehaviour
+public class EditorOwner : EditorUI
 {
     private Toggle toggle;
     private string playerName;
@@ -23,7 +23,7 @@ public class EditorOwner : MonoBehaviour
         });
     }
 
-	public void UpdateShowing()
+	public override void UpdateShowing()
 	{
         toggle.SetIsOnWithoutNotify(editorController.PlayerOwner.ToString() == playerName);
 	}

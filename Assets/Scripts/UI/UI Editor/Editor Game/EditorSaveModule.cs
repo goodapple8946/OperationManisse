@@ -14,7 +14,7 @@ using Coord = System.Tuple<int, int>;
 /// <summary>
 /// 与EditorSave相比只改变了SaveFile()方法
 /// </summary>
-public class EditorSaveModule : MonoBehaviour
+public class EditorSaveModule : EditorUI
 {
 	Button button;
 

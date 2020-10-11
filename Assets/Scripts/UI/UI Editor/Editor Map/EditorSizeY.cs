@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorSizeY : MonoBehaviour
+public class EditorSizeY : EditorUI
 {
     InputField inputField;
 
@@ -21,7 +21,7 @@ public class EditorSizeY : MonoBehaviour
         });
     }
 
-	public void UpdateShowing()
+	public override void UpdateShowing()
 	{
 		inputField.text = editorController.YNum + "";
 	}

@@ -15,10 +15,25 @@ public class EditorContent : MonoBehaviour
     }
 
     // 更新Content内所有显示的数据
-    public void UpdateUIShowing()
+    public void UpdateUIShowing<T>()
     {
-		UpdateByEditorMode();
-        BroadcastMessage("UpdateShowing");
+        //BroadcastMessage("UpdateShowing");
+        T editorUI = GetComponentInChildren<T>();
+        if (editorUI != null)
+        {
+            (editorUI as EditorUI).UpdateShowing();
+        }
+    }
+
+    // 更新所有Content内所有显示的数据
+    public void UpdateUIShowingAll()
+    {
+        //BroadcastMessage("UpdateShowing");
+        EditorUI[] editorUIs = GetComponentsInChildren<EditorUI>();
+        foreach (EditorUI editorUI in editorUIs)
+        {
+            editorUI.UpdateShowing();
+        }
     }
 
     // 根据Editor Mode，对Content内的各功能部分显示或隐藏
@@ -29,7 +44,6 @@ public class EditorContent : MonoBehaviour
 
         UpdateHeight();
     }
-
 
     // 更新Content高度
     public void UpdateHeight()
