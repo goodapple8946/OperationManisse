@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour
 		{
 			// 新设置的状态
 			GamePhase newPhase = value;
+            Debug.Log(string.Format("GamePhase: {0} -> {1}.", gamePhase, newPhase));
 			// 原始状态
 			switch (gamePhase)
 			{
@@ -87,6 +88,8 @@ public class GameController : MonoBehaviour
     private GameObject uiEditor;
 	// 游戏部分的UI
     private GameObject uiGame;
+    // 商店部分的UI
+    private GameObject uiShop;
 
     /**
      * 生命周期函数
@@ -95,6 +98,7 @@ public class GameController : MonoBehaviour
     {
         uiEditor = GameObject.Find("UI Canvas/UI Editor");
         uiGame = GameObject.Find("UI Canvas/UI Game");
+        uiShop = GameObject.Find("UI Canvas/UI Shop");
 
         Init();
     }
@@ -117,12 +121,14 @@ public class GameController : MonoBehaviour
     // 进入Editor阶段
     void EnterPhaseEditor()
     {
-		// 右侧的Editor面板
         uiEditor.SetActive(true);
-		// 上方的Button
         uiGame.SetActive(false);
-		editorController.EnterPhaseEditor();
-		shopController.UpdateShop();
+        uiShop.SetActive(true);
+
+        editorController.MainGrid.SetShow(true);
+        editorController.EnterPhaseEditor();
+		shopController.UpdateShop(GamePhase.Editor);
+
         LoadUnitsOrigin();
     }
 
@@ -131,6 +137,7 @@ public class GameController : MonoBehaviour
     {
         uiEditor.SetActive(false);
         uiGame.SetActive(true);
+
         SaveUnitsOrigin();
         SaveUnits();
     }
@@ -138,14 +145,17 @@ public class GameController : MonoBehaviour
     // 进入Preparation阶段
     void EnterPhasePreparation()
     {
+        uiGame.GetComponent<UIGame>().UpdateActive(GamePhase.Preparation);
+        uiShop.SetActive(true);
+
         editorController.MainGrid.SetShow(true);
-        uiGame.GetComponent<UIGame>().UpdateActive();
-        shopController.UpdateShop();
-        LoadUnits();
+        shopController.UpdateShop(GamePhase.Preparation);
         victoryController.Init();
+
+        LoadUnits();
     }
 
-	// 进入Playing阶段
+	// 离开Playing阶段
 	void LeavePhasePlaying()
 	{
 		ClearMissile();
@@ -154,21 +164,20 @@ public class GameController : MonoBehaviour
 	// 进入Playing阶段
 	void EnterPhasePlaying()
 	{
-		editorController.MainGrid.SetShow(false);
-		uiGame.GetComponent<UIGame>().UpdateActive();
-		SaveUnits();
+		uiGame.GetComponent<UIGame>().UpdateActive(GamePhase.Playing);
+        uiShop.SetActive(false);
 
-		// 连接所有Block
-		editorController.MainGrid.LinkBlocks();
+        editorController.MainGrid.SetShow(false);
+        editorController.MainGrid.LinkBlocks();
 
-		// 向所有物体发送GameStart信号
-		unitObjects.BroadcastMessage("GameStart");
-	}
+        SaveUnits();
+        unitObjects.BroadcastMessage("GameStart");
+    }
 
     // 进入Victory阶段
     void EnterVictory()
     {
-        uiGame.GetComponent<UIGame>().UpdateActive();
+        uiGame.GetComponent<UIGame>().UpdateActive(GamePhase.Victory);
 
         AudioSource.PlayClipAtPoint(resourceController.audioVictory, Camera.main.transform.position);
     }
@@ -240,7 +249,9 @@ public class GameController : MonoBehaviour
 		unitObjects.name = "Unit Objects";
 		unitObjects.SetActive(true);
 
-		editorController.MainGrid = new Grid(
+        editorController.MainGrid.ClearGridBackground();
+
+        editorController.MainGrid = new Grid(
 			editorController.XNum, editorController.YNum,
 			EditorController.MAINGRID_POS, GetUnits());
 
@@ -267,7 +278,9 @@ public class GameController : MonoBehaviour
         SaveUnits();
         editorController.InitPlayerMoney();
 
-		editorController.MainGrid= new Grid(
+        editorController.MainGrid.ClearGridBackground();
+
+        editorController.MainGrid= new Grid(
 			editorController.XNum, editorController.YNum,
 			EditorController.MAINGRID_POS, GetUnits());
 

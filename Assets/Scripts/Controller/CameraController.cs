@@ -7,34 +7,36 @@ using static Controller;
 public class CameraController : MonoBehaviour
 {
     // 摄像机Z轴
-    private static float cameraZ = -10f;
+    private static readonly float CAMERA_Z = -10f;
 
     // 摄像机坐标
-    private Vector3 positionOrigin = new Vector3(0f, 0f, cameraZ);
-
-    // 摄像机尺寸
-    private float orthographicSizeOrigin = 3.2f;
+    private static readonly Vector3 POSITION_ORIGIN = new Vector3(0f, 0f, CAMERA_Z);
 
     // 摄像机缩放速度
-    private float zoomSpeedOrigin = 2f;
+    private static readonly float ZOOM_SPEED_ORIGIN = 2f;
     private float zoomSpeed;
 
     // 摄像机滚动速度
-    private float scrollSpeedOrigin = 12f;
+    private static readonly float SCROLL_SPEED_ORIGIN = 12f;
     private float scrollSpeed;
 
     // 摄像机滚动触发边缘距离
-    private int scrollDistance = 10;
+    private static readonly int SCROLL_DISTANCE = 10;
 
 	// 相机左下角
 	public Vector2 LeftBottomPoint { set; private get; }
 	// 相机右上角
 	public Vector2 RightTopPoint { set; private get; }
 
+    public void SetView(float left, float bottom, float right, float top)
+    {
+        SetView(new Vector2(left, bottom), new Vector2(right, top));
+    }
+
 	public void SetView(Vector2 lbPoint, Vector2 rtPoint)
 	{
 		Debug.Assert(lbPoint.x <= rtPoint.x && lbPoint.y <= rtPoint.y);
-		LeftBottomPoint = lbPoint;
+        LeftBottomPoint = lbPoint;
 		RightTopPoint = rtPoint;
 	}
 
@@ -78,13 +80,11 @@ public class CameraController : MonoBehaviour
     void Init()
     {
         // 初始化位置
-        transform.position = positionOrigin;
-        // 初始化尺寸
-        GetComponent<Camera>().orthographicSize = orthographicSizeOrigin;
+        transform.position = POSITION_ORIGIN;
         // 初始化缩放速度
-        zoomSpeed = zoomSpeedOrigin;
+        zoomSpeed = ZOOM_SPEED_ORIGIN;
         // 初始化滚动速度
-        scrollSpeed = scrollSpeedOrigin;
+        scrollSpeed = SCROLL_SPEED_ORIGIN;
     }
 
     // 缩放
@@ -155,23 +155,23 @@ public class CameraController : MonoBehaviour
     {
         Vector2 dir = new Vector2(0, 0);
         // 向右
-        if (Input.mousePosition.x > Screen.width - scrollDistance && transform.position.x <= RightTopPoint.x)
+        if (Input.mousePosition.x > Screen.width - SCROLL_DISTANCE && transform.position.x <= RightTopPoint.x)
         {
             dir += new Vector2(1, 0);
         }
         // 向左
-        else if (Input.mousePosition.x < scrollDistance && transform.position.x >= LeftBottomPoint.x)
+        else if (Input.mousePosition.x < SCROLL_DISTANCE && transform.position.x >= LeftBottomPoint.x)
         {
             dir += new Vector2(-1, 0);
         }
 
         // 向上
-        if (Input.mousePosition.y > Screen.height - scrollDistance && transform.position.y <= RightTopPoint.y)
+        if (Input.mousePosition.y > Screen.height - SCROLL_DISTANCE && transform.position.y <= RightTopPoint.y)
         {
             dir += new Vector2(0, 1);
         }
         // 向下
-        else if (Input.mousePosition.y < scrollDistance && transform.position.y >= LeftBottomPoint.y)
+        else if (Input.mousePosition.y < SCROLL_DISTANCE && transform.position.y >= LeftBottomPoint.y)
         {
             dir += new Vector2(0, -1);
         }
@@ -189,19 +189,19 @@ public class CameraController : MonoBehaviour
 
         if (transform.position.x > right)
         {
-            transform.position = new Vector3(right, transform.position.y, cameraZ);
+            transform.position = new Vector3(right, transform.position.y, CAMERA_Z);
         }
         else if (transform.position.x < left)
         {
-            transform.position = new Vector3(left, transform.position.y, cameraZ);
+            transform.position = new Vector3(left, transform.position.y, CAMERA_Z);
         }
         if (transform.position.y > top)
         {
-            transform.position = new Vector3(transform.position.x, top, cameraZ);
+            transform.position = new Vector3(transform.position.x, top, CAMERA_Z);
         }
         else if (transform.position.y < bottom)
         {
-            transform.position = new Vector3(transform.position.x, bottom, cameraZ);
+            transform.position = new Vector3(transform.position.x, bottom, CAMERA_Z);
         }
     }
 
