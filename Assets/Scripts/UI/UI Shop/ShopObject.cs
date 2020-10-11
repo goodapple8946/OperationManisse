@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,7 +48,7 @@ public class ShopObject : MonoBehaviour
             // 商品使用默认图像尺寸
             GetComponent<Button>().image.SetNativeSize();
         }
-        else if (clickableObject is Background)
+        else if (clickableObject is Background || clickableObject is TerrainA)
         {
             // 商品图像为添加物体的图像
             GetComponent<Button>().image.sprite = gameObject.GetComponent<SpriteRenderer>().sprite;
@@ -58,6 +59,10 @@ public class ShopObject : MonoBehaviour
             // 强制尺寸修正
             float fixedSize = 64f;
             GetComponent<Button>().image.rectTransform.sizeDelta = new Vector2(fixedSize, fixedSize);
+        }
+        else
+        {
+            throw new Exception("Unknown shop object type.");
         }
 
         // 商品点击事件：购买添加的物体

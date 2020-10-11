@@ -30,7 +30,7 @@ public class EditorEditorMode : EditorUI
 
     public override void UpdateShowing()
     {
-        toggle.SetIsOnWithoutNotify(editorController.EditorMode.ToString() == modeName);
+        toggle.SetIsOnWithoutNotify(editorController.EditorMode == StringToEditorMode(modeName));
     }
 
     // 按钮上的text转化为编辑模式
@@ -42,6 +42,8 @@ public class EditorEditorMode : EditorUI
                 return EditorMode.Unit;
             case 'B':
                 return EditorMode.Background;
+            case 'T':
+                return EditorMode.Terrain;
             case 'M':
                 return EditorMode.Module;
             default:

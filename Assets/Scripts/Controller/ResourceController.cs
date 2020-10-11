@@ -11,7 +11,7 @@ public class ResourceController : MonoBehaviour
 	public static string GamePath { get; private set; }
 
 	// 所有单位的Prefab
-	public GameObject[] editorObjects;
+	public GameObject[] terrainObjects;
 	public GameObject[] blockObjects;
 	public GameObject[] ballObjects;
 
@@ -58,7 +58,7 @@ public class ResourceController : MonoBehaviour
 	{
 		// 初始化unitDictionary
 		gameObjDictionary = new Dictionary<string, GameObject>();
-		Array.ForEach(editorObjects, obj => gameObjDictionary.Add(obj.name, obj));
+		Array.ForEach(terrainObjects, obj => gameObjDictionary.Add(obj.name, obj));
 		Array.ForEach(blockObjects, obj => gameObjDictionary.Add(obj.name, obj));
 		Array.ForEach(ballObjects, obj => gameObjDictionary.Add(obj.name, obj));
 		Array.ForEach(backgroundObjects, obj => gameObjDictionary.Add(obj.name, obj));

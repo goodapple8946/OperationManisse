@@ -25,7 +25,7 @@ public class EditorOwner : EditorUI
 
 	public override void UpdateShowing()
 	{
-        toggle.SetIsOnWithoutNotify(editorController.PlayerOwner.ToString() == playerName);
+        toggle.SetIsOnWithoutNotify(editorController.PlayerOwner == StringToPlayer(playerName));
 	}
 
     // 按钮上的text转化为所有者

@@ -22,10 +22,10 @@ public class HPBar : MonoBehaviour
     private Vector2 offset = new Vector2(0, 0.32f);
 
     // Prefab
-    [SerializeField] private Sprite frontNeutral;
-    [SerializeField] private Sprite frontPlayer;
-    [SerializeField] private Sprite frontEnemy;
-    [SerializeField] private Sprite back;
+    public Sprite frontNeutral;
+    public Sprite frontPlayer;
+    public Sprite frontEnemy;
+    public Sprite back;
 
     // 依附的单位
     [HideInInspector] public Unit unit;
