@@ -15,7 +15,7 @@ public class Grid
 	public static readonly float GRID_SIZE = 0.6f;
 
 	// 原点位置
-	private Vector2 originPos;
+	public Vector2 OriginPos { get; private set; }
 
 	// 所有创造出的网格的父物体
 	private GameObject gridObj;
@@ -53,7 +53,7 @@ public class Grid
 		gridObj = new GameObject("Grid Objects");
 		// 初始化unitArr
 		unitArr = new Unit[xCount, yCount];
-		this.originPos = originPos;
+		this.OriginPos = originPos;
 
 		// 绘制网格
 		for (int x = 0; x < xCount; x++)
@@ -102,7 +102,7 @@ public class Grid
 	// 返回绝对坐标, 需要在初始化完后使用
 	public Vector2 Coord2WorldPos(Coord coord)
 	{
-		return Coord2LocalPos(coord) + originPos;
+		return Coord2LocalPos(coord) + OriginPos;
 	}
 
 	/// <summary>
@@ -202,6 +202,15 @@ public class Grid
 	public List<Unit> GetUnits()
 	{
 		return unitArr.OfType<Unit>().ToList();
+	}
+
+	/// <summary>
+	/// 获取右上角的世界坐标
+	/// </summary>
+	public Vector2 GetRightTopPos()
+	{
+		Vector2 gridSize = new Vector2(GRID_SIZE * GetX(), GRID_SIZE * GetY());
+		return OriginPos + gridSize;
 	}
 
 	//--------------------- 内部工具函数 ----------------------//

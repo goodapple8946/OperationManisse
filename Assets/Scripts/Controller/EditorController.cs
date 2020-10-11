@@ -58,12 +58,9 @@ public class EditorController : MonoBehaviour
 			editorContent.UpdateUIShowing<EditorSizeX>();
 			// 更新网格信息
 			MainGrid = new Grid(xNum, yNum, MAINGRID_POS);
-			// TODO:
-			// 摄像机视角的初始化四个边坐标
-			xMin = MAINGRID_POS.x;
-			yMin = MAINGRID_POS.y;
-			xMax = Grid.GRID_SIZE * XNum;
-			yMax = Grid.GRID_SIZE * YNum;
+			cameraController.SetView(
+				editorController.MainGrid.OriginPos,
+				editorController.MainGrid.GetRightTopPos());
 		}
 	}
     private int xNum = 8;
@@ -79,12 +76,9 @@ public class EditorController : MonoBehaviour
             editorContent.UpdateUIShowing<EditorSizeY>();
             // 更新网格信息
             MainGrid = new Grid(XNum, YNum, MAINGRID_POS);
-			// TODO:
-			// 摄像机视角的初始化四个边坐标
-			xMin = MAINGRID_POS.x;
-			yMin = MAINGRID_POS.y;
-			xMax = Grid.GRID_SIZE * XNum;
-			yMax = Grid.GRID_SIZE * YNum;
+			cameraController.SetView(
+				editorController.MainGrid.OriginPos,
+				editorController.MainGrid.GetRightTopPos());
 		}
     }
     private int yNum = 8;
@@ -203,12 +197,6 @@ public class EditorController : MonoBehaviour
     }
     private XMLModule mouseModule;
 
-    // 摄像机的四个边的世界位置
-    [HideInInspector] public float xMin;
-    [HideInInspector] public float xMax;
-    [HideInInspector] public float yMin;
-    [HideInInspector] public float yMax;
-
     // 连续购买（是购买并安放的，而非移动网格中现有的）
     private bool buyContinuous = false;
 
@@ -226,12 +214,9 @@ public class EditorController : MonoBehaviour
     void Start()
     {
 		MainGrid = new Grid(XNum, YNum, MAINGRID_POS);
-		// TODO:
-		// 摄像机视角的初始化四个边坐标
-		xMin = MAINGRID_POS.x;
-		yMin = MAINGRID_POS.y;
-		xMax = Grid.GRID_SIZE * XNum;
-		yMax = Grid.GRID_SIZE * YNum;
+		cameraController.SetView(
+			editorController.MainGrid.OriginPos,
+			editorController.MainGrid.GetRightTopPos());
 
 		editorContent.UpdateUIShowingAll();
     }

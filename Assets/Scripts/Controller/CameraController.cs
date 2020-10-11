@@ -26,8 +26,20 @@ public class CameraController : MonoBehaviour
     // 摄像机滚动触发边缘距离
     private int scrollDistance = 10;
 
-    // 跟随
-    [HideInInspector] public bool follow;
+	// 相机左下角
+	public Vector2 LeftBottomPoint { set; private get; }
+	// 相机右上角
+	public Vector2 RightTopPoint { set; private get; }
+
+	public void SetView(Vector2 lbPoint, Vector2 rtPoint)
+	{
+		Debug.Assert(lbPoint.x <= rtPoint.x && lbPoint.y <= rtPoint.y);
+		LeftBottomPoint = lbPoint;
+		RightTopPoint = rtPoint;
+	}
+
+	// 跟随
+	[HideInInspector] public bool follow;
 
     void Awake()
     {
@@ -97,7 +109,7 @@ public class CameraController : MonoBehaviour
     {
         Camera camera = GetComponent<Camera>();
         float sizeMin = 0.1f;
-        float sizeMax = Mathf.Min((editorController.xMax - editorController.xMin) / 2, (editorController.yMax - editorController.yMin) / 2);
+        float sizeMax = Mathf.Min((RightTopPoint.x - LeftBottomPoint.x) / 2, (RightTopPoint.y - LeftBottomPoint.y) / 2);
 
         if (camera.orthographicSize < sizeMin)
         {
@@ -143,23 +155,23 @@ public class CameraController : MonoBehaviour
     {
         Vector2 dir = new Vector2(0, 0);
         // 向右
-        if (Input.mousePosition.x > Screen.width - scrollDistance && transform.position.x <= editorController.xMax)
+        if (Input.mousePosition.x > Screen.width - scrollDistance && transform.position.x <= RightTopPoint.x)
         {
             dir += new Vector2(1, 0);
         }
         // 向左
-        else if (Input.mousePosition.x < scrollDistance && transform.position.x >= editorController.xMin)
+        else if (Input.mousePosition.x < scrollDistance && transform.position.x >= LeftBottomPoint.x)
         {
             dir += new Vector2(-1, 0);
         }
 
         // 向上
-        if (Input.mousePosition.y > Screen.height - scrollDistance && transform.position.y <= editorController.yMax)
+        if (Input.mousePosition.y > Screen.height - scrollDistance && transform.position.y <= RightTopPoint.y)
         {
             dir += new Vector2(0, 1);
         }
         // 向下
-        else if (Input.mousePosition.y < scrollDistance && transform.position.y >= editorController.yMin)
+        else if (Input.mousePosition.y < scrollDistance && transform.position.y >= LeftBottomPoint.y)
         {
             dir += new Vector2(0, -1);
         }
@@ -170,10 +182,10 @@ public class CameraController : MonoBehaviour
     private void FixBound()
     {
         // 屏幕中心不能超出放置区
-        float left = editorController.xMin;
-        float right = editorController.xMax;
-        float bottom = editorController.yMin;
-        float top = editorController.yMax;
+        float left = LeftBottomPoint.x;
+        float right = RightTopPoint.x;
+        float bottom = LeftBottomPoint.y;
+        float top = RightTopPoint.y;
 
         if (transform.position.x > right)
         {

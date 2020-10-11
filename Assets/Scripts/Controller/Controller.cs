@@ -12,6 +12,7 @@ public class Controller: MonoBehaviour
     public static ResourceController resourceController;
     public static VictoryController  victoryController;
     public static ShopController     shopController;
+	public static CameraController   cameraController;
 
     public enum Player           { Neutral, Player, Enemy }
     public enum Layer            { Default, TransparentFX, IgnoreRaycast, Water = 4, UI, PlayerBall = 8, PlayerBlock, PlayerMissile, EnemyBall, EnemyBlock, EnemyMissile, Background, Terrain }
@@ -32,5 +33,6 @@ public class Controller: MonoBehaviour
         resourceController = GameObject.Find("Controller/Resource Controller").GetComponent<ResourceController>();
         victoryController  = GameObject.Find("Controller/Victory Controller"). GetComponent<VictoryController>();
         shopController     = GameObject.Find("Controller/Shop Controller").    GetComponent<ShopController>();
-    }
+		cameraController   = GameObject.Find("Main Camera").GetComponent<CameraController>();
+	}
 }
