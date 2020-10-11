@@ -270,12 +270,10 @@ public class GameController : MonoBehaviour
 		editorController.MainGrid= new Grid(
 			editorController.XNum, editorController.YNum,
 			EditorController.MAINGRID_POS, GetUnits());
-		// TODO:
-		// 摄像机视角的初始化四个边坐标
-		editorController.xMin = EditorController.MAINGRID_POS.x;
-		editorController.yMin = EditorController.MAINGRID_POS.y;
-		editorController.xMax = Grid.GRID_SIZE * editorController.XNum;
-		editorController.yMax = Grid.GRID_SIZE * editorController.YNum;
+
+		cameraController.SetView(
+			editorController.MainGrid.OriginPos,
+			editorController.MainGrid.GetRightTopPos());
 	}
 
 	// 清除投掷物
