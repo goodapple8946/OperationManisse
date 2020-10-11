@@ -17,7 +17,7 @@ public class EditorContent : MonoBehaviour
     // 更新Content内所有显示的数据
     public void UpdateUIShowing()
     {
-        UpdateByEditorMode();
+		UpdateByEditorMode();
         BroadcastMessage("UpdateShowing");
     }
 
@@ -29,6 +29,7 @@ public class EditorContent : MonoBehaviour
 
         UpdateHeight();
     }
+
 
     // 更新Content高度
     public void UpdateHeight()

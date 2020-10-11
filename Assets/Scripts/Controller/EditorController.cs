@@ -70,7 +70,7 @@ public class EditorController : MonoBehaviour
         set
         {
             yNum = value;
-            // 更新UI
+			// 更新UI
             editorContent.UpdateUIShowing();
             // 更新网格信息
             UpdateGridAfterResize();
