@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorHold : MonoBehaviour
+public class EditorHold : EditorUI
 {
     private Toggle toggle;
 
@@ -18,7 +18,7 @@ public class EditorHold : MonoBehaviour
         });
     }
 
-    public void UpdateShowing()
+    public override void UpdateShowing()
     {
         toggle.transform.GetChild(1).GetComponent<Text>().text = editorController.IsClickHold ? "On" : "Off";
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorVictoryCondition : MonoBehaviour
+public class EditorVictoryCondition : EditorUI
 {
     private Dropdown dropdown;
 
@@ -18,7 +18,7 @@ public class EditorVictoryCondition : MonoBehaviour
         });
     }
 
-    public void UpdateShowing()
+    public override void UpdateShowing()
     {
         dropdown.SetValueWithoutNotify((int)victoryController.victoryCondition);
     }

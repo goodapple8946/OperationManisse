@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorRun : MonoBehaviour
+public class EditorRun : EditorUI
 {
     private Button button;
 

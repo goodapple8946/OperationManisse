@@ -19,9 +19,6 @@ public class EditorController : MonoBehaviour
         get => editorMode;
         set
         {
-            Debug.Log(editorMode);
-            Debug.Log(value);
-
             editorMode = value;
             // 当编辑模式发生改变时：
             // 清除鼠标上的Unit、Background
@@ -31,7 +28,8 @@ public class EditorController : MonoBehaviour
             // 清除鼠标上的Module
             MouseModule = null;
             // 更新UI显示
-            editorContent.UpdateUIShowing();
+            editorContent.UpdateUIShowing<EditorEditorMode>();
+            editorContent.UpdateByEditorMode();
             // 不再快速放置
             IsClickHold = false;
             // 更新商店
@@ -56,7 +54,7 @@ public class EditorController : MonoBehaviour
         {
             xNum = value;
             // 更新UI
-            editorContent.UpdateUIShowing();
+            editorContent.UpdateUIShowing<EditorSizeX>();
             // 更新网格信息
             UpdateGridAfterResize();
         }
@@ -71,7 +69,7 @@ public class EditorController : MonoBehaviour
         {
             yNum = value;
             // 更新UI
-            editorContent.UpdateUIShowing();
+            editorContent.UpdateUIShowing<EditorSizeY>();
             // 更新网格信息
             UpdateGridAfterResize();
         }
@@ -85,7 +83,7 @@ public class EditorController : MonoBehaviour
         set
         {
             playerOwner = value;
-            editorContent.UpdateUIShowing();
+            editorContent.UpdateUIShowing<EditorOwner>();
         }
     }
     private Player playerOwner;
@@ -97,7 +95,7 @@ public class EditorController : MonoBehaviour
         set
         {
             playerMoneyOrigin = value;
-            editorContent.UpdateUIShowing();
+            editorContent.UpdateUIShowing<EditorMoney>();
         }
     }
     private int playerMoneyOrigin = 0;
@@ -110,7 +108,7 @@ public class EditorController : MonoBehaviour
         {
             lightIntensity = value;
             GameObject.Find("Global Light").GetComponent<Light2D>().intensity = LightIntensity;
-            editorContent.UpdateUIShowing();
+            editorContent.UpdateUIShowing<EditorLight>();
         }
     }
     private float lightIntensity = 1.0f;
@@ -130,7 +128,7 @@ public class EditorController : MonoBehaviour
                 background.transform.localScale = new Vector2(scale, scale);
             }
 
-            editorContent.UpdateUIShowing();
+            editorContent.UpdateUIShowing<EditorScale>();
         }
     }
     private float backgroundScale = 1f;
@@ -142,7 +140,7 @@ public class EditorController : MonoBehaviour
         set
         {
             isShowingHP = value;
-            editorContent.UpdateUIShowing();
+            editorContent.UpdateUIShowing<EditorShowHP>();
         }
     }
     private bool isShowingHP = true;
@@ -159,7 +157,7 @@ public class EditorController : MonoBehaviour
         set
         {
             isClickHold = value;
-            editorContent.UpdateUIShowing();
+            editorContent.UpdateUIShowing<EditorHold>();
         }
     }
     private bool isClickHold;
@@ -235,7 +233,7 @@ public class EditorController : MonoBehaviour
     {
         Init();
         CreateGridSprites();
-        editorContent.UpdateUIShowing();
+        editorContent.UpdateUIShowingAll();
     }
 
     void Update()

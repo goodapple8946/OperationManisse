@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorLoadGame : MonoBehaviour
+public class EditorLoadGame : EditorUI
 {
 	Button button;
 

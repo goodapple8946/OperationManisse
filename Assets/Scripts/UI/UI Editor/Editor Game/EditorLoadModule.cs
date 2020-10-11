@@ -10,7 +10,7 @@ using static Controller;
 using Coord = System.Tuple<int, int>;
 
 
-public class EditorLoadModule : MonoBehaviour
+public class EditorLoadModule : EditorUI
 {
 	private static List<GameObject> lastClones = new List<GameObject>();
 	private Button button;

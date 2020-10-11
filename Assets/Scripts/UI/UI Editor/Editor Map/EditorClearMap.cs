@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorClearMap : MonoBehaviour
+public class EditorClearMap : EditorUI
 {
 	Button button;
 

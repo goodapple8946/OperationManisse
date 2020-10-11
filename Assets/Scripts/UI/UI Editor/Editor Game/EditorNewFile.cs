@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorNewFile : MonoBehaviour
+public class EditorNewFile : EditorUI
 {
     private InputField inputField;
     private void Awake()

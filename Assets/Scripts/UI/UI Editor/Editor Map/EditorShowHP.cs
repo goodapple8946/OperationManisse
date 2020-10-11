@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorShowHP : MonoBehaviour
+public class EditorShowHP : EditorUI
 {
     private Toggle toggle;
 
@@ -17,7 +17,7 @@ public class EditorShowHP : MonoBehaviour
         });
     }
 
-    public void UpdateShowing()
+    public override void UpdateShowing()
     {
         toggle.transform.GetChild(1).GetComponent<Text>().text = editorController.IsShowingHP ? "On" : "Off";
     }

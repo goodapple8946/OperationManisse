@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorLight : MonoBehaviour
+public class EditorLight : EditorUI
 {
     Slider slider;
 
@@ -17,7 +17,7 @@ public class EditorLight : MonoBehaviour
         });
     }
 
-	public void UpdateShowing()
+	public override void UpdateShowing()
 	{
 		slider.SetValueWithoutNotify(editorController.LightIntensity);
 	}

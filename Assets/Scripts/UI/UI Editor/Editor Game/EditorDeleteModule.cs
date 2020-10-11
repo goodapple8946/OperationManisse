@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorDeleteModule : MonoBehaviour
+public class EditorDeleteModule : EditorUI
 {
 	Button button;
 

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorEditorMode : MonoBehaviour
+public class EditorEditorMode : EditorUI
 {
     private Toggle toggle;
     private GameObject content;
@@ -28,7 +28,7 @@ public class EditorEditorMode : MonoBehaviour
         });
     }
 
-    public void UpdateShowing()
+    public override void UpdateShowing()
     {
         toggle.SetIsOnWithoutNotify(editorController.EditorMode.ToString() == modeName);
     }

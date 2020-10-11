@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Controller;
 
-public class EditorScale : MonoBehaviour
+public class EditorScale : EditorUI
 {
     Slider slider;
 
@@ -17,7 +17,7 @@ public class EditorScale : MonoBehaviour
         });
     }
 
-    public void UpdateShowing()
+    public override void UpdateShowing()
     {
         slider.value = editorController.BackgroundScale;
     }
