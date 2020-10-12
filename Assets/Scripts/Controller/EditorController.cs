@@ -67,6 +67,14 @@ public class EditorController : MonoBehaviour
             editorContent.UpdateUIShowing<EditorSizeX>();
             // 更新网格信息
             RecreateMainGrid(gameController.GetUnits());
+			// 如果放置区超出了MainGrid就清空
+			if (!MainGrid.InGrid(BuildingCoord1) || !MainGrid.InGrid(BuildingCoord2))
+			{
+				BuildingCoord1 = new Coord(0, 0);
+				BuildingCoord2 = new Coord(0, 0);
+				BuildingGrid.ClearSquares();
+				BuildingGrid = CreateBuildingGrid(BuildingCoord1, BuildingCoord2);
+			}
         }
     }
     private int xNum = 8;
@@ -82,10 +90,19 @@ public class EditorController : MonoBehaviour
             editorContent.UpdateUIShowing<EditorSizeY>();
             // 更新网格信息
             RecreateMainGrid(gameController.GetUnits());
-        }
+			// 如果放置区超出了MainGrid就清空
+			if (!MainGrid.InGrid(BuildingCoord1) || !MainGrid.InGrid(BuildingCoord2))
+			{
+				BuildingCoord1 = new Coord(0, 0);
+				BuildingCoord2 = new Coord(0, 0);
+				BuildingGrid.ClearSquares();
+				BuildingGrid = CreateBuildingGrid(BuildingCoord1, BuildingCoord2);
+			}
+		}
     }
     private int yNum = 8;
 
+	/// <summary> building在世界的坐标</summary>
 	public Coord BuildingCoord1
 	{
 		get => buildingCoord1;
@@ -96,16 +113,12 @@ public class EditorController : MonoBehaviour
 			EditorPointer.point1.UpdateShowing(buildingCoord1);
 			// 更新网格信息
 			buildingGrid.ClearSquares();
-			int originX = Mathf.Min(buildingCoord1.x, buildingCoord2.x);
-			int originY = Mathf.Min(buildingCoord1.y, buildingCoord2.y);
-			Vector2 originPos = MainGrid.Coord2WorldPos(new Coord(originX, originY), false);
-			int xCount = Mathf.Abs(buildingCoord1.x - buildingCoord2.x) + 1;
-			int yCount = Mathf.Abs(buildingCoord1.y - buildingCoord2.y) + 1;
-			buildingGrid = new Grid(xCount, yCount, originPos, Grid.BUIDING_ALPHA);
+			buildingGrid = CreateBuilding(buildingCoord1, buildingCoord2);
 		}
 	}
 	private Coord buildingCoord1 = new Coord(0, 0);
 
+	/// <summary> building在世界的坐标</summary>
 	public Coord BuildingCoord2
 	{
 		get => buildingCoord2;
@@ -116,12 +129,7 @@ public class EditorController : MonoBehaviour
 			EditorPointer.point2.UpdateShowing(buildingCoord2);
 			// 更新网格信息
 			buildingGrid.ClearSquares();
-			int originX = Mathf.Min(buildingCoord1.x, buildingCoord2.x);
-			int originY = Mathf.Min(buildingCoord1.y, buildingCoord2.y);
-			Vector2 originPos = MainGrid.Coord2WorldPos(new Coord(originX, originY), false);
-			int xCount = Mathf.Abs(buildingCoord1.x - buildingCoord2.x) + 1;
-			int yCount = Mathf.Abs(buildingCoord1.y - buildingCoord2.y) + 1;
-			buildingGrid = new Grid(xCount, yCount, originPos, Grid.BUIDING_ALPHA);
+			buildingGrid = CreateBuilding(buildingCoord1, buildingCoord2);
 		}
 	}
 	private Coord buildingCoord2 = new Coord(0, 0);
@@ -246,6 +254,10 @@ public class EditorController : MonoBehaviour
     public int PlayerMoney { get => playerMoney; set => playerMoney = value; }
     private int playerMoney;
 
+
+
+	//------------------------  成员函数 ----------------------//
+
     void Awake()
     {
         editorContent = GameObject.Find("UI Editor").GetComponentInChildren<EditorContent>();
@@ -255,10 +267,7 @@ public class EditorController : MonoBehaviour
     {
         CreateMainGrid();
 
-        BuildingGrid = new Grid(
-			Mathf.Abs((buildingCoord1 - buildingCoord2).x),
-			Mathf.Abs((buildingCoord1 - buildingCoord2).y),
-			MAINGRID_POS, Grid.BUIDING_ALPHA);
+		BuildingGrid = CreateBuildingGrid(BuildingCoord1, BuildingCoord2);
     }
 
     void Update()
@@ -283,6 +292,17 @@ public class EditorController : MonoBehaviour
     }
 
 	/// <summary>
+	/// 创建空的面板并设置摄像机视角
+	/// </summary>
+	void CreateMainGrid()
+	{
+		MainGrid = new Grid(XNum, YNum, MAINGRID_POS);
+		cameraController.SetView(
+			editorController.MainGrid.OriginPos,
+			editorController.MainGrid.GetRightTopPos());
+	}
+
+	/// <summary>
 	///	根据现有面板配置创建Grid
 	/// 并设置摄像机视角 
 	/// </summary>
@@ -296,15 +316,39 @@ public class EditorController : MonoBehaviour
     }
 
 	/// <summary>
-	/// 创建空的面板并设置摄像机视角
+	/// 左下闭右上开区间，coord不需要保证有序性
+	/// 不能画空网格
 	/// </summary>
-	void CreateMainGrid()
-    {
-        MainGrid = new Grid(XNum, YNum, MAINGRID_POS);
-        cameraController.SetView(
-            editorController.MainGrid.OriginPos,
-            editorController.MainGrid.GetRightTopPos());
-    }
+	Grid CreateBuilding(Coord coord1, Coord coord2)
+	{
+		Coord lbCoord = new Coord(
+			Mathf.Min(coord1.x, coord2.x),
+			Mathf.Min(coord1.y, coord2.y));
+		// 保证rtCoord被画出
+		Coord rtCoord = new Coord(
+			Mathf.Max(coord1.x, coord2.x) + 1,
+			Mathf.Max(coord1.y, coord2.y) + 1);
+		return CreateBuildingGrid(lbCoord, rtCoord);
+	}
+
+	/// <summary>
+	///	世界坐标的左下和右上角,左闭右开区间
+	///	可以画空网格
+	///	BUIDING_ALPHA: 设置building透明度
+	/// </summary>
+	Grid CreateBuildingGrid(Coord lbCoord, Coord rtCoord)
+	{
+		//Debug.Log(lbCoord.ToString());
+		//Debug.Log(rtCoord.ToString());
+		Debug.Assert(lbCoord.x <= rtCoord.x && lbCoord.y <= rtCoord.y
+			&& MainGrid.InGrid(lbCoord) && MainGrid.InGrid(rtCoord));
+
+		Vector2 origin = MainGrid.Coord2WorldPos(lbCoord, false);
+		return new Grid(
+			rtCoord.x - lbCoord.x,
+			rtCoord.y - lbCoord.y,
+			origin, Grid.BUIDING_ALPHA);
+	}
 
     // 进入Editor阶段
     public void EnterPhaseEditor()
