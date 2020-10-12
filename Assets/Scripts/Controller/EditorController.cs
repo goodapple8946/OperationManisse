@@ -114,6 +114,8 @@ public class EditorController : MonoBehaviour
 			// 更新网格信息
 			buildingGrid.ClearSquares();
 			buildingGrid = CreateBuilding(buildingCoord1, buildingCoord2);
+			// 取消选中
+			EditorPointer.point1.SetOn(false);
 		}
 	}
 	private Coord buildingCoord1 = new Coord(0, 0);
@@ -130,6 +132,8 @@ public class EditorController : MonoBehaviour
 			// 更新网格信息
 			buildingGrid.ClearSquares();
 			buildingGrid = CreateBuilding(buildingCoord1, buildingCoord2);
+			// 取消选中
+			EditorPointer.point2.SetOn(false);
 		}
 	}
 	private Coord buildingCoord2 = new Coord(0, 0);
