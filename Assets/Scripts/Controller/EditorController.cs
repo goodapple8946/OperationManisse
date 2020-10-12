@@ -152,10 +152,6 @@ public class EditorController : MonoBehaviour
     }
     private bool isShowingHP = true;
 
-    // Editor面饭：玩家钱数
-    public int PlayerMoney { get => playerMoney; set => playerMoney = value; }
-    private int playerMoney;
-
     // Editor面饭：面板上文本为Fast Click
     // 允许按住鼠标左键或右键来放置物体，只有EditorMode是Unit模式下，isClickHold才能为true
     public bool IsClickHold
@@ -202,6 +198,10 @@ public class EditorController : MonoBehaviour
 
     // 显示Editor内容的物体
     private EditorContent editorContent;
+
+    // 玩家剩余钱数
+    public int PlayerMoney { get => playerMoney; set => playerMoney = value; }
+    private int playerMoney;
 
     void Awake()
     {
