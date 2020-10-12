@@ -38,11 +38,12 @@ public class EditorController : MonoBehaviour
     }
     private EditorMode editorMode;
 
-	// 放置物体的网格
-	public Grid MainGrid { get => mainGrid; set => mainGrid = value; }
+    // 放置物体的网格
+    public Grid MainGrid { get => mainGrid; set => mainGrid = value; }
     private Grid mainGrid;
 
-	private Grid BuildingGrid;
+    public Grid BuildingGrid { get => buildingGrid; set => buildingGrid = value; }
+    private Grid buildingGrid;
 
     // 编辑者放置的背景
     public HashSet<Background> Backgrounds => backgrounds;
@@ -55,19 +56,19 @@ public class EditorController : MonoBehaviour
     // MainGrid的起始世界位置
     public static readonly Vector2 MAINGRID_POS = Vector2.zero;
 
-	// Editor面板：网格尺寸x
-	public int XNum
+    // Editor面板：网格尺寸x
+    public int XNum
     {
         get => xNum;
-		set
-		{
-			xNum = value;
-			// 更新UI
-			editorContent.UpdateUIShowing<EditorSizeX>();
-			// 更新网格信息
-			RecreateMainGrid(gameController.GetUnits());
-		}
-	}
+        set
+        {
+            xNum = value;
+            // 更新UI
+            editorContent.UpdateUIShowing<EditorSizeX>();
+            // 更新网格信息
+            RecreateMainGrid(gameController.GetUnits());
+        }
+    }
     private int xNum = 8;
 
     // Editor面板：网格尺寸y
@@ -79,9 +80,9 @@ public class EditorController : MonoBehaviour
             yNum = value;
             // 更新UI
             editorContent.UpdateUIShowing<EditorSizeY>();
-			// 更新网格信息
-			RecreateMainGrid(gameController.GetUnits());
-		}
+            // 更新网格信息
+            RecreateMainGrid(gameController.GetUnits());
+        }
     }
     private int yNum = 8;
 
@@ -212,8 +213,8 @@ public class EditorController : MonoBehaviour
 
     void Start()
     {
-		CreateMainGrid();
-		BuildingGrid = new Grid(3, 3, MAINGRID_POS);
+        CreateMainGrid();
+        BuildingGrid = new Grid(3, 3, MAINGRID_POS);
     }
 
     void Update()
@@ -224,71 +225,65 @@ public class EditorController : MonoBehaviour
         MyDebug();
     }
 
-	// 根据现有面板配置创建Grid
-	public void RecreateMainGrid(Unit[] units)
-	{
-		MainGrid.ClearSquares();
-		MainGrid = new Grid(XNum, YNum, MAINGRID_POS, units);
-		cameraController.SetView(
-			editorController.MainGrid.OriginPos,
-			editorController.MainGrid.GetRightTopPos());
-	}
+    // 根据现有面板配置创建Grid
+    public void RecreateMainGrid(Unit[] units)
+    {
+        MainGrid.ClearSquares();
+        MainGrid = new Grid(XNum, YNum, MAINGRID_POS, units);
+        cameraController.SetView(
+            editorController.MainGrid.OriginPos,
+            editorController.MainGrid.GetRightTopPos());
+    }
 
-	// 创建空的面板
-	private void CreateMainGrid()
-	{
-		MainGrid = new Grid(XNum, YNum, MAINGRID_POS);
-		cameraController.SetView(
-			editorController.MainGrid.OriginPos,
-			editorController.MainGrid.GetRightTopPos());
-	}
+    // 创建空的面板
+    private void CreateMainGrid()
+    {
+        MainGrid = new Grid(XNum, YNum, MAINGRID_POS);
+        cameraController.SetView(
+            editorController.MainGrid.OriginPos,
+            editorController.MainGrid.GetRightTopPos());
+    }
 
-	// 进入Editor阶段
-	public void EnterPhaseEditor()
-	{
-		MainGrid.SetShow(true);
-		BuildingGrid.SetShow(true);
+    // 进入Editor阶段
+    public void EnterPhaseEditor()
+    {
+        // 放置物体所有者切换至中立
+        PlayerOwner = Player.Neutral;
+        // 显示HP
+        IsShowingHP = true;
+        // 更新物体的Collider
+        UpdateObjectsCollider(EditorMode);
+        // 清除鼠标上的物体
+        DestroyMouseObject();
+        MouseObjectLast = null;
+        MouseModule = null;
+    }
 
-		// 放置物体所有者切换至中立
-		PlayerOwner = Player.Neutral;
-		// 显示HP
-		IsShowingHP = true;
-		// 更新物体的Collider
-		UpdateObjectsCollider(EditorMode);
-		// 清除鼠标上的物体
-		DestroyMouseObject();
-		MouseObjectLast = null;
-		MouseModule = null;
-	}
+    // 离开Editor阶段
+    public void LeavePhaseEditor()
+    {
+        // 设置玩家钱数
+        InitPlayerMoney();
+        // 放置物体所有者切换至玩家
+        PlayerOwner = Player.Player;
+        // 不一直显示HP
+        IsShowingHP = false;
+        // 关闭快速放置
+        IsClickHold = false;
+        // 切换放置模式为Unit
+        EditorMode = EditorMode.Unit;
+        // 所有物体启用Collider
+        SetUnitsCollider(true);
+        SetBackgroundsCollider(true);
+        SetTerrainsCollider(true);
+        // 清除鼠标上的物体
+        DestroyMouseObject();
+        MouseObjectLast = null;
+        MouseModule = null;
+    }
 
-	// 离开Editor阶段
-	public void LeavePhaseEditor()
-	{
-		MainGrid.SetShow(false);
-		BuildingGrid.SetShow(true);
-
-		// 设置玩家钱数
-		InitPlayerMoney();
-		// 放置物体所有者切换至玩家
-		PlayerOwner = Player.Player;
-		// 不一直显示HP
-		IsShowingHP = false;
-		// 关闭快速放置
-		IsClickHold = false;
-		// 切换放置模式为Unit
-		EditorMode = EditorMode.Unit;
-		// 所有物体启用Collider
-		SetUnitsCollider(true);
-		SetBackgroundsCollider(true);
-		SetTerrainsCollider(true);
-		// 清除鼠标上的物体
-		DestroyMouseObject();
-		MouseObjectLast = null;
-		MouseModule = null;
-	}
-
-	// 鼠标左键点击
-	public void LeftClick(ClickableObject clickableObject, bool hold = false)
+    // 鼠标左键点击
+    public void LeftClick(ClickableObject clickableObject, bool hold = false)
     {
         // 如果没有开启连续放置模式，但是长按鼠标。则没有效果
         if (!IsClickHold && hold)
@@ -383,25 +378,25 @@ public class EditorController : MonoBehaviour
         }
     }
 
-	// 鼠标右键点击
-	public void RightClick(ClickableObject clickableObject, bool hold = false)
-	{
-		// 如果没有开启连续放置模式，但是长按鼠标。则没有效果
-		if (!IsClickHold && hold)
-		{
-			return;
-		}
-		Sell(clickableObject);
-	}
+    // 鼠标右键点击
+    public void RightClick(ClickableObject clickableObject, bool hold = false)
+    {
+        // 如果没有开启连续放置模式，但是长按鼠标。则没有效果
+        if (!IsClickHold && hold)
+        {
+            return;
+        }
+        Sell(clickableObject);
+    }
 
-	// 拾起Unit
-	public void Pick(Unit unit)
+    // 拾起Unit
+    public void Pick(Unit unit)
     {
         if (unit.coord != Coord.OUTSIDE)
         {
             MainGrid.Set(unit.coord, null);
-			unit.coord = Coord.OUTSIDE;
-		}
+            unit.coord = Coord.OUTSIDE;
+        }
         unit.SetSpriteLayer("Pick");
         MouseObject = unit;
         MouseObjectLast = unit;
@@ -451,26 +446,26 @@ public class EditorController : MonoBehaviour
         }
     }
 
-	// 安放Unit，吸附到最近的网格,如果可以再次购买,就再次购买
-	public void Place(Unit unit)
-	{
-		Vector2 pos = unit.transform.position;
-		Coord worldCoord = MainGrid.GetClosestCoord(pos);
+    // 安放Unit，吸附到最近的网格,如果可以再次购买,就再次购买
+    public void Place(Unit unit)
+    {
+        Vector2 pos = unit.transform.position;
+        Coord worldCoord = MainGrid.GetClosestCoord(pos);
 
-		// 排除不符合放置条件的情况
-		if (gameController.GamePhase == GamePhase.Editor)
-		{
-			if (!MainGrid.InGrid(worldCoord) || MainGrid.Get(worldCoord) != null)
-				return;
-		}
-		else if (gameController.GamePhase == GamePhase.Preparation)
-		{
-			Coord coord = BuildingGrid.GetClosestCoord(pos);
-			if (!BuildingGrid.InGrid(coord) || MainGrid.Get(coord) != null)
-				return;
-		}
+        // 排除不符合放置条件的情况
+        if (gameController.GamePhase == GamePhase.Editor)
+        {
+            if (!MainGrid.InGrid(worldCoord) || MainGrid.Get(worldCoord) != null)
+                return;
+        }
+        else if (gameController.GamePhase == GamePhase.Preparation)
+        {
+            Coord coord = BuildingGrid.GetClosestCoord(pos);
+            if (!BuildingGrid.InGrid(coord) || MainGrid.Get(coord) != null)
+                return;
+        }
 
-   
+
         MouseObject = null;
         // 如果是购买并安放的（而非移动网格中现有的），继续购买
         if (buyContinuous)
@@ -489,8 +484,8 @@ public class EditorController : MonoBehaviour
         PlayPutIntoGridSound(unit);
     }
 
-	// 安放Background
-	public void Place(Background background)
+    // 安放Background
+    public void Place(Background background)
     {
         background.SetSpriteLayer("Background");
         background.gameObject.layer = (int)Layer.Background;
@@ -681,14 +676,14 @@ public class EditorController : MonoBehaviour
         }
     }
 
-	// 初始化玩家钱数
-	public void InitPlayerMoney()
+    // 初始化玩家钱数
+    public void InitPlayerMoney()
     {
         PlayerMoney = PlayerMoneyOrigin;
     }
 
-	// 指令
-	void Order()
+    // 指令
+    void Order()
     {
         // 编辑模式：Unit
         if (EditorMode == EditorMode.Unit)
@@ -781,14 +776,14 @@ public class EditorController : MonoBehaviour
     /// </summary>
     public void Put(Coord coord, Unit unit)
     {
-		Debug.Assert(coord != Coord.OUTSIDE && unit != null);
+        Debug.Assert(coord != Coord.OUTSIDE && unit != null);
         // 安放
         MainGrid.Set(coord, unit);
-		unit.coord = coord;
+        unit.coord = coord;
         unit.transform.position = MainGrid.Coord2WorldPos(coord);
         unit.transform.parent = gameController.unitObjs.transform;
         unit.GetComponent<Collider2D>().enabled = (EditorMode == EditorMode.Unit);
-		// TODO:
+        // TODO:
         unit.isEditorCreated = (gameController.GamePhase == GamePhase.Editor);
     }
     /// <summary>
@@ -817,7 +812,7 @@ public class EditorController : MonoBehaviour
         {
             Destroy(MouseObject.gameObject);
         }
-	}
+    }
 
     // 清空背景
     public void ClearBackground()
@@ -829,15 +824,15 @@ public class EditorController : MonoBehaviour
         Backgrounds.Clear();
     }
 
-	/// <summary>
-	/// 返回鼠标所在网格坐标
-	/// 返回null: 如果不在网格中
-	/// </summary>
-	public Coord GetMouseCoord()
+    /// <summary>
+    /// 返回鼠标所在网格坐标
+    /// 返回null: 如果不在网格中
+    /// </summary>
+    public Coord GetMouseCoord()
     {
-		float mouseX = MouseController.MouseWorldPosition().x;
-		float mouseY = MouseController.MouseWorldPosition().y;
-		return MainGrid.GetClosestCoord(new Vector2(mouseX, mouseY));
+        float mouseX = MouseController.MouseWorldPosition().x;
+        float mouseY = MouseController.MouseWorldPosition().y;
+        return MainGrid.GetClosestCoord(new Vector2(mouseX, mouseY));
     }
 
     /// <summary>
@@ -888,85 +883,85 @@ public class EditorController : MonoBehaviour
         }
     }
 
-	#region Obselete
-	// 连接所有Block
-	//[Obsolete("All blocks are in the grid now. Use LinkAllBlocksInGrid() instead.")]
-	//public void LinkAllBlocks()
-	//{
-	//    Unit[] units = gameController.GetUnits("Block");
-	//    foreach (Unit unit in units)
-	//    {
-	//        Block block = unit as Block;
-	//        for (int direction = 0; direction < 4; direction++)
-	//        {
-	//            if (block.IsLinkAvailable(direction))
-	//            {
-	//                Block another = GetLinkableBlockByDirection(block, direction);
-	//                // 连接
-	//                if (another != null)
-	//                {
-	//                    Link(block, another, direction);
-	//                }
-	//            }
-	//        }
-	//    }
-	//}
+    #region Obselete
+    // 连接所有Block
+    //[Obsolete("All blocks are in the grid now. Use LinkAllBlocksInGrid() instead.")]
+    //public void LinkAllBlocks()
+    //{
+    //    Unit[] units = gameController.GetUnits("Block");
+    //    foreach (Unit unit in units)
+    //    {
+    //        Block block = unit as Block;
+    //        for (int direction = 0; direction < 4; direction++)
+    //        {
+    //            if (block.IsLinkAvailable(direction))
+    //            {
+    //                Block another = GetLinkableBlockByDirection(block, direction);
+    //                // 连接
+    //                if (another != null)
+    //                {
+    //                    Link(block, another, direction);
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 
-	// 检测该方向范围内是否有可连接的Block
-	//Block GetLinkableBlockByDirection(Block block, int direction)
-	//{
-	//    // 检测连接距离
-	//    float distanceCheck = 0.3f;
+    // 检测该方向范围内是否有可连接的Block
+    //Block GetLinkableBlockByDirection(Block block, int direction)
+    //{
+    //    // 检测连接距离
+    //    float distanceCheck = 0.3f;
 
-	//    int directionNeg = Negative(direction);
+    //    int directionNeg = Negative(direction);
 
-	//    Unit[] units = gameController.GetUnits("Block");
-	//    foreach (Unit unit in units)
-	//    {
-	//        Block another = unit as Block;
+    //    Unit[] units = gameController.GetUnits("Block");
+    //    foreach (Unit unit in units)
+    //    {
+    //        Block another = unit as Block;
 
-	//        if (another != block &&
-	//            // 所属同一名玩家
-	//            block.player == another.player &&
-	//            // Another的位置可以连接
-	//            another.IsLinkAvailable(directionNeg) == true)
-	//        {
-	//            // Another的连接点
-	//            Vector2 absorptionPoint = LinkPoint(another, directionNeg);
+    //        if (another != block &&
+    //            // 所属同一名玩家
+    //            block.player == another.player &&
+    //            // Another的位置可以连接
+    //            another.IsLinkAvailable(directionNeg) == true)
+    //        {
+    //            // Another的连接点
+    //            Vector2 absorptionPoint = LinkPoint(another, directionNeg);
 
-	//            // Block与连接点的距离
-	//            float distance = ((Vector2)block.transform.position - absorptionPoint).magnitude;
+    //            // Block与连接点的距离
+    //            float distance = ((Vector2)block.transform.position - absorptionPoint).magnitude;
 
-	//            // 满足吸附距离
-	//            if (distance <= distanceCheck)
-	//            {
-	//                // 返回满足的Another
-	//                return another;
-	//            }
-	//        }
-	//    }
-	//    return null;
-	//}
-	// 按照方向返回Block的连接点
-	//public Vector2 LinkPoint(Block block, int direction)
-	//{
-	//	Vector2 point = block.transform.position;
-	//	switch (direction)
-	//	{
-	//		case 0:
-	//			point += Vector2.right * 2 * block.radius;
-	//			break;
-	//		case 1:
-	//			point += Vector2.up * 2 * block.radius;
-	//			break;
-	//		case 2:
-	//			point += Vector2.left * 2 * block.radius;
-	//			break;
-	//		case 3:
-	//			point += Vector2.down * 2 * block.radius;
-	//			break;
-	//	}
-	//	return point;
-	//}
-	#endregion
+    //            // 满足吸附距离
+    //            if (distance <= distanceCheck)
+    //            {
+    //                // 返回满足的Another
+    //                return another;
+    //            }
+    //        }
+    //    }
+    //    return null;
+    //}
+    // 按照方向返回Block的连接点
+    //public Vector2 LinkPoint(Block block, int direction)
+    //{
+    //	Vector2 point = block.transform.position;
+    //	switch (direction)
+    //	{
+    //		case 0:
+    //			point += Vector2.right * 2 * block.radius;
+    //			break;
+    //		case 1:
+    //			point += Vector2.up * 2 * block.radius;
+    //			break;
+    //		case 2:
+    //			point += Vector2.left * 2 * block.radius;
+    //			break;
+    //		case 3:
+    //			point += Vector2.down * 2 * block.radius;
+    //			break;
+    //	}
+    //	return point;
+    //}
+    #endregion
 }

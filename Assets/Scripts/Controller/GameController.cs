@@ -24,46 +24,91 @@ public class GameController : MonoBehaviour
 				case GamePhase.Editor:
 					if(newPhase == GamePhase.Preparation)
 					{
-						LeavePhaseEditor();
-						EnterPhasePreparation();
+						uiEditor.SetActive(false);
+						uiGame.SetActive(true);
+						uiGame.GetComponent<UIGame>().UpdateActive(GamePhase.Preparation);
+						uiShop.SetActive(true);
+
+						editorController.MainGrid.SetShow(false);
+						editorController.LeavePhaseEditor();
+						shopController.UpdateShop(GamePhase.Preparation);
+						victoryController.Init();
+
+						Clone(unitObjsEditor, unitObjs, false); // 把舞台上的保存到Editor
 					}
 					break;
 
 				case GamePhase.Preparation:
 					if (newPhase == GamePhase.Editor)
 					{
-						EnterPhaseEditor();
+						uiEditor.SetActive(true);
+						uiGame.SetActive(false);
+
+						editorController.MainGrid.SetShow(true);
+						shopController.UpdateShop(GamePhase.Editor);
+
+						Clone(unitObjsEditorAndPlayer, unitObjsEditor, false); // 删除Player创建的
+						Clone(unitObjs, unitObjsEditor, true);
 					}
 					else if (newPhase == GamePhase.Preparation)
 					{
+						Clone(unitObjsEditorAndPlayer, unitObjsEditor, false); // 删除Player创建的
 						Clone(unitObjs, unitObjsEditor, true);
-						// 删除Player创建的
-						Clone(unitObjsEditorAndPlayer, unitObjsEditor, false);
 
-						editorController.RecreateMainGrid(GetUnits());
 						editorController.InitPlayerMoney();
 					}
 					else if (newPhase == GamePhase.Playing)
 					{
-						EnterPhasePlaying();
+						uiGame.GetComponent<UIGame>().UpdateActive(GamePhase.Playing);
+						uiShop.SetActive(false);
+
+						editorController.BuildingGrid.SetShow(false);
+						editorController.MainGrid.LinkBlocks();
+
+						// 把当前舞台上的Editor和Player创建的东西保存
+						Clone(unitObjsEditorAndPlayer, unitObjs, false);
+
+						unitObjs.BroadcastMessage("GameStart");
 					}
 					break;
 
 				case GamePhase.Playing:
 					if (newPhase == GamePhase.Editor)
 					{
-						LeavePhasePlaying();
-						EnterPhaseEditor();
+						ClearMissile();
+						
+						uiEditor.SetActive(true);
+						uiGame.SetActive(false);
+						uiShop.SetActive(true);
+
+						editorController.MainGrid.SetShow(true);
+						editorController.BuildingGrid.SetShow(true);
+						editorController.EnterPhaseEditor();
+						shopController.UpdateShop(GamePhase.Editor);
+
+						Clone(unitObjsEditorAndPlayer, unitObjsEditor, false); // 删除Player创建的
+						Clone(unitObjs, unitObjsEditor, true);
 					}
 					else if (newPhase == GamePhase.Preparation)
 					{
-						LeavePhasePlaying();
-						
-						EnterPhasePreparation();
+						ClearMissile();
+
+						uiGame.GetComponent<UIGame>().UpdateActive(GamePhase.Preparation);
+						uiShop.SetActive(true);
+
+						editorController.BuildingGrid.SetShow(true);
+						shopController.UpdateShop(GamePhase.Preparation);
+						victoryController.Init();
+
+						Clone(unitObjs, unitObjsEditorAndPlayer, true);
 					}
 					else if (newPhase == GamePhase.Victory)
 					{
-						EnterVictory();
+						uiGame.GetComponent<UIGame>().UpdateActive(GamePhase.Victory);
+
+						// TODO: 胜利后弹出胜利窗口
+
+						AudioSource.PlayClipAtPoint(resourceController.audioVictory, Camera.main.transform.position);
 					}
 					break;
 
@@ -79,11 +124,11 @@ public class GameController : MonoBehaviour
 	/// <summary>preparation和playing阶段,场景中所有Unit</summary>
 	// 所有物体的根节点
 	/// <summary> 舞台上的物体 </summary>
-	[HideInInspector] public GameObject unitObjs;
+	public GameObject unitObjs;
 	/// <summary> 玩家放置的物体 </summary>
-	private GameObject unitObjsEditorAndPlayer;
+	public GameObject unitObjsEditorAndPlayer;
 	/// <summary> 编辑者放置的物体 </summary>
-	private GameObject unitObjsEditor;
+	public GameObject unitObjsEditor;
 
 	[HideInInspector] public GameObject missileObjects;
     [HideInInspector] public GameObject hpBarObjects;
@@ -124,88 +169,6 @@ public class GameController : MonoBehaviour
         DebugGame();
     }
 
-    void FixedUpdate()
-    {
-
-    }
-
-    // 进入Editor阶段
-    void EnterPhaseEditor()
-    {
-        uiEditor.SetActive(true);
-        uiGame.SetActive(false);
-        uiShop.SetActive(true);
-
-        editorController.EnterPhaseEditor();
-		// shopController EnterPhaseEditor
-		shopController.UpdateShop(GamePhase.Editor);
-
-		// 返回到Editor阶段，把保存的unitObjsEditor赋值给unitObjs
-		Debug.Assert(unitObjsEditor.activeSelf == false);
-
-		Clone(unitObjs, unitObjsEditor, true);
-		// 删除Player创建的
-		Clone(unitObjsEditorAndPlayer, unitObjsEditor, false);
-
-		editorController.InitPlayerMoney();
-		editorController.RecreateMainGrid(GetUnits());
-	}
-
-    // 离开Editor阶段
-    void LeavePhaseEditor()
-    {
-        editorController.LeavePhaseEditor();
-	
-        uiEditor.SetActive(false);
-        uiGame.SetActive(true);
-
-		// 把舞台上的保存到Editor
-		Clone(unitObjsEditor, unitObjs, false);
-	}
-
-    // 进入Preparation阶段
-    void EnterPhasePreparation()
-    {
-        uiGame.GetComponent<UIGame>().UpdateActive(GamePhase.Preparation);
-        uiShop.SetActive(true);
-
-		// shopController EnterPhasePreparation
-		shopController.UpdateShop(GamePhase.Preparation);
-		
-		victoryController.Init();
-	
-		Clone(unitObjs, unitObjsEditorAndPlayer, true);
-		editorController.RecreateMainGrid(GetUnits());
-	}
-
-	// 离开Playing阶段
-	void LeavePhasePlaying()
-	{
-		ClearMissile();
-	}
-
-	// 进入Playing阶段
-	void EnterPhasePlaying()
-	{
-		uiGame.GetComponent<UIGame>().UpdateActive(GamePhase.Playing);
-        uiShop.SetActive(false);
-
-        editorController.MainGrid.SetShow(false);
-        editorController.MainGrid.LinkBlocks();
-
-		// 把当前舞台上的Editor和Player创建的东西保存
-		Clone(unitObjsEditorAndPlayer, unitObjs, false);
-        unitObjs.BroadcastMessage("GameStart");
-    }
-
-    // 进入Victory阶段
-    void EnterVictory()
-    {
-        uiGame.GetComponent<UIGame>().UpdateActive(GamePhase.Victory);
-
-        AudioSource.PlayClipAtPoint(resourceController.audioVictory, Camera.main.transform.position);
-    }
-
     // 返回主菜单
     void EnterMenu()
     {
@@ -218,10 +181,7 @@ public class GameController : MonoBehaviour
 	static void Clone(GameObject dest, GameObject src, bool isActive)
 	{
 		string destName = dest.name;
-		if (dest != null)
-		{
-			Destroy(dest);
-		}
+		Destroy(dest);
 		dest = Instantiate(src);
 		dest.SetActive(isActive);
 		// 保存名字
