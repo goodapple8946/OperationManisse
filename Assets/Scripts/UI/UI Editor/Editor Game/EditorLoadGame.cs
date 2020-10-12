@@ -38,9 +38,7 @@ public class EditorLoadGame : EditorUI
 	private static void Load(XMLGame game)
 	{
 		// 清空当前网格
-		editorController.MainGrid.ClearUnits();
-		// 清空背景图片
-		editorController.ClearBackground();
+		editorController.Clear();
 
 		// 加载地图信息
 		XMLMap map = game.xmlMap;
@@ -123,7 +121,7 @@ public class EditorLoadGame : EditorUI
 
 		// prefab的layer是Default，需要根据所属player信息创建
 		unit.gameObject.layer = (int)xmlUnit.layer;
-		unit.player = (Player)xmlUnit.player; // TODO: 更新血条？
+		unit.player = (Player)xmlUnit.player; 
 
 		// 设置成编辑器创建
 		unit.isEditorCreated = true;

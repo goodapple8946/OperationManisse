@@ -23,7 +23,7 @@ public class EditorEditorMode : EditorUI
             {
                 editorController.EditorMode = StringToEditorMode(modeName);
                 UpdateShowing();
-                content.GetComponent<EditorContent>().UpdateByEditorMode();
+                content.GetComponent<EditorContent>().RefreshByEditorMode();
             }
         });
     }

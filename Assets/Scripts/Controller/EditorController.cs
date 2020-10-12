@@ -27,7 +27,7 @@ public class EditorController : MonoBehaviour
             MouseModule = null;
             // 更新UI显示
             editorContent.UpdateUIShowing<EditorEditorMode>();
-            editorContent.UpdateByEditorMode();
+            editorContent.RefreshByEditorMode();
             // 不再快速放置
             IsClickHold = false;
             // 更新商店
@@ -214,7 +214,7 @@ public class EditorController : MonoBehaviour
     void Start()
     {
         CreateMainGrid();
-        BuildingGrid = new Grid(3, 3, MAINGRID_POS);
+        BuildingGrid = new Grid(0, 0, MAINGRID_POS);
     }
 
     void Update()
@@ -225,8 +225,11 @@ public class EditorController : MonoBehaviour
         MyDebug();
     }
 
-    // 根据现有面板配置创建Grid
-    public void RecreateMainGrid(Unit[] units)
+	/// <summary>
+	///	根据现有面板配置创建Grid
+	/// 并设置摄像机视角 
+	/// </summary>
+	void RecreateMainGrid(Unit[] units)
     {
         MainGrid.ClearSquares();
         MainGrid = new Grid(XNum, YNum, MAINGRID_POS, units);
@@ -235,8 +238,10 @@ public class EditorController : MonoBehaviour
             editorController.MainGrid.GetRightTopPos());
     }
 
-    // 创建空的面板
-    private void CreateMainGrid()
+	/// <summary>
+	/// 创建空的面板并设置摄像机视角
+	/// </summary>
+	void CreateMainGrid()
     {
         MainGrid = new Grid(XNum, YNum, MAINGRID_POS);
         cameraController.SetView(
@@ -660,7 +665,7 @@ public class EditorController : MonoBehaviour
     /// <summary>
     /// 根据Player和Unit获取Layer 
     /// </summary>
-    public Layer GetUnitLayer(Player player, Unit unit)
+    Layer GetUnitLayer(Player player, Unit unit)
     {
         if (player == Player.Player)
         {
@@ -814,8 +819,20 @@ public class EditorController : MonoBehaviour
         }
     }
 
+	/// <summary>
+	/// 清空所有Editor阶段创造的所有物品
+	/// </summary>
+	public void Clear()
+	{
+		// 清空网格中的单位
+		MainGrid.ClearUnits();
+
+		// 清空背景
+		ClearBackground();
+	}
+
     // 清空背景
-    public void ClearBackground()
+    void ClearBackground()
     {
         foreach (Background background in Backgrounds)
         {
@@ -828,7 +845,7 @@ public class EditorController : MonoBehaviour
     /// 返回鼠标所在网格坐标
     /// 返回null: 如果不在网格中
     /// </summary>
-    public Coord GetMouseCoord()
+    Coord GetMouseCoord()
     {
         float mouseX = MouseController.MouseWorldPosition().x;
         float mouseY = MouseController.MouseWorldPosition().y;
@@ -838,7 +855,7 @@ public class EditorController : MonoBehaviour
     /// <summary>
     /// 切换Editor Mode时，启用或禁用Unit、Background、Terrain的Collider，来接受或拒绝鼠标点击
     /// </summary>
-    private void UpdateObjectsCollider(EditorMode editorMode)
+    void UpdateObjectsCollider(EditorMode editorMode)
     {
         // Unit的Collider，只有在Editor Mode为Unit时才启用
         SetUnitsCollider(editorMode == EditorMode.Unit);
@@ -851,7 +868,7 @@ public class EditorController : MonoBehaviour
     }
 
     // 启用或禁用Unit的Collider
-    private void SetUnitsCollider(bool active)
+    void SetUnitsCollider(bool active)
     {
         foreach (Unit unit in gameController.GetUnits())
         {
@@ -859,7 +876,7 @@ public class EditorController : MonoBehaviour
         }
     }
     // 启用或禁用Background的Collider
-    private void SetBackgroundsCollider(bool active)
+    void SetBackgroundsCollider(bool active)
     {
         foreach (Background background in editorController.backgrounds)
         {
@@ -867,7 +884,7 @@ public class EditorController : MonoBehaviour
         }
     }
     // 启用或禁用Terrain的Collider
-    private void SetTerrainsCollider(bool active)
+    void SetTerrainsCollider(bool active)
     {
         foreach (TerrainA terrain in editorController.terrains)
         {

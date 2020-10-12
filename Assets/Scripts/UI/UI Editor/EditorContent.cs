@@ -28,7 +28,7 @@ public class EditorContent : MonoBehaviour
     }
 
     // 根据Editor Mode，对Content内的各功能部分显示或隐藏
-    public void UpdateByEditorMode()
+    public void RefreshByEditorMode()
     {
         editorUnit.SetActive(editorController.EditorMode == EditorMode.Unit);
         editorBackground.SetActive(editorController.EditorMode == EditorMode.Background);
