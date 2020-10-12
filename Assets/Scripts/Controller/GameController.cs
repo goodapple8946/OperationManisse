@@ -27,11 +27,6 @@ public class GameController : MonoBehaviour
 						LeavePhaseEditor();
 						EnterPhasePreparation();
 					}
-					else if (newPhase == GamePhase.Preparation)
-					{
-						LeavePhaseEditor();
-						EnterPhasePlaying();
-					}
 					break;
 
 				case GamePhase.Preparation:
@@ -135,6 +130,8 @@ public class GameController : MonoBehaviour
     // 离开Editor阶段
     void LeavePhaseEditor()
     {
+        editorController.LeavePhaseEditor();
+
         uiEditor.SetActive(false);
         uiGame.SetActive(true);
 
