@@ -38,12 +38,10 @@ public class EditorController : MonoBehaviour
     }
     private EditorMode editorMode;
 
-    // 放置物体的网格
-    public Grid MainGrid { get => mainGrid; set => mainGrid = value; }
-    private Grid mainGrid;
+	// 放置物体的网格
+	public Grid MainGrid;
 
-    public Grid BuildingGrid { get => buildingGrid; set => buildingGrid = value; }
-    private Grid buildingGrid;
+	public Grid BuildingGrid;
 
     // 编辑者放置的背景
     public HashSet<Background> Backgrounds => backgrounds;
@@ -112,8 +110,8 @@ public class EditorController : MonoBehaviour
 			// 更新前端展示
 			EditorPointer.point1.UpdateShowing(buildingCoord1);
 			// 更新网格信息
-			buildingGrid.ClearSquares();
-			buildingGrid = CreateBuilding(buildingCoord1, buildingCoord2);
+			BuildingGrid.ClearSquares();
+			BuildingGrid = CreateBuilding(buildingCoord1, buildingCoord2);
 			// 取消选中
 			EditorPointer.point1.SetOn(false);
 		}
@@ -130,8 +128,8 @@ public class EditorController : MonoBehaviour
 			// 更新前端展示
 			EditorPointer.point2.UpdateShowing(buildingCoord2);
 			// 更新网格信息
-			buildingGrid.ClearSquares();
-			buildingGrid = CreateBuilding(buildingCoord1, buildingCoord2);
+			BuildingGrid.ClearSquares();
+			BuildingGrid = CreateBuilding(buildingCoord1, buildingCoord2);
 			// 取消选中
 			EditorPointer.point2.SetOn(false);
 		}
@@ -344,8 +342,8 @@ public class EditorController : MonoBehaviour
 	{
 		//Debug.Log(lbCoord.ToString());
 		//Debug.Log(rtCoord.ToString());
-		Debug.Assert(lbCoord.x <= rtCoord.x && lbCoord.y <= rtCoord.y
-			&& MainGrid.InGrid(lbCoord) && MainGrid.InGrid(rtCoord));
+		//Debug.Assert(lbCoord.x <= rtCoord.x && lbCoord.y <= rtCoord.y
+		//	&& MainGrid.InGrid(lbCoord) && MainGrid.InGrid(rtCoord));
 
 		Vector2 origin = MainGrid.Coord2WorldPos(lbCoord, false);
 		return new Grid(
