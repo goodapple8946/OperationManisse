@@ -63,7 +63,7 @@ TagManager:
   - name: Dead
     uniqueID: 2124216055
     locked: 0
-  - name: Terrain
+  - name: Ground
     uniqueID: 4090356259
     locked: 0
   - name: Pick

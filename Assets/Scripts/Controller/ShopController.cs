@@ -7,7 +7,7 @@ using static Controller;
 public class ShopController : MonoBehaviour
 {
     // 每个物品占据的高度
-    private static readonly float GOODS_HEIGHT = 150f;
+    private float goodsHeight = 150f;
 
     private GameObject content;
 
@@ -48,11 +48,11 @@ public class ShopController : MonoBehaviour
             arr.Add(obj.GetComponent<ShopObject>());
         }
         shopObjects = (ShopObject[])arr.ToArray(typeof(ShopObject));
-        UpdateShop(GamePhase.Editor);
+        UpdateShop();
     }
 
     // 根据商品可见性更新商店
-    public void UpdateShop(GamePhase gamePhase)
+    public void UpdateShop()
     {
         // 显示商品的计数
         int count = 0;
@@ -60,13 +60,13 @@ public class ShopController : MonoBehaviour
         {
             // 应用商品是否显示
             bool active = false;
-            if (gamePhase == GamePhase.Editor)
+            if (gameController.GamePhase == GamePhase.Editor)
             {
                 active |= editorController.EditorMode == EditorMode.Unit && shopObject.clickableObject is Unit;
                 active |= editorController.EditorMode == EditorMode.Background && shopObject.clickableObject is Background;
                 active |= editorController.EditorMode == EditorMode.Terrain && shopObject.clickableObject is TerrainA;
             }
-            else if (gamePhase == GamePhase.Preparation)
+            else if (gameController.GamePhase == GamePhase.Preparation)
             {
                 active |= shopObject.clickableObject is Unit && shopObject.IsVisible;
             }
@@ -74,7 +74,7 @@ public class ShopController : MonoBehaviour
             if (active)
             {
                 shopObject.gameObject.SetActive(true);
-                shopObject.UpdateToggle(gamePhase);
+                shopObject.UpdateToggle();
                 count++;
             }
             else
@@ -84,7 +84,7 @@ public class ShopController : MonoBehaviour
         }
 
         // 更新可滑动区域的高度
-        content.GetComponent<RectTransform>().sizeDelta = new Vector2(0, GOODS_HEIGHT * count);
+        content.GetComponent<RectTransform>().sizeDelta = new Vector2(0, goodsHeight * count);
     }
 
     // 设置商品可见性：提供一个名称数组，若商品名称在该数组内，则可见；否则不可见
@@ -94,7 +94,7 @@ public class ShopController : MonoBehaviour
         {
             shopObject.IsVisible = names.Contains(shopObject.gameObject.name);
         }
-        UpdateShop(gameController.GamePhase);
+        UpdateShop();
     }
 
     // 获得商品可见性：返回一个所有可见的商品名称数组

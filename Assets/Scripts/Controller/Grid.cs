@@ -36,7 +36,7 @@ public class Grid
 			{
 				unitArr[unit.coord.x, unit.coord.y] = unit;
 			}
-			// TODO: GameController里面是否有删除？
+			// TODO: GameCONtroller里面是否有删除？
 			//else
 			//{
 			//	Destroy(unit.gameObject);
@@ -154,12 +154,6 @@ public class Grid
 			}
 		}
 	}
-
-	// 清空网格背景物体
-	public void ClearGridBackground()
-    {
-		Destroy(gridObj);
-    }
 
 	// TODO:
 	// 按照方向返回Block的连接点
@@ -329,14 +323,4 @@ public struct Coord
 		Coord anotherC = (Coord)another;
 		return x == anotherC.x && y == anotherC.y;
 	}
-
-    public override int GetHashCode()
-    {
-        return base.GetHashCode();
-    }
-
-    public override string ToString()
-    {
-		return string.Format("({0}, {1})", x, y);
-    }
 }

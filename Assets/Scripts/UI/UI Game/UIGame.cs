@@ -6,46 +6,42 @@ using static Controller;
 
 public class UIGame : MonoBehaviour
 {
-    private Button buttonOption;
-    private Button buttonReset;
-    private Button buttonCamera;
-    private Button buttonStop;
-    private Button buttonStart;
+    private Button ButtonOption;
+    private Button ButtonReset;
+    private Button ButtonCamera;
+    private Button ButtonStop;
+    private Button ButtonStart;
 
     void Awake()
     {
-        const string uiPath = "UI Canvas/UI Game/UI Left Top/";
-        buttonOption = GameObject.Find(uiPath + "UI Option").GetComponent<Button>();
-        buttonReset  = GameObject.Find(uiPath + "UI Reset" ).GetComponent<Button>();
-        buttonCamera = GameObject.Find(uiPath + "UI Camera").GetComponent<Button>();
-        buttonStop   = GameObject.Find(uiPath + "UI Stop"  ).GetComponent<Button>();
-        buttonStart  = GameObject.Find(uiPath + "UI Start" ).GetComponent<Button>();
+        ButtonOption = transform.GetChild(0).GetChild(0).GetComponent<Button>();
+        ButtonReset = transform.GetChild(0).GetChild(1).GetComponent<Button>();
+        ButtonCamera = transform.GetChild(0).GetChild(2).GetComponent<Button>();
+        ButtonStop = transform.GetChild(0).GetChild(3).GetComponent<Button>();
+        ButtonStart = transform.GetChild(0).GetChild(4).GetComponent<Button>();
     }
 
-    public void UpdateActive(GamePhase gamePhase)
+    public void UpdateActive()
     {
-        switch (gamePhase)
+        switch (gameController.GamePhase)
         {
             case GamePhase.Preparation:
-                buttonOption.interactable = true;
-                buttonReset.interactable  = true;
-                buttonCamera.interactable = true;
-                buttonStop.interactable   = false;
-                buttonStart.interactable  = true;
+                ButtonReset.interactable = true;
+                ButtonCamera.interactable = true;
+                ButtonStop.interactable = false;
+                ButtonStart.interactable = true;
                 break;
             case GamePhase.Playing:
-                buttonOption.interactable = true;
-                buttonReset.interactable  = false;
-                buttonCamera.interactable = true;
-                buttonStop.interactable   = true;
-                buttonStart.interactable  = false;
+                ButtonReset.interactable = false;
+                ButtonCamera.interactable = true;
+                ButtonStop.interactable = true;
+                ButtonStart.interactable = false;
                 break;
             case GamePhase.Victory:
-                buttonOption.interactable = true;
-                buttonReset.interactable  = false;
-                buttonCamera.interactable = false;
-                buttonStop.interactable   = false;
-                buttonStart.interactable  = false;
+                ButtonReset.interactable = false;
+                ButtonCamera.interactable = false;
+                ButtonStop.interactable = false;
+                ButtonStart.interactable = false;
                 break;
         }
     }

@@ -3004,7 +3004,7 @@ GameObject:
   - component: {fileID: 7542483308921419678}
   - component: {fileID: 7542483308921419679}
   - component: {fileID: 7542483308921419676}
-  - component: {fileID: 4684712450320301428}
+  - component: {fileID: 7542483308921419673}
   m_Layer: 5
   m_Name: Play Button
   m_TagString: Untagged
@@ -3111,7 +3111,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4684712450320301428
+--- !u!114 &7542483308921419673
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3120,7 +3120,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7542483308921419650}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8eb79f91dea6f044ab54dcf576506cbf, type: 3}
+  m_Script: {fileID: 11500000, guid: 756ade26e2d8fcf40bf4b7d26c8a0c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7542483308929221546
