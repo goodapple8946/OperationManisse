@@ -36,7 +36,12 @@ public class GameController : MonoBehaviour
 					}
 					else if (newPhase == GamePhase.Preparation)
 					{
-						LoadUnitsOrigin();
+						Clone(unitObjs, unitObjsEditor, true);
+						// 删除Player创建的
+						Clone(unitObjsEditorAndPlayer, unitObjsEditor, false);
+
+						editorController.RecreateMainGrid(GetUnits());
+						editorController.InitPlayerMoney();
 					}
 					else if (newPhase == GamePhase.Playing)
 					{
@@ -53,6 +58,7 @@ public class GameController : MonoBehaviour
 					else if (newPhase == GamePhase.Preparation)
 					{
 						LeavePhasePlaying();
+						
 						EnterPhasePreparation();
 					}
 					else if (newPhase == GamePhase.Victory)
@@ -70,14 +76,18 @@ public class GameController : MonoBehaviour
 		}
 	}
 
-	// 所有物体的根节点
 	/// <summary>preparation和playing阶段,场景中所有Unit</summary>
-	[HideInInspector] public GameObject unitObjects;
-    [HideInInspector] public GameObject missileObjects;
+	// 所有物体的根节点
+	/// <summary> 舞台上的物体 </summary>
+	[HideInInspector] public GameObject unitObjs;
+	/// <summary> 玩家放置的物体 </summary>
+	private GameObject unitObjsEditorAndPlayer;
+	/// <summary> 编辑者放置的物体 </summary>
+	private GameObject unitObjsEditor;
+
+	[HideInInspector] public GameObject missileObjects;
     [HideInInspector] public GameObject hpBarObjects;
     [HideInInspector] public GameObject backgroundObjects;
-    private GameObject unitObjectsSaved;
-    private GameObject unitObjectsOrigin;
 
 	// 编辑器部分的UI
     private GameObject uiEditor;
@@ -94,9 +104,15 @@ public class GameController : MonoBehaviour
         uiEditor = GameObject.Find("UI Canvas/UI Editor");
         uiGame = GameObject.Find("UI Canvas/UI Game");
         uiShop = GameObject.Find("UI Canvas/UI Shop");
-
-        Init();
-    }
+		
+		// 创建Obj
+		unitObjs = new GameObject("Unit Objects");
+		unitObjsEditor = new GameObject("Unit Objects Editor");
+		unitObjsEditorAndPlayer = new GameObject("Unit Objects EditorAndPlayer");
+		missileObjects = new GameObject("Missile Objects");
+		hpBarObjects = new GameObject("HP Bar Objects");
+		backgroundObjects = new GameObject("Background Objects");
+	}
 
 	public void Start()
     {
@@ -120,24 +136,32 @@ public class GameController : MonoBehaviour
         uiGame.SetActive(false);
         uiShop.SetActive(true);
 
-        editorController.MainGrid.SetShow(true);
         editorController.EnterPhaseEditor();
+		// shopController EnterPhaseEditor
 		shopController.UpdateShop(GamePhase.Editor);
 
-        LoadUnitsOrigin();
-    }
+		// 返回到Editor阶段，把保存的unitObjsEditor赋值给unitObjs
+		Debug.Assert(unitObjsEditor.activeSelf == false);
+
+		Clone(unitObjs, unitObjsEditor, true);
+		// 删除Player创建的
+		Clone(unitObjsEditorAndPlayer, unitObjsEditor, false);
+
+		editorController.InitPlayerMoney();
+		editorController.RecreateMainGrid(GetUnits());
+	}
 
     // 离开Editor阶段
     void LeavePhaseEditor()
     {
         editorController.LeavePhaseEditor();
-
+	
         uiEditor.SetActive(false);
         uiGame.SetActive(true);
 
-        SaveUnitsOrigin();
-        SaveUnits();
-    }
+		// 把舞台上的保存到Editor
+		Clone(unitObjsEditor, unitObjs, false);
+	}
 
     // 进入Preparation阶段
     void EnterPhasePreparation()
@@ -145,12 +169,14 @@ public class GameController : MonoBehaviour
         uiGame.GetComponent<UIGame>().UpdateActive(GamePhase.Preparation);
         uiShop.SetActive(true);
 
-        editorController.MainGrid.SetShow(true);
-        shopController.UpdateShop(GamePhase.Preparation);
-        victoryController.Init();
-
-        LoadUnits();
-    }
+		// shopController EnterPhasePreparation
+		shopController.UpdateShop(GamePhase.Preparation);
+		
+		victoryController.Init();
+	
+		Clone(unitObjs, unitObjsEditorAndPlayer, true);
+		editorController.RecreateMainGrid(GetUnits());
+	}
 
 	// 离开Playing阶段
 	void LeavePhasePlaying()
@@ -167,8 +193,9 @@ public class GameController : MonoBehaviour
         editorController.MainGrid.SetShow(false);
         editorController.MainGrid.LinkBlocks();
 
-        SaveUnits();
-        unitObjects.BroadcastMessage("GameStart");
+		// 把当前舞台上的Editor和Player创建的东西保存
+		Clone(unitObjsEditorAndPlayer, unitObjs, false);
+        unitObjs.BroadcastMessage("GameStart");
     }
 
     // 进入Victory阶段
@@ -185,89 +212,20 @@ public class GameController : MonoBehaviour
         SceneManager.LoadScene("Level Panel");
     }
 
-    /**
-     * 载入与保存
-     */
-
-    // 初始化
-    public void Init()
-    {
-        if (unitObjects)
-        {
-            Destroy(unitObjects);
-        }
-        if (missileObjects)
-        {
-            Destroy(missileObjects);
-        }
-        if (hpBarObjects)
-        {
-            Destroy(hpBarObjects);
-        }
-        unitObjects = new GameObject("Unit Objects");
-        missileObjects = new GameObject("Missile Objects");
-        hpBarObjects = new GameObject("HP Bar Objects");
-        backgroundObjects = new GameObject("Background Objects");
-    }
-
-    // 保存物体
-    void SaveUnits()
-    {
-        if (unitObjectsSaved != null)
-        {
-            Destroy(unitObjectsSaved);
-        }
-        unitObjectsSaved = Instantiate(unitObjects);
-        unitObjectsSaved.name = "Unit Objects Saved";
-        unitObjectsSaved.SetActive(false);
-    }
-
-    // 保存最初的物体
-    void SaveUnitsOrigin()
-    {
-        if (unitObjectsOrigin != null)
-        {
-            Destroy(unitObjectsOrigin);
-        }
-        unitObjectsOrigin = Instantiate(unitObjects);
-        unitObjectsOrigin.name = "Unit Objects Origin";
-        unitObjectsOrigin.SetActive(false);
-    }
-
-	// 载入物体
-	// 在playing阶段中止时，读取preparation阶段的物体
-	void LoadUnits()
+	/// <summary>
+	/// 把src赋值给Dest,并设置active
+	/// </summary>
+	static void Clone(GameObject dest, GameObject src, bool isActive)
 	{
-		if (unitObjects != null)
+		string destName = dest.name;
+		if (dest != null)
 		{
-			Destroy(unitObjects);
+			Destroy(dest);
 		}
-		unitObjects = Instantiate(unitObjectsSaved);
-		unitObjects.name = "Unit Objects";
-		unitObjects.SetActive(true);
-
-		editorController.RecreateMainGrid(GetUnits());
-	}
-
-	// 载入最初的物体
-	// 在playing阶段中止时，读取editor阶段的物体
-	void LoadUnitsOrigin()
-    {
-        if (unitObjects != null)
-        {
-            Destroy(unitObjects);
-        }
-        if (unitObjectsSaved != null)
-        {
-            Destroy(unitObjectsSaved);
-        }
-        unitObjects = Instantiate(unitObjectsOrigin);
-        unitObjects.name = "Unit Objects";
-        unitObjects.SetActive(true);
-        SaveUnits();
-        editorController.InitPlayerMoney();
-
-		editorController.RecreateMainGrid(GetUnits());
+		dest = Instantiate(src);
+		dest.SetActive(isActive);
+		// 保存名字
+		dest.name = destName;
 	}
 
 	// 清除投掷物
@@ -288,7 +246,7 @@ public class GameController : MonoBehaviour
 	/// </summary>
 	public Unit[] GetUnits()
     {
-        return unitObjects.GetComponentsInChildren<Unit>();
+        return unitObjs.GetComponentsInChildren<Unit>();
     }
 
     /// <summary>
@@ -297,7 +255,7 @@ public class GameController : MonoBehaviour
     public Unit[] GetUnits(Player player)
     {
         ArrayList arr = new ArrayList();
-        Unit[] units = unitObjects.GetComponentsInChildren<Unit>();
+        Unit[] units = unitObjs.GetComponentsInChildren<Unit>();
         foreach(Unit unit in units)
         {
             if (unit.player == player)
@@ -314,7 +272,7 @@ public class GameController : MonoBehaviour
     public Unit[] GetUnits(string tag)
     {
         ArrayList arr = new ArrayList();
-        Unit[] units = unitObjects.GetComponentsInChildren<Unit>();
+        Unit[] units = unitObjs.GetComponentsInChildren<Unit>();
         foreach (Unit unit in units)
         {
             if (unit.tag == tag)
@@ -331,7 +289,7 @@ public class GameController : MonoBehaviour
     public Unit[] GetUnits(Player player, string tag)
     {
         ArrayList arr = new ArrayList();
-        Unit[] units = unitObjects.GetComponentsInChildren<Unit>();
+        Unit[] units = unitObjs.GetComponentsInChildren<Unit>();
         foreach (Unit unit in units)
         {
             if (unit.player == player && unit.tag == tag)
@@ -341,10 +299,6 @@ public class GameController : MonoBehaviour
         }
         return (Unit[])arr.ToArray(typeof(Unit));
     }
-
-    /**
-     * Debug
-     */
 
     // Debug
     void DebugGame()
