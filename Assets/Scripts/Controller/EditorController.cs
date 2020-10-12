@@ -62,13 +62,8 @@ public class EditorController : MonoBehaviour
 			xNum = value;
 			// 更新UI
 			editorContent.UpdateUIShowing<EditorSizeX>();
-            // 删除旧网格背景
-            MainGrid.ClearGridBackground();
-            // 更新网格信息
-            MainGrid = new Grid(xNum, yNum, MAINGRID_POS);
-			cameraController.SetView(
-				editorController.MainGrid.OriginPos,
-				editorController.MainGrid.GetRightTopPos());
+			// 更新网格信息
+			RecreateMainGrid(gameController.GetUnits());
 		}
 	}
     private int xNum = 8;
@@ -82,13 +77,8 @@ public class EditorController : MonoBehaviour
             yNum = value;
             // 更新UI
             editorContent.UpdateUIShowing<EditorSizeY>();
-            // 删除旧网格背景
-            MainGrid.ClearGridBackground();
-            // 更新网格信息
-            MainGrid = new Grid(XNum, YNum, MAINGRID_POS);
-			cameraController.SetView(
-				editorController.MainGrid.OriginPos,
-				editorController.MainGrid.GetRightTopPos());
+			// 更新网格信息
+			RecreateMainGrid(gameController.GetUnits());
 		}
     }
     private int yNum = 8;
@@ -220,10 +210,7 @@ public class EditorController : MonoBehaviour
 
     void Start()
     {
-		MainGrid = new Grid(XNum, YNum, MAINGRID_POS);
-		cameraController.SetView(
-			editorController.MainGrid.OriginPos,
-			editorController.MainGrid.GetRightTopPos());
+		CreateMainGrid();
     }
 
     void Update()
@@ -233,6 +220,25 @@ public class EditorController : MonoBehaviour
 
         MyDebug();
     }
+
+	// 创建空的面板
+	public void CreateMainGrid()
+	{
+		MainGrid = new Grid(XNum, YNum, MAINGRID_POS);
+		cameraController.SetView(
+			editorController.MainGrid.OriginPos,
+			editorController.MainGrid.GetRightTopPos());
+	}
+
+	// 根据现有面板配置创建Grid
+	public void RecreateMainGrid(Unit[] units)
+	{
+		MainGrid.ClearSquares();
+		MainGrid = new Grid(XNum, YNum, MAINGRID_POS, units);
+		cameraController.SetView(
+			editorController.MainGrid.OriginPos,
+			editorController.MainGrid.GetRightTopPos());
+	}
 
     // 鼠标左键点击
     public void LeftClick(ClickableObject clickableObject, bool hold = false)
@@ -930,6 +936,27 @@ public class EditorController : MonoBehaviour
 	//        }
 	//    }
 	//    return null;
+	//}
+	// 按照方向返回Block的连接点
+	//public Vector2 LinkPoint(Block block, int direction)
+	//{
+	//	Vector2 point = block.transform.position;
+	//	switch (direction)
+	//	{
+	//		case 0:
+	//			point += Vector2.right * 2 * block.radius;
+	//			break;
+	//		case 1:
+	//			point += Vector2.up * 2 * block.radius;
+	//			break;
+	//		case 2:
+	//			point += Vector2.left * 2 * block.radius;
+	//			break;
+	//		case 3:
+	//			point += Vector2.down * 2 * block.radius;
+	//			break;
+	//	}
+	//	return point;
 	//}
 	#endregion
 }

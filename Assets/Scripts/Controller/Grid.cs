@@ -36,11 +36,11 @@ public class Grid
 			{
 				unitArr[unit.coord.x, unit.coord.y] = unit;
 			}
-			// TODO: GameController里面是否有删除？
-			//else
-			//{
-			//	Destroy(unit.gameObject);
-			//}
+			else
+			{
+				//Debug.Assert(InGrid(unit));
+				Destroy(unit.gameObject);
+			}
 		}
 	}
 
@@ -55,47 +55,49 @@ public class Grid
 		unitArr = new Unit[xCount, yCount];
 		this.OriginPos = originPos;
 
-		// 绘制网格
-		for (int x = 0; x < xCount; x++)
-		{
-			for (int y = 0; y < yCount; y++)
-			{
-				GameObject squareObj = Instantiate(resourceController.square, gridObj.transform);
-				squareObj.transform.position = Coord2WorldPos(new Coord(x, y));
-				squareObj.GetComponent<SpriteRenderer>().sortingLayerName = "Area";
-				// 根据所在网格设置alpha
-				// 放置位置背景颜色深度
-				const float COLOR_ALPHA = 0.2f;
-				Color color = Color.white;
-				color.a = ((x + y) % 2 == 0) ? (COLOR_ALPHA / 2) : COLOR_ALPHA;
-				squareObj.GetComponent<SpriteRenderer>().color = color;
-			}
-		}
+		// 制作网格
+		CreateGrid(gridObj);
 	}
 
+	/// <summary>
+	/// 清理掉图像
+	/// </summary>
+	public void ClearSquares()
+	{
+		Debug.Assert(gridObj != null);
+		// 清空网格背景物体
+		Destroy(gridObj);
+	}
+
+	// 更改大小，删除网格之外的物品
+	//public void Resize(int xCount, int yCount)
+	//{
+	//	List<Unit> units = GetUnits();
+	//	ClearSquares();
+	//	// 重新创建unit数组
+	//	unitArr = new Unit[xCount, yCount];
+	//	foreach (Unit unit in units)
+	//	{
+	//		// 填充本应在网格中的
+	//		if (InGrid(unit))
+	//		{
+	//			unitArr[unit.coord.x, unit.coord.y] = unit;
+	//		}
+	//		else
+	//		{
+	//			Destroy(unit.gameObject);
+	//		}
+	//	}
+	//}
+
 	// 返回grid中,离世界坐标pos最近的网格的(x, y)
-	// 返回null: 找不到
+	// 返回Coord.OUTSIDE: 找不到
 	public Coord GetClosestCoord(Vector2 pos)
 	{
-		Coord ret = Coord.OUTSIDE;
-		// 检测的最大范围
-		const float MAX_DISTANCE = 0.6f;
-		float minDistance = MAX_DISTANCE;
-		for (int x = 0; x < GetX(); x++)
-		{
-			for (int y = 0; y < GetY(); y++)
-			{
-				Vector2 gridWorldPos = Coord2WorldPos(new Coord(x, y));
-				float distance = (pos - gridWorldPos).magnitude;
-				// 更新最近的点
-				if (distance < minDistance)
-				{
-					minDistance = distance;
-					ret = new Coord(x, y);
-				}
-			}
-		}
-		return ret;
+		int x = Mathf.FloorToInt((pos.x - OriginPos.x) / GRID_SIZE);
+		int y = Mathf.FloorToInt((pos.y - OriginPos.y) / GRID_SIZE);
+		Coord coord = new Coord(x, y);
+		return InGrid(coord) ? coord : Coord.OUTSIDE;
 	}
 
 	// 根据x,y
@@ -144,7 +146,7 @@ public class Grid
 	}
 
 	// 清空网格
-	public void ClearGrid()
+	public void ClearUnits()
 	{
 		foreach (Unit unit in unitArr)
 		{
@@ -153,35 +155,6 @@ public class Grid
 				Destroy(unit.gameObject);
 			}
 		}
-	}
-
-	// 清空网格背景物体
-	public void ClearGridBackground()
-    {
-		Destroy(gridObj);
-    }
-
-	// TODO:
-	// 按照方向返回Block的连接点
-	public Vector2 LinkPoint(Block block, int direction)
-	{
-		Vector2 point = block.transform.position;
-		switch (direction)
-		{
-			case 0:
-				point += Vector2.right * 2 * block.radius;
-				break;
-			case 1:
-				point += Vector2.up * 2 * block.radius;
-				break;
-			case 2:
-				point += Vector2.left * 2 * block.radius;
-				break;
-			case 3:
-				point += Vector2.down * 2 * block.radius;
-				break;
-		}
-		return point;
 	}
 
 	// 在网格中
@@ -221,35 +194,24 @@ public class Grid
 
 	//--------------------- 内部工具函数 ----------------------//
 
-	// 根据x,y
-	// 返回相对坐标
-	Vector2 Coord2LocalPos(Coord coord)
+	void CreateGrid(GameObject parent)
 	{
-		return new Vector2(
-			GRID_SIZE * (coord.x + 0.5f),
-			GRID_SIZE * (coord.y + 0.5f));
-	}
-
-	// 连接两Block
-	void Link(Block block, Block another, int direction)
-	{
-		int directionNeg = Negative(direction);
-
-		block.LinkTo(another, direction);
-		another.LinkTo(block, directionNeg);
-	}
-
-	// 检测两Block是否能连接
-	bool CanLink(Block block, Block another, int direction)
-	{
-		int dirNeg = Negative(direction);
-		// Block的玩家的相同
-		bool samePlayer = (block.player == another.player);
-		// Block的相应方向是可连接的
-		bool linkAvailable = block.IsLinkAvailable(direction) 
-			&& another.IsLinkAvailable(dirNeg);
-
-		return samePlayer && linkAvailable;
+		// 绘制网格
+		for (int x = 0; x < GetX(); x++)
+		{
+			for (int y = 0; y < GetY(); y++)
+			{
+				GameObject squareObj = Instantiate(resourceController.square, parent.transform);
+				squareObj.transform.position = Coord2WorldPos(new Coord(x, y));
+				squareObj.GetComponent<SpriteRenderer>().sortingLayerName = "Area";
+				// 根据所在网格设置alpha
+				// 放置位置背景颜色深度
+				const float COLOR_ALPHA = 0.2f;
+				Color color = Color.white;
+				color.a = ((x + y) % 2 == 0) ? (COLOR_ALPHA / 2) : COLOR_ALPHA;
+				squareObj.GetComponent<SpriteRenderer>().color = color;
+			}
+		}
 	}
 
 	// 根据方向获取(x,y)相邻的Block
@@ -269,11 +231,6 @@ public class Grid
 		return unitArr[anotherX, anotherY] as Block;
 	}
 
-	int Negative(int direction)
-	{
-		return (direction + 2) % 4;
-	}
-
 	// 网格最大X
 	int GetX()
 	{
@@ -284,6 +241,42 @@ public class Grid
 	int GetY()
 	{
 		return unitArr.GetLength(1);
+	}
+
+	// 根据x,y
+	// 返回相对坐标
+	static Vector2 Coord2LocalPos(Coord coord)
+	{
+		return new Vector2(
+			GRID_SIZE * (coord.x + 0.5f),
+			GRID_SIZE * (coord.y + 0.5f));
+	}
+
+	// 连接两Block
+	static void Link(Block block, Block another, int direction)
+	{
+		int directionNeg = Negative(direction);
+
+		block.LinkTo(another, direction);
+		another.LinkTo(block, directionNeg);
+	}
+
+	// 检测两Block是否能连接
+	static bool CanLink(Block block, Block another, int direction)
+	{
+		int dirNeg = Negative(direction);
+		// Block的玩家的相同
+		bool samePlayer = (block.player == another.player);
+		// Block的相应方向是可连接的
+		bool linkAvailable = block.IsLinkAvailable(direction) 
+			&& another.IsLinkAvailable(dirNeg);
+
+		return samePlayer && linkAvailable;
+	}
+
+	static int Negative(int direction)
+	{
+		return (direction + 2) % 4;
 	}
 }
 

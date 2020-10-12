@@ -38,7 +38,7 @@ public class EditorLoadGame : EditorUI
 	private static void Load(XMLGame game)
 	{
 		// 清空当前网格
-		editorController.MainGrid.ClearGrid();
+		editorController.MainGrid.ClearUnits();
 		// 清空背景图片
 		editorController.ClearBackground();
 

@@ -249,15 +249,7 @@ public class GameController : MonoBehaviour
 		unitObjects.name = "Unit Objects";
 		unitObjects.SetActive(true);
 
-        editorController.MainGrid.ClearGridBackground();
-
-        editorController.MainGrid = new Grid(
-			editorController.XNum, editorController.YNum,
-			EditorController.MAINGRID_POS, GetUnits());
-
-		cameraController.SetView(
-			editorController.MainGrid.OriginPos,
-			editorController.MainGrid.GetRightTopPos());
+		editorController.RecreateMainGrid(GetUnits());
 	}
 
 	// 载入最初的物体
@@ -278,15 +270,7 @@ public class GameController : MonoBehaviour
         SaveUnits();
         editorController.InitPlayerMoney();
 
-        editorController.MainGrid.ClearGridBackground();
-
-        editorController.MainGrid= new Grid(
-			editorController.XNum, editorController.YNum,
-			EditorController.MAINGRID_POS, GetUnits());
-
-		cameraController.SetView(
-			editorController.MainGrid.OriginPos,
-			editorController.MainGrid.GetRightTopPos());
+		editorController.RecreateMainGrid(GetUnits());
 	}
 
 	// 清除投掷物
