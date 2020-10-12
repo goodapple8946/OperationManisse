@@ -32,13 +32,14 @@ public class Grid
 		foreach (Unit unit in units)
 		{
 			// 填充本应在网格中的
-			if (InGrid(unit))
+			if (InGrid(unit.coord))
 			{
 				unitArr[unit.coord.x, unit.coord.y] = unit;
 			}
 			else
 			{
-				//Debug.Assert(InGrid(unit));
+				// Debug.Log(unit.coord.ToString());
+				// Debug.Assert(InGrid(unit));
 				Destroy(unit.gameObject);
 			}
 		}
@@ -157,13 +158,9 @@ public class Grid
 		}
 	}
 
-	// 在网格中
-	public bool InGrid(Unit unit)
-	{
-		return InGrid(unit.coord);
-	}
-
-	// 坐标是否在网格中
+	/// <summary>
+	/// 坐标是否在网格中 
+	/// </summary>
 	public bool InGrid(Coord coord)
 	{
 		return coord.x >= 0 && coord.x < GetX()
@@ -280,6 +277,7 @@ public class Grid
 	}
 }
 
+[Serializable]
 public struct Coord
 {
 	public int x;

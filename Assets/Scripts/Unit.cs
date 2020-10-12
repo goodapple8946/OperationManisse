@@ -41,7 +41,7 @@ public abstract class Unit : ClickableObject
 	// 玩家
 	[HideInInspector] public Player player;
 
-	// 在网格中的位置（null代表未在网格中）
+	// 在网格中的位置（OUTSIDE代表未在网格中）
 	[HideInInspector] public Coord coord = Coord.OUTSIDE;
 
 
