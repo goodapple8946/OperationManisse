@@ -37,7 +37,8 @@ public class GameController : MonoBehaviour
 					else if (newPhase == GamePhase.Preparation)
 					{
 						Clone(unitObjs, unitObjsEditor, true);
-						Clone(unitObjsPlayer, unitObjsEditor, false);
+						// 删除Player创建的
+						Clone(unitObjsEditorAndPlayer, unitObjsEditor, false);
 
 						editorController.RecreateMainGrid(GetUnits());
 						editorController.InitPlayerMoney();
@@ -78,9 +79,9 @@ public class GameController : MonoBehaviour
 	/// <summary>preparation和playing阶段,场景中所有Unit</summary>
 	// 所有物体的根节点
 	/// <summary> 舞台上的物体 </summary>
-	// [HideInInspector] public GameObject unitObjs;
+	[HideInInspector] public GameObject unitObjs;
 	/// <summary> 玩家放置的物体 </summary>
-	private GameObject unitObjsPlayer;
+	private GameObject unitObjsEditorAndPlayer;
 	/// <summary> 编辑者放置的物体 </summary>
 	private GameObject unitObjsEditor;
 
@@ -107,7 +108,7 @@ public class GameController : MonoBehaviour
 		// 创建Obj
 		unitObjs = new GameObject("Unit Objects");
 		unitObjsEditor = new GameObject("Unit Objects Editor");
-		unitObjsPlayer = new GameObject("Unit Objects Saved");
+		unitObjsEditorAndPlayer = new GameObject("Unit Objects EditorAndPlayer");
 		missileObjects = new GameObject("Missile Objects");
 		hpBarObjects = new GameObject("HP Bar Objects");
 		backgroundObjects = new GameObject("Background Objects");
@@ -143,8 +144,8 @@ public class GameController : MonoBehaviour
 		Debug.Assert(unitObjsEditor.activeSelf == false);
 
 		Clone(unitObjs, unitObjsEditor, true);
-
-		Clone(unitObjsPlayer, unitObjsEditor, false);
+		// 删除Player创建的
+		Clone(unitObjsEditorAndPlayer, unitObjsEditor, false);
 
 		editorController.InitPlayerMoney();
 		editorController.RecreateMainGrid(GetUnits());
@@ -158,8 +159,8 @@ public class GameController : MonoBehaviour
         uiEditor.SetActive(false);
         uiGame.SetActive(true);
 
+		// 把舞台上的保存到Editor
 		Clone(unitObjsEditor, unitObjs, false);
-		//SaveUnits();
 	}
 
     // 进入Preparation阶段
@@ -173,7 +174,7 @@ public class GameController : MonoBehaviour
 		
 		victoryController.Init();
 	
-		Clone(unitObjs, unitObjsPlayer, true);
+		Clone(unitObjs, unitObjsEditorAndPlayer, true);
 		editorController.RecreateMainGrid(GetUnits());
 	}
 
@@ -192,7 +193,8 @@ public class GameController : MonoBehaviour
         editorController.MainGrid.SetShow(false);
         editorController.MainGrid.LinkBlocks();
 
-		Clone(unitObjsPlayer, unitObjs, false);
+		// 把当前舞台上的Editor和Player创建的东西保存
+		Clone(unitObjsEditorAndPlayer, unitObjs, false);
         unitObjs.BroadcastMessage("GameStart");
     }
 
