@@ -24,6 +24,7 @@ public class GameController : MonoBehaviour
 				case GamePhase.Editor:
 					if(newPhase == GamePhase.Preparation)
 					{
+						Assert();
 						uiEditor.SetActive(false);
 						uiGame.SetActive(true);
 						uiGame.GetComponent<UIGame>().UpdateActive(GamePhase.Preparation);
@@ -41,6 +42,7 @@ public class GameController : MonoBehaviour
 				case GamePhase.Preparation:
 					if (newPhase == GamePhase.Editor)
 					{
+						Assert();
 						uiEditor.SetActive(true);
 						uiGame.SetActive(false);
 
@@ -52,6 +54,7 @@ public class GameController : MonoBehaviour
 					}
 					else if (newPhase == GamePhase.Preparation)
 					{
+						Assert();
 						Clone(unitObjsEditorAndPlayer, unitObjsEditor, false); // 删除Player创建的
 						Clone(unitObjs, unitObjsEditor, true);
 
@@ -59,6 +62,7 @@ public class GameController : MonoBehaviour
 					}
 					else if (newPhase == GamePhase.Playing)
 					{
+						Assert();
 						uiGame.GetComponent<UIGame>().UpdateActive(GamePhase.Playing);
 						uiShop.SetActive(false);
 
@@ -75,6 +79,7 @@ public class GameController : MonoBehaviour
 				case GamePhase.Playing:
 					if (newPhase == GamePhase.Editor)
 					{
+						Assert();
 						ClearMissile();
 						
 						uiEditor.SetActive(true);
@@ -91,6 +96,7 @@ public class GameController : MonoBehaviour
 					}
 					else if (newPhase == GamePhase.Preparation)
 					{
+						Assert();
 						ClearMissile();
 
 						uiGame.GetComponent<UIGame>().UpdateActive(GamePhase.Preparation);
@@ -104,6 +110,7 @@ public class GameController : MonoBehaviour
 					}
 					else if (newPhase == GamePhase.Victory)
 					{
+						Assert();
 						uiGame.GetComponent<UIGame>().UpdateActive(GamePhase.Victory);
 
 						// TODO: 胜利后弹出胜利窗口
@@ -259,6 +266,13 @@ public class GameController : MonoBehaviour
         }
         return (Unit[])arr.ToArray(typeof(Unit));
     }
+
+	void Assert()
+	{
+		Debug.Assert(unitObjs != null);
+		Debug.Assert(unitObjsEditor != null);
+		Debug.Assert(unitObjsEditorAndPlayer != null);
+	}
 
     // Debug
     void DebugGame()
