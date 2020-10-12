@@ -32,6 +32,8 @@ public class EditorController : MonoBehaviour
             IsClickHold = false;
             // 更新商店
             shopController.UpdateShop(GamePhase.Editor);
+            // 更新物体碰撞（能否被鼠标点击）
+            UpdateObjectsCollider(editorMode);
         }
     }
     private EditorMode editorMode;
@@ -247,22 +249,19 @@ public class EditorController : MonoBehaviour
             return;
         }
         // Unit模式下点击Unit，此时mouseObject一定是Unit或null
-        if (clickableObject is Unit && EditorMode == EditorMode.Unit)
+        if (clickableObject is Unit)
         {
-            Unit unit = clickableObject as Unit;
-            LeftClick(unit);
+            LeftClick(clickableObject as Unit);
         }
         // Background模式下点击Background，此时mouseObject一定是Background或null
-        else if (clickableObject is Background && EditorMode == EditorMode.Background)
+        else if (clickableObject is Background)
         {
-            Background background = clickableObject as Background;
-            LeftClick(background);
+            LeftClick(clickableObject as Background);
         }
         // Terrain模式下点击Terrain，此时mouseObject一定是Terrain或null
-        else if (clickableObject is TerrainA && EditorMode == EditorMode.Terrain)
+        else if (clickableObject is TerrainA)
         {
-            TerrainA terrain = clickableObject as TerrainA;
-            LeftClick(terrain);
+            LeftClick(clickableObject as TerrainA);
         }
     }
     // 鼠标左键点击Unit
@@ -622,25 +621,11 @@ public class EditorController : MonoBehaviour
     {
         if (player == Player.Player)
         {
-            if (unit is BallGeneral)
-            {
-                return Layer.PlayerBall;
-            }
-            else
-            {
-                return Layer.PlayerBlock;
-            }
+            return unit is BallGeneral ? Layer.PlayerBall : Layer.PlayerBlock;
         }
         else if (player == Player.Enemy)
         {
-            if (unit is BallGeneral)
-            {
-                return Layer.EnemyBall;
-            }
-            else
-            {
-                return Layer.EnemyBlock;
-            }
+            return unit is BallGeneral ? Layer.EnemyBall : Layer.EnemyBlock;
         }
         else
         {
@@ -754,6 +739,7 @@ public class EditorController : MonoBehaviour
 		unit.coord = coord;
         unit.transform.position = MainGrid.Coord2WorldPos(coord);
         unit.transform.parent = gameController.unitObjects.transform;
+        unit.GetComponent<Collider2D>().enabled = (EditorMode == EditorMode.Unit);
 		// TODO:
         unit.isEditorCreated = (gameController.GamePhase == GamePhase.Editor);
     }
@@ -762,20 +748,18 @@ public class EditorController : MonoBehaviour
 	/// </summary>
 	public void Put(Background background)
     {
-        // Background总显示在最底层
-        background.transform.position += new Vector3(0, 0, 1);
         Backgrounds.Add(background);
         background.transform.parent = gameController.backgroundObjects.transform;
+        background.GetComponent<Collider2D>().enabled = (EditorMode == EditorMode.Background);
     }
     /// <summary>
     /// 将Terrain添加到gameController管理
     /// </summary>
     public void Put(TerrainA terrain)
     {
-        // Terrain总显示在最顶层
-        terrain.transform.position += new Vector3(0, 0, -1);
         Terrains.Add(terrain);
         terrain.transform.parent = gameController.backgroundObjects.transform;
+        terrain.GetComponent<Collider2D>().enabled = (EditorMode == EditorMode.Terrain);
     }
 
     // 离开Editor阶段
@@ -791,6 +775,10 @@ public class EditorController : MonoBehaviour
         IsClickHold = false;
         // 切换放置模式为Unit
         EditorMode = EditorMode.Unit;
+        // 所有物体启用Collider
+        SetUnitsCollider(true);
+        SetBackgroundsCollider(true);
+        SetTerrainsCollider(true);
         // 清除鼠标上的物体
         DestroyMouseObject();
         MouseObjectLast = null;
@@ -804,6 +792,8 @@ public class EditorController : MonoBehaviour
         PlayerOwner = Player.Neutral;
         // 显示HP
         IsShowingHP = true;
+        // 更新物体的Collider
+        UpdateObjectsCollider(EditorMode);
         // 清除鼠标上的物体
         DestroyMouseObject();
         MouseObjectLast = null;
@@ -838,6 +828,46 @@ public class EditorController : MonoBehaviour
 		float mouseX = MouseController.MouseWorldPosition().x;
 		float mouseY = MouseController.MouseWorldPosition().y;
 		return MainGrid.GetClosestCoord(new Vector2(mouseX, mouseY));
+    }
+
+    /// <summary>
+    /// 切换Editor Mode时，启用或禁用Unit、Background、Terrain的Collider，来接受或拒绝鼠标点击
+    /// </summary>
+    private void UpdateObjectsCollider(EditorMode editorMode)
+    {
+        // Unit的Collider，只有在Editor Mode为Unit时才启用
+        SetUnitsCollider(editorMode == EditorMode.Unit);
+
+        // Background的Collider，只有在Editor Mode为Background时才启用
+        SetBackgroundsCollider(editorMode == EditorMode.Background);
+
+        // Terrain的Collider，只有在Editor Mode为Terrain时才启用
+        SetTerrainsCollider(editorMode == EditorMode.Terrain);
+    }
+
+    // 启用或禁用Unit的Collider
+    private void SetUnitsCollider(bool active)
+    {
+        foreach (Unit unit in gameController.GetUnits())
+        {
+            unit.GetComponent<Collider2D>().enabled = active;
+        }
+    }
+    // 启用或禁用Background的Collider
+    private void SetBackgroundsCollider(bool active)
+    {
+        foreach (Background background in editorController.backgrounds)
+        {
+            background.GetComponent<Collider2D>().enabled = active;
+        }
+    }
+    // 启用或禁用Terrain的Collider
+    private void SetTerrainsCollider(bool active)
+    {
+        foreach (TerrainA terrain in editorController.terrains)
+        {
+            terrain.GetComponent<Collider2D>().enabled = active;
+        }
     }
 
     void MyDebug()

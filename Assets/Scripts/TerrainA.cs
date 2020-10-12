@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class TerrainA : ClickableObject
 {
-
+    private float width;
+    private float height;
 }
