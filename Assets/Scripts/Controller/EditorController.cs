@@ -42,6 +42,8 @@ public class EditorController : MonoBehaviour
 	public Grid MainGrid { get => mainGrid; set => mainGrid = value; }
     private Grid mainGrid;
 
+	private Grid BuildingGrid;
+
     // 编辑者放置的背景
     public HashSet<Background> Backgrounds => backgrounds;
     private readonly HashSet<Background> backgrounds = new HashSet<Background>();
