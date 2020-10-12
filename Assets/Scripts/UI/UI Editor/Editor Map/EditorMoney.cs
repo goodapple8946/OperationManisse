@@ -6,14 +6,14 @@ using static Controller;
 
 public class EditorMoney : EditorUI
 {
-    InputField inputField;
+    private InputField inputField;
 
     public void Awake()
     {
         inputField = GetComponent<InputField>();
         inputField.onValueChanged.AddListener(value => 
         {
-            if(value != "" && value != "-")
+            if (value != "" && value != "-")
             {
                 int money = int.Parse(value);
                 editorController.PlayerMoneyOrigin = money;
@@ -23,6 +23,6 @@ public class EditorMoney : EditorUI
 
 	public override void UpdateShowing()
 	{
-		inputField.text = editorController.PlayerMoneyOrigin + "";
+		inputField.text = editorController.PlayerMoneyOrigin.ToString();
 	}
 }
