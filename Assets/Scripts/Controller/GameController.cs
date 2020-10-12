@@ -24,7 +24,6 @@ public class GameController : MonoBehaviour
 				case GamePhase.Editor:
 					if(newPhase == GamePhase.Preparation)
 					{
-						Assert();
 						uiEditor.SetActive(false);
 						uiGame.SetActive(true);
 						uiGame.GetComponent<UIGame>().UpdateActive(GamePhase.Preparation);
@@ -35,34 +34,31 @@ public class GameController : MonoBehaviour
 						shopController.UpdateShop(GamePhase.Preparation);
 						victoryController.Init();
 
-						Clone(unitObjsEditor, unitObjs, false); // 把舞台上的保存到Editor
+						Clone(ref unitObjsEditor, unitObjs, false); // 把舞台上的保存到Editor
 					}
 					break;
 
 				case GamePhase.Preparation:
 					if (newPhase == GamePhase.Editor)
 					{
-						Assert();
 						uiEditor.SetActive(true);
 						uiGame.SetActive(false);
 
 						editorController.MainGrid.SetShow(true);
 						shopController.UpdateShop(GamePhase.Editor);
 
-						Clone(unitObjsEditorAndPlayer, unitObjsEditor, false); // 删除Player创建的
-						Clone(unitObjs, unitObjsEditor, true);
+						Clone(ref unitObjsEditorAndPlayer, unitObjsEditor, false); // 删除Player创建的
+						Clone(ref unitObjs, unitObjsEditor, true);
 					}
 					else if (newPhase == GamePhase.Preparation)
 					{
-						Assert();
-						Clone(unitObjsEditorAndPlayer, unitObjsEditor, false); // 删除Player创建的
-						Clone(unitObjs, unitObjsEditor, true);
+						Clone(ref unitObjsEditorAndPlayer, unitObjsEditor, false); // 删除Player创建的
+						Clone(ref unitObjs, unitObjsEditor, true);
 
 						editorController.InitPlayerMoney();
 					}
 					else if (newPhase == GamePhase.Playing)
 					{
-						Assert();
 						uiGame.GetComponent<UIGame>().UpdateActive(GamePhase.Playing);
 						uiShop.SetActive(false);
 
@@ -70,7 +66,7 @@ public class GameController : MonoBehaviour
 						editorController.MainGrid.LinkBlocks();
 
 						// 把当前舞台上的Editor和Player创建的东西保存
-						Clone(unitObjsEditorAndPlayer, unitObjs, false);
+						Clone(ref unitObjsEditorAndPlayer, unitObjs, false);
 
 						unitObjs.BroadcastMessage("GameStart");
 					}
@@ -79,7 +75,6 @@ public class GameController : MonoBehaviour
 				case GamePhase.Playing:
 					if (newPhase == GamePhase.Editor)
 					{
-						Assert();
 						ClearMissile();
 						
 						uiEditor.SetActive(true);
@@ -91,12 +86,11 @@ public class GameController : MonoBehaviour
 						editorController.EnterPhaseEditor();
 						shopController.UpdateShop(GamePhase.Editor);
 
-						Clone(unitObjsEditorAndPlayer, unitObjsEditor, false); // 删除Player创建的
-						Clone(unitObjs, unitObjsEditor, true);
+						Clone(ref unitObjsEditorAndPlayer, unitObjsEditor, false); // 删除Player创建的
+						Clone(ref unitObjs, unitObjsEditor, true);
 					}
 					else if (newPhase == GamePhase.Preparation)
 					{
-						Assert();
 						ClearMissile();
 
 						uiGame.GetComponent<UIGame>().UpdateActive(GamePhase.Preparation);
@@ -106,11 +100,10 @@ public class GameController : MonoBehaviour
 						shopController.UpdateShop(GamePhase.Preparation);
 						victoryController.Init();
 
-						Clone(unitObjs, unitObjsEditorAndPlayer, true);
+						Clone(ref unitObjs, unitObjsEditorAndPlayer, true);
 					}
 					else if (newPhase == GamePhase.Victory)
 					{
-						Assert();
 						uiGame.GetComponent<UIGame>().UpdateActive(GamePhase.Victory);
 
 						// TODO: 胜利后弹出胜利窗口
@@ -185,7 +178,7 @@ public class GameController : MonoBehaviour
 	/// <summary>
 	/// 把src赋值给Dest,并设置active
 	/// </summary>
-	static void Clone(GameObject dest, GameObject src, bool isActive)
+	static void Clone(ref GameObject dest, GameObject src, bool isActive)
 	{
 		string destName = dest.name;
 		Destroy(dest);
@@ -266,13 +259,6 @@ public class GameController : MonoBehaviour
         }
         return (Unit[])arr.ToArray(typeof(Unit));
     }
-
-	void Assert()
-	{
-		Debug.Assert(unitObjs != null);
-		Debug.Assert(unitObjsEditor != null);
-		Debug.Assert(unitObjsEditorAndPlayer != null);
-	}
 
     // Debug
     void DebugGame()
