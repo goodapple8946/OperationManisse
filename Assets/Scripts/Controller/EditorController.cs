@@ -86,8 +86,48 @@ public class EditorController : MonoBehaviour
     }
     private int yNum = 8;
 
-    // Editor面板：编辑者当前使用的UnitOwner
-    public Player PlayerOwner
+	public Coord BuildingCoord1
+	{
+		get => buildingCoord1;
+		set
+		{
+			buildingCoord1 = value;
+			// 更新前端展示
+			EditorPointer.point1.UpdateShowing(buildingCoord1);
+			// 更新网格信息
+			buildingGrid.ClearSquares();
+			int originX = Mathf.Min(buildingCoord1.x, buildingCoord2.x);
+			int originY = Mathf.Min(buildingCoord1.y, buildingCoord2.y);
+			Vector2 originPos = MainGrid.Coord2WorldPos(new Coord(originX, originY), false);
+			int xCount = Mathf.Abs(buildingCoord1.x - buildingCoord2.x) + 1;
+			int yCount = Mathf.Abs(buildingCoord1.y - buildingCoord2.y) + 1;
+			buildingGrid = new Grid(xCount, yCount, originPos, Grid.BUIDING_ALPHA);
+		}
+	}
+	private Coord buildingCoord1 = new Coord(0, 0);
+
+	public Coord BuildingCoord2
+	{
+		get => buildingCoord2;
+		set
+		{
+			buildingCoord2 = value;
+			// 更新前端展示
+			EditorPointer.point2.UpdateShowing(buildingCoord2);
+			// 更新网格信息
+			buildingGrid.ClearSquares();
+			int originX = Mathf.Min(buildingCoord1.x, buildingCoord2.x);
+			int originY = Mathf.Min(buildingCoord1.y, buildingCoord2.y);
+			Vector2 originPos = MainGrid.Coord2WorldPos(new Coord(originX, originY), false);
+			int xCount = Mathf.Abs(buildingCoord1.x - buildingCoord2.x) + 1;
+			int yCount = Mathf.Abs(buildingCoord1.y - buildingCoord2.y) + 1;
+			buildingGrid = new Grid(xCount, yCount, originPos, Grid.BUIDING_ALPHA);
+		}
+	}
+	private Coord buildingCoord2 = new Coord(0, 0);
+
+	// Editor面板：编辑者当前使用的UnitOwner
+	public Player PlayerOwner
     {
         get => playerOwner;
         set
@@ -214,15 +254,32 @@ public class EditorController : MonoBehaviour
     void Start()
     {
         CreateMainGrid();
-        BuildingGrid = new Grid(0, 0, MAINGRID_POS);
+
+        BuildingGrid = new Grid(
+			Mathf.Abs((buildingCoord1 - buildingCoord2).x),
+			Mathf.Abs((buildingCoord1 - buildingCoord2).y),
+			MAINGRID_POS, Grid.BUIDING_ALPHA);
     }
 
     void Update()
     {
-        // 指令
+        
         Order();
 
-        MyDebug();
+		if (Input.GetMouseButtonDown(0) && GetMouseCoord() != Coord.OUTSIDE)
+		{
+			// 设置放置网格点
+			if (EditorPointer.point1.IsOn())
+			{
+				BuildingCoord1 = GetMouseCoord();
+			}
+			else if (EditorPointer.point2.IsOn())
+			{
+				BuildingCoord2 = GetMouseCoord();
+			}
+		}
+
+		MyDebug();
     }
 
 	/// <summary>
@@ -285,7 +342,10 @@ public class EditorController : MonoBehaviour
         DestroyMouseObject();
         MouseObjectLast = null;
         MouseModule = null;
-    }
+		// 关闭鼠标选择放置区
+		EditorPointer.point1.SetOn(false);
+		EditorPointer.point2.SetOn(false);
+	}
 
     // 鼠标左键点击
     public void LeftClick(ClickableObject clickableObject, bool hold = false)
@@ -842,7 +902,7 @@ public class EditorController : MonoBehaviour
     }
 
     /// <summary>
-    /// 返回鼠标所在网格坐标
+    /// 返回鼠标的MainGrid网格坐标
     /// 返回null: 如果不在网格中
     /// </summary>
     Coord GetMouseCoord()

@@ -11,9 +11,6 @@ using static Controller;
 
 public class Grid
 {
-	// 每个网格的大小
-	public static readonly float GRID_SIZE = 0.6f;
-
 	// 原点位置
 	public Vector2 OriginPos { get; private set; }
 
@@ -21,6 +18,10 @@ public class Grid
 	private GameObject gridObj;
 
 	private Unit[,] unitArr;
+
+	// 每个网格的大小
+	public static readonly float GRID_SIZE = 0.6f;
+	public static readonly float BUIDING_ALPHA = 0.4f;
 
 	/// <summary>
 	/// 创建新的网格
@@ -46,8 +47,9 @@ public class Grid
 
 	/// <summary>
 	/// 从originPos绘制空网格
+	/// COLOR_ALPHA: 网格alpha
 	/// </summary>
-	public Grid(int xCount, int yCount, Vector2 originPos)
+	public Grid(int xCount, int yCount, Vector2 originPos, float COLOR_ALPHA = 0.2f)
 	{
 		// 初始化网格绑定的游戏对象
 		gridObj = new GameObject("Grid Objects");
@@ -56,7 +58,7 @@ public class Grid
 		this.OriginPos = originPos;
 
 		// 制作网格
-		CreateGrid(gridObj);
+		CreateGrid(gridObj, COLOR_ALPHA);
 	}
 
 	/// <summary>
@@ -100,11 +102,22 @@ public class Grid
 		return InGrid(coord) ? coord : Coord.OUTSIDE;
 	}
 
-	// 根据x,y
-	// 返回绝对坐标, 需要在初始化完后使用
+	/// <summary>
+	/// 根据x,y
+	/// 返回(x, y)中点的绝对坐标
+	/// </summary>
 	public Vector2 Coord2WorldPos(Coord coord)
 	{
-		return Coord2LocalPos(coord) + OriginPos;
+		return Coord2WorldPos(coord, true);
+	}
+
+	/// <summary>
+	/// isCenter: 左下角还是中点
+	/// 返回(x, y)的绝对坐标
+	/// </summary>
+	public Vector2 Coord2WorldPos(Coord coord, bool isCenter)
+	{
+		return Coord2LocalPos(coord, isCenter) + OriginPos;
 	}
 
 	/// <summary>
@@ -194,7 +207,10 @@ public class Grid
 
 	//--------------------- 内部工具函数 ----------------------//
 
-	void CreateGrid(GameObject parent)
+	/// <summary>
+	/// 网格的父物体和网格的透明度
+	/// </summary>
+	void CreateGrid(GameObject parent, float COLOR_ALPHA)
 	{
 		// 绘制网格
 		for (int x = 0; x < GetX(); x++)
@@ -206,7 +222,6 @@ public class Grid
 				squareObj.GetComponent<SpriteRenderer>().sortingLayerName = "Area";
 				// 根据所在网格设置alpha
 				// 放置位置背景颜色深度
-				const float COLOR_ALPHA = 0.2f;
 				Color color = Color.white;
 				color.a = ((x + y) % 2 == 0) ? (COLOR_ALPHA / 2) : COLOR_ALPHA;
 				squareObj.GetComponent<SpriteRenderer>().color = color;
@@ -243,13 +258,24 @@ public class Grid
 		return unitArr.GetLength(1);
 	}
 
-	// 根据x,y
-	// 返回相对坐标
-	static Vector2 Coord2LocalPos(Coord coord)
+	/// <summary>
+	/// isCenter: 中心点还是左下角的世界坐标
+	/// 返回(x, y)中点相对坐标
+	/// </summary>
+	static Vector2 Coord2LocalPos(Coord coord, bool isCenter)
 	{
-		return new Vector2(
-			GRID_SIZE * (coord.x + 0.5f),
-			GRID_SIZE * (coord.y + 0.5f));
+		if (isCenter)
+		{
+			return new Vector2(
+				GRID_SIZE * (coord.x + 0.5f), 
+				GRID_SIZE * (coord.y + 0.5f));
+		}
+		else
+		{
+			return new Vector2(
+				GRID_SIZE * (coord.x), 
+				GRID_SIZE * (coord.y));
+		}
 	}
 
 	// 连接两Block
