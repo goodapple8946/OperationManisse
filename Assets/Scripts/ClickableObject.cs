@@ -7,7 +7,7 @@ using static Controller;
 
 public class ClickableObject : MonoBehaviour
 {
-    protected void OnMouseOver()
+    protected virtual void OnMouseOver()
     {
         // 鼠标不在UI上
         if (!EventSystem.current.IsPointerOverGameObject())

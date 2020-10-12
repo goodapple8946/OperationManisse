@@ -7,11 +7,13 @@ public class EditorContent : MonoBehaviour
 {
     private GameObject editorUnit;
     private GameObject editorBackground;
+    private GameObject editorTerrain;
 
     void Awake()
     {
         editorUnit = transform.Find("Editor Unit").gameObject;
         editorBackground = transform.Find("Editor Background").gameObject;
+        editorTerrain = transform.Find("Editor Terrain").gameObject;
     }
 
     // 更新Content内所有显示的数据
@@ -30,6 +32,7 @@ public class EditorContent : MonoBehaviour
     {
         editorUnit.SetActive(editorController.EditorMode == EditorMode.Unit);
         editorBackground.SetActive(editorController.EditorMode == EditorMode.Background);
+        editorTerrain.SetActive(editorController.EditorMode == EditorMode.Terrain);
 
         UpdateHeight();
     }
