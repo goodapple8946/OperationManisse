@@ -83,11 +83,11 @@ public class ShopObject : MonoBehaviour
     }
 
     // 显示或隐藏商品的显示按钮
-    public void UpdateToggle()
+    public void UpdateToggle(GamePhase gamePhase)
     {
         if (clickableObject is Unit)
         {
-            toggleObject.SetActive(gameController.GamePhase == GamePhase.Editor);
+            toggleObject.SetActive(gamePhase == GamePhase.Editor);
         }
         else
         {
