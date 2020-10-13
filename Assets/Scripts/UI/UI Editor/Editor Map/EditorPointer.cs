@@ -10,8 +10,8 @@ public class EditorPointer : MonoBehaviour
 	private Toggle toggle;
 	private Text content;
 
-	private static readonly string PNAME1 = "Point1";
-	private static readonly string PNAME2 = "Point2";
+	private static readonly string PNAME1 = "Point 1";
+	private static readonly string PNAME2 = "Point 2";
 
 	public static EditorPointer point1;
 	public static EditorPointer point2;

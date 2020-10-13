@@ -223,7 +223,7 @@ public class Grid
 				// 根据所在网格设置alpha
 				// 放置位置背景颜色深度
 				Color color = Color.white;
-				color.a = ((x + y) % 2 == 0) ? (COLOR_ALPHA / 2) : COLOR_ALPHA;
+				color.a = COLOR_ALPHA;
 				squareObj.GetComponent<SpriteRenderer>().color = color;
 			}
 		}
