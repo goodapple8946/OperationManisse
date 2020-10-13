@@ -45,6 +45,7 @@ public class GameController : MonoBehaviour
 						uiGame.SetActive(false);
 
 						editorController.MainGrid.SetShow(true);
+						editorController.EnterPhaseEditor();
 						shopController.UpdateShop(GamePhase.Editor);
 
 						Clone(ref unitObjsEditorAndPlayer, unitObjsEditor, false); // 删除Player创建的
@@ -133,9 +134,10 @@ public class GameController : MonoBehaviour
 	[HideInInspector] public GameObject missileObjects;
     [HideInInspector] public GameObject hpBarObjects;
     [HideInInspector] public GameObject backgroundObjects;
+	[HideInInspector] public GameObject terrainObjects;
 
 	// 编辑器部分的UI
-    private GameObject uiEditor;
+	private GameObject uiEditor;
 	// 游戏部分的UI
     private GameObject uiGame;
     // 商店部分的UI
@@ -157,6 +159,7 @@ public class GameController : MonoBehaviour
 		missileObjects = new GameObject("Missile Objects");
 		hpBarObjects = new GameObject("HP Bar Objects");
 		backgroundObjects = new GameObject("Background Objects");
+		terrainObjects = new GameObject("Terrain Objects");
 	}
 
 	public void Start()

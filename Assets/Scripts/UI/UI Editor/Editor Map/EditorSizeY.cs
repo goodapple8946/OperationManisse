@@ -13,11 +13,13 @@ public class EditorSizeY : EditorUI
         inputField = GetComponent<InputField>();
         inputField.onEndEdit.AddListener(value =>
         {
-            if (value != "" && value != "-")
+            int y;
+            bool legeal = int.TryParse(value, out y);
+            if (!legeal || y < 1)
             {
-                int y = int.Parse(value);
-				editorController.YNum = y;
+                y = 1;
             }
+            editorController.YNum = y;
         });
     }
 

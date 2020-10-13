@@ -8,20 +8,22 @@ public class EditorSizeX : EditorUI
 {
     InputField inputField;
 
-	public void Awake()
+    public void Awake()
     {
         inputField = GetComponent<InputField>();
         inputField.onEndEdit.AddListener(value =>
         {
-            if (value != "" && value != "-")
+            int x;
+            bool legeal = int.TryParse(value, out x);
+            if (!legeal || x < 1)
             {
-                int x = int.Parse(value);
-				editorController.XNum = x;
-			}
+                x = 1;
+            }
+            editorController.XNum = x;
         });
     }
 
-	public override void UpdateShowing()
+    public override void UpdateShowing()
 	{
 		inputField.text = editorController.XNum + "";
 	}

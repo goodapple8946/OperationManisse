@@ -109,7 +109,9 @@ public class CameraController : MonoBehaviour
     {
         Camera camera = GetComponent<Camera>();
         float sizeMin = 0.1f;
-        float sizeMax = Mathf.Min((RightTopPoint.x - LeftBottomPoint.x) / 2, (RightTopPoint.y - LeftBottomPoint.y) / 2);
+        float sizeMax =
+            Mathf.Min((RightTopPoint.x - LeftBottomPoint.x) / 2, (RightTopPoint.y - LeftBottomPoint.y) / 2)
+            + (gameController.GamePhase == GamePhase.Editor ? 3.2f : 0);
 
         if (camera.orthographicSize < sizeMin)
         {
