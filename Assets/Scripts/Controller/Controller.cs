@@ -96,35 +96,40 @@ public struct Coord
 }
 
 
-public class Ambience
+public class Ambience : MonoBehaviour
 {
-	public static readonly Ambience Sunday =
-		new Ambience(
-			"Sunday",
-			RGB(0, 128, 192),
-			resourceController.audioError,
-			new GameObject()
-			);
-	public static readonly Ambience Rainday =
-		new Ambience(
-			"Sunday",
-			RGB(0, 128, 192),
-			resourceController.audioError,
-			new GameObject()
-			);
-
+	public static Ambience[] ambiences;
 	readonly string envirName;
 	readonly Color bgColor;
-	readonly AudioClip audio;
-	readonly GameObject effectPrefab;
+	public AudioClip audioClip;
+	public GameObject effectPrefab;
 	// 动态保存实例化的粒子效果
 	GameObject effect;
+
+	void Awake()
+	{
+		ambiences = new Ambience[]
+		{
+			new Ambience(
+				"Sunday",
+				RGB(0, 128, 192),
+				resourceController.audioError,
+				new GameObject()
+				),
+			new Ambience(
+				"Sunday",
+				RGB(0, 128, 192),
+				resourceController.audioError,
+				new GameObject()
+			)
+		};
+	}
 
 	public Ambience(string envirName, Color bgColor, AudioClip audio, GameObject effectPrefab)
 	{
 		this.envirName = envirName;
 		this.bgColor = bgColor;
-		this.audio = audio;
+		this.audioClip = audio;
 		// 保存粒子预设
 		this.effectPrefab = effectPrefab;
 		// 初始化
@@ -137,7 +142,7 @@ public class Ambience
 		Camera.main.backgroundColor = bgColor;
 		// 设置音效
 		AudioSource audioSource = Camera.main.gameObject.GetComponent<AudioSource>();
-		audioSource.clip = audio;
+		audioSource.clip = audioClip;
 		audioSource.loop = true;
 		// 实例化粒子效果
 		effect = GameObject.Instantiate(effectPrefab);
