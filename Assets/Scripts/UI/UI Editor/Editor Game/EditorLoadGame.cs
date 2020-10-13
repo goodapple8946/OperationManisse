@@ -70,6 +70,7 @@ public class EditorLoadGame : EditorUI
 		editorController.YNum = map.yNum;
 		editorController.PlayerMoneyOrigin = map.money;
 		editorController.LightIntensity = map.lightIntensity;
+		editorController.CurrAmbience = resourceController.GetAmbience(map.ambienceName);
 		editorController.BuildingCoord1 = map.buildingCoord1;
 		editorController.BuildingCoord2 = map.buildingCoord2;
 		victoryController.victoryCondition = map.victoryCond;

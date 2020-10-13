@@ -95,10 +95,11 @@ static class Serializer
 		int yNUm = editorController.YNum;
 		int money = editorController.PlayerMoneyOrigin;
 		float lightIntensity = editorController.LightIntensity;
+		string ambienceName = editorController.CurrAmbience.gameObject.name;
 		Coord buildingCoord1 = editorController.BuildingCoord1;
 		Coord buildingCoord2 = editorController.BuildingCoord2;
 		VictoryCondition victoryCond = victoryController.victoryCondition;
-		return new XMLMap(xNum, yNUm, money, lightIntensity,
+		return new XMLMap(xNum, yNUm, money, lightIntensity, ambienceName,
 			buildingCoord1, buildingCoord2, victoryCond);
 	}
 
@@ -251,6 +252,7 @@ public class XMLMap
 	public int yNum;
 	public int money;
 	public float lightIntensity;
+	public string ambienceName;
 	public Coord buildingCoord1;
 	public Coord buildingCoord2;
 	public VictoryCondition victoryCond;
@@ -258,13 +260,14 @@ public class XMLMap
 	// 默认无参构造函数
 	public XMLMap() { }
 
-	public XMLMap(int xNum, int yNum, int money, float lightIntensity,
-			Coord buildingCoord1, Coord buildingCoord2, VictoryCondition victoryCond)
+	public XMLMap(int xNum, int yNum, int money, float lightIntensity, string ambienceName,
+	Coord buildingCoord1, Coord buildingCoord2, VictoryCondition victoryCond)
 	{
 		this.xNum = xNum;
 		this.yNum = yNum;
 		this.money = money;
 		this.lightIntensity = lightIntensity;
+		this.ambienceName = ambienceName;
 		this.buildingCoord1 = buildingCoord1;
 		this.buildingCoord2 = buildingCoord2;
 		this.victoryCond = victoryCond;

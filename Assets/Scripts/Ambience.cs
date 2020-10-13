@@ -28,13 +28,13 @@ public class Ambience: MonoBehaviour
 			if (effectPrefab.gameObject.name.Equals("RainEffect")) // 下雨
 			{
 				// 只用改变宽度
-				float width = cameraController.RightTopPoint.x - cameraController.LeftBottomPoint.x;
+				float width = cameraController.GetRightTopMost().x - cameraController.GetLeftBottomMost().x;
 				effect.transform.localScale = new Vector2(width * 3, 1);
 				// 从视角顶部中央创造粒子
 				Vector2 originPos = new Vector2
 				(
-					(cameraController.RightTopPoint.x + cameraController.LeftBottomPoint.x) / 2,
-					cameraController.RightTopPoint.y
+					(cameraController.GetLeftBottomMost().x  + cameraController.GetRightTopMost().x) / 2,
+					cameraController.GetRightTopMost().y
 				);
 				effect.transform.position = originPos;
 				// 改变发射粒子的数量

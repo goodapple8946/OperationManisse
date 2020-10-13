@@ -114,4 +114,17 @@ public class ResourceController : MonoBehaviour
 			AudioSource.PlayClipAtPoint(audioClip, Camera.main.transform.position);
 		}
     }
+
+	public Ambience GetAmbience(string ambienceName)
+	{
+		foreach(Ambience ambience in ambiences)
+		{
+			if (ambience.gameObject.name.Equals(ambienceName))
+			{
+				return ambience;
+			}
+		}
+
+		throw new Exception("找不到ambience");
+	}
 }

@@ -74,7 +74,10 @@ public class EditorController : MonoBehaviour
                 BuildingGrid.ClearSquares();
                 BuildingGrid = CreateBuildingGrid(BuildingCoord1, BuildingCoord2);
             }
-        }
+			// 更新天气粒子scale
+			currAmbience.Clear();
+			currAmbience.Apply();
+		}
     }
     private int xNum = 8;
 
@@ -97,7 +100,10 @@ public class EditorController : MonoBehaviour
                 BuildingGrid.ClearSquares();
                 BuildingGrid = CreateBuildingGrid(BuildingCoord1, BuildingCoord2);
             }
-        }
+			// 更新天气粒子scale
+			currAmbience.Clear();
+			currAmbience.Apply();
+		}
     }
     private int yNum = 8;
 
@@ -314,14 +320,6 @@ public class EditorController : MonoBehaviour
 			currAmbience.Clear();
 			currAmbience = value;
 			currAmbience.Apply();
-
-            //Ambience ambience = ambienceObject.GetComponent<Ambience>();
-            //float width = cameraController.RightTopPoint.x - cameraController.LeftBottomPoint.x;
-            //ambienceObject.transform.localScale = new Vector2(width, 1);
-            //float x = (cameraController.RightTopPoint.x + cameraController.LeftBottomPoint.x) / 2;
-            //float y = cameraController.RightTopPoint.y;
-            //ambienceObject.transform.position = new Vector2(x, y);
-			
         }
     }
     private Ambience currAmbience;

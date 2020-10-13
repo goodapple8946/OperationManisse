@@ -23,9 +23,9 @@ public class CameraController : MonoBehaviour
     // 摄像机滚动触发边缘距离
     private static readonly int SCROLL_DISTANCE = 10;
 
-	// 相机左下角
+	// 相机左下角的中心?
 	public Vector2 LeftBottomPoint { set; get; }
-	// 相机右上角
+	// 相机右上角的中心?
 	public Vector2 RightTopPoint { set; get; }
 
     public void SetView(float left, float bottom, float right, float top)
@@ -212,4 +212,42 @@ public class CameraController : MonoBehaviour
     {
         follow = !follow;
     }
+
+	/// <summary>
+	/// 屏幕高度
+	/// </summary>
+	public float GetHeight()
+	{
+		return Camera.main.orthographicSize * 2.0f;
+	}
+
+	/// <summary>
+	/// 屏幕高宽
+	/// </summary>
+	public float GetWidth()
+	{
+		return GetHeight() * (Screen.width / Screen.height);
+	}
+
+	/// <summary>
+	/// 最左下角
+	/// </summary>
+	public Vector2 GetLeftBottomMost()
+	{
+		Vector2 ret = LeftBottomPoint;
+		ret.x -= GetWidth() / 2;
+		ret.y -= GetHeight() / 2;
+		return ret;
+	}
+
+	/// <summary>
+	/// 最右上角 
+	/// </summary>
+	public Vector2 GetRightTopMost()
+	{
+		Vector2 ret = RightTopPoint;
+		ret.x += GetWidth() / 2;
+		ret.y += GetHeight() / 2;
+		return ret;
+	}
 }
