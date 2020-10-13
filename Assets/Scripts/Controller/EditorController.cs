@@ -972,7 +972,7 @@ public class EditorController : MonoBehaviour
     /// <summary>
     /// 将Terrain添加到gameController管理
     /// </summary>
-    void Put(TerrainA terrain)
+    public void Put(TerrainA terrain)
     {
         Terrains.Add(terrain);
         terrain.transform.parent = gameController.terrainObjects.transform;
