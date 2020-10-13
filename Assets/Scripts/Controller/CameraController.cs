@@ -24,9 +24,9 @@ public class CameraController : MonoBehaviour
     private static readonly int SCROLL_DISTANCE = 10;
 
 	// 相机左下角
-	public Vector2 LeftBottomPoint { set; private get; }
+	public Vector2 LeftBottomPoint { set; get; }
 	// 相机右上角
-	public Vector2 RightTopPoint { set; private get; }
+	public Vector2 RightTopPoint { set; get; }
 
     public void SetView(float left, float bottom, float right, float top)
     {

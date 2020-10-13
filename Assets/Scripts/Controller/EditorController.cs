@@ -39,10 +39,10 @@ public class EditorController : MonoBehaviour
     }
     private EditorMode editorMode;
 
-	// 放置物体的网格
-	public Grid MainGrid;
+    // 放置物体的网格
+    public Grid MainGrid;
 
-	public Grid BuildingGrid;
+    public Grid BuildingGrid;
 
     // 编辑者放置的背景
     public HashSet<Background> Backgrounds => backgrounds;
@@ -66,14 +66,14 @@ public class EditorController : MonoBehaviour
             editorContent.UpdateUIShowing<EditorSizeX>();
             // 更新网格信息
             RecreateMainGrid(gameController.GetUnits());
-			// 如果放置区超出了MainGrid就清空
-			if (!MainGrid.InGrid(BuildingCoord1) || !MainGrid.InGrid(BuildingCoord2))
-			{
-				BuildingCoord1 = new Coord(0, 0);
-				BuildingCoord2 = new Coord(0, 0);
-				BuildingGrid.ClearSquares();
-				BuildingGrid = CreateBuildingGrid(BuildingCoord1, BuildingCoord2);
-			}
+            // 如果放置区超出了MainGrid就清空
+            if (!MainGrid.InGrid(BuildingCoord1) || !MainGrid.InGrid(BuildingCoord2))
+            {
+                BuildingCoord1 = new Coord(0, 0);
+                BuildingCoord2 = new Coord(0, 0);
+                BuildingGrid.ClearSquares();
+                BuildingGrid = CreateBuildingGrid(BuildingCoord1, BuildingCoord2);
+            }
         }
     }
     private int xNum = 8;
@@ -89,56 +89,56 @@ public class EditorController : MonoBehaviour
             editorContent.UpdateUIShowing<EditorSizeY>();
             // 更新网格信息
             RecreateMainGrid(gameController.GetUnits());
-			// 如果放置区超出了MainGrid就清空
-			if (!MainGrid.InGrid(BuildingCoord1) || !MainGrid.InGrid(BuildingCoord2))
-			{
-				BuildingCoord1 = new Coord(0, 0);
-				BuildingCoord2 = new Coord(0, 0);
-				BuildingGrid.ClearSquares();
-				BuildingGrid = CreateBuildingGrid(BuildingCoord1, BuildingCoord2);
-			}
-		}
+            // 如果放置区超出了MainGrid就清空
+            if (!MainGrid.InGrid(BuildingCoord1) || !MainGrid.InGrid(BuildingCoord2))
+            {
+                BuildingCoord1 = new Coord(0, 0);
+                BuildingCoord2 = new Coord(0, 0);
+                BuildingGrid.ClearSquares();
+                BuildingGrid = CreateBuildingGrid(BuildingCoord1, BuildingCoord2);
+            }
+        }
     }
     private int yNum = 8;
 
-	/// <summary> building在世界的坐标</summary>
-	public Coord BuildingCoord1
-	{
-		get => buildingCoord1;
-		set
-		{
-			buildingCoord1 = value;
-			// 更新前端展示
-			EditorPointer.point1.UpdateShowing(buildingCoord1);
-			// 更新网格信息
-			BuildingGrid.ClearSquares();
-			BuildingGrid = CreateBuilding(buildingCoord1, buildingCoord2);
-			// 取消选中
-			EditorPointer.point1.SetOn(false);
-		}
-	}
-	private Coord buildingCoord1 = new Coord(0, 0);
+    /// <summary> building在世界的坐标</summary>
+    public Coord BuildingCoord1
+    {
+        get => buildingCoord1;
+        set
+        {
+            buildingCoord1 = value;
+            // 更新前端展示
+            EditorPointer.point1.UpdateShowing(buildingCoord1);
+            // 更新网格信息
+            BuildingGrid.ClearSquares();
+            BuildingGrid = CreateBuilding(buildingCoord1, buildingCoord2);
+            // 取消选中
+            EditorPointer.point1.SetOn(false);
+        }
+    }
+    private Coord buildingCoord1 = new Coord(0, 0);
 
-	/// <summary> building在世界的坐标</summary>
-	public Coord BuildingCoord2
-	{
-		get => buildingCoord2;
-		set
-		{
-			buildingCoord2 = value;
-			// 更新前端展示
-			EditorPointer.point2.UpdateShowing(buildingCoord2);
-			// 更新网格信息
-			BuildingGrid.ClearSquares();
-			BuildingGrid = CreateBuilding(buildingCoord1, buildingCoord2);
-			// 取消选中
-			EditorPointer.point2.SetOn(false);
-		}
-	}
-	private Coord buildingCoord2 = new Coord(0, 0);
+    /// <summary> building在世界的坐标</summary>
+    public Coord BuildingCoord2
+    {
+        get => buildingCoord2;
+        set
+        {
+            buildingCoord2 = value;
+            // 更新前端展示
+            EditorPointer.point2.UpdateShowing(buildingCoord2);
+            // 更新网格信息
+            BuildingGrid.ClearSquares();
+            BuildingGrid = CreateBuilding(buildingCoord1, buildingCoord2);
+            // 取消选中
+            EditorPointer.point2.SetOn(false);
+        }
+    }
+    private Coord buildingCoord2 = new Coord(0, 0);
 
-	// Editor面板：编辑者当前使用的UnitOwner
-	public Player PlayerOwner
+    // Editor面板：编辑者当前使用的UnitOwner
+    public Player PlayerOwner
     {
         get => playerOwner;
         set
@@ -306,9 +306,34 @@ public class EditorController : MonoBehaviour
     public int PlayerMoney { get => playerMoney; set => playerMoney = value; }
     private int playerMoney;
 
+    public GameObject AmbienceObject
+    {
+        get => ambienceObject;
+        set
+        {
+            if (ambienceObject != null)
+            {
+                Destroy(ambienceObject);
+            }
+
+            ambienceObject = value;
+
+            Ambience ambience = ambienceObject.GetComponent<Ambience>();
+            float width = cameraController.RightTopPoint.x - cameraController.LeftBottomPoint.x;
+            ambienceObject.transform.localScale = new Vector2(width, 1);
+            float x = (cameraController.RightTopPoint.x + cameraController.LeftBottomPoint.x) / 2;
+            float y = cameraController.RightTopPoint.y;
+            ambienceObject.transform.position = new Vector2(x, y);
+
+            Camera.main.backgroundColor = ambience.bgColor;
+            Camera.main.GetComponent<AudioSource>().clip = ambience.audioClip;
+            Camera.main.GetComponent<AudioSource>().Play();
+        }
+    }
+    private GameObject ambienceObject;
 
 
-	//------------------------  成员函数 ----------------------//
+    //------------------------  成员函数 ----------------------//
 
     void Awake()
     {
@@ -319,7 +344,9 @@ public class EditorController : MonoBehaviour
     {
         CreateMainGrid();
 
-		BuildingGrid = CreateBuildingGrid(BuildingCoord1, BuildingCoord2);
+        BuildingGrid = CreateBuildingGrid(BuildingCoord1, BuildingCoord2);
+
+        AmbienceObject = Instantiate(resourceController.ambienceObjects[0]);
     }
 
     void Update()
@@ -327,37 +354,37 @@ public class EditorController : MonoBehaviour
         Order();
 
         if (Input.GetMouseButtonDown(0) && GetMouseCoord() != Coord.OUTSIDE && !EventSystem.current.IsPointerOverGameObject())
-		{
-			// 设置放置网格点
-			if (EditorPointer.point1.IsOn())
-			{
-				BuildingCoord1 = GetMouseCoord();
-			}
-			else if (EditorPointer.point2.IsOn())
-			{
-				BuildingCoord2 = GetMouseCoord();
-			}
-		}
+        {
+            // 设置放置网格点
+            if (EditorPointer.point1.IsOn())
+            {
+                BuildingCoord1 = GetMouseCoord();
+            }
+            else if (EditorPointer.point2.IsOn())
+            {
+                BuildingCoord2 = GetMouseCoord();
+            }
+        }
 
-		MyDebug();
+        MyDebug();
     }
 
-	/// <summary>
-	/// 创建空的面板并设置摄像机视角
-	/// </summary>
-	void CreateMainGrid()
-	{
-		MainGrid = new Grid(XNum, YNum, MAINGRID_POS);
-		cameraController.SetView(
-			editorController.MainGrid.OriginPos,
-			editorController.MainGrid.GetRightTopPos());
-	}
+    /// <summary>
+    /// 创建空的面板并设置摄像机视角
+    /// </summary>
+    void CreateMainGrid()
+    {
+        MainGrid = new Grid(XNum, YNum, MAINGRID_POS);
+        cameraController.SetView(
+            editorController.MainGrid.OriginPos,
+            editorController.MainGrid.GetRightTopPos());
+    }
 
-	/// <summary>
-	///	根据现有面板配置创建Grid
-	/// 并设置摄像机视角 
-	/// </summary>
-	void RecreateMainGrid(Unit[] units)
+    /// <summary>
+    ///	根据现有面板配置创建Grid
+    /// 并设置摄像机视角 
+    /// </summary>
+    void RecreateMainGrid(Unit[] units)
     {
         MainGrid.ClearSquares();
         MainGrid = new Grid(XNum, YNum, MAINGRID_POS, units);
@@ -366,40 +393,40 @@ public class EditorController : MonoBehaviour
             editorController.MainGrid.GetRightTopPos());
     }
 
-	/// <summary>
-	/// 左下闭右上开区间，coord不需要保证有序性
-	/// 不能画空网格
-	/// </summary>
-	Grid CreateBuilding(Coord coord1, Coord coord2)
-	{
-		Coord lbCoord = new Coord(
-			Mathf.Min(coord1.x, coord2.x),
-			Mathf.Min(coord1.y, coord2.y));
-		// 保证rtCoord被画出
-		Coord rtCoord = new Coord(
-			Mathf.Max(coord1.x, coord2.x) + 1,
-			Mathf.Max(coord1.y, coord2.y) + 1);
-		return CreateBuildingGrid(lbCoord, rtCoord);
-	}
+    /// <summary>
+    /// 左下闭右上开区间，coord不需要保证有序性
+    /// 不能画空网格
+    /// </summary>
+    Grid CreateBuilding(Coord coord1, Coord coord2)
+    {
+        Coord lbCoord = new Coord(
+            Mathf.Min(coord1.x, coord2.x),
+            Mathf.Min(coord1.y, coord2.y));
+        // 保证rtCoord被画出
+        Coord rtCoord = new Coord(
+            Mathf.Max(coord1.x, coord2.x) + 1,
+            Mathf.Max(coord1.y, coord2.y) + 1);
+        return CreateBuildingGrid(lbCoord, rtCoord);
+    }
 
-	/// <summary>
-	///	世界坐标的左下和右上角,左闭右开区间
-	///	可以画空网格
-	///	BUIDING_ALPHA: 设置building透明度
-	/// </summary>
-	Grid CreateBuildingGrid(Coord lbCoord, Coord rtCoord)
-	{
-		//Debug.Log(lbCoord.ToString());
-		//Debug.Log(rtCoord.ToString());
-		//Debug.Assert(lbCoord.x <= rtCoord.x && lbCoord.y <= rtCoord.y
-		//	&& MainGrid.InGrid(lbCoord) && MainGrid.InGrid(rtCoord));
+    /// <summary>
+    ///	世界坐标的左下和右上角,左闭右开区间
+    ///	可以画空网格
+    ///	BUIDING_ALPHA: 设置building透明度
+    /// </summary>
+    Grid CreateBuildingGrid(Coord lbCoord, Coord rtCoord)
+    {
+        //Debug.Log(lbCoord.ToString());
+        //Debug.Log(rtCoord.ToString());
+        //Debug.Assert(lbCoord.x <= rtCoord.x && lbCoord.y <= rtCoord.y
+        //	&& MainGrid.InGrid(lbCoord) && MainGrid.InGrid(rtCoord));
 
-		Vector2 origin = MainGrid.Coord2WorldPos(lbCoord, false);
-		return new Grid(
-			rtCoord.x - lbCoord.x,
-			rtCoord.y - lbCoord.y,
-			origin, Grid.BUIDING_ALPHA);
-	}
+        Vector2 origin = MainGrid.Coord2WorldPos(lbCoord, false);
+        return new Grid(
+            rtCoord.x - lbCoord.x,
+            rtCoord.y - lbCoord.y,
+            origin, Grid.BUIDING_ALPHA);
+    }
 
     /// <summary>
     /// 进入Editor阶段
@@ -441,10 +468,10 @@ public class EditorController : MonoBehaviour
         DestroyMouseObject();
         MouseObjectLast = null;
         MouseModule = null;
-		// 关闭鼠标选择放置区
-		EditorPointer.point1.SetOn(false);
-		EditorPointer.point2.SetOn(false);
-	}
+        // 关闭鼠标选择放置区
+        EditorPointer.point1.SetOn(false);
+        EditorPointer.point2.SetOn(false);
+    }
 
     /// <summary>
     /// 鼠标左键点击，hold代表是否正在长按鼠标
@@ -761,7 +788,7 @@ public class EditorController : MonoBehaviour
         ret.name = src.name;
         ret.transform.position = MouseController.MouseWorldPosition();
         return ret;
-    } 
+    }
 
     // 钱不够
     void MoneyNotEnough()
@@ -988,20 +1015,20 @@ public class EditorController : MonoBehaviour
         }
     }
 
-	/// <summary>
-	/// 清空所有Editor阶段创造的所有物品
-	/// </summary>
-	public void Clear()
-	{
-		// 清空网格中的单位
-		MainGrid.ClearUnits();
+    /// <summary>
+    /// 清空所有Editor阶段创造的所有物品
+    /// </summary>
+    public void Clear()
+    {
+        // 清空网格中的单位
+        MainGrid.ClearUnits();
 
-		// 清空背景
-		ClearBackground();
+        // 清空背景
+        ClearBackground();
 
         // 清空地形
         ClearTerrain();
-	}
+    }
 
     // 清空背景
     void ClearBackground()

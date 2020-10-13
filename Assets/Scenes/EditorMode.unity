@@ -265,7 +265,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -5152,6 +5152,9 @@ MonoBehaviour:
   - {fileID: 5429984933498175296, guid: 4bde861c317876f41ab4a8e94223053c, type: 3}
   particleLinkPrefab: {fileID: 8728105212017883391, guid: 5ca256b7950e1c743a648418ac98b45c,
     type: 3}
+  ambienceObjects:
+  - {fileID: 7469683592081226169, guid: 1501920455c25b84b8f361bea12589d1, type: 3}
+  - {fileID: 7638905716160938968, guid: a950e83efe661794fb0d2d5c8400edf6, type: 3}
   audiosLink:
   - {fileID: 8300000, guid: e526d960620f35b448a9e7b4821c9e6e, type: 3}
   - {fileID: 8300000, guid: 073e94f91ee47234f83cfe50c6e645c0, type: 3}
