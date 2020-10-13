@@ -306,31 +306,25 @@ public class EditorController : MonoBehaviour
     public int PlayerMoney { get => playerMoney; set => playerMoney = value; }
     private int playerMoney;
 
-    public GameObject AmbienceObject
-    {
-        get => ambienceObject;
+    public Ambience CurrAmbience
+	{
+        get => currAmbience;
         set
         {
-            if (ambienceObject != null)
-            {
-                Destroy(ambienceObject);
-            }
+			currAmbience.Clear();
+			currAmbience = value;
+			currAmbience.Apply();
 
-            ambienceObject = value;
-
-            Ambience ambience = ambienceObject.GetComponent<Ambience>();
-            float width = cameraController.RightTopPoint.x - cameraController.LeftBottomPoint.x;
-            ambienceObject.transform.localScale = new Vector2(width, 1);
-            float x = (cameraController.RightTopPoint.x + cameraController.LeftBottomPoint.x) / 2;
-            float y = cameraController.RightTopPoint.y;
-            ambienceObject.transform.position = new Vector2(x, y);
-
-            Camera.main.backgroundColor = ambience.bgColor;
-            Camera.main.GetComponent<AudioSource>().clip = ambience.audioClip;
-            Camera.main.GetComponent<AudioSource>().Play();
+            //Ambience ambience = ambienceObject.GetComponent<Ambience>();
+            //float width = cameraController.RightTopPoint.x - cameraController.LeftBottomPoint.x;
+            //ambienceObject.transform.localScale = new Vector2(width, 1);
+            //float x = (cameraController.RightTopPoint.x + cameraController.LeftBottomPoint.x) / 2;
+            //float y = cameraController.RightTopPoint.y;
+            //ambienceObject.transform.position = new Vector2(x, y);
+			
         }
     }
-    private GameObject ambienceObject;
+    private Ambience currAmbience;
 
 
     //------------------------  成员函数 ----------------------//
@@ -346,7 +340,8 @@ public class EditorController : MonoBehaviour
 
         BuildingGrid = CreateBuildingGrid(BuildingCoord1, BuildingCoord2);
 
-        AmbienceObject = Instantiate(resourceController.ambienceObjects[0]);
+        currAmbience = resourceController.ambiences[0];
+		currAmbience.Apply();
     }
 
     void Update()

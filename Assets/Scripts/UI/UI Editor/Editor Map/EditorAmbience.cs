@@ -9,12 +9,20 @@ public class EditorAmbience : EditorUI
 {
     private Dropdown dropdown;
     
-    void Awake()
+    void Start()
     {
         dropdown = GetComponent<Dropdown>();
-        dropdown.onValueChanged.AddListener(value =>
+
+		// 根据天气创建选项
+		List<string> options = new List<string>();
+		Array.ForEach(resourceController.ambiences,
+			ambience => options.Add(ambience.gameObject.name));
+		dropdown.AddOptions(options);
+
+		// 设置editorController当前的环境
+		dropdown.onValueChanged.AddListener(value =>
         {
-            editorController.AmbienceObject = Instantiate(resourceController.ambienceObjects[value]);
+			editorController.CurrAmbience = resourceController.ambiences[value];
         });
     }
 

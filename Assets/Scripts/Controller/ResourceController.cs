@@ -25,7 +25,7 @@ public class ResourceController : MonoBehaviour
     public GameObject particleLinkPrefab;
 
 	// 环境Prefab
-	public GameObject[] ambienceObjects;
+	public Ambience[] ambiences;
 
 	// Block连接时的音效
 	public AudioClip[] audiosLink;
@@ -58,6 +58,7 @@ public class ResourceController : MonoBehaviour
 		Array.ForEach(ballObjects, obj => gameObjDictionary.Add(obj.name, obj));
 		Array.ForEach(backgroundObjects, obj => gameObjDictionary.Add(obj.name, obj));
 		Array.ForEach(terrainObjects, obj => gameObjDictionary.Add(obj.name, obj));
+		
 
 		ModulePath = Application.persistentDataPath + "/Modules/";
 		CheckAndCreatePath(ModulePath);
