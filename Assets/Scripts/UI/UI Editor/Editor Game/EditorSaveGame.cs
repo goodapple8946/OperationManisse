@@ -48,22 +48,27 @@ public class EditorSaveGame : EditorUI
 			editorController.MainGrid.GetUnits(), 
 			shopController.GetShopObjectVisibility());
 
+		// 获取场景中所有的物品信息
 		List<Background> backgrounds = editorController.Backgrounds.ToList<Background>();
+		List<TerrainA> terrains = editorController.Terrains.ToList<TerrainA>();
 		List<Unit> units = editorController.MainGrid.GetUnits();
 		List<string> goodsVisible = shopController.GetShopObjectVisibility();
 
-		XMLGame game = ObtainXMLGame(editorController, backgrounds, units, goodsVisible);
+		XMLGame game = ObtainXMLGame(editorController, victoryController, 
+			backgrounds, terrains, units, goodsVisible);
 		Serializer.SerializeGame(game, path);
 	}
 
 	/// <summary>
-	/// 根据参数构造Game并序列化
+	/// 根据参数构造XMLGame并序列化
 	/// </summary>
 	private static XMLGame ObtainXMLGame(
-		EditorController editorController, List<Background> backgrounds,
+		EditorController editorController, VictoryController victoryController,
+		List<Background> backgrounds, List<TerrainA> terrains,
 		List<Unit> units, List<string> goodsVisable)
 	{
-		XMLMap map = Serializer.EditorController2XML(editorController);
+		// 获取场景中物品的XML映射
+		XMLMap map = Serializer.Map2XML(editorController, victoryController);
 
 		List<XMLBackground> xmlBackgrounds = new List<XMLBackground>();
 		foreach (Background background in backgrounds)
@@ -79,9 +84,17 @@ public class EditorSaveGame : EditorUI
 			xmlUnits.Add(xmlUnit);
 		}
 
-		XMLGame game = new XMLGame(map, xmlBackgrounds, xmlUnits, goodsVisable);
+		List<XMLTerrainA> xmlTerrains = new List<XMLTerrainA>();
+		foreach (TerrainA terrain in terrains)
+		{
+			XMLTerrainA xmlTerrain = Serializer.Terrain2XML(terrain);
+			xmlTerrains.Add(xmlTerrain);
+		}
+
+		XMLGame game = new XMLGame(map, xmlBackgrounds, xmlTerrains, xmlUnits, goodsVisable);
 		return game;
 	}
+
 
 	// 编辑结果的检测
 	[System.Diagnostics.Conditional("DEBUG")]

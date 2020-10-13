@@ -41,13 +41,13 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2449818686913962674}
   serializedVersion: 6
-  lengthInSec: 1
+  lengthInSec: 0.8
   simulationSpeed: 1.5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -117,7 +117,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       scalar: 1.4
-      minScalar: 5
+      minScalar: 1.4
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -169,7 +169,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.5
+      scalar: 1.4
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -285,7 +285,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.2
+      scalar: 1
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -606,9 +606,9 @@ ParticleSystem:
     rotation3D: 0
     gravityModifier:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0
-      minScalar: 0
+      minMaxState: 3
+      scalar: 0.04
+      minScalar: -0.02
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1304,15 +1304,15 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 0.5372549, b: 0, a: 0}
-        key1: {r: 1, g: 0.21568628, b: 0.05882353, a: 1}
+        key0: {r: 1, g: 0.49411765, b: 0, a: 0}
+        key1: {r: 1, g: 0.36078432, b: 0.078431375, a: 1}
         key2: {r: 0.16037738, g: 0.1286045, b: 0.1286045, a: 0}
         key3: {r: 0.16037738, g: 0.1286045, b: 0.1286045, a: 0.20784314}
         key4: {r: 0, g: 0, b: 0, a: 0.20784314}
         key5: {r: 0, g: 0, b: 0, a: 1}
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
-        ctime0: 2891
+        ctime0: 5975
         ctime1: 17540
         ctime2: 65535
         ctime3: 65535
