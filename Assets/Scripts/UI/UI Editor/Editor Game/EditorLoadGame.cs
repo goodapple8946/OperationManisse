@@ -48,6 +48,10 @@ public class EditorLoadGame : EditorUI
 		List<XMLBackground> xmlBackgrounds = game.xmlBackgrounds;
 		xmlBackgrounds.ForEach(Load);
 
+		// 加载地块
+		List<XMLTerrainA> xmlTerrains = game.xmlTerrains;
+		xmlTerrains.ForEach(Load);
+
 		// 加载单位信息
 		List<XMLUnit> xmlUnits = game.xmlUnits;
 		xmlUnits.ForEach(Load);
@@ -66,6 +70,9 @@ public class EditorLoadGame : EditorUI
 		editorController.YNum = map.yNum;
 		editorController.PlayerMoneyOrigin = map.money;
 		editorController.LightIntensity = map.lightIntensity;
+		editorController.BuildingCoord1 = map.buildingCoord1;
+		editorController.BuildingCoord2 = map.buildingCoord2;
+		victoryController.victoryCondition = map.victoryCond;
 	}
 
 	/// <summary>
@@ -75,6 +82,15 @@ public class EditorLoadGame : EditorUI
 	{
 		Background background = XML2Background(xmlBackground);
 		editorController.Put(background);
+	}
+
+	/// <summary>
+	/// 读取xmlBackground并克隆,保存到editorController里
+	/// </summary>
+	private static void Load(XMLTerrainA xmlTerrain)
+	{
+		TerrainA terrain = XML2Terrain(xmlTerrain);
+		editorController.Put(terrain);
 	}
 
 	/// <summary>
@@ -100,6 +116,21 @@ public class EditorLoadGame : EditorUI
 
 		Background background = objClone.GetComponent<Background>();
 		return background;
+	}
+
+	private static TerrainA XML2Terrain(XMLTerrainA xmlTerrain)
+	{
+		// 复制一份物体
+		GameObject objPrefab = resourceController.gameObjDictionary[xmlTerrain.name];
+		GameObject objClone = Instantiate(objPrefab);
+		objClone.name = objPrefab.name; // 默认复制名称是GameObject Name (Clone)
+
+		TerrainA terrain = objClone.GetComponent<TerrainA>();
+		// 设置位置和大小
+		terrain.Width = xmlTerrain.width;
+		terrain.Height = xmlTerrain.height;
+		objClone.transform.position = xmlTerrain.position;
+		return terrain;
 	}
 
 	/// <summary>

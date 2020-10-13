@@ -55,11 +55,18 @@ static class Serializer
 	
 	public static XMLBackground Background2XML(Background background)
 	{
-		Debug.Assert(background != null);
+		Debug.Assert(background.gameObject != null);
 		string name = background.gameObject.name;
 		Vector3 position = background.transform.position;
 		Vector3 localScale = background.transform.localScale;
 		return new XMLBackground(name, position, localScale);
+	}
+
+	public static XMLTerrainA Terrain2XML(TerrainA terrain)
+	{
+		Debug.Assert(terrain.gameObject != null);
+		return new XMLTerrainA(terrain.gameObject.name,
+			terrain.Width, terrain.Height, terrain.transform.position);
 	}
 
 	/// <summary>
@@ -78,16 +85,21 @@ static class Serializer
 	}
 
 	/// <summary>
-	/// 将EditorController映射成XMLMap
+	/// 将Map信息映射成XMLMap
 	/// </summary>
-	public static XMLMap EditorController2XML(EditorController editorController)
+	public static XMLMap Map2XML(
+		EditorController editorController, VictoryController victoryController)
 	{
 		Debug.Assert(editorController != null);
 		int xNum = editorController.XNum;
 		int yNUm = editorController.YNum;
 		int money = editorController.PlayerMoneyOrigin;
 		float lightIntensity = editorController.LightIntensity;
-		return new XMLMap(xNum, yNUm, money, lightIntensity);
+		Coord buildingCoord1 = editorController.BuildingCoord1;
+		Coord buildingCoord2 = editorController.BuildingCoord2;
+		VictoryCondition victoryCond = victoryController.victoryCondition;
+		return new XMLMap(xNum, yNUm, money, lightIntensity,
+			buildingCoord1, buildingCoord2, victoryCond);
 	}
 
 
@@ -100,16 +112,20 @@ public class XMLGame
 {
 	public XMLMap xmlMap;
 	public List<XMLBackground> xmlBackgrounds;
+	public List<XMLTerrainA> xmlTerrains;
 	public List<XMLUnit> xmlUnits;
 	public List<String> goodsVisable;
 
 	// 默认无参构造函数
 	public XMLGame() { }
 
-	public XMLGame(XMLMap xmlMap, List<XMLBackground> xmlBackgrounds, List<XMLUnit> xmlUnits, List<String> goodsVisable)
+	public XMLGame(XMLMap xmlMap, List<XMLBackground> xmlBackgrounds,
+		List<XMLTerrainA> xmlTerrains, List<XMLUnit> xmlUnits,
+		List<String> goodsVisable)
 	{
 		this.xmlMap = xmlMap;
 		this.xmlBackgrounds = xmlBackgrounds;
+		this.xmlTerrains = xmlTerrains;
 		this.xmlUnits = xmlUnits;
 		this.goodsVisable = goodsVisable;
 	}
@@ -186,6 +202,25 @@ public class XMLBackground
 	}
 }
 
+public class XMLTerrainA
+{
+	public string name;
+	public int width;
+	public int height;
+	public Vector3 position;
+
+	// 默认无参构造函数
+	public XMLTerrainA() { }
+
+	public XMLTerrainA(string name, int width, int height, Vector3 position)
+	{
+		this.name = name;
+		this.width = width;
+		this.height = height;
+		this.position = position;
+	}
+}
+
 public class XMLUnit
 {
 	// ResourceController 的 prefab name 
@@ -216,15 +251,22 @@ public class XMLMap
 	public int yNum;
 	public int money;
 	public float lightIntensity;
+	public Coord buildingCoord1;
+	public Coord buildingCoord2;
+	public VictoryCondition victoryCond;
 
 	// 默认无参构造函数
 	public XMLMap() { }
 
-	public XMLMap(int xNum, int yNum, int money, float lightIntensity)
+	public XMLMap(int xNum, int yNum, int money, float lightIntensity,
+			Coord buildingCoord1, Coord buildingCoord2, VictoryCondition victoryCond)
 	{
 		this.xNum = xNum;
 		this.yNum = yNum;
 		this.money = money;
 		this.lightIntensity = lightIntensity;
+		this.buildingCoord1 = buildingCoord1;
+		this.buildingCoord2 = buildingCoord2;
+		this.victoryCond = victoryCond;
 	}
 }

@@ -326,7 +326,11 @@ public class EditorController : MonoBehaviour
     {
         Order();
 
-        if (Input.GetMouseButtonDown(0) && GetMouseCoord() != Coord.OUTSIDE && !EventSystem.current.IsPointerOverGameObject())
+		// 鼠标放在GameObject上
+		bool pointerOverObj = !EventSystem.current.IsPointerOverGameObject();
+		if (Input.GetMouseButtonDown(0) 
+			&& GetMouseCoord() != Coord.OUTSIDE 
+			&& pointerOverObj)
 		{
 			// 设置放置网格点
 			if (EditorPointer.point1.IsOn())
@@ -972,7 +976,7 @@ public class EditorController : MonoBehaviour
     /// <summary>
     /// 将Terrain添加到gameController管理
     /// </summary>
-    void Put(TerrainA terrain)
+    public void Put(TerrainA terrain)
     {
         Terrains.Add(terrain);
         terrain.transform.parent = gameController.terrainObjects.transform;
