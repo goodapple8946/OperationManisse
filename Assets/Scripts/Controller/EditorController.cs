@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.UI;
 using static Controller;
@@ -323,10 +324,9 @@ public class EditorController : MonoBehaviour
 
     void Update()
     {
-        
         Order();
 
-		if (Input.GetMouseButtonDown(0) && GetMouseCoord() != Coord.OUTSIDE)
+        if (Input.GetMouseButtonDown(0) && GetMouseCoord() != Coord.OUTSIDE && !EventSystem.current.IsPointerOverGameObject())
 		{
 			// 设置放置网格点
 			if (EditorPointer.point1.IsOn())
