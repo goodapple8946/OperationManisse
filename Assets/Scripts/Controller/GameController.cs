@@ -125,11 +125,11 @@ public class GameController : MonoBehaviour
 	/// <summary>preparation和playing阶段,场景中所有Unit</summary>
 	// 所有物体的根节点
 	/// <summary> 舞台上的物体 </summary>
-	public GameObject unitObjs;
+	[HideInInspector] public GameObject unitObjs;
 	/// <summary> 玩家放置的物体 </summary>
-	public GameObject unitObjsEditorAndPlayer;
+	[HideInInspector] public GameObject unitObjsEditorAndPlayer;
 	/// <summary> 编辑者放置的物体 </summary>
-	public GameObject unitObjsEditor;
+	[HideInInspector] public GameObject unitObjsEditor;
 
 	[HideInInspector] public GameObject missileObjects;
     [HideInInspector] public GameObject hpBarObjects;

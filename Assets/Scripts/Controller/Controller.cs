@@ -95,68 +95,66 @@ public struct Coord
 	}
 }
 
+//public class Ambience : MonoBehaviour
+//{
+//	public static Ambience[] ambiences;
+//	readonly string envirName;
+//	readonly Color bgColor;
+//	public AudioClip audioClip;
+//	public GameObject effectPrefab;
+//	// 动态保存实例化的粒子效果
+//	GameObject effect;
 
-public class Ambience : MonoBehaviour
-{
-	public static Ambience[] ambiences;
-	readonly string envirName;
-	readonly Color bgColor;
-	public AudioClip audioClip;
-	public GameObject effectPrefab;
-	// 动态保存实例化的粒子效果
-	GameObject effect;
+//	void Awake()
+//	{
+//		ambiences = new Ambience[]
+//		{
+//			new Ambience(
+//				"Sunday",
+//				RGB(0, 128, 192),
+//				resourceController.audioError,
+//				new GameObject()
+//				),
+//			new Ambience(
+//				"Sunday",
+//				RGB(0, 128, 192),
+//				resourceController.audioError,
+//				new GameObject()
+//			)
+//		};
+//	}
 
-	void Awake()
-	{
-		ambiences = new Ambience[]
-		{
-			new Ambience(
-				"Sunday",
-				RGB(0, 128, 192),
-				resourceController.audioError,
-				new GameObject()
-				),
-			new Ambience(
-				"Sunday",
-				RGB(0, 128, 192),
-				resourceController.audioError,
-				new GameObject()
-			)
-		};
-	}
+//	public Ambience(string envirName, Color bgColor, AudioClip audio, GameObject effectPrefab)
+//	{
+//		this.envirName = envirName;
+//		this.bgColor = bgColor;
+//		this.audioClip = audio;
+//		// 保存粒子预设
+//		this.effectPrefab = effectPrefab;
+//		// 初始化
+//		effect = new GameObject();
+//	}
 
-	public Ambience(string envirName, Color bgColor, AudioClip audio, GameObject effectPrefab)
-	{
-		this.envirName = envirName;
-		this.bgColor = bgColor;
-		this.audioClip = audio;
-		// 保存粒子预设
-		this.effectPrefab = effectPrefab;
-		// 初始化
-		effect = new GameObject();
-	}
+//	public void Apply()
+//	{
+//		// 设置颜色
+//		Camera.main.backgroundColor = bgColor;
+//		// 设置音效
+//		AudioSource audioSource = Camera.main.gameObject.GetComponent<AudioSource>();
+//		audioSource.clip = audioClip;
+//		audioSource.loop = true;
+//		// 实例化粒子效果
+//		effect = GameObject.Instantiate(effectPrefab);
+//	}
 
-	public void Apply()
-	{
-		// 设置颜色
-		Camera.main.backgroundColor = bgColor;
-		// 设置音效
-		AudioSource audioSource = Camera.main.gameObject.GetComponent<AudioSource>();
-		audioSource.clip = audioClip;
-		audioSource.loop = true;
-		// 实例化粒子效果
-		effect = GameObject.Instantiate(effectPrefab);
-	}
+//	public void Clear()
+//	{
+//		// 清除创建的effect
+//		GameObject.Destroy(effect);
+//	}
 
-	public void Clear()
-	{
-		// 清除创建的effect
-		GameObject.Destroy(effect);
-	}
-
-	private static Color RGB(int r, int g, int b)
-	{
-		return new Color(r / 256f, g / 256f, b / 256f);
-	}
-
-}
+//	private static Color RGB(int r, int g, int b)
+//	{
+//		return new Color(r / 256f, g / 256f, b / 256f);
+//	}
+//}
