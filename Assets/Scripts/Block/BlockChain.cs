@@ -12,12 +12,12 @@ public class BlockChain : Block
 	// 质量越大，铁链越难被拉长
 	private static float HookMass = 0.1f;
 	// drag越大，铁链可承受的拉力越大,越难被拉长 (还使铁链钟摆运动幅度减小)
-	private static float HookAngularDrag = 1000.0f;
+	private static float HookAngularDrag = 100.0f;
 
 	// 每个环的铰链连接点距离自己中心的距离
 	private static float AnchorDistance = 0.08f;
 	// 铁链最长伸展距离，超过距离会断掉与两边的连接
-	private static float MaxDistance = 12 * AnchorDistance;
+	private static float MaxDistance = 1200 * AnchorDistance;
 
 	protected override void Start()
 	{
