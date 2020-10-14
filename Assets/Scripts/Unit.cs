@@ -223,4 +223,20 @@ public abstract class Unit : ClickableObject
     {
         return health > 0;
     }
+
+	// 设置图像颜色
+	public void SetColor(Color color)
+	{
+		SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+		if (sprite != null)
+		{
+			sprite.color = color;
+		}
+		SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
+		foreach (SpriteRenderer spriteChild in sprites)
+		{
+			spriteChild.color = color;
+		}
+	}
+
 }

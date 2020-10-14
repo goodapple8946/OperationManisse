@@ -157,6 +157,13 @@ public class EditorLoadGame : EditorUI
 
 		// 设置成编辑器创建
 		unit.isEditorCreated = true;
+
+		// 设置敌人的球的颜色
+		if(unit.player == Player.Enemy && unit is Ball)
+		{
+			unit.SetColor(Color.red);
+		}
+
 		return unit;
 	}
 }

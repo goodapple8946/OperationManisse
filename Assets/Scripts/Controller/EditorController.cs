@@ -662,21 +662,26 @@ public class EditorController : MonoBehaviour
                 return;
         }
 
-
         MouseObject = null;
         // 如果是购买并安放的（而非移动网格中现有的），继续购买
         if (isFastClick)
         {
             Buy(unit.gameObject);
         }
-        // 设置Unit所有者
-        unit.player = PlayerOwner;
+
+		// 设置Unit所有者
+		unit.player = PlayerOwner;
         // 设置Unit显示层
         unit.SetSpriteLayer("Unit");
         // 设置Unit物理层
         unit.gameObject.layer = (int)GetUnitLayer(PlayerOwner, unit);
 
-        Put(worldCoord, unit);
+		// 设置红色
+		if (unit.player == Player.Enemy && unit is Ball)
+		{
+			unit.SetColor(Color.red);
+		}
+		Put(worldCoord, unit);
 
         PlayPutIntoGridSound(unit);
     }
@@ -688,7 +693,8 @@ public class EditorController : MonoBehaviour
         background.gameObject.layer = (int)Layer.Background;
         MouseObject = null;
         Put(background);
-    }
+		
+	}
 
     // 安放Terrain，吸附镶嵌到最近的网格
     public void Place(TerrainA terrain)
@@ -712,7 +718,7 @@ public class EditorController : MonoBehaviour
                     PlayerMoney -= unit.price;
                 }
                 Unit unitBought = CreateObject(unit);
-                Pick(unitBought);
+				Pick(unitBought);
             }
             else
             {
@@ -739,6 +745,7 @@ public class EditorController : MonoBehaviour
             }
         }
     }
+
     // 购买Background
     void Buy(Background background)
     {
@@ -980,6 +987,7 @@ public class EditorController : MonoBehaviour
         // TODO:
         unit.isEditorCreated = (gameController.GamePhase == GamePhase.Editor);
     }
+
     /// <summary>
 	/// 将Background添加到gameController管理
 	/// </summary>

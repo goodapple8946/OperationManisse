@@ -24,8 +24,9 @@ public class Ambience: MonoBehaviour
 		if(effectPrefab != null)
 		{
 			effect = GameObject.Instantiate(effectPrefab);
+
 			// 对每种粒子特殊讨论
-			if (effectPrefab.gameObject.name.Equals("RainEffect")) // 下雨
+			if (effect.gameObject.name.Equals("RainEffect")) // 下雨
 			{
 				// 只用改变宽度
 				float width = cameraController.GetRightTopMost().x - cameraController.GetLeftBottomMost().x;
