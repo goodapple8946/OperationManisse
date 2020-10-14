@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1724107523127761005}
   - component: {fileID: 7455505573129216195}
   m_Layer: 0
-  m_Name: Ambience Rainy
+  m_Name: Rainy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d61fe809a204df45a1eb3b028c6b223, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ambienceName: Rainy
+  bgImage: {fileID: 21300000, guid: 19d733bea3ea2de40bf6d0cfae1ed07b, type: 3}
   bgColor: {r: 0.6627451, g: 0.6627451, b: 0.6627451, a: 0}
   audioClip: {fileID: 8300000, guid: 37aee57b375531e4c845d32283161def, type: 3}
   effectPrefab: {fileID: 1000010302070858, guid: d0c0b49979d372942ae5a964d9364111,

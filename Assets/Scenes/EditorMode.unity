@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6337236
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2507,7 +2507,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e8cee5dbde6ae2e49a975aeb175cabcc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a52c61e4d863eb24eb1a6cec742bd3ff, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3329,7 +3329,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1032820972}
   m_HandleRect: {fileID: 1032820971}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4697,7 +4697,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3428022056894261383}
   m_HandleRect: {fileID: 3428022056894261384}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -5315,6 +5315,9 @@ MonoBehaviour:
   - {fileID: 7539418063550561250, guid: cdf167beac7a9fc45b0c85b1a52157d3, type: 3}
   terrainObjects:
   - {fileID: 5429984933498175296, guid: 4bde861c317876f41ab4a8e94223053c, type: 3}
+  - {fileID: 8971730089825615972, guid: c5a3e28766254114aa9981a7b9efdabe, type: 3}
+  - {fileID: 8084480543695740965, guid: c11afabe8e004bd42901697de8a8f40f, type: 3}
+  - {fileID: 560777536606788788, guid: 12d2f48df8a11c3418826d44eb4f5af0, type: 3}
   particleLinkPrefab: {fileID: 8728105212017883391, guid: 5ca256b7950e1c743a648418ac98b45c,
     type: 3}
   ambiences:
