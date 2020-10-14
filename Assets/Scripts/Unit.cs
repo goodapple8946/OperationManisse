@@ -153,11 +153,11 @@ public abstract class Unit : ClickableObject
                 if (velocity >= 0)
                 {
                     float damageAmount = velocity * damageCollision;
-					float FORCE_FACTOR = 15f;
+					float HIT_FORCE_FACTOR = 30f;
                     Damage damage = new Damage(
 						(int)damageAmount, 
 						unit.GetType(),
-						FORCE_FACTOR * velocity * transform.right);
+						HIT_FORCE_FACTOR * velocity * transform.right);
                     unit.TakeDamage(damage);
                 }
             }
@@ -190,19 +190,19 @@ public abstract class Unit : ClickableObject
 		GameObject corpse;
 		if (damageType == typeof(MissileFlamethrower))
 		{
-			corpse = CorpseFactory.CreateBurningClone(gameObject);
+			corpse = Util.CreateBurningClone(gameObject);
 		}
 		// 射伤
 		else if (damageType == typeof(Missile)
 			|| damageType.IsInstanceOfType(typeof(Missile))
 			|| damageType == typeof(BlockSpring)) 
 		{
-			corpse = CorpseFactory.CreateShootedClone(gameObject);
+			corpse = Util.CreateShootedClone(gameObject);
 		}
 		// 撞击
 		else
 		{
-			corpse = CorpseFactory.CreatePunchClone(gameObject, force);
+			corpse = Util.CreatePunchClone(gameObject, force);
 		}
 		Destroy(corpse, deathDuration);
 	}
@@ -230,20 +230,4 @@ public abstract class Unit : ClickableObject
     {
         return health > 0;
     }
-
-	// 设置图像颜色
-	public void SetColor(Color color)
-	{
-		SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-		if (sprite != null)
-		{
-			sprite.color = color;
-		}
-		SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
-		foreach (SpriteRenderer spriteChild in sprites)
-		{
-			spriteChild.color = color;
-		}
-	}
-
 }

@@ -590,7 +590,7 @@ public class EditorController : MonoBehaviour
             MainGrid.Set(unit.coord, null);
             unit.coord = Coord.OUTSIDE;
         }
-        unit.SetSpriteLayer("Pick");
+        Util.SetSpriteLayer(unit.gameObject, "Pick");
         MouseObject = unit;
         MouseObjectLast = unit;
     }
@@ -598,7 +598,7 @@ public class EditorController : MonoBehaviour
     // 拾起BackGround
     private void Pick(Background background)
     {
-        background.SetSpriteLayer("Pick");
+        Util.SetSpriteLayer(background.gameObject, "Pick");
         MouseObject = background;
         MouseObjectLast = background;
         BackgroundScale = background.transform.localScale.x;
@@ -608,7 +608,7 @@ public class EditorController : MonoBehaviour
     // 拾起Terrain
     private void Pick(TerrainA terrain)
     {
-        terrain.SetSpriteLayer("Pick");
+        Util.SetSpriteLayer(terrain.gameObject, "Pick");
         MouseObject = terrain;
         MouseObjectLast = terrain;
         TerrainWidth = terrain.Width;
@@ -972,13 +972,13 @@ public class EditorController : MonoBehaviour
         // 设置Unit所有者
         unit.player = player;
         // 设置Unit显示层
-        unit.SetSpriteLayer("Unit");
+        Util.SetSpriteLayer(unit.gameObject, "Unit");
         // 设置Unit物理层
         unit.gameObject.layer = (int)GetUnitLayer(player, unit);
         // 设置红色
         if (unit is Ball)
         {
-            unit.SetColor(unit.player == Player.Enemy ? Color.red: Color.white);
+            Util.SetColor(unit.gameObject, unit.player == Player.Enemy ? Color.red: Color.white);
         }
     }
 
@@ -990,7 +990,7 @@ public class EditorController : MonoBehaviour
         Backgrounds.Add(background);
         background.transform.parent = gameController.backgroundObjects.transform;
         background.GetComponent<Collider2D>().enabled = (EditorMode == EditorMode.Background);
-        background.SetSpriteLayer("Background");
+        Util.SetSpriteLayer(background.gameObject, "Background");
         background.gameObject.layer = (int)Layer.Background;
     }
     /// <summary>
@@ -1001,7 +1001,7 @@ public class EditorController : MonoBehaviour
         Terrains.Add(terrain);
         terrain.transform.parent = gameController.terrainObjects.transform;
         terrain.GetComponent<Collider2D>().enabled = (EditorMode == EditorMode.Terrain);
-        terrain.SetSpriteLayer("Terrain");
+        Util.SetSpriteLayer(terrain.gameObject, "Terrain");
         terrain.gameObject.layer = (int)Layer.Terrain;
     }
 

@@ -108,7 +108,7 @@ public class EditorLoadModule : EditorUI
 					xmlUnit.y = worldY;
 
 					Unit unit = EditorLoadGame.XML2Unit(xmlUnit);
-					GameObject clone = CorpseFactory.CreateModuleClone(unit.gameObject, 0.5f);
+					GameObject clone = Util.CreateModuleClone(unit.gameObject, 0.5f);
 
 					lastClones.Add(clone);
 					Destroy(unit.gameObject);

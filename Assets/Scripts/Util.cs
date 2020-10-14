@@ -8,7 +8,7 @@ using static Controller;
 /// <summary>
 /// 根据GameObject创建各种类型的克隆
 /// </summary>
-public static class CorpseFactory
+public static class Util
 {
 
 	// 死亡扭矩
@@ -20,7 +20,7 @@ public static class CorpseFactory
 	public static GameObject CreateBurningClone(GameObject origin)
 	{
 		GameObject clone = CreateMovableClone(origin);
-		ChangeColor(clone, new Color(0.1f, 0.1f, 0.1f, 1.0f));
+		SetColor(clone, new Color(0.1f, 0.1f, 0.1f, 1.0f));
 		return clone;
 	}
 
@@ -34,7 +34,7 @@ public static class CorpseFactory
 		Remove<Joint2D>(clone);
 		Remove<Rigidbody2D>(clone);
 		// 设置透明
-		ChangeColor(clone, new Color(1, 1, 1, alpha));
+		SetColor(clone, new Color(1, 1, 1, alpha));
 		return clone;
 	}
 
@@ -76,6 +76,8 @@ public static class CorpseFactory
 		GameObject clone = GameObject.Instantiate(origin);
 		// 将tag改成Untagged就不会被FindEnemy
 		clone.tag = "Untagged";
+		// 设置层级
+		SetSpriteLayer(clone, "Dead");
 		// 移除所有脚本
 		Remove<MonoBehaviour>(clone);
 		return clone;
@@ -113,14 +115,32 @@ public static class CorpseFactory
 		return clone;
 	}
 
-	private static GameObject ChangeColor(GameObject clone, Color color)
+	public static GameObject SetColor(GameObject obj, Color color)
 	{
 		SpriteRenderer[] renderers =
-			clone.transform.GetComponentsInChildren<SpriteRenderer>();
+			obj.transform.GetComponentsInChildren<SpriteRenderer>();
 
 		System.Array.ForEach(renderers,
 			renderer => renderer.color = color);
-		return clone;
+		return obj;
+	}
+
+	// 设置图像层级
+	public static void SetSpriteLayer(GameObject obj, string layer)
+	{
+		SpriteRenderer sprite = obj.GetComponent<SpriteRenderer>();
+		if (sprite != null)
+		{
+			sprite.sortingLayerName = layer;
+		}
+		SpriteRenderer[] sprites = obj.GetComponentsInChildren<SpriteRenderer>();
+		foreach (SpriteRenderer spriteChild in sprites)
+		{
+			if (spriteChild.sortingLayerName != "Cover" && spriteChild.sortingLayerName != "Outline")
+			{
+				spriteChild.sortingLayerName = layer;
+			}
+		}
 	}
 
 	/// <summary>
