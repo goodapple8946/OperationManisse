@@ -10,14 +10,16 @@ public class BlockChain : Block
 	private Transform Tail;
 
 	// 质量越大，铁链越难被拉长
-	private static float HookMass = 0.1f;
-	// drag越大，铁链可承受的拉力越大,越难被拉长 (还使铁链钟摆运动幅度减小)
-	private static float HookAngularDrag = 100.0f;
+	private static float HookMass = 0.25f;
+	// 沿着铁链方向的空气阻力
+	private static float HookDrag = 1.0f;
+	// 垂直于铁链方向的空气阻力
+	private static float HookAngularDrag = 1.0f;
 
 	// 每个环的铰链连接点距离自己中心的距离
 	private static float AnchorDistance = 0.08f;
 	// 铁链最长伸展距离，超过距离会断掉与两边的连接
-	private static float MaxDistance = 1200 * AnchorDistance;
+	private static float MaxDistance = 12 * AnchorDistance;
 
 	protected override void Start()
 	{
@@ -31,7 +33,7 @@ public class BlockChain : Block
 		foreach (Rigidbody2D body in hookBodies)
 		{
 			body.mass = HookMass;
-			//body.drag = HookDrag;
+			body.drag = HookDrag;
 			body.angularDrag = HookAngularDrag;
 		}
 
@@ -44,7 +46,7 @@ public class BlockChain : Block
 			joint.connectedBody =
 				transform.GetChild(i + 1).GetComponent<Rigidbody2D>();
 			// 根据铁链的方向设置锚点
-			joint.anchor = AnchorDistance * dirVector[direction];
+			// joint.anchor = AnchorDistance * dirVector[direction];
 		}
 	}
 
@@ -91,7 +93,7 @@ public class BlockChain : Block
 		{
 			joint.connectedBody = another.body;
 		}
-		joint.anchor = AnchorDistance * dirVector[direction];
+		// joint.anchor = AnchorDistance * dirVector[direction];
 
 		joints[direction] = joint;
 		blocksLinked[direction] = another;
@@ -130,5 +132,16 @@ public class BlockChain : Block
 			return null;
 		}
 	}
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+
+		//for (int i = 0; i < transform.childCount; i++)
+		//{
+		//	HingeJoint2D joint = transform.GetChild(i).GetComponent<HingeJoint2D>();
+		//	Destroy(joint);
+		//}
+    }
 }
 

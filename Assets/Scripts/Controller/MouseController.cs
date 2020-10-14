@@ -20,14 +20,14 @@ public class MouseController : MonoBehaviour
     void Update()
     {
         // 鼠标键按下
-        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2))
         {
             startPositionWorld = MouseWorldPosition();
             startPositionScreen = Input.mousePosition;
         }
 
         // 鼠标键按住
-        if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+        if (Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2))
         {
             endPositionWorld = MouseWorldPosition();
             endPositionScreen = Input.mousePosition;

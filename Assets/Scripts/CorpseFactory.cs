@@ -32,6 +32,8 @@ public static class CorpseFactory
 	public static GameObject CreateTransparentGraphicClone(GameObject origin)
 	{
 		GameObject clone = CreateGraphicFixedRigidClone(origin);
+		// 删除刚体上的Joint
+		Remove<Joint2D>(clone);
 		Remove<Rigidbody2D>(clone);
 		ChangeColor(clone, new Color(1, 1, 1, 0.5f));
 		return clone;
