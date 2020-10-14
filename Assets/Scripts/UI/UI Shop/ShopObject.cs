@@ -52,9 +52,10 @@ public class ShopObject : MonoBehaviour
         {
             // 商品图像为添加物体的图像
             GetComponent<Button>().image.sprite = gameObject.GetComponent<SpriteRenderer>().sprite;
-            
-            // 商品使用默认图像尺寸
-            GetComponent<Button>().image.SetNativeSize();
+			GetComponent<Button>().image.color = gameObject.GetComponent<SpriteRenderer>().color;
+
+			// 商品使用默认图像尺寸
+			GetComponent<Button>().image.SetNativeSize();
 
             // 强制尺寸修正
             float fixedSize = 64f;
@@ -77,7 +78,8 @@ public class ShopObject : MonoBehaviour
             if (gameObject.transform.GetChild(i).GetComponent<SpriteRenderer>() != null)
             {
                 transform.GetChild(0).GetChild(i - 1).GetComponent<Image>().sprite = gameObject.transform.GetChild(i).GetComponent<SpriteRenderer>().sprite;
-                transform.GetChild(0).GetChild(i - 1).GetComponent<Image>().SetNativeSize();
+				transform.GetChild(0).GetChild(i - 1).GetComponent<Image>().color = gameObject.transform.GetChild(i).GetComponent<SpriteRenderer>().color;
+				transform.GetChild(0).GetChild(i - 1).GetComponent<Image>().SetNativeSize();
             }
         }
     }

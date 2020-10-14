@@ -701,7 +701,8 @@ public class EditorController : MonoBehaviour
                 {
                     PlayerMoney -= unit.price;
                 }
-                Unit unitBought = CreateObject(unit);
+				//Unit unitBought = CreateObject(unit);
+				Unit unitBought = CreateObject(unit);
 				Pick(unitBought);
             }
             else
@@ -768,7 +769,10 @@ public class EditorController : MonoBehaviour
     // 在鼠标位置，复制创建一个ClickableObject
     private T CreateObject<T>(T src) where T : ClickableObject
     {
-        T ret = Instantiate(src.gameObject).GetComponent<T>();
+
+		GameObject prefab = resourceController.gameObjDictionary[src.gameObject.name];
+		Debug.Log("jhhh");
+		T ret = Instantiate(prefab).GetComponent<T>();
         ret.name = src.name;
         ret.transform.position = MouseController.MouseWorldPosition();
         return ret;
@@ -978,7 +982,14 @@ public class EditorController : MonoBehaviour
         // 设置红色
         if (unit is Ball)
         {
-            Util.SetColor(unit.gameObject, unit.player == Player.Enemy ? Color.red: Color.white);
+			if(unit.player == Player.Enemy)
+			{
+				Util.SetColor(unit.gameObject, Color.red);
+			}
+			else
+			{
+				Util.SetOriginColor(unit.gameObject);
+			}
         }
     }
 

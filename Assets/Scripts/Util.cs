@@ -14,6 +14,16 @@ public static class Util
 	// 死亡扭矩
 	private static readonly float TorqueDeath = 360.0f;
 
+	// 储存尸体
+	private static GameObject corpseContainer;
+
+	// 静态构造
+	static Util()
+	{
+		corpseContainer = new GameObject();
+		corpseContainer.name = "Corpse Container";
+	}
+
 	/// <summary>
 	/// 根据origin, 创建一个保留图像,旋转刚体,烧黑的克隆
 	/// </summary>
@@ -73,7 +83,7 @@ public static class Util
 	private static GameObject CreateClone(GameObject origin)
 	{
 		// 将origin整体复制
-		GameObject clone = GameObject.Instantiate(origin);
+		GameObject clone = GameObject.Instantiate(origin, corpseContainer.transform);
 		// 将tag改成Untagged就不会被FindEnemy
 		clone.tag = "Untagged";
 		// 设置层级
@@ -115,14 +125,34 @@ public static class Util
 		return clone;
 	}
 
-	public static GameObject SetColor(GameObject obj, Color color)
+	public static void SetColor(GameObject obj, Color color)
 	{
 		SpriteRenderer[] renderers =
 			obj.transform.GetComponentsInChildren<SpriteRenderer>();
 
 		System.Array.ForEach(renderers,
 			renderer => renderer.color = color);
-		return obj;
+	}
+
+	// 恢复原始颜色
+	public static void SetOriginColor(GameObject obj)
+	{
+		GameObject prefab = resourceController.gameObjDictionary[obj.name];
+		SetSameColor(obj.transform, prefab.transform);
+	}
+
+	// 递归回复颜色
+	private static void SetSameColor(Transform obj, Transform prefab)
+	{
+		if(obj.GetComponent<SpriteRenderer>() != null)
+		{
+			obj.GetComponent<SpriteRenderer>().color
+				= prefab.GetComponent<SpriteRenderer>().color;
+		}
+		for (int i = 0; i < obj.childCount; i++)
+		{
+			SetSameColor(obj.GetChild(0), prefab.GetChild(0));
+		}
 	}
 
 	// 设置图像层级

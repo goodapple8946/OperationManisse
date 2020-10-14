@@ -60,10 +60,10 @@ TagManager:
   - name: Unit
     uniqueID: 158068497
     locked: 0
-  - name: Dead
+  - name: Terrain
     uniqueID: 2124216055
     locked: 0
-  - name: Terrain
+  - name: Dead
     uniqueID: 4090356259
     locked: 0
   - name: Pick
