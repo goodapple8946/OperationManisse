@@ -151,8 +151,9 @@ MonoBehaviour:
   sprites: []
   damageCollision: 10
   player: 1
-  gridX: -1
-  gridY: -1
+  coord:
+    x: -1
+    y: -1
   direction: 0
   price: 500
   isEditorCreated: 0
@@ -163,8 +164,8 @@ MonoBehaviour:
   findEnemyRange: 10
   missilePrefab: {fileID: 8991482200070230743, guid: 64f72a8e7a85d8f4a9c1ffc30243c07f,
     type: 3}
-  preheatTime: 3
-  currPreheatTime: 0
+  MaxHeatTime: 3
+  currHeatTime: 0
 --- !u!50 &-3313053000362919951
 Rigidbody2D:
   serializedVersion: 4

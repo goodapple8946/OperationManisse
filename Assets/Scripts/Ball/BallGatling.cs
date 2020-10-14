@@ -6,7 +6,7 @@ using static Controller;
 public class BallGatling : Ball
 { 
     // 预热时间,以秒为单位
-    public float heatTime;
+    public float MaxHeatTime;
 
     // 当前已经预热的时间,介于[0, heatTime]
     public float currHeatTime = 0.0f;
@@ -26,40 +26,44 @@ public class BallGatling : Ball
 		{
 
 			UpdateGatlingColor();
-
+			WeaponCoolDown();
 			// 检查状态
-			if (currHeatTime >= heatTime)
+			if (currHeatTime >= MaxHeatTime)
 			{
 				isOverHeat = true;
-				currHeatTime -= Time.deltaTime;
 			}
 			else if (currHeatTime <= 0)
 			{
 				isOverHeat = false;
 			}
-			// 寻找敌人
+
+			// 寻找敌人转向目标
 			Unit target = FindEnemy();
-			// 已经有目标或索敌找到目标
-			if (target != null)
+			if(target != null)
 			{
-				// 转向目标
 				RotateToward(target);
+			}
+
+			if (isOverHeat)
+			{
+				currHeatTime -= Time.deltaTime;
+			}
+			else
+			{	
 				// 瞄准了目标并且有CD
-				if (CalculateAngle(target) <= weaponAngle 
-					&& weaponCD <= 0
-					&& !isOverHeat)
+				if (CalculateAngle(target) <= weaponAngle)
 				{
-					currHeatTime += Time.deltaTime;
-					RangedAttack();
 					GatlingTrumble();
-					// 武器冷却重置
-					weaponCD = weaponCDMax;
-				}
-				else
-				{
-					WeaponCoolDown();
+					if (weaponCD <= 0)
+					{
+						currHeatTime += Time.deltaTime;
+						RangedAttack();
+						// 武器冷却重置
+						weaponCD = weaponCDMax;
+					}
 				}
 			}
+			//Debug.Log(currHeatTime);
 		}
 	}
 
@@ -67,7 +71,8 @@ public class BallGatling : Ball
 	private void GatlingTrumble()
 	{
 		Transform gatlingTrans = transform.Find("Weapon");
-		Vector2 bias = new Vector2(Random.Range(-0.015f, 0.015f), Random.Range(-0.015f, 0.015f));
+		Vector2 bias = gatlingTrans.right 
+			* new Vector2(Random.Range(-0.025f, 0.025f), Random.Range(-0.005f, 0.015f));
 		Vector2 restoreVec = new Vector2(-gatlingTrans.localPosition.x, -gatlingTrans.localPosition.y);
 		gatlingTrans.Translate(restoreVec + bias);
 	}
@@ -75,8 +80,8 @@ public class BallGatling : Ball
     // 设置加特林颜色
     private void UpdateGatlingColor()
     {
-        Color color = Color.Lerp(initColor, maxColor, currHeatTime / heatTime);
+		Color color = Color.Lerp(initColor, maxColor, Mathf.Sqrt(currHeatTime / MaxHeatTime));
         Transform gatlingTrans = transform.Find("Weapon");
         gatlingTrans.GetComponent<SpriteRenderer>().color = color;
-    }
+	}
 }
