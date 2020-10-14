@@ -12,7 +12,7 @@ public static class CorpseFactory
 {
 
 	// 死亡扭矩
-	private static readonly float TorqueDeath = 1000.0f;
+	private static readonly float TorqueDeath = 360.0f;
 
 	/// <summary>
 	/// 根据origin, 创建一个保留图像,旋转刚体,烧黑的克隆
@@ -65,15 +65,16 @@ public static class CorpseFactory
 	public static GameObject CreateGraphicFixedRigidClone(GameObject origin)
 	{
 		// 将origin整体复制
-		Transform clone = GameObject.Instantiate(origin.transform);
+		GameObject clone = GameObject.Instantiate(origin);
 		// 将tag改成Untagged就不会被FindEnemy
 		clone.tag = "Untagged";
 
 		// 移除所有脚本和碰撞体组件
-		Remove<MonoBehaviour>(clone.gameObject);
-		Remove<Collider2D>(clone.gameObject);
+		Remove<MonoBehaviour>(clone);
+		Remove<Collider2D>(clone);
+		RemoveRigidFixed(clone);
 
-		return clone.gameObject;
+		return clone;
 	}
 
 	/// <summary>
@@ -91,6 +92,7 @@ public static class CorpseFactory
 	/// </summary>
 	private static GameObject RemoveRigidFixed(GameObject clone)
 	{
+		Debug.Log(clone.name);
 		Rigidbody2D cloneBody = clone.GetComponent<Rigidbody2D>();
 		cloneBody.constraints = RigidbodyConstraints2D.None;
 		// 无阻力

@@ -42,7 +42,7 @@ public abstract class Unit : ClickableObject
 	[HideInInspector] public Player player;
 
 	// 在网格中的位置（OUTSIDE代表未在网格中）
-	[HideInInspector] public Coord coord = Coord.OUTSIDE;
+	public Coord coord = Coord.OUTSIDE;
 
 
 	// Link Direction:
@@ -150,13 +150,13 @@ public abstract class Unit : ClickableObject
 				// 造成伤害的有效相对速度
 				float velocity = collision.relativeVelocity.magnitude - velocityCollision;
 
-				//if (velocity >= 0)
-				//{
-				//    float damageAmount = velocity * damageCollision;
-				//    Damage damage = new Damage((int)damageAmount, unit.GetType());
-				//    unit.TakeDamage(damage);
-				//}
-			}
+                if (velocity >= 0)
+                {
+                    float damageAmount = velocity * damageCollision;
+                    Damage damage = new Damage((int)damageAmount, unit.GetType());
+                    unit.TakeDamage(damage);
+                }
+            }
 		}
 	}
 

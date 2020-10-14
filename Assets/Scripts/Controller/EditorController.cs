@@ -658,7 +658,7 @@ public class EditorController : MonoBehaviour
         else if (gameController.GamePhase == GamePhase.Preparation)
         {
             Coord coord = BuildingGrid.GetClosestCoord(pos);
-            if (!BuildingGrid.InGrid(coord) || MainGrid.Get(coord) != null)
+            if (!BuildingGrid.InGrid(coord) || MainGrid.Get(worldCoord) != null)
                 return;
         }
 

@@ -193,10 +193,6 @@ public class Grid
 
 	public List<Unit> GetUnits()
 	{
-        foreach (var u in unitArr.OfType<Unit>().ToList())
-        {
-			Debug.Log(u.name);
-        }
 		return unitArr.OfType<Unit>().ToList();
 	}
 

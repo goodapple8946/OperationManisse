@@ -55,10 +55,13 @@ public class GameController : MonoBehaviour
 					}
 					else if (newPhase == GamePhase.Preparation)
 					{
+						editorController.InitPlayerMoney();
+
 						Clone(ref unitObjsEditorAndPlayer, unitObjsEditor, false); // 删除Player创建的
 						Clone(ref unitObjs, unitObjsEditor, true);
 
-						editorController.InitPlayerMoney();
+						editorController.RecreateMainGrid(GetUnits());
+						editorController.MainGrid.SetShow(false);
 					}
 					else if (newPhase == GamePhase.Playing)
 					{
@@ -108,6 +111,7 @@ public class GameController : MonoBehaviour
 						Clone(ref unitObjs, unitObjsEditorAndPlayer, true);
 
 						editorController.RecreateMainGrid(GetUnits());
+						editorController.MainGrid.SetShow(false);
 					}
 					else if (newPhase == GamePhase.Victory)
 					{
