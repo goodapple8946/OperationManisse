@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using static Controller;
 
@@ -177,7 +178,7 @@ public class Ball: Unit
 		// 弹药朝向
 		missile.transform.rotation = transform.rotation;
 		// 弹药随机角度
-		missile.transform.Rotate(0, 0, Random.Range(-weaponAngle, weaponAngle));
+		missile.transform.Rotate(0, 0, UnityEngine.Random.Range(-weaponAngle, weaponAngle));
 		// 弹药父物体
 		missile.transform.parent = gameController.missileObjects.transform;
 
@@ -190,6 +191,10 @@ public class Ball: Unit
 		{
 			missile.gameObject.layer = (int)Layer.EnemyMissile;
 		}
+        else
+        {
+			throw new Exception("Unknown missile launcher layer.");
+        }
 
 		return missile;
 	}

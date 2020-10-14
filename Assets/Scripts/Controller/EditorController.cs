@@ -377,7 +377,7 @@ public class EditorController : MonoBehaviour
     ///	根据现有面板配置创建Grid
     /// 并设置摄像机视角 
     /// </summary>
-    void RecreateMainGrid(Unit[] units)
+    public void RecreateMainGrid(Unit[] units)
     {
         MainGrid.ClearSquares();
         MainGrid = new Grid(XNum, YNum, MAINGRID_POS, units);
@@ -669,19 +669,7 @@ public class EditorController : MonoBehaviour
             Buy(unit.gameObject);
         }
 
-		// 设置Unit所有者
-		unit.player = PlayerOwner;
-        // 设置Unit显示层
-        unit.SetSpriteLayer("Unit");
-        // 设置Unit物理层
-        unit.gameObject.layer = (int)GetUnitLayer(PlayerOwner, unit);
-
-		// 设置红色
-		if (unit.player == Player.Enemy && unit is Ball)
-		{
-			unit.SetColor(Color.red);
-		}
-		Put(worldCoord, unit);
+		Put(worldCoord, unit, playerOwner);
 
         PlayPutIntoGridSound(unit);
     }
@@ -689,8 +677,6 @@ public class EditorController : MonoBehaviour
     // 安放Background
     public void Place(Background background)
     {
-        background.SetSpriteLayer("Background");
-        background.gameObject.layer = (int)Layer.Background;
         MouseObject = null;
         Put(background);
 		
@@ -699,8 +685,6 @@ public class EditorController : MonoBehaviour
     // 安放Terrain，吸附镶嵌到最近的网格
     public void Place(TerrainA terrain)
     {
-        terrain.SetSpriteLayer("Terrain");
-        terrain.gameObject.layer = (int)Layer.Terrain;
         terrain.AdjustPosition();
         MouseObject = null;
         Put(terrain);
@@ -865,11 +849,11 @@ public class EditorController : MonoBehaviour
     {
         if (player == Player.Player)
         {
-            return unit is BallGeneral ? Layer.PlayerBall : Layer.PlayerBlock;
+            return unit is Ball ? Layer.PlayerBall : Layer.PlayerBlock;
         }
         else if (player == Player.Enemy)
         {
-            return unit is BallGeneral ? Layer.EnemyBall : Layer.EnemyBlock;
+            return unit is Ball ? Layer.EnemyBall : Layer.EnemyBlock;
         }
         else
         {
@@ -975,7 +959,7 @@ public class EditorController : MonoBehaviour
     /// <summary>
     /// 将Unit放入(x,y), 设置位置。添加到gameController管理
     /// </summary>
-    public void Put(Coord coord, Unit unit)
+    public void Put(Coord coord, Unit unit, Player player)
     {
         Debug.Assert(coord != Coord.OUTSIDE && unit != null);
         // 安放
@@ -984,8 +968,18 @@ public class EditorController : MonoBehaviour
         unit.transform.position = MainGrid.Coord2WorldPos(coord);
         unit.transform.parent = gameController.unitObjs.transform;
         unit.GetComponent<Collider2D>().enabled = (EditorMode == EditorMode.Unit);
-        // TODO:
         unit.isEditorCreated = (gameController.GamePhase == GamePhase.Editor);
+        // 设置Unit所有者
+        unit.player = player;
+        // 设置Unit显示层
+        unit.SetSpriteLayer("Unit");
+        // 设置Unit物理层
+        unit.gameObject.layer = (int)GetUnitLayer(player, unit);
+        // 设置红色
+        if (unit is Ball)
+        {
+            unit.SetColor(unit.player == Player.Enemy ? Color.red: Color.white);
+        }
     }
 
     /// <summary>
@@ -996,6 +990,8 @@ public class EditorController : MonoBehaviour
         Backgrounds.Add(background);
         background.transform.parent = gameController.backgroundObjects.transform;
         background.GetComponent<Collider2D>().enabled = (EditorMode == EditorMode.Background);
+        background.SetSpriteLayer("Background");
+        background.gameObject.layer = (int)Layer.Background;
     }
     /// <summary>
     /// 将Terrain添加到gameController管理
@@ -1005,6 +1001,8 @@ public class EditorController : MonoBehaviour
         Terrains.Add(terrain);
         terrain.transform.parent = gameController.terrainObjects.transform;
         terrain.GetComponent<Collider2D>().enabled = (EditorMode == EditorMode.Terrain);
+        terrain.SetSpriteLayer("Terrain");
+        terrain.gameObject.layer = (int)Layer.Terrain;
     }
 
     // 摧毁鼠标上附着的Unit或Background

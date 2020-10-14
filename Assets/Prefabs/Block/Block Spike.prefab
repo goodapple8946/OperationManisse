@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4619946689728373124}
   - component: {fileID: 544855302883425351}
   m_Layer: 0
-  m_Name: Spike
+  m_Name: Block Spike
   m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -155,9 +155,10 @@ MonoBehaviour:
   sprites: []
   damageCollision: 200
   player: 0
-  gridX: -1
-  gridY: -1
-  direction: 2
+  coord:
+    x: -1
+    y: -1
+  direction: 0
   price: 100
   isEditorCreated: 0
   body: {fileID: 0}

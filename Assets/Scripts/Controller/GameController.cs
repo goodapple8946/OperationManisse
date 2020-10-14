@@ -50,6 +50,8 @@ public class GameController : MonoBehaviour
 
 						Clone(ref unitObjsEditorAndPlayer, unitObjsEditor, false); // 删除Player创建的
 						Clone(ref unitObjs, unitObjsEditor, true);
+
+						editorController.RecreateMainGrid(GetUnits());
 					}
 					else if (newPhase == GamePhase.Preparation)
 					{
@@ -89,6 +91,8 @@ public class GameController : MonoBehaviour
 
 						Clone(ref unitObjsEditorAndPlayer, unitObjsEditor, false); // 删除Player创建的
 						Clone(ref unitObjs, unitObjsEditor, true);
+
+						editorController.RecreateMainGrid(GetUnits());
 					}
 					else if (newPhase == GamePhase.Preparation)
 					{
@@ -102,6 +106,8 @@ public class GameController : MonoBehaviour
 						victoryController.Init();
 
 						Clone(ref unitObjs, unitObjsEditorAndPlayer, true);
+
+						editorController.RecreateMainGrid(GetUnits());
 					}
 					else if (newPhase == GamePhase.Victory)
 					{

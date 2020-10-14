@@ -101,7 +101,7 @@ public class EditorLoadGame : EditorUI
 	{
 		Unit unit = XML2Unit(xmlUnit);
 		// 设置unit的网格位置,和坐标
-		editorController.Put(new Coord(xmlUnit.x, xmlUnit.y), unit);
+		editorController.Put(new Coord(xmlUnit.x, xmlUnit.y), unit, (Player)xmlUnit.player);
 	}
 
 	private static Background XML2Background(XMLBackground xmlBackground)
@@ -150,19 +150,6 @@ public class EditorLoadGame : EditorUI
 		unit.Rotate(dirDifference);
 		// 计算网格中的位置
 		unit.transform.position = editorController.MainGrid.Coord2WorldPos(new Coord(xmlUnit.x, xmlUnit.y));
-
-		// prefab的layer是Default，需要根据所属player信息创建
-		unit.gameObject.layer = (int)xmlUnit.layer;
-		unit.player = (Player)xmlUnit.player; 
-
-		// 设置成编辑器创建
-		unit.isEditorCreated = true;
-
-		// 设置敌人的球的颜色
-		if(unit.player == Player.Enemy && unit is Ball)
-		{
-			unit.SetColor(Color.red);
-		}
 
 		return unit;
 	}
