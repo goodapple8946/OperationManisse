@@ -13,12 +13,15 @@ public class Damage
 	// 攻击者的class类型
 	public Type DamageType { get; }
 
-	public Damage(int amount, Type damageType)
+	public Vector2 Force { get; }
+
+	public Damage(int amount, Type damageType, Vector2 force)
 	{
 		Debug.Assert(amount >= 0);
 		Debug.Assert(damageType != null);
 
 		this.Amount = amount;
 		this.DamageType = damageType;
+		this.Force = force;
 	}
 }

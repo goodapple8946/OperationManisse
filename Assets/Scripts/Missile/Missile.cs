@@ -74,8 +74,8 @@ public class Missile : MonoBehaviour
 			Unit unit = other.gameObject.GetComponent<Unit>();
 			if (unit != null)
 			{
-				Damage damage = new Damage(this.damageAmount, this.GetType());
-				unit.TakeDamage(damage);
+				
+				unit.TakeDamage(CreateDamage());
 				if (unit.body != null)
 				{
 					unit.body.AddForce(transform.right * forceHit);
@@ -135,8 +135,17 @@ public class Missile : MonoBehaviour
 		}
 	}
 
-// 更新飞行时间
-protected void UpdateDuration()
+	protected virtual Damage CreateDamage()
+	{
+		Damage damage = new Damage(
+			this.damageAmount,
+			this.GetType(),
+			forceHit * transform.right);
+		return damage;
+	}
+
+	// 更新飞行时间
+	protected void UpdateDuration()
     {
         duration -= Time.deltaTime;
     }

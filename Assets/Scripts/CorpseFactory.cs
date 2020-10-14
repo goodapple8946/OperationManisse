@@ -19,61 +19,107 @@ public static class CorpseFactory
 	/// </summary>
 	public static GameObject CreateBurningClone(GameObject origin)
 	{
-		GameObject clone = CreateUnfixedRigidClone(origin);
-
+		GameObject clone = CreateMovableClone(origin);
 		ChangeColor(clone, new Color(0.1f, 0.1f, 0.1f, 1.0f));
-		
 		return clone;
 	}
 
 	/// <summary>
 	/// 创建一个半透明移除刚体仅保留图像的刚体
 	/// </summary>
-	public static GameObject CreateTransparentGraphicClone(GameObject origin)
+	public static GameObject CreateModuleClone(GameObject origin, float alpha)
 	{
-		GameObject clone = CreateGraphicFixedRigidClone(origin);
+		GameObject clone = CreateMovableClone(origin);
 		// 删除刚体上的Joint
 		Remove<Joint2D>(clone);
 		Remove<Rigidbody2D>(clone);
-		ChangeColor(clone, new Color(1, 1, 1, 0.5f));
+		// 设置透明
+		ChangeColor(clone, new Color(1, 1, 1, alpha));
 		return clone;
 	}
 
 	/// <summary>
-	/// 创建一个不固定的刚体克隆
+	/// 创建一个撞死的克隆
 	/// </summary>
-	public static GameObject CreateUnfixedRigidClone(GameObject origin)
+	public static GameObject CreatePunchClone(GameObject origin, Vector2 force)
 	{
-		GameObject clone = CreateGraphicFixedRigidClone(origin);
-		RemoveRigidFixed(clone);
+		GameObject clone = CreateMovableClone(origin);
+		AddForce(clone, force);
 		return clone;
 	}
 
 	/// <summary>
-	/// 创建一个旋转刚体克隆
+	/// 创建一个被杀死的克隆
 	/// </summary>
-	public static GameObject CreateRotatedRigidClone(GameObject origin)
+	public static GameObject CreateShootedClone(GameObject origin)
 	{
-		GameObject clone = CreateUnfixedRigidClone(origin);
-		AddRotatedRemoveFixed(clone);
+		GameObject clone = CreateMovableClone(origin);
+		// 杀死旋转掉落
+		AddRotated(clone);
+		return clone;
+	}
+
+	private static GameObject CreateMovableClone(GameObject origin)
+	{
+		GameObject clone = CreateClone(origin);
+		RemoveFixed(clone);
+		Remove<Collider2D>(clone);
 		return clone;
 	}
 
 	/// <summary>
-	/// 创建一个删去脚本和碰撞体, 仅保留图像和固定刚体的克隆
+	/// 创建一个复制品, 删去脚本
 	/// </summary>
-	public static GameObject CreateGraphicFixedRigidClone(GameObject origin)
+	private static GameObject CreateClone(GameObject origin)
 	{
 		// 将origin整体复制
 		GameObject clone = GameObject.Instantiate(origin);
 		// 将tag改成Untagged就不会被FindEnemy
 		clone.tag = "Untagged";
-
-		// 移除所有脚本和碰撞体组件
+		// 移除所有脚本
 		Remove<MonoBehaviour>(clone);
-		Remove<Collider2D>(clone);
-		RemoveRigidFixed(clone);
+		return clone;
+	}
 
+	/// <summary>
+	/// 取消刚体的固定
+	/// </summary>
+	private static GameObject RemoveFixed(GameObject clone)
+	{
+		Rigidbody2D cloneBody = clone.GetComponent<Rigidbody2D>();
+		cloneBody.constraints = RigidbodyConstraints2D.None;
+		// 无空气阻力
+		cloneBody.drag = 0;
+		cloneBody.angularDrag = 0;
+		return clone;
+	}
+
+	/// <summary>
+	/// 取消刚体固定, 添加旋转扭矩
+	/// </summary>
+	private static GameObject AddRotated(GameObject clone)
+	{
+		Rigidbody2D cloneBody = clone.GetComponent<Rigidbody2D>();
+		// 死亡扭矩
+		cloneBody.AddTorque(TorqueDeath);
+		return clone;
+	}
+
+	private static GameObject AddForce(GameObject clone, Vector2 force)
+	{
+		Rigidbody2D cloneBody = clone.GetComponent<Rigidbody2D>();
+		// 死亡扭矩
+		cloneBody.AddForce(force);
+		return clone;
+	}
+
+	private static GameObject ChangeColor(GameObject clone, Color color)
+	{
+		SpriteRenderer[] renderers =
+			clone.transform.GetComponentsInChildren<SpriteRenderer>();
+
+		System.Array.ForEach(renderers,
+			renderer => renderer.color = color);
 		return clone;
 	}
 
@@ -87,47 +133,15 @@ public static class CorpseFactory
 		return obj;
 	}
 
-	/// <summary>
-	/// 取消刚体的固定
-	/// </summary>
-	private static GameObject RemoveRigidFixed(GameObject clone)
-	{
-		Debug.Log(clone.name);
-		Rigidbody2D cloneBody = clone.GetComponent<Rigidbody2D>();
-		cloneBody.constraints = RigidbodyConstraints2D.None;
-		// 无阻力
-		cloneBody.drag = 0;
-		cloneBody.angularDrag = 0;
-		return clone;
-	}
-
-	/// <summary>
-	/// 取消刚体固定, 添加旋转扭矩
-	/// </summary>
-	private static GameObject AddRotatedRemoveFixed(GameObject clone)
-	{
-		RemoveRigidFixed(clone);
-
-		Rigidbody2D cloneBody = clone.GetComponent<Rigidbody2D>();
-		// 死亡扭矩
-		cloneBody.AddTorque(TorqueDeath);
-
-		return clone;
-	}
-
-	private static GameObject ChangeColor(GameObject clone, Color color)
-	{
-		SpriteRenderer[] renderers = 
-			clone.transform.GetComponentsInChildren<SpriteRenderer>();
-
-		System.Array.ForEach(renderers,
-			renderer => renderer.color = color);
-		return clone;
-	}
-
 	[System.Diagnostics.Conditional("DEBUG")]
 	private static void CheckOrigin(GameObject origin)
 	{
 		Debug.Assert(origin.GetComponent<Rigidbody2D>() != null, "物体必须为刚体");
+	}
+
+	[System.Diagnostics.Conditional("DEBUG")]
+	private static void CheckRigid(GameObject obj)
+	{
+		Debug.Assert(obj.GetComponent<Rigidbody2D>() != null, "物体必须为刚体");
 	}
 }

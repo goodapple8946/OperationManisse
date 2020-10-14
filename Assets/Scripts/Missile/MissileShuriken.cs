@@ -79,7 +79,7 @@ public class MissileShuriken : Missile
 		Unit target = other.gameObject.GetComponent<Unit>();
 		if (target != null && this.player != target.player)
 		{
-			target.TakeDamage(new Damage(damageAmount, this.GetType()));
+			target.TakeDamage(CreateDamage());
 			if (target.body != null)
 			{
 				target.body.AddForce(transform.right * forceHit);
@@ -92,6 +92,10 @@ public class MissileShuriken : Missile
 	/// </summary>
 	private void MoveToward(Vector2 position)
 	{
+		// 创造残影
+		GameObject trace = CorpseFactory.CreateModuleClone(gameObject, 0.2f);
+		Destroy(trace, 0.1f);
+
 		// 计算速度
 		Vector2 dir2Tar = NormalDir(transform.position, position);
 		// 加切向速度形成曲线效果

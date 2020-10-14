@@ -153,7 +153,11 @@ public abstract class Unit : ClickableObject
                 if (velocity >= 0)
                 {
                     float damageAmount = velocity * damageCollision;
-                    Damage damage = new Damage((int)damageAmount, unit.GetType());
+					float FORCE_FACTOR = 15f;
+                    Damage damage = new Damage(
+						(int)damageAmount, 
+						unit.GetType(),
+						FORCE_FACTOR * velocity * transform.right);
                     unit.TakeDamage(damage);
                 }
             }
@@ -169,15 +173,18 @@ public abstract class Unit : ClickableObject
 		// 死亡检测
 		if (!IsAlive())
 		{
-			ProcessDeath(damage.DamageType);
+			ProcessDeath(damage);
 		}
 	}
 
 	/// <summary>
 	/// 根据伤害类型来进行死亡效果
 	/// </summary>
-	protected void ProcessDeath(System.Type damageType)
+	protected void ProcessDeath(Damage damage)
 	{
+		System.Type damageType = damage.DamageType;
+		Vector2 force = damage.Force;
+
 		Destroy(gameObject);
 		//创建一个尸体, deathDuration后删除
 		GameObject corpse;
@@ -190,12 +197,12 @@ public abstract class Unit : ClickableObject
 			|| damageType.IsInstanceOfType(typeof(Missile))
 			|| damageType == typeof(BlockSpring)) 
 		{
-			corpse = CorpseFactory.CreateRotatedRigidClone(gameObject);
+			corpse = CorpseFactory.CreateShootedClone(gameObject);
 		}
 		// 撞击
 		else
 		{
-			corpse = CorpseFactory.CreateGraphicFixedRigidClone(gameObject);
+			corpse = CorpseFactory.CreatePunchClone(gameObject, force);
 		}
 		Destroy(corpse, deathDuration);
 	}

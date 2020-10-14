@@ -127,7 +127,7 @@ public class BlockSpring : Block
 			// 还原大小
 			transform.localScale = Vector3.one;
 			// 自杀
-			TakeDamage(new Damage(this.healthMax, this.GetType()));
+			TakeDamage(new Damage(this.healthMax, this.GetType(), Vector2.zero));
 		}
 	}
 
