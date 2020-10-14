@@ -24,6 +24,7 @@ public class Ambience: MonoBehaviour
 		if(effectPrefab != null)
 		{
 			effect = GameObject.Instantiate(effectPrefab);
+			effect.name = effectPrefab.name;
 
 			// 对每种粒子特殊讨论
 			if (effect.gameObject.name.Equals("RainEffect")) // 下雨
