@@ -42,7 +42,12 @@ public class Ball: Unit
 	// 索敌。返回最佳目标，如果没有则返回null
 	protected Unit FindEnemyOptimize()
 	{
-		if (currTarget != null)
+		if (currTarget != null && !InRange(currTarget))
+		{
+			currTarget = null;
+		}
+
+		if(currTarget != null)
 		{
 			return currTarget;
 		}
@@ -114,19 +119,22 @@ public class Ball: Unit
 	//	return target;
 	//}
 
+	protected bool InRange(Unit unit)
+	{
+		return (unit.transform.position - transform.position).magnitude 
+			<= findEnemyRange;
+	}
+
 	/// <summary>
 	/// true: 目标存活在范围内且是敌对的
 	/// </summary>
 	protected bool IsLegalTarget(Unit unit)
 	{
-		// 射程范围之内
-		bool unitInRange = (unit.transform.position - transform.position).magnitude <= findEnemyRange;
-
 		// 敌对正营
 		bool unitIsOpponent =
 			player == Player.Player && unit.player == Player.Enemy ||
 			player == Player.Enemy && unit.player == Player.Player;
-		return unitInRange && unitIsOpponent;
+		return InRange(unit) && unitIsOpponent;
 	}
 
 	// 索敌优先级

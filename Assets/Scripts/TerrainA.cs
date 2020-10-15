@@ -27,6 +27,12 @@ public class TerrainA : ClickableObject
             height = value;
             UpdateSize(width, height);
             AdjustPosition();
+
+			if(GetComponent<BuoyancyEffector2D>() != null)
+			{
+				Debug.Log(123);
+				GetComponent<BuoyancyEffector2D>().surfaceLevel = Height / 3f;
+			}
         }
     }
     private int height = 1;
