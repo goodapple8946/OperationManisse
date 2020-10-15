@@ -59,9 +59,10 @@ public class ShopObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             // 商品图像为添加物体的图像
             GetComponent<Button>().image.sprite = obj.GetComponent<SpriteRenderer>().sprite;
-            
-            // 商品使用默认图像尺寸
-            GetComponent<Button>().image.SetNativeSize();
+			GetComponent<Button>().image.color = obj.GetComponent<SpriteRenderer>().color;
+
+			// 商品使用默认图像尺寸
+			GetComponent<Button>().image.SetNativeSize();
 
             // 强制尺寸修正
             float fixedSize = 64f;
@@ -84,7 +85,8 @@ public class ShopObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             if (obj.transform.GetChild(i).GetComponent<SpriteRenderer>() != null)
             {
                 transform.GetChild(0).GetChild(i - 1).GetComponent<Image>().sprite = obj.transform.GetChild(i).GetComponent<SpriteRenderer>().sprite;
-                transform.GetChild(0).GetChild(i - 1).GetComponent<Image>().SetNativeSize();
+				transform.GetChild(0).GetChild(i - 1).GetComponent<Image>().color = obj.transform.GetChild(i).GetComponent<SpriteRenderer>().color;
+				transform.GetChild(0).GetChild(i - 1).GetComponent<Image>().SetNativeSize();
             }
         }
     }

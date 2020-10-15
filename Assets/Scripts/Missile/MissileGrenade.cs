@@ -40,10 +40,7 @@ public class MissileGrenade : Missile
                     // 伤害系数
                     float damageScale = 1f - distance / radiusExplode;
 
-					// 造成伤害
-					Damage damage = new Damage(
-						(int)(damageAmount * damageScale), this.GetType());
-					unit.TakeDamage(damage);
+					unit.TakeDamage(CreateDamage());
 
                     // 造成冲击力
                     unit.body.AddForce(vector.normalized * forceHit * damageScale);

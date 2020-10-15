@@ -4,16 +4,19 @@ using UnityEngine;
 using static Controller;
 
 public class BallGatling : Ball
-{
+{ 
     // 预热时间,以秒为单位
-    public float preheatTime;
+    public float MaxHeatTime;
 
-    // 当前已经预热的时间,介于[0, preheatTime]
-    public float currPreheatTime = 0.0f;
+    // 当前已经预热的时间,介于[0, heatTime]
+    public float currHeatTime = 0.0f;
 
     private Color initColor = Color.black;
+
     // 机枪发红色
     private Color maxColor = Color.white;
+
+	private bool isOverHeat = false;
 
 	protected override void FixedUpdate()
 	{
@@ -21,54 +24,46 @@ public class BallGatling : Ball
 		// 开始游戏后
 		if (gameController.GamePhase == GamePhase.Playing)
 		{
-			UpdatePreheat();
-			UpdateGatlingColor();
 
+			UpdateGatlingColor();
 			WeaponCoolDown();
-			// 寻找敌人
-			Unit target = FindEnemy();
-			// 已经有目标或索敌找到目标
-			if (target != null)
+			// 检查状态
+			if (currHeatTime >= MaxHeatTime)
 			{
-				// 转向目标
+				isOverHeat = true;
+			}
+			else if (currHeatTime <= 0)
+			{
+				isOverHeat = false;
+			}
+
+			// 寻找敌人转向目标
+			Unit target = FindEnemyOptimize();
+			if(target != null)
+			{
 				RotateToward(target);
-				if (CalculateAngle(target) <= weaponAngle && weaponCD <= 0)
+			}
+
+			if (isOverHeat)
+			{
+				currHeatTime -= Time.deltaTime;
+			}
+			else
+			{	
+				// 瞄准了目标并且有CD
+				if (CalculateAngle(target) <= weaponAngle)
 				{
-					// 武器冷却重置
-					bool preheatOver = (currPreheatTime >= preheatTime);
-					if (preheatOver)
+					GatlingTrumble();
+					if (weaponCD <= 0)
 					{
-						weaponCD = weaponCDMax;
+						currHeatTime += Time.deltaTime;
 						RangedAttack();
-						GatlingTrumble();
+						// 武器冷却重置
+						weaponCD = weaponCDMax;
 					}
 				}
 			}
-		}
-	}
-
-    // 加特林预热完毕才能远程攻击
-    protected override void RangedAttack()
-    {
-        if (currPreheatTime >= preheatTime)
-        {
-            base.RangedAttack();		
-		}
-    }
-
-	// 存在敌人且未预热到最大值，加热
-	// 不存在敌人且有预热，降温
-	private void UpdatePreheat()
-	{
-		Unit target = FindEnemy();
-		if (target != null && currPreheatTime <= preheatTime)
-		{
-			currPreheatTime += Time.deltaTime;
-		}
-
-		if (target == null && currPreheatTime >= 0)
-		{
-			currPreheatTime -= Time.deltaTime;
+			//Debug.Log(currHeatTime);
 		}
 	}
 
@@ -76,7 +71,8 @@ public class BallGatling : Ball
 	private void GatlingTrumble()
 	{
 		Transform gatlingTrans = transform.Find("Weapon");
-		Vector2 bias = new Vector2(Random.Range(-0.015f, 0.015f), Random.Range(-0.015f, 0.015f));
+		Vector2 bias = gatlingTrans.right 
+			* new Vector2(Random.Range(-0.025f, 0.025f), Random.Range(-0.005f, 0.015f));
 		Vector2 restoreVec = new Vector2(-gatlingTrans.localPosition.x, -gatlingTrans.localPosition.y);
 		gatlingTrans.Translate(restoreVec + bias);
 	}
@@ -84,8 +80,8 @@ public class BallGatling : Ball
     // 设置加特林颜色
     private void UpdateGatlingColor()
     {
-        Color color = Color.Lerp(initColor, maxColor, currPreheatTime / preheatTime);
+		Color color = Color.Lerp(initColor, maxColor, Mathf.Sqrt(currHeatTime / MaxHeatTime));
         Transform gatlingTrans = transform.Find("Weapon");
         gatlingTrans.GetComponent<SpriteRenderer>().color = color;
-    }
+	}
 }

@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class MissileFlamethrower : Missile
 {
-
 	private void Update()
 	{
 		//transform.eulerAngles = unit.transform.eulerAngles;
@@ -16,7 +15,8 @@ public class MissileFlamethrower : Missile
 		Unit unit = other.gameObject.GetComponent<Unit>();
 		if (unit != null && unit.player != player)
 		{
-			unit.TakeDamage(new Damage(damageAmount, this.GetType()));
+			unit.TakeDamage(CreateDamage());
 		}
 	}
+	
 }

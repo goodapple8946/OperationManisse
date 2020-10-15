@@ -40,22 +40,4 @@ public class ClickableObject : MonoBehaviour
             }
         }
     }
-
-    // 设置图像层级
-    public void SetSpriteLayer(string layer)
-    {
-        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-        if (sprite != null)
-        {
-            sprite.sortingLayerName = layer;
-        }
-        SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
-        foreach (SpriteRenderer spriteChild in sprites)
-        {
-            if (spriteChild.sortingLayerName != "Cover" && spriteChild.sortingLayerName != "Outline")
-            {
-                spriteChild.sortingLayerName = layer;
-            }
-        }
-    }
 }

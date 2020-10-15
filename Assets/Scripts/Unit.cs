@@ -150,13 +150,17 @@ public abstract class Unit : ClickableObject
 				// 造成伤害的有效相对速度
 				float velocity = collision.relativeVelocity.magnitude - velocityCollision;
 
-                if (velocity >= 0)
-                {
-                    float damageAmount = velocity * damageCollision;
-                    Damage damage = new Damage((int)damageAmount, unit.GetType());
-                    unit.TakeDamage(damage);
-                }
-            }
+				if (velocity >= 0)
+				{
+					float damageAmount = velocity * damageCollision;
+					float HIT_FORCE_FACTOR = 30f;
+					Damage damage = new Damage(
+						(int)damageAmount,
+						unit.GetType(),
+						HIT_FORCE_FACTOR * velocity * transform.right);
+					unit.TakeDamage(damage);
+				}
+			}
 		}
 	}
 
@@ -169,33 +173,36 @@ public abstract class Unit : ClickableObject
 		// 死亡检测
 		if (!IsAlive())
 		{
-			ProcessDeath(damage.DamageType);
+			ProcessDeath(damage);
 		}
 	}
 
 	/// <summary>
 	/// 根据伤害类型来进行死亡效果
 	/// </summary>
-	protected void ProcessDeath(System.Type damageType)
+	protected void ProcessDeath(Damage damage)
 	{
+		System.Type damageType = damage.DamageType;
+		Vector2 force = damage.Force;
+
 		Destroy(gameObject);
 		//创建一个尸体, deathDuration后删除
 		GameObject corpse;
 		if (damageType == typeof(MissileFlamethrower))
 		{
-			corpse = CorpseFactory.CreateBurningClone(gameObject);
+			corpse = Util.CreateBurningClone(gameObject);
 		}
 		// 射伤
 		else if (damageType == typeof(Missile)
 			|| damageType.IsInstanceOfType(typeof(Missile))
 			|| damageType == typeof(BlockSpring)) 
 		{
-			corpse = CorpseFactory.CreateRotatedRigidClone(gameObject);
+			corpse = Util.CreateShootedClone(gameObject);
 		}
 		// 撞击
 		else
 		{
-			corpse = CorpseFactory.CreateGraphicFixedRigidClone(gameObject);
+			corpse = Util.CreatePunchClone(gameObject, force);
 		}
 		Destroy(corpse, deathDuration);
 	}
@@ -223,20 +230,4 @@ public abstract class Unit : ClickableObject
     {
         return health > 0;
     }
-
-	// 设置图像颜色
-	public void SetColor(Color color)
-	{
-		SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-		if (sprite != null)
-		{
-			sprite.color = color;
-		}
-		SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
-		foreach (SpriteRenderer spriteChild in sprites)
-		{
-			spriteChild.color = color;
-		}
-	}
-
 }

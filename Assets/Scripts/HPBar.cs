@@ -45,67 +45,67 @@ public class HPBar : MonoBehaviour
         backTf.GetComponent<SpriteRenderer>().sprite = back;
     }
 
-    void Update()
-    {
-        // 如果依附的单位没了，摧毁自己
-        if (unit == null)
-        {
-            Destroy(gameObject);
-            return;
-        }
+	void Update()
+	{
+		// 如果依附的单位没了，摧毁自己
+		if (unit == null)
+		{
+			Destroy(gameObject);
+			return;
+		}
 
-        // 如果单位由于某种原因，所属玩家发生改变，需要改变前血条颜色（Prefab）
-        if (unit.player != player)
-        {
-            player = unit.player;
-            frontTf.GetComponent<SpriteRenderer>().sprite = GetFrontSpriteByPlayer(player);
-        }
+		// 如果单位由于某种原因，所属玩家发生改变，需要改变前血条颜色（Prefab）
+		if (unit.player != player)
+		{
+			player = unit.player;
+			frontTf.GetComponent<SpriteRenderer>().sprite = GetFrontSpriteByPlayer(player);
+		}
 
-        // 显示血条的条件：首先不能是鼠标上的物体，然后满足：单位血量不是满的 或 Editor强制显血选项开启了
-        bool showHP =
-            unit != editorController.MouseObject as Unit && 
-            (unit.health != unit.healthMax || editorController.IsShowingHP);
+		// 显示血条的条件：首先不能是鼠标上的物体，然后满足：单位血量不是满的 或 Editor强制显血选项开启了
+		bool showHP =
+			unit != editorController.MouseObject as Unit &&
+			(unit.health != unit.healthMax || editorController.IsShowingHP);
 
-        // 如果不满足显血条件
-        if (!showHP)
-        {
-            // 隐藏血条
-            transform.localScale = Vector2.zero;
-            return;
-        }
+		// 如果不满足显血条件
+		if (!showHP)
+		{
+			// 隐藏血条
+			transform.localScale = Vector2.zero;
+			return;
+		}
 
-        // 显示血条
-        transform.localScale = Vector2.one;
+		// 显示血条
+		transform.localScale = Vector2.one;
 
-        // 设置血条当前值为单位生命值
-        value = unit.health;
+		// 设置血条当前值为单位生命值
+		value = unit.health;
 
-        // 后血条的值缓慢减少至前血条的值，但是不能低于前血条的值
-        if (valueBack < value)
-        {
-            valueBack = value;
-        }
-        else if (valueBack > value)
-        {
-            valueBack -= valueSpeed * valueMax * Time.deltaTime;
-        }
+		// 后血条的值缓慢减少至前血条的值，但是不能低于前血条的值
+		if (valueBack < value)
+		{
+			valueBack = value;
+		}
+		else if (valueBack > value)
+		{
+			valueBack -= valueSpeed * valueMax * Time.deltaTime;
+		}
 
-        // 血条位置更新
-        transform.position = (Vector2)unit.transform.position + offset;
+		// 血条位置更新
+		transform.position = (Vector2)unit.transform.position + offset;
 
-        // 前血条
-        float frontScale = value / valueMax;
-        frontTf.localScale = new Vector3(frontScale, 1, 1);
-        frontTf.position = GetPositionByScale(frontScale);
+		// 前血条
+		float frontScale = value / valueMax;
+		frontTf.localScale = new Vector3(frontScale, 1, 1);
+		frontTf.position = GetPositionByScale(frontScale);
 
-        // 后血条
-        float backScale = valueBack / valueMax;
-        backTf.localScale = new Vector3(backScale, 1, 1);
-        backTf.position = GetPositionByScale(backScale);
-    }
+		// 后血条
+		float backScale = valueBack / valueMax;
+		backTf.localScale = new Vector3(backScale, 1, 1);
+		backTf.position = GetPositionByScale(backScale);
+	}
 
-    // 根据玩家获取前血条对应Prefab（仅颜色不同）
-    private Sprite GetFrontSpriteByPlayer(Player player)
+	// 根据玩家获取前血条对应Prefab（仅颜色不同）
+	private Sprite GetFrontSpriteByPlayer(Player player)
     {
         switch (unit.player)
         {

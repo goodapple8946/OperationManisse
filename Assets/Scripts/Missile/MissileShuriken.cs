@@ -18,6 +18,10 @@ public class MissileShuriken : Missile
 	// 一次攻击的目标位置 = 当前位置 + findEnemyRange*敌人方向向量
 	private Vector2 attackPos;
 
+	// 制造残影的间隔时长
+	private static readonly float TRACE_GAP_MAX = 0.03f;
+	private float traceGap;
+
 	protected override void Start()
 	{
 		Vector2 currPos = unit.transform.position;
@@ -79,7 +83,7 @@ public class MissileShuriken : Missile
 		Unit target = other.gameObject.GetComponent<Unit>();
 		if (target != null && this.player != target.player)
 		{
-			target.TakeDamage(new Damage(damageAmount, this.GetType()));
+			target.TakeDamage(CreateDamage());
 			if (target.body != null)
 			{
 				target.body.AddForce(transform.right * forceHit);
@@ -88,7 +92,7 @@ public class MissileShuriken : Missile
 	}
 
 	/// <summary>
-	/// 设置速度偏向目标
+	/// 走向目标
 	/// </summary>
 	private void MoveToward(Vector2 position)
 	{
@@ -98,6 +102,16 @@ public class MissileShuriken : Missile
 		Vector2 tangentDir = Tangent(dir2Tar);
 		Vector2 velocity = shurikenSpeed * dir2Tar + Random.Range(0, tangentSpeed)  * tangentDir;
 		transform.GetComponent<Rigidbody2D>().velocity = velocity;
+
+		// 创造残影
+		traceGap -= Time.deltaTime;
+		if (traceGap <= 0)
+		{
+			GameObject trace = Util.CreateModuleClone(gameObject, 0.2f);
+			// 同时在场4个残影
+			Destroy(trace, 4* TRACE_GAP_MAX);
+			traceGap = TRACE_GAP_MAX;
+		}
 	}
 
 	/// <summary> from到to的标准方向向量</summary>

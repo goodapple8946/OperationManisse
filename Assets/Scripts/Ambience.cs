@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 using static Controller;
 
 public class Ambience: MonoBehaviour
 {
+	public Sprite bgImage;
     public Color bgColor;
     public AudioClip audioClip;
 	public GameObject effectPrefab;
@@ -15,8 +16,23 @@ public class Ambience: MonoBehaviour
 
 	public void Apply()
 	{
+		if(bgImage != null)
+		{
+			// 设置背景图片
+			Image image = cameraController.transform.GetComponentInChildren<Image>();
+			image.enabled = true;
+			image.sprite = bgImage;
+			//// Hack: 直接设置image.color无法生效
+			//Color newColor = image.color;
+			//newColor.r = bgColor.r;
+			//newColor.g = bgColor.g;
+			//newColor.b = bgColor.b;
+			//image.color = newColor;
+		}
+		
 		// 设置颜色
 		Camera.main.backgroundColor = bgColor;
+
 		// 设置音效
 		Camera.main.GetComponent<AudioSource>().clip = audioClip;
 		Camera.main.GetComponent<AudioSource>().Play();
@@ -52,8 +68,13 @@ public class Ambience: MonoBehaviour
 
 	public void Clear()
 	{
-		// 默认颜色
-		Camera.main.backgroundColor = Color.blue;
+		// 关闭背景图片
+		Image image = cameraController.transform.GetComponentInChildren<Image>();
+		image.sprite = null;
+		image.enabled = false;
+
+		// 恢复默认颜色
+		Camera.main.backgroundColor = Color.white;
 
 		// 关闭音效
 		Camera.main.GetComponent<AudioSource>().clip = null;
@@ -63,5 +84,10 @@ public class Ambience: MonoBehaviour
 		{
 			GameObject.Destroy(effect);
 		}
+	}
+
+	private Color RGB(float R, float G, float B)
+	{
+		return new Color(R / 256, G / 256, B / 256);
 	}
 }

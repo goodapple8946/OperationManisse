@@ -16,10 +16,10 @@ public class BlockChain : Block
 	// 垂直于铁链方向的空气阻力
 	private static float HookAngularDrag = 1.0f;
 
-	// 每个环的铰链连接点距离自己中心的距离
-	private static float AnchorDistance = 0.08f;
+	// 每个环
+	private static float HookSize = 0.08f;
 	// 铁链最长伸展距离，超过距离会断掉与两边的连接
-	private static float MaxDistance = 12 * AnchorDistance;
+	private static float MaxDistance = 12 * HookSize;
 
 	protected override void Start()
 	{
@@ -38,16 +38,14 @@ public class BlockChain : Block
 		}
 
 		// 从尾遍历到第二个,建立内部铰链
-		for (int i = 0; i < transform.childCount - 1; i++)
-		{
-			GameObject child = transform.GetChild(i).gameObject;
-			// 与后一个连接, 如果在此处创建instantiate时会创建多个铰链
-			HingeJoint2D joint = child.GetComponent<HingeJoint2D>();
-			joint.connectedBody =
-				transform.GetChild(i + 1).GetComponent<Rigidbody2D>();
-			// 根据铁链的方向设置锚点
-			// joint.anchor = AnchorDistance * dirVector[direction];
-		}
+		//for (int i = 0; i < transform.childCount - 1; i++)
+		//{
+		//	GameObject child = transform.GetChild(i).gameObject;
+		//	// 与后一个连接, 如果在此处创建instantiate时会创建多个铰链
+		//	HingeJoint2D joint = child.GetComponent<HingeJoint2D>();
+		//	joint.connectedBody =
+		//		transform.GetChild(i + 1).GetComponent<Rigidbody2D>();
+		//}
 	}
 
 	public override void GameStart()
@@ -132,16 +130,6 @@ public class BlockChain : Block
 			return null;
 		}
 	}
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-
-		//for (int i = 0; i < transform.childCount; i++)
-		//{
-		//	HingeJoint2D joint = transform.GetChild(i).GetComponent<HingeJoint2D>();
-		//	Destroy(joint);
-		//}
-    }
+	
 }
 
