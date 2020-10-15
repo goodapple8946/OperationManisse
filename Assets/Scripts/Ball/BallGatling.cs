@@ -49,9 +49,9 @@ public class BallGatling : Ball
 				currHeatTime -= Time.deltaTime;
 			}
 			else
-			{	
+			{
 				// 瞄准了目标并且有CD
-				if (CalculateAngle(target) <= weaponAngle)
+				if (target != null && CalculateAngle(target) <= weaponAngle)
 				{
 					GatlingTrumble();
 					if (weaponCD <= 0)

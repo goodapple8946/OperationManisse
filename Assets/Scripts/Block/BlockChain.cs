@@ -6,8 +6,9 @@ using static Controller;
 
 public class BlockChain : Block
 {
-	private Transform Head;
-	private Transform Tail;
+	//private Transform Head;
+	//private Transform Tail;
+	public GameObject[] Heads = new GameObject[4];
 
 	// 质量越大，铁链越难被拉长
 	private static float HookMass = 0.25f;
@@ -24,9 +25,6 @@ public class BlockChain : Block
 	protected override void Start()
 	{
 		base.Start();
-
-		Head = transform.Find("Head");
-		Tail = transform.Find("Tail");
 
 		// 设置铰链环的刚体属性
 		Rigidbody2D[] hookBodies = transform.GetComponentsInChildren<Rigidbody2D>();
@@ -59,26 +57,28 @@ public class BlockChain : Block
 	{
 		base.Update();
 
-		// 超过距离断开连接
-		if (Vector2.Distance(Head.position, Tail.position) >= MaxDistance)
+		for(int i = 0; i < Heads.Length - 1; i++)
 		{
-			BreakLinks();
+			for (int j = i+1; j < Heads.Length; j++)
+			{
+				if(Heads[i] != null && Heads[j] != null)
+				{
+					// 任意两头超过距离断开连接
+					if (Vector2.Distance(Heads[i].transform.position,
+						Heads[j].transform.position) >= MaxDistance)
+					{
+						BreakLinks();
+					}
+				}
+			}
 		}
 	}
 
 	// 与另一个Block连接
 	public override void LinkTo(Block another, int direction)
 	{
-		HingeJoint2D joint;
-		// 根据自己的连接方向在头或尾创建铰链
-		if (direction == HeadDir())
-		{
-			joint = Head.gameObject.AddComponent<HingeJoint2D>();
-		}
-		else
-		{
-			joint = Tail.gameObject.AddComponent<HingeJoint2D>();
-		}
+		HingeJoint2D joint = Heads[direction].gameObject.AddComponent<HingeJoint2D>();
+
 		// 如果另一个也是铰链
 		if (another is BlockChain)
 		{
@@ -100,36 +100,24 @@ public class BlockChain : Block
 	// 两向可以链接
 	public override bool IsLinkAvailable(int direction)
 	{
-		int negDir = Negative(this.direction);
-		bool canLink = (direction == this.direction || direction == negDir);
-		return canLink && joints[direction] == null;
+		
+		return Heads[direction] != null && joints[direction] == null;
 	}
 
-	public int HeadDir()
+	public override void Rotate()
 	{
-		return direction;
-	}
-
-	public int TailDir()
-	{
-		return Negative(direction);
+		base.Rotate();
+		Debug.Log("asdd");
+		// 偏移Heads
+		GameObject temp = Heads[3];
+		Heads[3] = Heads[2];
+		Heads[2] = Heads[1];
+		Heads[1] = Heads[0];
+		Heads[0] = temp;
 	}
 
 	public Rigidbody2D GetBody(int dir)
 	{
-		if(dir == HeadDir())
-		{
-			return Head.GetComponent<Rigidbody2D>();
-		}
-		else if(dir == TailDir())
-		{
-			return Tail.GetComponent<Rigidbody2D>();
-		}
-		else
-		{
-			return null;
-		}
+		return Heads[dir].GetComponent<Rigidbody2D>();
 	}
-	
 }
-

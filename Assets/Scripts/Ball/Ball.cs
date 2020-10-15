@@ -46,8 +46,10 @@ public class Ball: Unit
 		{
 			return currTarget;
 		}
-
-		return FindEnemy();
+		else
+		{
+			return FindEnemy();
+		}
 	}
 
 	// 索敌。返回最佳目标，如果没有则返回null
@@ -131,6 +133,7 @@ public class Ball: Unit
 	/// </summary>
 	protected float CalculateAngle(Unit unit)
 	{
+		Debug.Assert(unit != null);
 		// 自己的朝向
 		Vector2 vector = transform.right;
 		// 两者间的向量

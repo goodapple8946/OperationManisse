@@ -3329,7 +3329,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1032820972}
   m_HandleRect: {fileID: 1032820971}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4697,7 +4697,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3428022056894261383}
   m_HandleRect: {fileID: 3428022056894261384}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -5293,8 +5293,11 @@ MonoBehaviour:
   - {fileID: 5768820571617251058, guid: fa61511624b643244a2511a249df0aef, type: 3}
   - {fileID: 2194669006221252467, guid: 8e0cd27683b65624996b482424441a78, type: 3}
   - {fileID: 1324722634242064922, guid: 4785d9015ced0eb44b7f50002e0ff97b, type: 3}
-  - {fileID: 7289866309577761249, guid: 7db87e9bd18075542a01c22ed3b8389f, type: 3}
   - {fileID: 5441695752318082709, guid: ed63c22113114e644bbada99055493c6, type: 3}
+  - {fileID: 7289866309577761249, guid: 87e8298d043e6d74a83fc5c806b2ce2a, type: 3}
+  - {fileID: 7289866309577761249, guid: be6f8304087c3b44ea771fdff75c4d85, type: 3}
+  - {fileID: 7289866309577761249, guid: 560cc4300f6e0904a8c9e8ab79b4d637, type: 3}
+  - {fileID: 7289866309577761249, guid: cb5d0a2d6679a5f439402cc406f7b904, type: 3}
   ballObjects:
   - {fileID: 1218294590528101931, guid: 7083fda1e26696248b98db1cf3661fc9, type: 3}
   - {fileID: 252953478984088122, guid: 9768bb3adfb59fa4b93f3b382b9501e1, type: 3}
@@ -5313,6 +5316,8 @@ MonoBehaviour:
   - {fileID: 838587241375691635, guid: bb7a0f10275899a408bf2492f23b22b5, type: 3}
   - {fileID: 669544498326800702, guid: 692612d3d131b6e43b2cd70c06eaac1b, type: 3}
   - {fileID: 7539418063550561250, guid: cdf167beac7a9fc45b0c85b1a52157d3, type: 3}
+  - {fileID: 838587241375691635, guid: 0ba1ad2d93a92d24e9f647434720074c, type: 3}
+  - {fileID: 838587241375691635, guid: 736bf5949fef6184bbceca7cd80a31fb, type: 3}
   terrainObjects:
   - {fileID: 5429984933498175296, guid: 4bde861c317876f41ab4a8e94223053c, type: 3}
   - {fileID: 8971730089825615972, guid: c5a3e28766254114aa9981a7b9efdabe, type: 3}

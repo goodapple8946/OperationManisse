@@ -126,15 +126,22 @@ public abstract class Unit : ClickableObject
 	/// </summary>
 	public virtual void Rotate()
 	{
-		Rotate(1);
+		transform.Rotate(0, 0, 90f);
 	}
 
-	/// <summary> times必须是正数 </summary>
+	/// <summary> 旋转多少个90度 </summary>
 	public void Rotate(int times)
 	{
-		Debug.Assert(times >= 0);
-		direction = (direction + times) % 4;
-		transform.Rotate(0, 0, times * 90f);
+		while(times < 0 || times >= 4)
+		{
+			if (times < 0)
+				times += 4;
+			else if (times >= 4)
+				times -= 4;
+		}
+
+		while (times-- > 0)
+			Rotate();
 	}
 
 	// 碰撞
