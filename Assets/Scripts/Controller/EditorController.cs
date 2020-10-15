@@ -771,7 +771,6 @@ public class EditorController : MonoBehaviour
     {
 
 		GameObject prefab = resourceController.gameObjDictionary[src.gameObject.name];
-		Debug.Log("jhhh");
 		T ret = Instantiate(prefab).GetComponent<T>();
         ret.name = src.name;
         ret.transform.position = MouseController.MouseWorldPosition();

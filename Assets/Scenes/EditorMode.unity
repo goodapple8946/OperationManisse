@@ -5527,8 +5527,6 @@ MonoBehaviour:
   terrainObjects:
   - {fileID: 5429984933498175296, guid: 4bde861c317876f41ab4a8e94223053c, type: 3}
   - {fileID: 8971730089825615972, guid: c5a3e28766254114aa9981a7b9efdabe, type: 3}
-  - {fileID: 8084480543695740965, guid: c11afabe8e004bd42901697de8a8f40f, type: 3}
-  - {fileID: 560777536606788788, guid: 12d2f48df8a11c3418826d44eb4f5af0, type: 3}
   particleLinkPrefab: {fileID: 8728105212017883391, guid: 5ca256b7950e1c743a648418ac98b45c,
     type: 3}
   ambiences:
