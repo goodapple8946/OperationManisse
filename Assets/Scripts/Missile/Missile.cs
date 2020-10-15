@@ -123,7 +123,7 @@ public class Missile : MonoBehaviour
         }
         body.AddForce(transform.right * forceLaunch);
 
-		//PlayAudio();
+		PlayAudio();
 	}
 
 	protected void PlayAudio()
