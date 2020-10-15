@@ -16,6 +16,9 @@ public class EditorLoadGame : EditorUI
 		{
 			FileViewer.ViewerState = FileViewer.State.LoadGame;
 		}));
+
+		tipTitle = "Load File";
+		tipContent = "  Load a saved file. Current objects and configurations will be overriden.";
 	}
 
 	public static void LoadGameFromFS(String filename)

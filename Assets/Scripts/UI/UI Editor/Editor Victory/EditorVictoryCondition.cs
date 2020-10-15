@@ -16,6 +16,9 @@ public class EditorVictoryCondition : EditorUI
             VictoryCondition victoryCondition = (VictoryCondition)value;
             victoryController.victoryCondition = victoryCondition;
         });
+
+        tipTitle = "Victory Condition";
+        tipContent = "  The condition to win during the game.";
     }
 
     public override void UpdateShowing()

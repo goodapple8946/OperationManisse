@@ -29,18 +29,12 @@ public class ShopObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     // 购买时实例化的物体
     [HideInInspector] public ClickableObject clickableObject;
 
-    // 商品提示条
-    private Tooltip tooltip;
-
     // Toggle
     private GameObject toggleObj;
 
     private void Awake()
     {
         toggleObj = transform.GetChild(1).gameObject;
-
-        // 商品提示条
-        tooltip = GameObject.Find("UI Canvas/UI Tooltip").GetComponent<Tooltip>();
     }
 
     public void Init(GameObject obj)
@@ -94,13 +88,13 @@ public class ShopObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     // 鼠标移入，显示提示条
     public void OnPointerEnter(PointerEventData eventData)
     {
-        tooltip.Show(clickableObject.name, GetObjDescription(clickableObject));
+        Tooltip.tooltip.Show(clickableObject.name, GetObjDescription(clickableObject));
     }
 
     // 鼠标移除，隐藏提示条
     public void OnPointerExit(PointerEventData eventData)
     {
-        tooltip.Hide();
+        Tooltip.tooltip.Hide();
     }
 
     // 显示或隐藏商品的显示按钮

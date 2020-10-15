@@ -15,5 +15,8 @@ public class EditorQuit : EditorUI
         {
             Application.Quit();
         });
+
+        tipTitle = "Quit";
+        tipContent = "  Quit the editor.";
     }
 }

@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-using static Controller;
-
-public class EditorPointer : MonoBehaviour
+public class EditorPointer : EditorUI
 {
 	private Toggle toggle;
 	private Text content;
@@ -34,6 +32,9 @@ public class EditorPointer : MonoBehaviour
 		{
 			Debug.Assert(false);
 		}
+
+		tipTitle = "Map Building Grid";
+		tipContent = "  The player can only place his units in the building grid when playing the game.";
 	}
 
 	public bool IsOn()

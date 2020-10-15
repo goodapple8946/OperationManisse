@@ -15,10 +15,13 @@ public class EditorLight : EditorUI
         {
 			editorController.LightIntensity = value;
         });
+
+        tipTitle = "Map Global Light";
+        tipContent = "  The intensity of light falling on all objects.";
     }
 
 	public override void UpdateShowing()
-	{
-		slider.SetValueWithoutNotify(editorController.LightIntensity);
+    {
+        slider.SetValueWithoutNotify(editorController.LightIntensity);
 	}
 }

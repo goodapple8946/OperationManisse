@@ -14,6 +14,8 @@ public class Tooltip : MonoBehaviour
     private float width = 400f;
     private float height = 0;
 
+    public static Tooltip tooltip;
+
     /// <summary>
     /// 隐藏提示条。
     /// </summary>
@@ -50,6 +52,8 @@ public class Tooltip : MonoBehaviour
         titleObj = transform.Find("Title").gameObject;
         subtitleObj = transform.Find("Subtitle").gameObject;
         contentObj = transform.Find("Content").gameObject;
+
+        tooltip = gameObject.GetComponent<Tooltip>();
     }
 
     private void Start()
@@ -69,7 +73,7 @@ public class Tooltip : MonoBehaviour
 
         if (pos.y - height < 0)
         {
-            pos += new Vector2(0, height - pos.y);
+            pos += new Vector2(0, height);
         }
 
         if (pos.x + width > Screen.width)

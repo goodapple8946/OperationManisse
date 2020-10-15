@@ -19,6 +19,9 @@ public class EditorSaveGame : EditorUI
 		{
 			FileViewer.ViewerState = FileViewer.State.SaveGame;
 		}));
+
+		tipTitle = "Save File";
+		tipContent = "  Save all objects and configurations as a file.";
 	}
 
 	/// <summary>

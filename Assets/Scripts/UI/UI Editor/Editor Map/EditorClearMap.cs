@@ -15,6 +15,9 @@ public class EditorClearMap : EditorUI
 		{
 			editorController.Clear();
 		});
+
+		tipTitle = "Map Clear";
+		tipContent = "  Destroy all objects in the map.";
 	}
 
 }

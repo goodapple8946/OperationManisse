@@ -21,6 +21,9 @@ public class EditorTerrainHeight : EditorUI
             }
             editorController.TerrainHeight = height;
         });
+
+        tipTitle = "Terrain Height";
+        tipContent = "  Change the height of the terrain selected now or last time.";
     }
 
     public override void UpdateShowing()

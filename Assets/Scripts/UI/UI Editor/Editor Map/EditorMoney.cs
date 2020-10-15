@@ -19,6 +19,9 @@ public class EditorMoney : EditorUI
                 editorController.PlayerMoneyOrigin = money;
             }
         });
+
+        tipTitle = "Map Building Grid";
+        tipContent = "  The amount of money given to the player when the game begins.";
     }
 
 	public override void UpdateShowing()
