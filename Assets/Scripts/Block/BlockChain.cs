@@ -107,7 +107,7 @@ public class BlockChain : Block
 	public override void Rotate()
 	{
 		base.Rotate();
-
+		Debug.Log("asdd");
 		// 偏移Heads
 		GameObject temp = Heads[3];
 		Heads[3] = Heads[2];

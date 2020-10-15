@@ -215,8 +215,8 @@ public class Ball: Unit
 	/// </summary>
 	public override void Rotate()
 	{
-		transform.Rotate(0, 0, 180f);
 		direction = (direction + 2) % 4;
+		transform.Rotate(0, 0, 180f);
 	}
 
 	/// <summary>
