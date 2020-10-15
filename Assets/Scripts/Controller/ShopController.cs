@@ -36,16 +36,16 @@ public class ShopController : MonoBehaviour
         ArrayList arr = new ArrayList();
 
         // 为每个添加的物体
-        foreach (GameObject gameObject in gameObjects)
+        foreach (GameObject obj in gameObjects)
         {
             // 创建商品实例，并且父物体设为Content
-            GameObject obj = Instantiate(shopObjectPrefab, content.transform);
-            obj.name = gameObject.name;
+            GameObject clone = Instantiate(shopObjectPrefab, content.transform);
+            clone.name = obj.name;
 
             // 商品初始化
-            obj.GetComponent<ShopObject>().Init(gameObject);
+            clone.GetComponent<ShopObject>().Init(obj);
 
-            arr.Add(obj.GetComponent<ShopObject>());
+            arr.Add(clone.GetComponent<ShopObject>());
         }
         shopObjects = (ShopObject[])arr.ToArray(typeof(ShopObject));
         UpdateShop(GamePhase.Editor);

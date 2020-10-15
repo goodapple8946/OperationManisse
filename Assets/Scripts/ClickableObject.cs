@@ -7,6 +7,9 @@ using static Controller;
 
 public class ClickableObject : MonoBehaviour
 {
+    // 信息
+    public string info;
+
     protected virtual void OnMouseOver()
     {
         // 鼠标不在UI上

@@ -217,7 +217,7 @@ public class Grid
 		{
 			for (int y = 0; y < GetY(); y++)
 			{
-				GameObject squareObj = Instantiate(resourceController.square, parent.transform);
+				GameObject squareObj = Instantiate(resourceController.squarePrefab, parent.transform);
 				squareObj.transform.position = Coord2WorldPos(new Coord(x, y));
 				squareObj.GetComponent<SpriteRenderer>().sortingLayerName = "Area";
 				// 根据所在网格设置alpha

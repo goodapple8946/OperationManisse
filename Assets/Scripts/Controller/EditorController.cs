@@ -769,7 +769,6 @@ public class EditorController : MonoBehaviour
     // 在鼠标位置，从商店复制创建一个ClickableObject
     private T CreateObject<T>(T src) where T : ClickableObject
     {
-
 		//GameObject prefab = resourceController.gameObjDictionary[src.gameObject.name];
 		//T ret = Instantiate(prefab).GetComponent<T>();
 		T ret = Instantiate(src.gameObject).GetComponent<T>();

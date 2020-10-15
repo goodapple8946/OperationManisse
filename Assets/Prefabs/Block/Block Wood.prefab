@@ -68,7 +68,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1115787969
-  m_SortingLayer: 7
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6b8e504d8ae13244bb6482c454e22216, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -235,6 +235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 618c5a4eab080f2499baad844377673a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  info: 
   healthMax: 100
   health: 100
   priority: 0
@@ -258,11 +259,13 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b9ae9d28f260e71499a52c8dcd2f6a64, type: 3}
   damageCollision: 10
   player: 0
-  gridX: -1
-  gridY: -1
-  price: 25
-  body: {fileID: 0}
+  coord:
+    x: -1
+    y: -1
   direction: 0
+  price: 25
+  isEditorCreated: 0
+  body: {fileID: 0}
   blocksLinked:
   - {fileID: 0}
   - {fileID: 0}
