@@ -26,6 +26,10 @@ public class EditorEditorMode : EditorUI
                 content.GetComponent<EditorContent>().RefreshByEditorMode();
             }
         });
+
+        tipTitle = "Editor Mode";
+        tipSubtitle = StringToEditorMode(modeName).ToString();
+        tipContent = "  Objects can be edited when the editor mode of their type selected.";
     }
 
     public override void UpdateShowing()

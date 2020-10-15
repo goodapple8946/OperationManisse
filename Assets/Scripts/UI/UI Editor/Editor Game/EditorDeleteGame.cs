@@ -16,5 +16,8 @@ public class EditorDeleteGame : EditorUI
 		{
 			FileViewer.ViewerState = FileViewer.State.DeleteGame;
 		});
+
+		tipTitle = "Delete File";
+		tipContent = "  Delete a saved file.";
 	}
 }

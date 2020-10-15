@@ -15,6 +15,9 @@ public class EditorShowHP : EditorUI
         {
             editorController.IsShowingHP = value;
         });
+
+        tipTitle = "Unit Show HP";
+        tipContent = "  HP bars of all units are always displayed.";
     }
 
     public override void UpdateShowing()

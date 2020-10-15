@@ -24,6 +24,9 @@ public class EditorAmbience : EditorUI
         {
 			editorController.CurrAmbience = resourceController.ambiences[value];
         });
+
+        tipTitle = "Map Ambience";
+        tipContent = "  The environment of the map.";
     }
 
     public override void UpdateShowing()

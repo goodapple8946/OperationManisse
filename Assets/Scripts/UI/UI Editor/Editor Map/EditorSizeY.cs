@@ -21,6 +21,9 @@ public class EditorSizeY : EditorUI
             }
             editorController.YNum = y;
         });
+
+        tipTitle = "Map Size";
+        tipContent = "  Change the height of the map. Objects will be deleted when they are out of the map.";
     }
 
 	public override void UpdateShowing()

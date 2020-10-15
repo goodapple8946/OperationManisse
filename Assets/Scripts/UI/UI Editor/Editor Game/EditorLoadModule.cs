@@ -19,6 +19,9 @@ public class EditorLoadModule : EditorUI
 		{
 			FileViewer.ViewerState = FileViewer.State.LoadModule;
 		}));
+
+		tipTitle = "Load Module";
+		tipContent = "  Load a saved module and attach it to the cursor.";
 	}
 
 	/// <summary>

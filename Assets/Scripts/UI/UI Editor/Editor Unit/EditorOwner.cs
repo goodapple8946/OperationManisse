@@ -21,13 +21,17 @@ public class EditorOwner : EditorUI
                 editorController.PlayerOwner = StringToPlayer(playerName);
             }
         });
+
+        tipTitle = "Unit Owner";
+        tipSubtitle = StringToPlayer(playerName).ToString();
+        tipContent = "  A unit will belong to the selected player when it is placed.";
     }
 
 	public override void UpdateShowing()
 	{
         toggle.SetIsOnWithoutNotify(editorController.PlayerOwner 
 			== StringToPlayer(playerName));
-	}
+    }
 
     // 按钮上的text转化为所有者
     private Player StringToPlayer(string player)

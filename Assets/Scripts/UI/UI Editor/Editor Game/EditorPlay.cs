@@ -15,5 +15,8 @@ public class EditorPlay : EditorUI
         {
             gameController.GamePhase = GamePhase.Preparation;
         });
+
+        tipTitle = "Play";
+        tipContent = "  Try your work!";
     }
 }

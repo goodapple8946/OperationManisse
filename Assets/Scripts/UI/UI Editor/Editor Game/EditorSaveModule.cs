@@ -23,6 +23,9 @@ public class EditorSaveModule : EditorUI
 		{
 			FileViewer.ViewerState = FileViewer.State.SaveModule;
 		}));
+
+		tipTitle = "Save Module";
+		tipContent = "  Save all units as a module.";
 	}
 
 	/// <summary>

@@ -21,6 +21,9 @@ public class EditorTerrainWidth : EditorUI
             }
             editorController.TerrainWidth = width;
         });
+
+        tipTitle = "Terrain Width";
+        tipContent = "  Change the width of the terrain selected now or last time.";
     }
 
     public override void UpdateShowing()

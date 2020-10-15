@@ -464,6 +464,8 @@ public class EditorController : MonoBehaviour
         // 关闭鼠标选择放置区
         EditorPointer.point1.SetOn(false);
         EditorPointer.point2.SetOn(false);
+        // 清除当前的提示条
+        Tooltip.tooltip.Hide();
     }
 
     /// <summary>

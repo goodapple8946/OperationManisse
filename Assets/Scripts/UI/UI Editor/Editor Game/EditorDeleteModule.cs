@@ -16,5 +16,8 @@ public class EditorDeleteModule : EditorUI
 		{
 			FileViewer.ViewerState = FileViewer.State.DeleteModule;
 		}));
+
+		tipTitle = "Delete File";
+		tipContent = "  Delete a saved module.";
 	}
 }

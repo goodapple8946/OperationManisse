@@ -15,6 +15,9 @@ public class EditorScale : EditorUI
         {
             editorController.BackgroundScale = value;
         });
+
+        tipTitle = "Background Scale";
+        tipContent = "  Change the size of the background selected now or last time.";
     }
 
     public override void UpdateShowing()

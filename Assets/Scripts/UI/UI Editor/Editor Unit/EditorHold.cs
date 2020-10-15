@@ -16,6 +16,9 @@ public class EditorHold : EditorUI
             editorController.IsClickHold = value;
             UpdateShowing();
         });
+
+        tipTitle = "Unit Fast Click";
+        tipContent = "  Objects can be placed or deleted continuousely by holding the mouse buttons.";
     }
 
     public override void UpdateShowing()

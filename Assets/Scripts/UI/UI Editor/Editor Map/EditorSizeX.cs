@@ -21,6 +21,9 @@ public class EditorSizeX : EditorUI
             }
             editorController.XNum = x;
         });
+
+        tipTitle = "Map Size";
+        tipContent = "  Change the width of the map. Objects will be deleted when they are out of the map.";
     }
 
     public override void UpdateShowing()

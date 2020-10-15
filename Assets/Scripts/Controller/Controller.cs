@@ -5,8 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using static Controller;
-
 public class Controller: MonoBehaviour
 {
     public static GameController     gameController;
