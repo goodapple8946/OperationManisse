@@ -50,19 +50,19 @@ public class Missile : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-        if (isAlive)
-        {
-            CreateParticleTail();
-            RotateToVelocity();
-        }
+		if (isAlive)
+		{
+			CreateParticleTail();
+			RotateToVelocity();
+		}
 
 		UpdateDuration();
 
-        if (duration <= 0)
-        {
-            Die();
-        }
-    }
+		if (duration <= 0)
+		{
+			Die();
+		}
+	}
 
     /// <summary>
 	/// 由于layer不会与右方碰撞,所以不会对友方造成伤害

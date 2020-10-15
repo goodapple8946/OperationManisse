@@ -52,12 +52,10 @@ public class Ball: Unit
 		}
 	}
 
-	// 索敌。返回最佳目标，如果没有则返回null
+	// 索敌。返回最近目标，如果没有则返回null
 	protected Unit FindEnemy()
 	{
 		string maskName = null;
-		Collider2D collider = null;
-
 		if (player == Player.Neutral)
 		{
 			return null;
@@ -70,29 +68,26 @@ public class Ball: Unit
 		{
 			maskName = "Player";
 		}
+
 		// 先找Ball
-		collider = Physics2D.OverlapCircle(
+		Collider2D collider = Physics2D.OverlapCircle(
 			transform.position,
 			findEnemyRange,
-			LayerMask.GetMask(maskName + "Ball")
-			);
-		// 如果没找到Ball，再找Block
-		if (collider == null)
+			LayerMask.GetMask(maskName + "Ball"));
+		
+		if (collider != null)
 		{
+			return collider.GetComponent<Unit>();
+		}
+		else
+		{
+			// 如果没找到Ball，再找Block
 			collider = Physics2D.OverlapCircle(
 				transform.position,
 				findEnemyRange,
-				LayerMask.GetMask(maskName + "Block")
-				);
-		}
-		if (collider == null)
-        {
-			return null;
-        }
-		else
-        {
-			return collider.GetComponent<Unit>();
-
+				LayerMask.GetMask(maskName + "Block"));
+			// 没找到在返回null
+			return collider != null ? collider.GetComponent<Unit>() : null;
 		}
 	}
 
