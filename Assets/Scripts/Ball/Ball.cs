@@ -56,6 +56,10 @@ public class Ball: Unit
 	protected Unit FindEnemy()
 	{
 		List<Unit> units = gameController.GetUnitsList();
+		//List<Unit> units = editorController.MainGrid.GetNearUnits(this.transform.position, findEnemyRange);
+		//foreach (Unit unit in units)
+		//	Debug.Log(unit.name);
+
 		Unit target = null;
 		float maxPriority = float.MinValue;
 		foreach (Unit unit in units)

@@ -92,8 +92,11 @@ public class Grid
 	//	}
 	//}
 
-	// 返回grid中,离世界坐标pos最近的网格的(x, y)
-	// 返回Coord.OUTSIDE: 找不到
+	// 
+	/// <summary>
+	/// 返回grid中,离世界坐标pos最近的网格的(x, y)
+	/// 返回Coord.OUTSIDE: 找不到 
+	/// </summary>
 	public Coord GetClosestCoord(Vector2 pos)
 	{
 		int x = Mathf.FloorToInt((pos.x - OriginPos.x) / GRID_SIZE);
@@ -203,6 +206,51 @@ public class Grid
 	{
 		Vector2 gridSize = new Vector2(GRID_SIZE * GetX(), GRID_SIZE * GetY());
 		return OriginPos + gridSize;
+	}
+
+	public List<Unit> GetNearUnits(Vector2 pos, float distance)
+	{
+		Coord coord = GetClosestCoord(pos);
+		if(coord == Coord.OUTSIDE)
+		{
+			return new List<Unit>();
+		}
+
+		List<Unit> units = new List<Unit>();
+		int cx = coord.x;
+		int cy = coord.y;
+		int radius = (int)(distance / Grid.GRID_SIZE);
+		float distance2 = distance * distance;
+		for (int i = -radius; i <= radius; i++)
+		{
+			if (i < 0)
+			{
+				continue;
+			}
+			else if (i >= GetX())
+			{
+				break;
+			}
+			
+			int len = (int)Mathf.Sqrt(distance2 - (i * Grid.GRID_SIZE) * (i * Grid.GRID_SIZE));
+			for(int j = -len; j <= len; j++)
+			{
+				if (j < 0)
+				{
+					continue;
+				}
+				else if (j >= GetY())
+				{
+					break;
+				}
+
+				if (unitArr[i, j] != null)
+				{
+					units.Add(unitArr[i, j]);
+				}
+			}
+		}
+		return units;
 	}
 
 	//--------------------- 内部工具函数 ----------------------//
