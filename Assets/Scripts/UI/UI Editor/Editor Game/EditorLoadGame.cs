@@ -149,8 +149,7 @@ public class EditorLoadGame : EditorUI
 		Unit unit = objClone.GetComponent<Unit>();
 
 		// 计算存档与克隆出的方向之差,设置旋转角度
-		int dirDifference = (xmlUnit.direction - unit.direction) + 4;
-		unit.Rotate(dirDifference);
+		unit.Rotate(xmlUnit.direction - unit.direction);
 		// 计算网格中的位置
 		unit.transform.position = editorController.MainGrid.Coord2WorldPos(new Coord(xmlUnit.x, xmlUnit.y));
 

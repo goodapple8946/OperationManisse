@@ -505,6 +505,7 @@ public class EditorController : MonoBehaviour
             {
                 // 安放鼠标上的物体到网格中
                 Place(unit);
+				Debug.Log(unit.direction);
             }
         }
         else
@@ -703,7 +704,6 @@ public class EditorController : MonoBehaviour
                 {
                     PlayerMoney -= unit.price;
                 }
-				//Unit unitBought = CreateObject(unit);
 				Unit unitBought = CreateObject(unit);
 				Pick(unitBought);
             }
@@ -724,7 +724,7 @@ public class EditorController : MonoBehaviour
                 Destroy(mouseUnit.gameObject);
 
                 Unit unitBought = CreateObject(unit);
-                Pick(unitBought);
+				Pick(unitBought);
             }
             else
             {
@@ -768,13 +768,13 @@ public class EditorController : MonoBehaviour
         }
     }
 
-    // 在鼠标位置，复制创建一个ClickableObject
+    // 在鼠标位置，从商店复制创建一个ClickableObject
     private T CreateObject<T>(T src) where T : ClickableObject
     {
-
-		GameObject prefab = resourceController.gameObjDictionary[src.gameObject.name];
-		T ret = Instantiate(prefab).GetComponent<T>();
-        ret.name = src.name;
+		//GameObject prefab = resourceController.gameObjDictionary[src.gameObject.name];
+		//T ret = Instantiate(prefab).GetComponent<T>();
+		T ret = Instantiate(src.gameObject).GetComponent<T>();
+		ret.name = src.name;
         ret.transform.position = MouseController.MouseWorldPosition();
         return ret;
     }

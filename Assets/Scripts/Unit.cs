@@ -122,19 +122,40 @@ public abstract class Unit : ClickableObject
 	}
 
 	/// <summary>
-	/// 顺时针转动一下
+	/// 转动一下
 	/// </summary>
 	public virtual void Rotate()
 	{
-		Rotate(1);
+		transform.Rotate(0, 0, 90f);
+		direction = (direction + 1) % 4;
 	}
 
-	/// <summary> times必须是正数 </summary>
-	public void Rotate(int times)
+	/// <summary> dirBias </summary>
+	public void Rotate(int dirBias)
 	{
-		Debug.Assert(times >= 0);
-		direction = (direction + times) % 4;
-		transform.Rotate(0, 0, times * 90f);
+		while(dirBias < 0 || dirBias >= 4)
+		{
+			if (dirBias < 0)
+				dirBias += 4;
+			else if (dirBias >= 4)
+				dirBias -= 4;
+		}
+
+		if (this is Ball)
+		{
+			while (dirBias-- > 0)
+			{
+				dirBias -= 2;
+				Rotate();
+			}
+		}
+		else if (this is Block)
+		{
+			while (dirBias > 0)
+			{
+				Rotate();
+			}
+		}
 	}
 
 	// 碰撞
