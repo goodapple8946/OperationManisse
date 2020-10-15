@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using static Controller;
+using System;
+using System.Linq;
 
 public class GameController : MonoBehaviour
 {
@@ -222,10 +224,19 @@ public class GameController : MonoBehaviour
         return unitObjs.GetComponentsInChildren<Unit>();
     }
 
-    /// <summary>
-    /// 获取场景中的Unit，通过Player
-    /// </summary>
-    public Unit[] GetUnits(Player player)
+	/// <summary>
+	/// 获取场景中的Unit 
+	/// </summary>
+	public List<Unit> GetUnitsList()
+	{
+		Unit[] units = GetUnits();
+		return units.OfType<Unit>().ToList();
+	}
+
+	/// <summary>
+	/// 获取场景中的Unit，通过Player
+	/// </summary>
+	public Unit[] GetUnits(Player player)
     {
         ArrayList arr = new ArrayList();
         Unit[] units = unitObjs.GetComponentsInChildren<Unit>();

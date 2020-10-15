@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using static Controller;
 
@@ -29,6 +30,8 @@ public class Ball: Unit
 	// 目标优先级容差
 	private float priorityTolerant = 3f;
 
+	private Unit currTarget = null;
+
 	protected override void Update()
 	{
 		base.Update();
@@ -37,32 +40,37 @@ public class Ball: Unit
 	}
 
 	// 索敌。返回最佳目标，如果没有则返回null
+	protected Unit FindEnemyOptimize()
+	{
+		if (currTarget != null)
+		{
+			return currTarget;
+		}
+
+		return FindEnemy();
+	}
+
+	// 索敌。返回最佳目标，如果没有则返回null
 	protected Unit FindEnemy()
 	{
-		ArrayList gameObjects = new ArrayList();
-		gameObjects.AddRange(GameObject.FindGameObjectsWithTag("Ball"));
-		gameObjects.AddRange(GameObject.FindGameObjectsWithTag("Block"));
-
-		Unit currentTarget = null;
-		float currentPriority = float.MinValue;
-		foreach (GameObject gameObject in gameObjects)
+		List<Unit> units = gameController.GetUnitsList();
+		Unit target = null;
+		float maxPriority = float.MinValue;
+		foreach (Unit unit in units)
 		{
-			Unit unit = gameObject.GetComponent<Unit>();
-
 			// 目标合法
 			if (IsLegalTarget(unit))
 			{
 				float priority = CalculatePriority(unit);
-
 				// 优先级更高的目标
-				if (priority > currentPriority + priorityTolerant)
+				if (priority > maxPriority + priorityTolerant)
 				{
-					currentTarget = unit;
-					currentPriority = priority;
+					target = unit;
+					maxPriority = priority;
 				}
 			}
 		}
-		return currentTarget;
+		return target;
 	}
 
 	/// <summary>

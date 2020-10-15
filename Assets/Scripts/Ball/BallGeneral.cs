@@ -14,7 +14,7 @@ public class BallGeneral : Ball
 			WeaponCoolDown();
 
 			// 寻找敌人
-			Unit target = FindEnemy();
+			Unit target = FindEnemyOptimize();
 
 			// 已经有目标或索敌找到目标
 			if (target != null)
