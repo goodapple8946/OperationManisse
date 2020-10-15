@@ -56,9 +56,7 @@ public class Ball: Unit
 	protected Unit FindEnemy()
 	{
 		string maskName = null;
-		Collider2D collider = null;
-
-		if (player == Player.Neutral)
+        if (player == Player.Neutral)
 		{
 			return null;
 		}
@@ -70,14 +68,14 @@ public class Ball: Unit
 		{
 			maskName = "Player";
 		}
-		// 先找Ball
-		collider = Physics2D.OverlapCircle(
-			transform.position,
-			findEnemyRange,
-			LayerMask.GetMask(maskName + "Ball")
-			);
-		// 如果没找到Ball，再找Block
-		if (collider == null)
+        // 先找Ball
+        Collider2D collider = Physics2D.OverlapCircle(
+            transform.position,
+            findEnemyRange,
+            LayerMask.GetMask(maskName + "Ball")
+            );
+        // 如果没找到Ball，再找Block
+        if (collider == null)
 		{
 			collider = Physics2D.OverlapCircle(
 				transform.position,
