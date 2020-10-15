@@ -505,7 +505,6 @@ public class EditorController : MonoBehaviour
             {
                 // 安放鼠标上的物体到网格中
                 Place(unit);
-				Debug.Log(unit.direction);
             }
         }
         else

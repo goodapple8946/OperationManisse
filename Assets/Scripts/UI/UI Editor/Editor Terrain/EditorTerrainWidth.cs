@@ -13,8 +13,7 @@ public class EditorTerrainWidth : EditorUI
         inputField = GetComponent<InputField>();
         inputField.onValueChanged.AddListener(value =>
         {
-            int width;
-            bool legeal = int.TryParse(value, out width);
+            bool legeal = int.TryParse(value, out int width);
             if (!legeal || width < 1)
             {
                 width = 1;
