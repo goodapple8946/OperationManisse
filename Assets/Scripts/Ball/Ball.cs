@@ -55,29 +55,69 @@ public class Ball: Unit
 	// 索敌。返回最佳目标，如果没有则返回null
 	protected Unit FindEnemy()
 	{
-		List<Unit> units = gameController.GetUnitsList();
-		//List<Unit> units = editorController.MainGrid.GetNearUnits(this.transform.position, findEnemyRange);
-		//foreach (Unit unit in units)
-		//	Debug.Log(unit.name);
+		string maskName = null;
+		Collider2D collider = null;
 
-		Unit target = null;
-		float maxPriority = float.MinValue;
-		foreach (Unit unit in units)
+		if (player == Player.Neutral)
 		{
-			// 目标合法
-			if (IsLegalTarget(unit))
-			{
-				float priority = CalculatePriority(unit);
-				// 优先级更高的目标
-				if (priority > maxPriority + priorityTolerant)
-				{
-					target = unit;
-					maxPriority = priority;
-				}
-			}
+			return null;
 		}
-		return target;
+		else if (player == Player.Player)
+		{
+			maskName = "Enemy";
+		}
+		else if (player == Player.Enemy)
+		{
+			maskName = "Player";
+		}
+		// 先找Ball
+		collider = Physics2D.OverlapCircle(
+			transform.position,
+			findEnemyRange,
+			LayerMask.GetMask(maskName + "Ball")
+			);
+		// 如果没找到Ball，再找Block
+		if (collider == null)
+		{
+			collider = Physics2D.OverlapCircle(
+				transform.position,
+				findEnemyRange,
+				LayerMask.GetMask(maskName + "Block")
+				);
+		}
+		if (collider == null)
+        {
+			return null;
+        }
+		else
+        {
+			return collider.GetComponent<Unit>();
+
+		}
 	}
+
+	// 索敌。返回最佳目标，如果没有则返回null
+	//protected Unit FindEnemy()
+	//{
+	//	List<Unit> units = gameController.GetUnitsList();
+	//	Unit target = null;
+	//	float maxPriority = float.MinValue;
+	//	foreach (Unit unit in units)
+	//	{
+	//		// 目标合法
+	//		if (IsLegalTarget(unit))
+	//		{
+	//			float priority = CalculatePriority(unit);
+	//			// 优先级更高的目标
+	//			if (priority > maxPriority + priorityTolerant)
+	//			{
+	//				target = unit;
+	//				maxPriority = priority;
+	//			}
+	//		}
+	//	}
+	//	return target;
+	//}
 
 	/// <summary>
 	/// true: 目标存活在范围内且是敌对的
@@ -219,8 +259,8 @@ public class Ball: Unit
 	/// </summary>
 	public override void Rotate()
 	{
-		direction = (direction + 2) % 4;
 		transform.Rotate(0, 0, 180f);
+		direction = (direction + 2) % 4;
 	}
 
 	/// <summary>
