@@ -127,21 +127,33 @@ public abstract class Unit : ClickableObject
 	public virtual void Rotate()
 	{
 		transform.Rotate(0, 0, 90f);
+		direction = (direction + 1) % 4;
 	}
 
 	/// <summary> 旋转多少个90度 </summary>
-	public void Rotate(int times)
+	public void Rotate(int dirBias)
 	{
-		while(times < 0 || times >= 4)
+		while(dirBias < 0 || dirBias >= 4)
 		{
-			if (times < 0)
-				times += 4;
-			else if (times >= 4)
-				times -= 4;
+			if (dirBias < 0)
+				dirBias += 4;
+			else if (dirBias >= 4)
+				dirBias -= 4;
 		}
 
-		while (times-- > 0)
-			Rotate();
+		if(this is Block)
+		{
+			while (dirBias-- > 0) Rotate();
+		}
+		else if(this is Ball)
+		{
+			while (dirBias > 0)
+			{
+				Rotate();
+				dirBias -= 2;
+			}
+		}
+		
 	}
 
 	// 碰撞
