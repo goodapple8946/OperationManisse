@@ -19,7 +19,7 @@ public class BallShuriken : Ball
 			}
 
 			// 寻找敌人
-			Unit target = FindEnemyOptimize();
+			Unit target = FindEnemyOptimized();
 
 			// 已经有目标或索敌找到目标
 			if (target != null)

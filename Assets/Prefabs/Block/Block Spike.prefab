@@ -148,9 +148,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e114c87e6c16b3e44ade3c1991d8bb72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  info: 
   healthMax: 800
   health: 800
-  priority: 0
   radius: 0.3
   sprites: []
   damageCollision: 200

@@ -38,7 +38,7 @@ public class BallGatling : Ball
 			}
 
 			// 寻找敌人转向目标
-			Unit target = FindEnemyOptimize();
+			Unit target = FindEnemyOptimized();
 			if(target != null)
 			{
 				RotateToward(target);

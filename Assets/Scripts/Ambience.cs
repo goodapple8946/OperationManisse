@@ -39,7 +39,7 @@ public class Ambience: MonoBehaviour
 		// 实例化粒子效果
 		if(effectPrefab != null)
 		{
-			effect = GameObject.Instantiate(effectPrefab);
+			effect = Instantiate(effectPrefab);
 			effect.name = effectPrefab.name;
 
 			// 对每种粒子特殊讨论
@@ -82,12 +82,7 @@ public class Ambience: MonoBehaviour
 		// 清除创建的effect
 		if(effect != null)
 		{
-			GameObject.Destroy(effect);
+			Destroy(effect);
 		}
-	}
-
-	private Color RGB(float R, float G, float B)
-	{
-		return new Color(R / 256, G / 256, B / 256);
 	}
 }

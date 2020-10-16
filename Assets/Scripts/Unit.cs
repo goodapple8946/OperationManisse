@@ -249,4 +249,17 @@ public abstract class Unit : ClickableObject
     {
         return health > 0;
     }
+
+	public Player GetOpponent()
+    {
+        switch (player)
+        {
+			case Player.Player:
+				return Player.Enemy;
+			case Player.Enemy:
+				return Player.Player;
+			default:
+				return Player.Unknown;
+		}
+    }
 }

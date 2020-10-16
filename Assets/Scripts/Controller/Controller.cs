@@ -15,7 +15,7 @@ public class Controller: MonoBehaviour
     public static ShopController     shopController;
 	public static CameraController   cameraController;
 
-    public enum Player           { Neutral, Player, Enemy }
+    public enum Player           { Neutral, Player, Enemy, Unknown }
     public enum Layer            { Default, TransparentFX, IgnoreRaycast, Water = 4, UI, PlayerBall = 8, PlayerBlock, PlayerMissile, EnemyBall, EnemyBlock, EnemyMissile, Background, Terrain }
     public enum GamePhase        { Editor, Preparation, Playing, Victory }
     public enum VictoryCondition { None, KillAll, KillTarget, EnterLocation, HoldOn }

@@ -40,15 +40,24 @@ public class Ball: Unit
 	}
 
 	// 索敌。返回最佳目标，如果没有则返回null
-	protected Unit FindEnemyOptimize()
+	protected Unit FindEnemyOptimized()
 	{
 		if (currTarget != null && !InRange(currTarget))
 		{
 			currTarget = null;
 		}
 
-		if(currTarget != null)
+		if (currTarget != null)
 		{
+			if (currTarget is Block)
+            {
+				// 当前目标是Block，如果发现Ball应该转火Ball
+				Unit unit = FindInRange(GetOpponent(), "Ball");
+				if (unit != null)
+                {
+					return unit;
+                }
+            }
 			return currTarget;
 		}
 		else
@@ -60,40 +69,35 @@ public class Ball: Unit
 	// 索敌。返回最近目标，如果没有则返回null
 	protected Unit FindEnemy()
 	{
-		string maskName = null;
-        if (player == Player.Neutral)
-		{
-			return null;
-		}
-		else if (player == Player.Player)
-		{
-			maskName = "Enemy";
-		}
-		else if (player == Player.Enemy)
-		{
-			maskName = "Player";
-		}
+		Player opponent = GetOpponent();
 
-		// 先找Ball
-		Collider2D collider = Physics2D.OverlapCircle(
-			transform.position,
-			findEnemyRange,
-			LayerMask.GetMask(maskName + "Ball"));
-		
-		if (collider != null)
-		{
-			return collider.GetComponent<Unit>();
-		}
+		Unit unit = FindInRange(opponent, "Ball");
+		if (unit != null)
+        {
+			return unit;
+        }
 		else
 		{
 			// 如果没找到Ball，再找Block
-			collider = Physics2D.OverlapCircle(
-				transform.position,
-				findEnemyRange,
-				LayerMask.GetMask(maskName + "Block"));
-			// 没找到再返回null
-			return collider != null ? collider.GetComponent<Unit>() : null;
+			return FindInRange(opponent, "Block");
 		}
+	}
+
+	protected Unit FindInRange(Player player, string type)
+    {
+		Collider2D collider = Physics2D.OverlapCircle(
+			transform.position,
+			findEnemyRange,
+			LayerMask.GetMask(player.ToString() + type));
+
+		if (collider != null)
+        {
+			return collider.GetComponent<Unit>();
+		}
+        else
+        {
+			return null;
+        }
 	}
 
 	// 索敌。返回最佳目标，如果没有则返回null
@@ -121,8 +125,7 @@ public class Ball: Unit
 
 	protected bool InRange(Unit unit)
 	{
-		return (unit.transform.position - transform.position).magnitude 
-			<= findEnemyRange;
+		return (unit.transform.position - transform.position).magnitude <= findEnemyRange;
 	}
 
 	/// <summary>
@@ -131,9 +134,7 @@ public class Ball: Unit
 	protected bool IsLegalTarget(Unit unit)
 	{
 		// 敌对正营
-		bool unitIsOpponent =
-			player == Player.Player && unit.player == Player.Enemy ||
-			player == Player.Enemy && unit.player == Player.Player;
+		bool unitIsOpponent = player == GetOpponent();
 		return InRange(unit) && unitIsOpponent;
 	}
 
