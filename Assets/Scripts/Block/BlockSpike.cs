@@ -5,7 +5,12 @@ using static Controller;
 
 public class BlockSpike : Block
 {
-    protected new float velocityCollision = 0f;
+    protected override void Awake()
+    {
+        base.Awake();
+
+        velocityCollision = 0f;
+    }
 
     public override bool IsLinkAvailable(int direction)
     {

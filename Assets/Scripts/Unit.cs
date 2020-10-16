@@ -228,7 +228,7 @@ public abstract class Unit : ClickableObject
 	
 	protected virtual void OnDestroy()
 	{
-		
+		gameController.unitsSet.Remove(this);
 	}
 
 	// 是否在地面上

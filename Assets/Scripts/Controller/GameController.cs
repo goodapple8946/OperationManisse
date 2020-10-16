@@ -52,8 +52,9 @@ public class GameController : MonoBehaviour
 
 						Clone(ref unitObjsEditorAndPlayer, unitObjsEditor, false); // 删除Player创建的
 						Clone(ref unitObjs, unitObjsEditor, true);
+						UpdateUnits();
 
-						editorController.RecreateMainGrid(GetUnits());
+						editorController.RecreateMainGrid(GetUnitsArr());
 					}
 					else if (newPhase == GamePhase.Preparation)
 					{
@@ -62,7 +63,7 @@ public class GameController : MonoBehaviour
 						Clone(ref unitObjsEditorAndPlayer, unitObjsEditor, false); // 删除Player创建的
 						Clone(ref unitObjs, unitObjsEditor, true);
 
-						editorController.RecreateMainGrid(GetUnits());
+						editorController.RecreateMainGrid(GetUnitsArr());
 						editorController.MainGrid.SetShow(false);
 					}
 					else if (newPhase == GamePhase.Playing)
@@ -97,7 +98,7 @@ public class GameController : MonoBehaviour
 						Clone(ref unitObjsEditorAndPlayer, unitObjsEditor, false); // 删除Player创建的
 						Clone(ref unitObjs, unitObjsEditor, true);
 
-						editorController.RecreateMainGrid(GetUnits());
+						editorController.RecreateMainGrid(unitsSet);
 					}
 					else if (newPhase == GamePhase.Preparation)
 					{
@@ -112,7 +113,7 @@ public class GameController : MonoBehaviour
 
 						Clone(ref unitObjs, unitObjsEditorAndPlayer, true);
 
-						editorController.RecreateMainGrid(GetUnits());
+						editorController.RecreateMainGrid(unitsSet);
 						editorController.MainGrid.SetShow(false);
 					}
 					else if (newPhase == GamePhase.Victory)
@@ -155,23 +156,27 @@ public class GameController : MonoBehaviour
     // 商店部分的UI
     private GameObject uiShop;
 
-    /**
+	// 所有可见的单位
+	public HashSet<Unit> unitsSet;
+
+	/**
      * 生命周期函数
      */
-    public void Awake()
+	public void Awake()
     {
-        uiEditor = GameObject.Find("UI Canvas/UI Editor");
-        uiGame = GameObject.Find("UI Canvas/UI Game");
-        uiShop = GameObject.Find("UI Canvas/UI Shop");
+		unitsSet = new HashSet<Unit>();
+
+		uiEditor = GameObject.Find("UI Canvas/UI Editor");
+        uiGame   = GameObject.Find("UI Canvas/UI Game");
+        uiShop   = GameObject.Find("UI Canvas/UI Shop");
 		
-		// 创建Obj
-		unitObjs = new GameObject("Unit Objects");
-		unitObjsEditor = new GameObject("Unit Objects Editor");
+		unitObjs                = new GameObject("Unit Objects");
+		unitObjsEditor          = new GameObject("Unit Objects Editor");
 		unitObjsEditorAndPlayer = new GameObject("Unit Objects EditorAndPlayer");
-		missileObjects = new GameObject("Missile Objects");
-		hpBarObjects = new GameObject("HP Bar Objects");
-		backgroundObjects = new GameObject("Background Objects");
-		terrainObjects = new GameObject("Terrain Objects");
+		missileObjects          = new GameObject("Missile Objects");
+		hpBarObjects            = new GameObject("HP Bar Objects");
+		backgroundObjects       = new GameObject("Background Objects");
+		terrainObjects          = new GameObject("Terrain Objects");
 	}
 
 	public void Start()
@@ -193,7 +198,7 @@ public class GameController : MonoBehaviour
     // 返回主菜单
     void EnterMenu()
     {
-        SceneManager.LoadScene("Level Panel");
+        SceneManager.LoadScene("Scene Menu");
     }
 
 	/// <summary>
@@ -218,80 +223,28 @@ public class GameController : MonoBehaviour
         }
         missileObjects = new GameObject("Missile Objects");
     }
-	
 
-	//---------------- 工具函数 ---------------//
-
-	/// <summary>
-	/// 获取场景中的Unit 
-	/// </summary>
-	public Unit[] GetUnits()
+	// 更新可见单位集合
+	void UpdateUnits()
     {
-        return unitObjs.GetComponentsInChildren<Unit>();
-    }
-
-	/// <summary>
-	/// 获取场景中的Unit 
-	/// </summary>
-	public List<Unit> GetUnitsList()
-	{
-		Unit[] units = GetUnits();
-		return units.OfType<Unit>().ToList();
+		unitsSet.Clear();
+		unitsSet.Union(unitObjs.GetComponentsInChildren<Unit>());
 	}
 
-	/// <summary>
-	/// 获取场景中的Unit，通过Player
-	/// </summary>
-	public Unit[] GetUnits(Player player)
+	public Unit[] GetUnitsArr()
     {
-        ArrayList arr = new ArrayList();
-        Unit[] units = unitObjs.GetComponentsInChildren<Unit>();
-        foreach(Unit unit in units)
-        {
-            if (unit.player == player)
-            {
-                arr.Add(unit);
-            }
-        }
-        return (Unit[])arr.ToArray(typeof(Unit));
+		Unit[] units = new Unit[unitsSet.Count];
+		unitsSet.CopyTo(units);
+		return units;
+	}
+
+	public List<Unit> GetUnitsList()
+    {
+		return unitsSet.ToList();
     }
 
-    /// <summary>
-    /// 获取场景中的Unit，通过Tag
-    /// </summary>
-    public Unit[] GetUnits(string tag)
-    {
-        ArrayList arr = new ArrayList();
-        Unit[] units = unitObjs.GetComponentsInChildren<Unit>();
-        foreach (Unit unit in units)
-        {
-            if (unit.tag == tag)
-            {
-                arr.Add(unit);
-            }
-        }
-        return (Unit[])arr.ToArray(typeof(Unit));
-    }
-
-    /// <summary>
-    /// 获取场景中的Unit，通过Player和Tag
-    /// </summary>
-    public Unit[] GetUnits(Player player, string tag)
-    {
-        ArrayList arr = new ArrayList();
-        Unit[] units = unitObjs.GetComponentsInChildren<Unit>();
-        foreach (Unit unit in units)
-        {
-            if (unit.player == player && unit.tag == tag)
-            {
-                arr.Add(unit);
-            }
-        }
-        return (Unit[])arr.ToArray(typeof(Unit));
-    }
-
-    // Debug
-    void DebugGame()
+	// Debug
+	void DebugGame()
     {
         // 左Alt + 鼠标左键取鼠标位置
         if (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftAlt))

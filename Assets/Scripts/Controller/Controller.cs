@@ -18,7 +18,7 @@ public class Controller: MonoBehaviour
     public enum Player           { Neutral, Player, Enemy, Unknown }
     public enum Layer            { Default, TransparentFX, IgnoreRaycast, Water = 4, UI, PlayerBall = 8, PlayerBlock, PlayerMissile, EnemyBall, EnemyBlock, EnemyMissile, Background, Terrain }
     public enum GamePhase        { Editor, Preparation, Playing, Victory }
-    public enum VictoryCondition { None, KillAll, KillTarget, EnterLocation, HoldOn }
+    public enum VictoryCondition { Custom, Annihilation }
     public enum EditorMode       { Unit, Background, Module, Terrain }
 
 	// 根据方向获取坐标偏移

@@ -65,7 +65,7 @@ public class EditorController : MonoBehaviour
             // 更新UI
             editorContent.UpdateUIShowing<EditorSizeX>();
             // 更新网格信息
-            RecreateMainGrid(gameController.GetUnits());
+            RecreateMainGrid(gameController.unitsSet);
             // 如果放置区超出了MainGrid就清空
             if (!MainGrid.InGrid(BuildingCoord1) || !MainGrid.InGrid(BuildingCoord2))
             {
@@ -91,7 +91,7 @@ public class EditorController : MonoBehaviour
             // 更新UI
             editorContent.UpdateUIShowing<EditorSizeY>();
             // 更新网格信息
-            RecreateMainGrid(gameController.GetUnits());
+            RecreateMainGrid(gameController.unitsSet);
             // 如果放置区超出了MainGrid就清空
             if (!MainGrid.InGrid(BuildingCoord1) || !MainGrid.InGrid(BuildingCoord2))
             {
@@ -368,6 +368,19 @@ public class EditorController : MonoBehaviour
     void CreateMainGrid()
     {
         MainGrid = new Grid(XNum, YNum, MAINGRID_POS);
+        cameraController.SetView(
+            editorController.MainGrid.OriginPos,
+            editorController.MainGrid.GetRightTopPos());
+    }
+
+    /// <summary>
+    ///	根据现有面板配置创建Grid
+    /// 并设置摄像机视角 
+    /// </summary>
+    public void RecreateMainGrid(HashSet<Unit> units)
+    {
+        MainGrid.ClearSquares();
+        MainGrid = new Grid(XNum, YNum, MAINGRID_POS, units);
         cameraController.SetView(
             editorController.MainGrid.OriginPos,
             editorController.MainGrid.GetRightTopPos());
@@ -1087,7 +1100,7 @@ public class EditorController : MonoBehaviour
     // 启用或禁用Unit的Collider
     void SetUnitsCollider(bool active)
     {
-        foreach (Unit unit in gameController.GetUnits())
+        foreach (Unit unit in gameController.unitsSet)
         {
             unit.GetComponent<Collider2D>().enabled = active;
         }
@@ -1095,7 +1108,7 @@ public class EditorController : MonoBehaviour
     // 启用或禁用Background的Collider
     void SetBackgroundsCollider(bool active)
     {
-        foreach (Background background in editorController.backgrounds)
+        foreach (Background background in Backgrounds)
         {
             background.GetComponent<Collider2D>().enabled = active;
         }
@@ -1103,7 +1116,7 @@ public class EditorController : MonoBehaviour
     // 启用或禁用Terrain的Collider
     void SetTerrainsCollider(bool active)
     {
-        foreach (TerrainA terrain in editorController.terrains)
+        foreach (TerrainA terrain in Terrains)
         {
             terrain.GetComponent<Collider2D>().enabled = active;
         }

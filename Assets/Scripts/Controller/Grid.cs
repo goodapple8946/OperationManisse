@@ -27,6 +27,28 @@ public class Grid
 	/// 创建新的网格
 	/// 并向其中填充坐标在其内的units
 	/// </summary>
+	public Grid(int xCount, int yCount, Vector2 originPos, HashSet<Unit> units)
+		: this(xCount, yCount, originPos)
+	{
+		foreach (Unit unit in units)
+		{
+			// 填充本应在网格中的
+			if (InGrid(unit))
+			{
+				unitArr[unit.coord.x, unit.coord.y] = unit;
+			}
+			else
+			{
+				//Debug.Assert(InGrid(unit));
+				Destroy(unit.gameObject);
+			}
+		}
+	}
+
+	/// <summary>
+	/// 创建新的网格
+	/// 并向其中填充坐标在其内的units
+	/// </summary>
 	public Grid(int xCount, int yCount, Vector2 originPos, Unit[] units)
 		: this(xCount, yCount, originPos)
 	{ 
