@@ -7,7 +7,6 @@ public class MainMenu : MonoBehaviour
 {
     public void Story()
     {
-
     }
 
     public void Custom()
@@ -17,7 +16,8 @@ public class MainMenu : MonoBehaviour
 
     public void Editor()
     {
-        SceneManager.LoadScene("Scene Editor");
+        Controller.isGame = false;
+        SceneManager.LoadScene("Scene Game");
     }
 
     public void Option()

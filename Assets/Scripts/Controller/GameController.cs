@@ -175,8 +175,14 @@ public class GameController : MonoBehaviour
 	}
 
 	public void Start()
-    {
-        uiGame.SetActive(false);
+	{
+		uiGame.SetActive(false);
+		editorController.StartInit();
+
+		if (Controller.isGame)
+        {
+			GamePhase = GamePhase.Preparation;
+        }
     }
 
     void Update()

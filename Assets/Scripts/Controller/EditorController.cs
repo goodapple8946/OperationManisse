@@ -332,16 +332,6 @@ public class EditorController : MonoBehaviour
         editorContent = GameObject.Find("UI Editor").GetComponentInChildren<EditorContent>();
     }
 
-    void Start()
-    {
-        CreateMainGrid();
-
-        BuildingGrid = CreateBuildingGrid(BuildingCoord1, BuildingCoord2);
-
-        currAmbience = resourceController.ambiences[0];
-		currAmbience.Apply();
-    }
-
     void Update()
     {
         Order();
@@ -360,6 +350,16 @@ public class EditorController : MonoBehaviour
         }
 
         MyDebug();
+    }
+
+    public void StartInit()
+    {
+        CreateMainGrid();
+
+        BuildingGrid = CreateBuildingGrid(BuildingCoord1, BuildingCoord2);
+
+        currAmbience = resourceController.ambiences[0];
+        currAmbience.Apply();
     }
 
     /// <summary>

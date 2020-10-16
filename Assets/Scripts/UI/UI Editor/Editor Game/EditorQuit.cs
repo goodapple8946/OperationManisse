@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static Controller;
 
@@ -13,7 +14,7 @@ public class EditorQuit : EditorUI
         button = GetComponent<Button>();
         button.onClick.AddListener(() =>
         {
-            Application.Quit();
+            SceneManager.LoadScene("Scene Menu");
         });
 
         tipTitle = "Quit";

@@ -26,6 +26,9 @@ public class Controller: MonoBehaviour
 	public static readonly int[,] DIR4 = { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };
 	public static readonly int[,] DIR8 = { { 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 }, { -1, -1 }, { 0, -1 }, { 1, -1 } };
 
+	// 是否是正式游戏
+	public static bool isGame = false;
+
 	void Awake()
     {
         gameController     = GameObject.Find("Controller/Game Controller").    GetComponent<GameController>();
