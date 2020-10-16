@@ -12,15 +12,15 @@ public class UIEnterEditor : MonoBehaviour
 	{
 		if (Controller.isGame)
 		{
+			gameObject.SetActive(false);
+		}
+        else
+		{
 			button = GetComponent<Button>();
 			button.onClick.AddListener(() =>
 			{
 				gameController.GamePhase = GamePhase.Editor;
 			});
 		}
-        else
-        {
-			gameObject.SetActive(false);
-        }
 	}
 }

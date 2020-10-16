@@ -432,6 +432,8 @@ public class EditorController : MonoBehaviour
         IsShowingHP = true;
         // 更新物体的Collider
         UpdateObjectsCollider(EditorMode);
+        // 切换放置模式为Unit
+        EditorMode = EditorMode.Unit;
         // 清除鼠标上的物体
         DestroyMouseObject();
         MouseObjectLast = null;
@@ -453,9 +455,7 @@ public class EditorController : MonoBehaviour
         IsClickHold = false;
         // 切换放置模式为Unit
         EditorMode = EditorMode.Unit;
-        // 所有物体启用Collider
-        SetUnitsCollider(true);
-        SetBackgroundsCollider(true);
+        // 地形启用Collider
         SetTerrainsCollider(true);
         // 清除鼠标上的物体
         DestroyMouseObject();
