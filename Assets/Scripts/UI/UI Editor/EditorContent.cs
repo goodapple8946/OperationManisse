@@ -40,14 +40,34 @@ public class EditorContent : MonoBehaviour
     // 更新Content高度
     public void UpdateHeight()
     {
-        float height = 0;
-        for (int i = 0; i < transform.childCount; i++)
+        float height = 800f;
+
+        switch (editorController.EditorMode)
         {
-            if (transform.GetChild(i).gameObject.activeSelf)
-            {
-                height += transform.GetChild(i).GetComponent<RectTransform>().sizeDelta.y;
-            }
+            case EditorMode.Unit:
+                height += 200f;
+                break;
+            case EditorMode.Background:
+                height += 100f;
+                break;
+            case EditorMode.Terrain:
+                height += 150f;
+                break;
         }
         GetComponent<RectTransform>().sizeDelta = new Vector2(0, height);
     }
+
+    // 更新Content高度
+    //public void UpdateHeight()
+    //{
+    //    float height = 0;
+    //    for (int i = 0; i < transform.childCount; i++)
+    //    {
+    //        if (transform.GetChild(i).gameObject.activeSelf)
+    //        {
+    //            height += transform.GetChild(i).GetComponent<RectTransform>().sizeDelta.y;
+    //        }
+    //    }
+    //    GetComponent<RectTransform>().sizeDelta = new Vector2(0, height);
+    //}
 }       

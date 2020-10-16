@@ -11,7 +11,7 @@ public class Tooltip : MonoBehaviour
     private GameObject subtitleObj;
     private GameObject contentObj;
 
-    private float width = 400f;
+    private float width = 480f;
     private float height = 0;
 
     public static Tooltip tooltip;
@@ -41,7 +41,7 @@ public class Tooltip : MonoBehaviour
         InitTextObj(subtitleObj, subtitle);
         InitTextObj(contentObj, content);
 
-        height = 0;
+        height = 80f;
         height += GetTextObjHeight(titleObj);
         height += GetTextObjHeight(subtitleObj);
         height += GetTextObjHeight(contentObj);
@@ -69,19 +69,20 @@ public class Tooltip : MonoBehaviour
     // 跟随鼠标
     private void ChangePosition()
     {
-        Vector2 pos = Input.mousePosition;
+        float x = Input.mousePosition.x;
+        float y = Input.mousePosition.y;
 
-        if (pos.y - height < 0)
+        if (x + width > Screen.width)
         {
-            pos += new Vector2(0, height);
+            x = Input.mousePosition.x - width;
         }
 
-        if (pos.x + width > Screen.width)
+        if (y - height < 0)
         {
-            pos += new Vector2(Screen.width - pos.x - width, 0);
+            y = Input.mousePosition.y + height;
         }
 
-        GetComponent<RectTransform>().position = pos;
+        GetComponent<RectTransform>().position = new Vector2(x, y);
     }
 
     // 根据字符串初始化文本内容
