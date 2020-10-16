@@ -122,7 +122,7 @@ public abstract class Unit : ClickableObject
 	}
 
 	/// <summary>
-	/// 转动一下
+	/// 顺时针转动一下
 	/// </summary>
 	public virtual void Rotate()
 	{
@@ -130,7 +130,7 @@ public abstract class Unit : ClickableObject
 		direction = (direction + 1) % 4;
 	}
 
-	/// <summary> dirBias </summary>
+	/// <summary> 旋转多少个90度 </summary>
 	public void Rotate(int dirBias)
 	{
 		while(dirBias < 0 || dirBias >= 4)
@@ -141,21 +141,19 @@ public abstract class Unit : ClickableObject
 				dirBias -= 4;
 		}
 
-		if (this is Ball)
+		if(this is Block)
 		{
-			while (dirBias-- > 0)
-			{
-				dirBias -= 2;
-				Rotate();
-			}
+			while (dirBias-- > 0) Rotate();
 		}
-		else if (this is Block)
+		else if(this is Ball)
 		{
 			while (dirBias > 0)
 			{
 				Rotate();
+				dirBias -= 2;
 			}
 		}
+		
 	}
 
 	// 碰撞
