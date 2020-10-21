@@ -18,13 +18,15 @@ public class Controller: MonoBehaviour
     public enum Player           { Neutral, Player, Enemy }
     public enum Layer            { Default, TransparentFX, IgnoreRaycast, Water = 4, UI, PlayerBall = 8, PlayerBlock, PlayerMissile, EnemyBall, EnemyBlock, EnemyMissile, Background, Terrain }
     public enum GamePhase        { Editor, Preparation, Playing, Victory }
-
     public enum VictoryCondition { None, KillAll, KillTarget, EnterLocation, HoldOn }
     public enum EditorMode       { Unit, Background, Module, Terrain }
 
 	// 根据方向获取坐标偏移
 	public static readonly int[,] DIR4 = { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };
 	public static readonly int[,] DIR8 = { { 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 }, { -1, -1 }, { 0, -1 }, { 1, -1 } };
+
+	// 是否是正式游戏
+	public static bool isGame = false;
 
 	void Awake()
     {

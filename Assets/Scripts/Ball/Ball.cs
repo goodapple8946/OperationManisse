@@ -28,7 +28,7 @@ public class Ball: Unit
 	protected float weaponCD = 0;
 
 	// 目标优先级容差
-	private float priorityTolerant = 3f;
+	// private float priorityTolerant = 3f;
 
 	private Unit currTarget = null;
 
@@ -61,7 +61,7 @@ public class Ball: Unit
 	protected Unit FindEnemy()
 	{
 		string maskName = null;
-		if (player == Player.Neutral)
+        if (player == Player.Neutral)
 		{
 			return null;
 		}
@@ -91,7 +91,7 @@ public class Ball: Unit
 				transform.position,
 				findEnemyRange,
 				LayerMask.GetMask(maskName + "Block"));
-			// 没找到在返回null
+			// 没找到再返回null
 			return collider != null ? collider.GetComponent<Unit>() : null;
 		}
 	}
@@ -138,19 +138,19 @@ public class Ball: Unit
 	}
 
 	// 索敌优先级
-	protected int CalculatePriority(Unit unit)
-	{
-		float distance = (unit.transform.position - transform.position).magnitude;
-		int priority = 0;
+	//protected int CalculatePriority(Unit unit)
+	//{
+	//	float distance = (unit.transform.position - transform.position).magnitude;
+	//	int priority = 0;
 
-		// 目标在射程内
-		if (distance <= findEnemyRange)
-		{
-			priority += (int)((findEnemyRange - distance) * 10f);
-			priority += unit.priority;
-		}
-		return priority;
-	}
+	//	// 目标在射程内
+	//	if (distance <= findEnemyRange)
+	//	{
+	//		priority += (int)((findEnemyRange - distance) * 10f);
+	//		priority += unit.priority;
+	//	}
+	//	return priority;
+	//}
 
 	/// <summary>
 	/// 以rotationSpeed转向目标,如果夹角很小就锁定目标

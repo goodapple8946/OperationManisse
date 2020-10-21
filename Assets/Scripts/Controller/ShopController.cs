@@ -22,17 +22,17 @@ public class ShopController : MonoBehaviour
     void Awake()
     {
         content = GameObject.Find("UI Canvas/UI Shop/Viewport/Content");
+    }
 
+    void Start()
+    {
         // 将editorObjects、blockObjects、ballObjects合并为gameObjects，因此在商店中排序为editor、block、ball
         gameObjects = new GameObject[resourceController.terrainObjects.Length + resourceController.blockObjects.Length + resourceController.ballObjects.Length + resourceController.backgroundObjects.Length];
         resourceController.terrainObjects.CopyTo(gameObjects, 0);
         resourceController.blockObjects.CopyTo(gameObjects, resourceController.terrainObjects.Length);
         resourceController.ballObjects.CopyTo(gameObjects, resourceController.terrainObjects.Length + resourceController.blockObjects.Length);
         resourceController.backgroundObjects.CopyTo(gameObjects, resourceController.terrainObjects.Length + resourceController.blockObjects.Length + resourceController.ballObjects.Length);
-    }
 
-    void Start()
-    {
         ArrayList arr = new ArrayList();
 
         // 为每个添加的物体

@@ -10,10 +10,17 @@ public class UIEnterEditor : MonoBehaviour
 
 	public void Awake()
 	{
-		button = GetComponent<Button>();
-		button.onClick.AddListener(() =>
+		if (Controller.isGame)
 		{
-			gameController.GamePhase = GamePhase.Editor;
-		});
+			gameObject.SetActive(false);
+		}
+        else
+		{
+			button = GetComponent<Button>();
+			button.onClick.AddListener(() =>
+			{
+				gameController.GamePhase = GamePhase.Editor;
+			});
+		}
 	}
 }

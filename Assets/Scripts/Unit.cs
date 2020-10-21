@@ -18,7 +18,7 @@ public abstract class Unit : ClickableObject
 	protected float deathDuration = 3f;
 
 	// 作为目标时的优先级
-	public int priority;
+	// public int priority;
 
 	// 半径
 	public float radius;
