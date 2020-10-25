@@ -11,7 +11,7 @@ public class BlockChain : Block
 	public GameObject[] Heads = new GameObject[4];
 
 	// 质量越大，铁链越难被拉长
-	private static float HookMass = 0.25f;
+	private static float HookMass = 0.1f;
 	// 沿着铁链方向的空气阻力
 	private static float HookDrag = 1.0f;
 	// 垂直于铁链方向的空气阻力

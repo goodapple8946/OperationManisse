@@ -30,7 +30,7 @@ public class TerrainA : ClickableObject
 
 			if(GetComponent<BuoyancyEffector2D>() != null)
 			{
-				GetComponent<BuoyancyEffector2D>().surfaceLevel = Height / 3f;
+				GetComponent<BuoyancyEffector2D>().surfaceLevel = Height / 4f;
 			}
         }
     }
